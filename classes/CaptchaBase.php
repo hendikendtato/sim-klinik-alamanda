@@ -1,0 +1,29 @@
+<?php
+namespace PHPMaker2020\klinik_latest_26_03_21;
+
+/**
+ * Captcha base class
+ */
+class CaptchaBase implements CaptchaInterface {
+
+	// HTML tag
+	public function getHtml() {
+		return "";
+	}
+
+	// HTML tag for confirm page
+	public function getConfirmHtml() {
+		return "";
+	}
+
+	// Validate
+	public function validate() {
+		return TRUE;
+	}
+
+	// Client side validation script
+	public function getScript() {
+		return "";
+	}
+}
+?>
