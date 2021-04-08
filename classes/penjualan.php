@@ -1,4 +1,4 @@
-<?php namespace PHPMaker2020\klinik_latest_26_03_21; ?>
+<?php namespace PHPMaker2020\klinik_latest_08_04_21; ?>
 <?php
 
 /**
@@ -2353,11 +2353,11 @@ class penjualan extends DbTable
 
 			//ADDING POIN MEMBER
 			$idpelanggan = ExecuteScalar("SELECT id_pelanggan FROM m_pelanggan WHERE id_pelanggan IN (SELECT id_pelanggan FROM m_member WHERE id_pelanggan='$id_pelanggan')");
-			$jenismember = ExecuteScalar("SELECT jenis_member FROM m_member WHERE id_pelanggan = $idpelanggan");
-			$kelipatan = ExecuteScalar("SELECT curs_poin FROM m_poin WHERE id_jenis_member = $jenismember");
+			$jenismember = ExecuteScalar("SELECT jenis_member FROM m_member WHERE id_pelanggan = '$idpelanggan'");
+			$kelipatan = ExecuteScalar("SELECT curs_poin FROM m_poin WHERE id_jenis_member = '$jenismember'");
 			$perhitungan = ($total - $ongkir) / $kelipatan;
-			$poinsebelumnya = ExecuteScalar("SELECT poin_member FROM m_member WHERE id_pelanggan = $idpelanggan");
-			$min_transaksi = ExecuteScalar("SELECT min_transaksi FROM m_poin WHERE id_jenis_member = $jenismember");
+			$poinsebelumnya = ExecuteScalar("SELECT poin_member FROM m_member WHERE id_pelanggan = '$idpelanggan'");
+			$min_transaksi = ExecuteScalar("SELECT min_transaksi FROM m_poin WHERE id_jenis_member = '$jenismember'");
 			if($total >= $min_transaksi) {
 				if($idpelanggan == FALSE){
 
@@ -2366,14 +2366,14 @@ class penjualan extends DbTable
 					if($klaim_poin != NULL OR $klaim_poin != '') {
 						$saldo_poin_klaim = $poinsebelumnya - $klaim_poin;
 						Execute("INSERT INTO kartupoin (id_pelanggan, kode_penjualan, tgl, masuk, keluar, saldo_poin, id_klinik) VALUES ('".$idpelanggan."', '".$kode_penjualan."', '".$tanggal."', '0', '".$klaim_poin."','".$saldo_poin_klaim."', '".$id_klinik."')");
-						Execute("UPDATE m_member SET poin_member=$saldo_poin_klaim WHERE id_pelanggan=$idpelanggan");
+						Execute("UPDATE m_member SET poin_member=$saldo_poin_klaim WHERE id_pelanggan='$idpelanggan'");
 						$poin_saat_ini = $saldo_poin_klaim + floor($perhitungan);
 						Execute("INSERT INTO kartupoin (id_pelanggan, kode_penjualan, tgl, masuk, keluar, saldo_poin, id_klinik) VALUES ('".$idpelanggan."', '".$kode_penjualan."', '".$tanggal."', '".floor($perhitungan)."', '0','".$poin_saat_ini."', '".$id_klinik."')");
-						Execute("UPDATE m_member SET poin_member=$poin_saat_ini WHERE id_pelanggan=$idpelanggan");
+						Execute("UPDATE m_member SET poin_member=$poin_saat_ini WHERE id_pelanggan='$idpelanggan'");
 					} else {
 						$poin_saat_ini = $poinsebelumnya + floor($perhitungan);
 						Execute("INSERT INTO kartupoin (id_pelanggan, kode_penjualan, tgl, masuk, keluar, saldo_poin, id_klinik) VALUES ('".$idpelanggan."', '".$kode_penjualan."', '".$tanggal."', '".floor($perhitungan)."', '0','".$poin_saat_ini."', '".$id_klinik."')");
-						Execute("UPDATE m_member SET poin_member=$poin_saat_ini WHERE id_pelanggan=$idpelanggan");
+						Execute("UPDATE m_member SET poin_member=$poin_saat_ini WHERE id_pelanggan='$idpelanggan'");
 					}
 				}
 			}
@@ -2388,11 +2388,11 @@ class penjualan extends DbTable
 			$waktu = $rsnew['waktu'];
 			$kode_penjualan = $rsnew['kode_penjualan'];
 			$date = date("Y-m-d");
-			$qty = ExecuteScalar("SELECT SUM(qty) AS qty FROM detailpenjualan WHERE id_penjualan=$idpenjualan");
+			$qty = ExecuteScalar("SELECT SUM(qty) AS qty FROM detailpenjualan WHERE id_penjualan='$idpenjualan'");
 
 			//KOMISI KINERJA SALES
 			if($sales != "") {
-				$JabatanSales = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai=$sales");					
+				$JabatanSales = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai='$sales'");					
 				$sql_sales = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
 					if($sql_sales -> RecordCount() > 0){
 						$sql_sales->MoveFirst();
@@ -2458,7 +2458,7 @@ class penjualan extends DbTable
 															$JmlKomisiTargetRpSales = $KomisiTargetRpSales * $qty_transaksi;
 
 															// Update data sebelumnya
-															Execute("UPDATE transaksi_komisi SET komisi=$KomisiTargetRpSales, total_komisi=$JmlKomisiTargetRpSales WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+															Execute("UPDATE transaksi_komisi SET komisi='$KomisiTargetRpSales', total_komisi='$JmlKomisiTargetRpSales' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
 
 															//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpSales WHERE id_pegawai='$sales'");
 														}
@@ -2467,7 +2467,7 @@ class penjualan extends DbTable
 														if($KomisiTargetPrSales != "" && $KomisiTargetPrSales != "0"){
 															$JmlKomisiTargetPrSales = (($KomisiTargetPrSales / 100) * $harga_jual_transaksi);
 															$total_komisi_target_sales = $JmlKomisiTargetPrSales * $qty_transaksi;
-															Execute("UPDATE transaksi_komisi SET komisi=$JmlKomisiTargetPrSales, total_komisi=$total_komisi_target_sales WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+															Execute("UPDATE transaksi_komisi SET komisi='$JmlKomisiTargetPrSales', total_komisi='$total_komisi_target_sales' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
 
 															//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrSales WHERE id_pegawai='$sales'");
 														}
@@ -2518,7 +2518,7 @@ class penjualan extends DbTable
 
 			//KOMISI KINERJA BE WAJAH
 			if($dok_be_wajah != "") {
-			$JabatanDokBeWajah = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai=$dok_be_wajah");
+			$JabatanDokBeWajah = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai='$dok_be_wajah'");
 			$sql_dok_be_wajah = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
 				if($sql_dok_be_wajah -> RecordCount() > 0){
 					$sql_dok_be_wajah->MoveFirst();
@@ -2578,7 +2578,7 @@ class penjualan extends DbTable
 															$JmlKomisiTargetRpDokBeWajah = $KomisiTargetRpDokBeWajah * $qty_transaksi;
 
 															// Update data sebelumnya
-															Execute("UPDATE transaksi_komisi SET komisi=$KomisiTargetRpDokBeWajah, total_komisi=$JmlKomisiTargetRpDokBeWajah WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+															Execute("UPDATE transaksi_komisi SET komisi='$KomisiTargetRpDokBeWajah', total_komisi='$JmlKomisiTargetRpDokBeWajah' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
 
 															//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpDokBeWajah WHERE id_pegawai='$dok_be_wajah'");
 														}
@@ -2587,7 +2587,7 @@ class penjualan extends DbTable
 														if($KomisiTargetPrDokBeWajah != "" && $KomisiTargetPrDokBeWajah != "0"){
 															$JmlKomisiTargetPrDokBeWajah = (($KomisiTargetPrDokBeWajah / 100) * $harga_jual_transaksi);
 															$total_komisi_target_dok_be_wajah = $JmlKomisiTargetPrDokBeWajah * $qty_transaksi;
-															Execute("UPDATE transaksi_komisi SET komisi=$JmlKomisiTargetPrDokBeWajah, total_komisi=$total_komisi_target_dok_be_wajah WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+															Execute("UPDATE transaksi_komisi SET komisi='$JmlKomisiTargetPrDokBeWajah', total_komisi='$total_komisi_target_dok_be_wajah' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
 
 															//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrDokBeWajah WHERE id_pegawai='$dok_be_wajah'");
 														}
@@ -2638,7 +2638,7 @@ class penjualan extends DbTable
 
 			// KOMISI KINERJA BE BODY	
 			if($be_body != "") {
-			$JabatanBeBody = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai=$be_body");
+			$JabatanBeBody = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai='$be_body'");
 			$sql_be_body = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
 				if($sql_be_body -> RecordCount() > 0){
 					$sql_be_body->MoveFirst();
@@ -2704,7 +2704,7 @@ class penjualan extends DbTable
 														$JmlKomisiTargetRpBeBody = $KomisiTargetRpBeBody * $qty_transaksi;
 
 														// Update data sebelumnya
-														Execute("UPDATE transaksi_komisi SET komisi=$KomisiTargetRpBeBody, total_komisi=$JmlKomisiTargetRpBeBody WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+														Execute("UPDATE transaksi_komisi SET komisi='$KomisiTargetRpBeBody', total_komisi='$JmlKomisiTargetRpBeBody' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
 
 														//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpBeBody WHERE id_pegawai='$be_body'");
 													}
@@ -2713,7 +2713,7 @@ class penjualan extends DbTable
 													if($KomisiTargetPrBeBody != "" && $KomisiTargetPrBeBody != "0"){
 														$JmlKomisiTargetPrBeBody = (($KomisiTargetPrBeBody / 100) * $harga_jual_transaksi);
 														$total_komisi_target_be_body = $JmlKomisiTargetPrBeBody * $qty_transaksi;
-														Execute("UPDATE transaksi_komisi SET komisi=$JmlKomisiTargetPrBeBody, total_komisi=$total_komisi_target_be_body WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+														Execute("UPDATE transaksi_komisi SET komisi='$JmlKomisiTargetPrBeBody', total_komisi='$total_komisi_target_be_body' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
 
 														//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrBeBody WHERE id_pegawai='$be_body'");
 													}
@@ -2764,7 +2764,7 @@ class penjualan extends DbTable
 
 			//KOMISI KINERJA MEDIS
 			if($medis != "") {
-			$JabatanMedis = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai=$medis");
+			$JabatanMedis = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai='$medis'");
 			$sql_medis = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
 				if($sql_medis -> RecordCount() > 0){
 					$sql_medis->MoveFirst();
@@ -2830,7 +2830,7 @@ class penjualan extends DbTable
 														$JmlKomisiTargetRpMedis = $KomisiTargetRpMedis * $qty_transaksi;
 
 														// Update data sebelumnya
-														Execute("UPDATE transaksi_komisi SET komisi=$KomisiTargetRpMedis, total_komisi=$JmlKomisiTargetRpMedis WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+														Execute("UPDATE transaksi_komisi SET komisi='$KomisiTargetRpMedis', total_komisi='$JmlKomisiTargetRpMedis' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
 
 														//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpMedis WHERE id_pegawai='$medis'");
 													}
@@ -2890,7 +2890,7 @@ class penjualan extends DbTable
 
 			//KOMISI KINERJA DOKTER
 			if($dokter != "") {
-			$JabatanDokter = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai=$dokter");
+			$JabatanDokter = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai='$dokter'");
 			$sql_dokter = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
 				if($sql_dokter -> RecordCount() > 0){
 					$sql_dokter->MoveFirst();
@@ -2956,7 +2956,7 @@ class penjualan extends DbTable
 														$JmlKomisiTargetRpDokter = $KomisiTargetRpDokter * $qty_transaksi;
 
 														// Update data sebelumnya
-														Execute("UPDATE transaksi_komisi SET komisi=$KomisiTargetRpDokter, total_komisi=$JmlKomisiTargetRpDokter WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+														Execute("UPDATE transaksi_komisi SET komisi='$KomisiTargetRpDokter', total_komisi='$JmlKomisiTargetRpDokter' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
 
 														//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpDokter WHERE id_pegawai='$dokter'");
 													}
@@ -2965,7 +2965,7 @@ class penjualan extends DbTable
 													if($KomisiTargetPrDokter != "" && $KomisiTargetPrDokter != "0"){
 														$JmlKomisiTargetPrDokter = (($KomisiTargetPrDokter / 100) * $harga_jual_transaksi);
 														$total_komisi_target_dokter = $JmlKomisiTargetPrDokter * $qty_transaksi;
-														Execute("UPDATE transaksi_komisi SET komisi=$JmlKomisiTargetPrDokter, total_komisi=$total_komisi_target_dokter WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+														Execute("UPDATE transaksi_komisi SET komisi='$JmlKomisiTargetPrDokter', total_komisi='$total_komisi_target_dokter' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
 
 														//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrDokter WHERE id_pegawai='$dokter'");
 													}
@@ -3025,7 +3025,7 @@ class penjualan extends DbTable
 							$subtotal_penjualan = $sql_komisi_recall->fields['subtotal'];
 							$harga_jual = $sql_komisi_recall->fields['harga_jual'];
 							if($id_pegawai_recall != ''){
-								$JabatanPegawai = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai=$id_pegawai_recall");
+								$JabatanPegawai = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai='$id_pegawai_recall'");
 								$BarangKomisiRecall = ExecuteScalar("SELECT id_barang FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi_recall_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
 								$TglAwalRecall = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanPegawai' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
 								$TglAkhirRecall = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanPegawai' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
@@ -3073,14 +3073,14 @@ class penjualan extends DbTable
 																		$JmlKomisiTargetRpRecall = $KomisiTargetRpRecall * $qty_transaksi;
 
 																		// Update data sebelumnya
-																		Execute("UPDATE transaksi_komisi SET komisi=$KomisiTargetRpRecall, total_komisi=$JmlKomisiTargetRpRecall WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+																		Execute("UPDATE transaksi_komisi SET komisi='$KomisiTargetRpRecall', total_komisi='$JmlKomisiTargetRpRecall' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
 																	}
 
 																	// If Komisi Target Persen != 0
 																	if($KomisiTargetPrRecall != "" && $KomisiTargetPrRecall != "0"){
 																		$JmlKomisiTargetPrRecall = (($KomisiTargetPrRecall / 100) * $harga_jual_transaksi);
 																		$total_komisi_target_recall = $JmlKomisiTargetPrRecall * $qty_transaksi;
-																		Execute("UPDATE transaksi_komisi SET komisi=$JmlKomisiTargetPrRecall, total_komisi=$total_komisi_target_recall WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+																		Execute("UPDATE transaksi_komisi SET komisi='$JmlKomisiTargetPrRecall', total_komisi='$total_komisi_target_recall' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
 																	}
 															$sql_transaksi_komisi_recall->MoveNext();
 															}
@@ -3121,49 +3121,49 @@ class penjualan extends DbTable
 			if($idpelanggan != FALSE) {
 
 				//INSERT TGL AWAL TRANSAKSI && JML AKUMULASI
-				$total_akumulasi = ExecuteScalar("SELECT total_akumulasi FROM m_member WHERE id_pelanggan=$idpelanggan");
-				$tglmulai = ExecuteScalar("SELECT tgl_mulai FROM m_member WHERE id_pelanggan=$idpelanggan");
+				$total_akumulasi = ExecuteScalar("SELECT total_akumulasi FROM m_member WHERE id_pelanggan='$idpelanggan'");
+				$tglmulai = ExecuteScalar("SELECT tgl_mulai FROM m_member WHERE id_pelanggan='$idpelanggan'");
 				if($total_akumulasi == '' OR $total_akumulasi == '0' OR $total_akumulasi == NULL){
-					$tglawaltransaksi = ExecuteScalar("SELECT tgl_awal_transaksi FROM m_member WHERE id_pelanggan=$idpelanggan");
+					$tglawaltransaksi = ExecuteScalar("SELECT tgl_awal_transaksi FROM m_member WHERE id_pelanggan='$idpelanggan'");
 						if($tglawaltransaksi == '') {
 							$date = date("Y-m-d");
 							date_default_timezone_set("Indonesia/Jakarta");
 							$tgltransaksiawal = ExecuteScalar("SELECT waktu FROM penjualan WHERE waktu >= '$tglmulai' ORDER BY waktu ASC LIMIT 1");
-							$jmlakumulasi = ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE id_pelanggan=$idpelanggan AND (waktu BETWEEN '$tgltransaksiawal' AND '$date')");
-							Execute("UPDATE m_member SET tgl_awal_transaksi='$tgltransaksiawal', total_akumulasi=$jmlakumulasi WHERE id_pelanggan=$idpelanggan");
+							$jmlakumulasi = ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE id_pelanggan='$idpelanggan' AND (waktu BETWEEN '$tgltransaksiawal' AND '$date')");
+							Execute("UPDATE m_member SET tgl_awal_transaksi='$tgltransaksiawal', total_akumulasi='$jmlakumulasi' WHERE id_pelanggan='$idpelanggan'");
 						}
 				} else {
 					$date = date("Y-m-d");
 					$tgltransaksiawal = ExecuteScalar("SELECT waktu FROM penjualan WHERE waktu >= '$tglmulai' ORDER BY waktu ASC LIMIT 1");
-					$jmlakumulasi = ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE id_pelanggan=$idpelanggan AND (waktu BETWEEN '$tgltransaksiawal' AND '$date')");
-					Execute("UPDATE m_member SET total_akumulasi=$jmlakumulasi WHERE id_pelanggan=$idpelanggan");
+					$jmlakumulasi = ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE id_pelanggan='$idpelanggan' AND (waktu BETWEEN '$tgltransaksiawal' AND '$date')");
+					Execute("UPDATE m_member SET total_akumulasi='$jmlakumulasi' WHERE id_pelanggan='$idpelanggan'");
 				}
 
 				//UPGRADE MEMBER
 				$firstdate = date("Y-n-j", strtotime("first day of this month"));
 				$lastdate = date("Y-n-j", strtotime("last day of this month"));
-				$KedatanganBlnIni = ExecuteScalar("SELECT COUNT(id) FROM penjualan WHERE id_pelanggan = $idpelanggan AND (waktu BETWEEN '$firstdate' AND '$lastdate')");
+				$KedatanganBlnIni = ExecuteScalar("SELECT COUNT(id) FROM penjualan WHERE id_pelanggan = '$idpelanggan' AND (waktu BETWEEN '$firstdate' AND '$lastdate')");
 				if($KedatanganBlnIni > '1') {
 				} else {
 					$firstdateprevmonth = date("Y-n-j", strtotime("first day of previous month"));
 					$lastdateprevmonth = date("Y-n-j", strtotime("last day of previous month"));
-					$KedatanganBlnLalu = ExecuteScalar("SELECT COUNT(id) FROM penjualan WHERE id_pelanggan = $idpelanggan AND (waktu BETWEEN '$firstdateprevmonth' AND '$lastdateprevmonth')");
-					$min_kedatangan = ExecuteSCalar("SELECT min_kedatangan FROM m_jenis_member WHERE id_jenis_member=$jenismember");
+					$KedatanganBlnLalu = ExecuteScalar("SELECT COUNT(id) FROM penjualan WHERE id_pelanggan = '$idpelanggan' AND (waktu BETWEEN '$firstdateprevmonth' AND '$lastdateprevmonth')");
+					$min_kedatangan = ExecuteSCalar("SELECT min_kedatangan FROM m_jenis_member WHERE id_jenis_member='$jenismember'");
 					if($KedatanganBlnLalu >= $min_kedatangan){
-						$TglAwal = ExecuteScalar("SELECT tgl_awal_transaksi FROM m_member WHERE id_pelanggan=$idpelanggan");
+						$TglAwal = ExecuteScalar("SELECT tgl_awal_transaksi FROM m_member WHERE id_pelanggan='$idpelanggan'");
 						$CountDay = ExecuteScalar("SELECT DATEDIFF('$date', '$TglAwal')");
 						$JangkaWaktu = ExecuteScalar("SELECT jangka_waktu FROM m_jenis_member WHERE id_jenis_member='$jenismember'");
 							if($CountDay >= $JangkaWaktu){
 								$nominalbwh_reguler = ExecuteScalar("SELECT nominal_bawah FROM m_jenis_member WHERE nama_member='Reguler'");
 								$nominalats_reguler = ExecuteScalar("SELECT nominal_atas FROM m_jenis_member WHERE nama_member='Reguler'");
 								$nominalbwh_vip = ExecuteScalar("SELECT nominal_bawah FROM m_jenis_member WHERE nama_member='VIP'");
-								$level_selanjutnya = ExecuteScalar("SELECT member_selanjutnya FROM m_jenis_member WHERE id_jenis_member=$jenismember");
+								$level_selanjutnya = ExecuteScalar("SELECT member_selanjutnya FROM m_jenis_member WHERE id_jenis_member='$jenismember'");
 								$id_vvip = ExecuteScalar("SELECT id FROM m_jenis_member WHERE nama_member='VVIP'");
 									if($total_akumulasi >= $nominalbwh_reguler || $total_akumulasi <= $nominalats_reguler) {
-										Execute("UPDATE m_member SET jenis_member=$level_selanjutnya WHERE id_pelanggan=$idpelanggan");
+										Execute("UPDATE m_member SET jenis_member='$level_selanjutnya' WHERE id_pelanggan='$idpelanggan'");
 									}
 									if($total_akumulasi >= $nominalbwh_vip){
-										Execute("UPDATE m_member SET jenis_member=$id_vvip WHERE id_pelanggan=$idpelanggan");
+										Execute("UPDATE m_member SET jenis_member='$id_vvip' WHERE id_pelanggan='$idpelanggan'");
 									}
 							}
 					}

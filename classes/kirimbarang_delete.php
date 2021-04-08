@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 /**
  * Page class
@@ -11,7 +11,7 @@ class kirimbarang_delete extends kirimbarang
 	public $PageID = "delete";
 
 	// Project ID
-	public $ProjectID = "{7561FF98-88C2-4B76-B5C9-C5F11860BCF7}";
+	public $ProjectID = "{4E2A1FD4-0074-4494-903F-430527A228F4}";
 
 	// Table name
 	public $TableName = 'kirimbarang';
@@ -583,6 +583,7 @@ class kirimbarang_delete extends kirimbarang
 		$this->id_klinik->setVisibility();
 		$this->id_pegawai->setVisibility();
 		$this->tanggal->setVisibility();
+		$this->status_kirim->setVisibility();
 		$this->keterangan->setVisibility();
 		$this->hideFieldsForAddEdit();
 
@@ -740,6 +741,7 @@ class kirimbarang_delete extends kirimbarang
 		$this->id_klinik->setDbValue($row['id_klinik']);
 		$this->id_pegawai->setDbValue($row['id_pegawai']);
 		$this->tanggal->setDbValue($row['tanggal']);
+		$this->status_kirim->setDbValue($row['status_kirim']);
 		$this->keterangan->setDbValue($row['keterangan']);
 	}
 
@@ -754,6 +756,7 @@ class kirimbarang_delete extends kirimbarang
 		$row['id_klinik'] = NULL;
 		$row['id_pegawai'] = NULL;
 		$row['tanggal'] = NULL;
+		$row['status_kirim'] = NULL;
 		$row['keterangan'] = NULL;
 		return $row;
 	}
@@ -776,6 +779,7 @@ class kirimbarang_delete extends kirimbarang
 		// id_klinik
 		// id_pegawai
 		// tanggal
+		// status_kirim
 		// keterangan
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
@@ -795,7 +799,7 @@ class kirimbarang_delete extends kirimbarang
 				if ($this->id_po->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id_po`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
 					$lookupFilter = function() {
-						return (CurrentPageID() == "edit" || CurrentPageID() == "add") ? "status_po = 'open'" : "";
+						return (CurrentPageID() == "add") ? "status_po = 'open'" : "";
 					};
 					$lookupFilter = $lookupFilter->bindTo($this);
 					$sqlWrk = $this->id_po->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
@@ -885,6 +889,14 @@ class kirimbarang_delete extends kirimbarang
 			$this->tanggal->ViewValue = FormatDateTime($this->tanggal->ViewValue, 0);
 			$this->tanggal->ViewCustomAttributes = "";
 
+			// status_kirim
+			if (strval($this->status_kirim->CurrentValue) != "") {
+				$this->status_kirim->ViewValue = $this->status_kirim->optionCaption($this->status_kirim->CurrentValue);
+			} else {
+				$this->status_kirim->ViewValue = NULL;
+			}
+			$this->status_kirim->ViewCustomAttributes = "";
+
 			// keterangan
 			$this->keterangan->ViewValue = $this->keterangan->CurrentValue;
 			$this->keterangan->ViewCustomAttributes = "";
@@ -918,6 +930,11 @@ class kirimbarang_delete extends kirimbarang
 			$this->tanggal->LinkCustomAttributes = "";
 			$this->tanggal->HrefValue = "";
 			$this->tanggal->TooltipValue = "";
+
+			// status_kirim
+			$this->status_kirim->LinkCustomAttributes = "";
+			$this->status_kirim->HrefValue = "";
+			$this->status_kirim->TooltipValue = "";
 
 			// keterangan
 			$this->keterangan->LinkCustomAttributes = "";
@@ -1047,7 +1064,7 @@ class kirimbarang_delete extends kirimbarang
 			switch ($fld->FieldVar) {
 				case "x_id_po":
 					$lookupFilter = function() {
-						return (CurrentPageID() == "edit" || CurrentPageID() == "add") ? "status_po = 'open'" : "";
+						return (CurrentPageID() == "add") ? "status_po = 'open'" : "";
 					};
 					$lookupFilter = $lookupFilter->bindTo($this);
 					break;
@@ -1056,6 +1073,8 @@ class kirimbarang_delete extends kirimbarang
 				case "x_id_klinik":
 					break;
 				case "x_id_pegawai":
+					break;
+				case "x_status_kirim":
 					break;
 				default:
 					$lookupFilter = "";

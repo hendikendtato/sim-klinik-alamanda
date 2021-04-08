@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 // Autoload
 include_once "autoload.php";
@@ -286,6 +286,15 @@ while ($report_rekap_summary->GroupCount <= count($report_rekap_summary->GroupRe
 	</div></div></th>
 	<?php } ?>
 <?php } ?>
+<?php if ($report_rekap_summary->id_terimagudang->Visible) { ?>
+	<?php if ($report_rekap_summary->sortUrl($report_rekap_summary->id_terimagudang) == "") { ?>
+	<th data-name="id_terimagudang" class="<?php echo $report_rekap_summary->id_terimagudang->headerCellClass() ?>"><div class="report_rekap_id_terimagudang"><div class="ew-table-header-caption"><?php echo $report_rekap_summary->id_terimagudang->caption() ?></div></div></th>
+	<?php } else { ?>
+	<th data-name="id_terimagudang" class="<?php echo $report_rekap_summary->id_terimagudang->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $report_rekap_summary->sortUrl($report_rekap_summary->id_terimagudang) ?>', 1);"><div class="report_rekap_id_terimagudang">
+		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $report_rekap_summary->id_terimagudang->caption() ?></span><span class="ew-table-header-sort"><?php if ($report_rekap_summary->id_terimagudang->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($report_rekap_summary->id_terimagudang->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+	</div></div></th>
+	<?php } ?>
+<?php } ?>
 	</tr>
 </thead>
 <tbody>
@@ -424,6 +433,9 @@ while ($report_rekap_summary->GroupCount <= count($report_rekap_summary->GroupRe
 <?php if ($report_rekap_summary->keluar_kirim->Visible) { ?>
 		<td data-field="keluar_kirim"<?php echo $report_rekap_summary->id_barang->cellAttributes() ?>></td>
 <?php } ?>
+<?php if ($report_rekap_summary->id_terimagudang->Visible) { ?>
+		<td data-field="id_terimagudang"<?php echo $report_rekap_summary->id_barang->cellAttributes() ?>></td>
+<?php } ?>
 	</tr>
 <?php } else { ?>
 	<tr<?php echo $report_rekap_summary->rowAttributes(); ?>>
@@ -486,6 +498,9 @@ while ($report_rekap_summary->GroupCount <= count($report_rekap_summary->GroupRe
 <?php } ?>
 <?php if ($report_rekap_summary->keluar_kirim->Visible) { ?>
 		<td data-field="keluar_kirim"<?php echo $report_rekap_summary->id_barang->cellAttributes() ?>>&nbsp;</td>
+<?php } ?>
+<?php if ($report_rekap_summary->id_terimagudang->Visible) { ?>
+		<td data-field="id_terimagudang"<?php echo $report_rekap_summary->id_barang->cellAttributes() ?>>&nbsp;</td>
 <?php } ?>
 	</tr>
 <?php } ?>
@@ -567,6 +582,9 @@ while ($report_rekap_summary->GroupCount <= count($report_rekap_summary->GroupRe
 <?php if ($report_rekap_summary->keluar_kirim->Visible) { ?>
 		<td data-field="keluar_kirim"<?php echo $report_rekap_summary->keluar_kirim->cellAttributes() ?>></td>
 <?php } ?>
+<?php if ($report_rekap_summary->id_terimagudang->Visible) { ?>
+		<td data-field="id_terimagudang"<?php echo $report_rekap_summary->id_terimagudang->cellAttributes() ?>></td>
+<?php } ?>
 	</tr>
 <?php } else { ?>
 	<tr<?php echo $report_rekap_summary->rowAttributes(); ?>><td colspan="<?php echo ($report_rekap_summary->GroupColumnCount + $report_rekap_summary->DetailColumnCount) ?>"><?php echo $Language->phrase("RptPageSummary") ?> <span class="ew-summary-count">(<?php echo FormatNumber($report_rekap_summary->PageTotalCount, 0); ?><?php echo $Language->phrase("RptDtlRec") ?>)</span></td></tr>
@@ -625,6 +643,9 @@ while ($report_rekap_summary->GroupCount <= count($report_rekap_summary->GroupRe
 <?php } ?>
 <?php if ($report_rekap_summary->keluar_kirim->Visible) { ?>
 		<td data-field="keluar_kirim"<?php echo $report_rekap_summary->keluar_kirim->cellAttributes() ?>>&nbsp;</td>
+<?php } ?>
+<?php if ($report_rekap_summary->id_terimagudang->Visible) { ?>
+		<td data-field="id_terimagudang"<?php echo $report_rekap_summary->id_terimagudang->cellAttributes() ?>>&nbsp;</td>
 <?php } ?>
 	</tr>
 <?php } ?>
@@ -685,6 +706,9 @@ while ($report_rekap_summary->GroupCount <= count($report_rekap_summary->GroupRe
 <?php if ($report_rekap_summary->keluar_kirim->Visible) { ?>
 		<td data-field="keluar_kirim"<?php echo $report_rekap_summary->keluar_kirim->cellAttributes() ?>></td>
 <?php } ?>
+<?php if ($report_rekap_summary->id_terimagudang->Visible) { ?>
+		<td data-field="id_terimagudang"<?php echo $report_rekap_summary->id_terimagudang->cellAttributes() ?>></td>
+<?php } ?>
 	</tr>
 <?php } else { ?>
 	<tr<?php echo $report_rekap_summary->rowAttributes() ?>><td colspan="<?php echo ($report_rekap_summary->GroupColumnCount + $report_rekap_summary->DetailColumnCount) ?>"><?php echo $Language->phrase("RptGrandSummary") ?> <span class="ew-summary-count">(<?php echo FormatNumber($report_rekap_summary->TotalCount, 0); ?><?php echo $Language->phrase("RptDtlRec") ?>)</span></td></tr>
@@ -743,6 +767,9 @@ while ($report_rekap_summary->GroupCount <= count($report_rekap_summary->GroupRe
 <?php } ?>
 <?php if ($report_rekap_summary->keluar_kirim->Visible) { ?>
 		<td data-field="keluar_kirim"<?php echo $report_rekap_summary->keluar_kirim->cellAttributes() ?>>&nbsp;</td>
+<?php } ?>
+<?php if ($report_rekap_summary->id_terimagudang->Visible) { ?>
+		<td data-field="id_terimagudang"<?php echo $report_rekap_summary->id_terimagudang->cellAttributes() ?>>&nbsp;</td>
 <?php } ?>
 	</tr>
 <?php } ?>

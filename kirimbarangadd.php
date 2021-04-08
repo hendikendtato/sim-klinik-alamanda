@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 // Autoload
 include_once "autoload.php";
@@ -84,6 +84,11 @@ loadjs.ready("head", function() {
 				elm = this.getElements("x" + infix + "_tanggal");
 				if (elm && !ew.checkDateDef(elm.value))
 					return this.onError(elm, "<?php echo JsEncode($kirimbarang_add->tanggal->errorMessage()) ?>");
+			<?php if ($kirimbarang_add->status_kirim->Required) { ?>
+				elm = this.getElements("x" + infix + "_status_kirim");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $kirimbarang_add->status_kirim->caption(), $kirimbarang_add->status_kirim->RequiredErrorMessage)) ?>");
+			<?php } ?>
 			<?php if ($kirimbarang_add->keterangan->Required) { ?>
 				elm = this.getElements("x" + infix + "_keterangan");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
@@ -125,6 +130,8 @@ loadjs.ready("head", function() {
 	fkirimbarangadd.lists["x_id_klinik"].options = <?php echo JsonEncode($kirimbarang_add->id_klinik->lookupOptions()) ?>;
 	fkirimbarangadd.lists["x_id_pegawai"] = <?php echo $kirimbarang_add->id_pegawai->Lookup->toClientList($kirimbarang_add) ?>;
 	fkirimbarangadd.lists["x_id_pegawai"].options = <?php echo JsonEncode($kirimbarang_add->id_pegawai->lookupOptions()) ?>;
+	fkirimbarangadd.lists["x_status_kirim"] = <?php echo $kirimbarang_add->status_kirim->Lookup->toClientList($kirimbarang_add) ?>;
+	fkirimbarangadd.lists["x_status_kirim"].options = <?php echo JsonEncode($kirimbarang_add->status_kirim->options(FALSE, TRUE)) ?>;
 	loadjs.done("fkirimbarangadd");
 });
 </script>
@@ -132,8 +139,7 @@ loadjs.ready("head", function() {
 loadjs.ready("head", function() {
 
 	// Client script
-	// Write your client script here, no need to add script tags.
-
+	$("div[id=r_status_kirim]").css({display:"none"}),$("#btn-action").after('&nbsp;<button class="btn btn-info ew-btn" name="btn-action-draft" id="btn-action-draft" type="submit" style="height: 50px !important; width: 20% !important;">Draft</button>'),$("#btn-action").click(function(){$('input[name="x_status_kirim"][value="dikirim"]').prop("checked",!0),$('input[name="x_status_kirim"][value="draft"]').prop("checked",null)}),$("#btn-action-draft").click(function(){$('input[name="x_status_kirim"][value="dikirim"]').prop("checked",null),$('input[name="x_status_kirim"][value="draft"]').prop("checked",!0)}),$('select[name="x_id_supplier"]').prop("disabled",!0),$('select[name="x_id_klinik"]').prop("disabled",!0);
 });
 </script>
 <?php $kirimbarang_add->showPageHeader(); ?>
@@ -224,6 +230,19 @@ loadjs.ready(["fkirimbarangadd", "datetimepicker"], function() {
 <?php } ?>
 </span>
 <?php echo $kirimbarang_add->tanggal->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
+<?php if ($kirimbarang_add->status_kirim->Visible) { // status_kirim ?>
+	<div id="r_status_kirim" class="form-group row">
+		<label id="elh_kirimbarang_status_kirim" class="<?php echo $kirimbarang_add->LeftColumnClass ?>"><?php echo $kirimbarang_add->status_kirim->caption() ?><?php echo $kirimbarang_add->status_kirim->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $kirimbarang_add->RightColumnClass ?>"><div <?php echo $kirimbarang_add->status_kirim->cellAttributes() ?>>
+<span id="el_kirimbarang_status_kirim">
+<div id="tp_x_status_kirim" class="ew-template"><input type="radio" class="custom-control-input" data-table="kirimbarang" data-field="x_status_kirim" data-value-separator="<?php echo $kirimbarang_add->status_kirim->displayValueSeparatorAttribute() ?>" name="x_status_kirim" id="x_status_kirim" value="{value}"<?php echo $kirimbarang_add->status_kirim->editAttributes() ?>></div>
+<div id="dsl_x_status_kirim" data-repeatcolumn="5" class="ew-item-list d-none"><div>
+<?php echo $kirimbarang_add->status_kirim->radioButtonListHtml(FALSE, "x_status_kirim") ?>
+</div></div>
+</span>
+<?php echo $kirimbarang_add->status_kirim->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 <?php if ($kirimbarang_add->keterangan->Visible) { // keterangan ?>

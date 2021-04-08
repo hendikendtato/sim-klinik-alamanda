@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 /**
  * Page class
@@ -11,7 +11,7 @@ class kartustok_list extends kartustok
 	public $PageID = "list";
 
 	// Project ID
-	public $ProjectID = "{7561FF98-88C2-4B76-B5C9-C5F11860BCF7}";
+	public $ProjectID = "{4E2A1FD4-0074-4494-903F-430527A228F4}";
 
 	// Table name
 	public $TableName = 'kartustok';
@@ -824,6 +824,7 @@ class kartustok_list extends kartustok
 		$this->id_klinik->setVisibility();
 		$this->tanggal->setVisibility();
 		$this->id_terimabarang->setVisibility();
+		$this->id_terimagudang->setVisibility();
 		$this->id_penjualan->setVisibility();
 		$this->id_kirimbarang->setVisibility();
 		$this->id_nonjual->Visible = FALSE;
@@ -877,6 +878,7 @@ class kartustok_list extends kartustok
 		$this->setupLookupOptions($this->id_barang);
 		$this->setupLookupOptions($this->id_klinik);
 		$this->setupLookupOptions($this->id_terimabarang);
+		$this->setupLookupOptions($this->id_terimagudang);
 		$this->setupLookupOptions($this->id_penjualan);
 		$this->setupLookupOptions($this->id_kirimbarang);
 		$this->setupLookupOptions($this->id_retur);
@@ -1175,6 +1177,7 @@ class kartustok_list extends kartustok
 		$filterList = Concat($filterList, $this->id_barang->AdvancedSearch->toJson(), ","); // Field id_barang
 		$filterList = Concat($filterList, $this->id_klinik->AdvancedSearch->toJson(), ","); // Field id_klinik
 		$filterList = Concat($filterList, $this->tanggal->AdvancedSearch->toJson(), ","); // Field tanggal
+		$filterList = Concat($filterList, $this->id_terimagudang->AdvancedSearch->toJson(), ","); // Field id_terimagudang
 		$filterList = Concat($filterList, $this->id_penjualan->AdvancedSearch->toJson(), ","); // Field id_penjualan
 		$filterList = Concat($filterList, $this->id_kirimbarang->AdvancedSearch->toJson(), ","); // Field id_kirimbarang
 		$filterList = Concat($filterList, $this->id_nonjual->AdvancedSearch->toJson(), ","); // Field id_nonjual
@@ -1241,6 +1244,14 @@ class kartustok_list extends kartustok
 		$this->tanggal->AdvancedSearch->SearchOperator2 = @$filter["w_tanggal"];
 		$this->tanggal->AdvancedSearch->save();
 
+		// Field id_terimagudang
+		$this->id_terimagudang->AdvancedSearch->SearchValue = @$filter["x_id_terimagudang"];
+		$this->id_terimagudang->AdvancedSearch->SearchOperator = @$filter["z_id_terimagudang"];
+		$this->id_terimagudang->AdvancedSearch->SearchCondition = @$filter["v_id_terimagudang"];
+		$this->id_terimagudang->AdvancedSearch->SearchValue2 = @$filter["y_id_terimagudang"];
+		$this->id_terimagudang->AdvancedSearch->SearchOperator2 = @$filter["w_id_terimagudang"];
+		$this->id_terimagudang->AdvancedSearch->save();
+
 		// Field id_penjualan
 		$this->id_penjualan->AdvancedSearch->SearchValue = @$filter["x_id_penjualan"];
 		$this->id_penjualan->AdvancedSearch->SearchOperator = @$filter["z_id_penjualan"];
@@ -1286,6 +1297,7 @@ class kartustok_list extends kartustok
 		$this->buildSearchSql($where, $this->id_barang, $default, FALSE); // id_barang
 		$this->buildSearchSql($where, $this->id_klinik, $default, FALSE); // id_klinik
 		$this->buildSearchSql($where, $this->tanggal, $default, FALSE); // tanggal
+		$this->buildSearchSql($where, $this->id_terimagudang, $default, FALSE); // id_terimagudang
 		$this->buildSearchSql($where, $this->id_penjualan, $default, FALSE); // id_penjualan
 		$this->buildSearchSql($where, $this->id_kirimbarang, $default, FALSE); // id_kirimbarang
 		$this->buildSearchSql($where, $this->id_nonjual, $default, FALSE); // id_nonjual
@@ -1299,6 +1311,7 @@ class kartustok_list extends kartustok
 			$this->id_barang->AdvancedSearch->save(); // id_barang
 			$this->id_klinik->AdvancedSearch->save(); // id_klinik
 			$this->tanggal->AdvancedSearch->save(); // tanggal
+			$this->id_terimagudang->AdvancedSearch->save(); // id_terimagudang
 			$this->id_penjualan->AdvancedSearch->save(); // id_penjualan
 			$this->id_kirimbarang->AdvancedSearch->save(); // id_kirimbarang
 			$this->id_nonjual->AdvancedSearch->save(); // id_nonjual
@@ -1484,6 +1497,8 @@ class kartustok_list extends kartustok
 			return TRUE;
 		if ($this->tanggal->AdvancedSearch->issetSession())
 			return TRUE;
+		if ($this->id_terimagudang->AdvancedSearch->issetSession())
+			return TRUE;
 		if ($this->id_penjualan->AdvancedSearch->issetSession())
 			return TRUE;
 		if ($this->id_kirimbarang->AdvancedSearch->issetSession())
@@ -1528,6 +1543,7 @@ class kartustok_list extends kartustok
 		$this->id_barang->AdvancedSearch->unsetSession();
 		$this->id_klinik->AdvancedSearch->unsetSession();
 		$this->tanggal->AdvancedSearch->unsetSession();
+		$this->id_terimagudang->AdvancedSearch->unsetSession();
 		$this->id_penjualan->AdvancedSearch->unsetSession();
 		$this->id_kirimbarang->AdvancedSearch->unsetSession();
 		$this->id_nonjual->AdvancedSearch->unsetSession();
@@ -1546,6 +1562,7 @@ class kartustok_list extends kartustok
 		$this->id_barang->AdvancedSearch->load();
 		$this->id_klinik->AdvancedSearch->load();
 		$this->tanggal->AdvancedSearch->load();
+		$this->id_terimagudang->AdvancedSearch->load();
 		$this->id_penjualan->AdvancedSearch->load();
 		$this->id_kirimbarang->AdvancedSearch->load();
 		$this->id_nonjual->AdvancedSearch->load();
@@ -1564,6 +1581,7 @@ class kartustok_list extends kartustok
 			$this->updateSort($this->id_klinik); // id_klinik
 			$this->updateSort($this->tanggal); // tanggal
 			$this->updateSort($this->id_terimabarang); // id_terimabarang
+			$this->updateSort($this->id_terimagudang); // id_terimagudang
 			$this->updateSort($this->id_penjualan); // id_penjualan
 			$this->updateSort($this->id_kirimbarang); // id_kirimbarang
 			$this->updateSort($this->id_retur); // id_retur
@@ -1624,6 +1642,7 @@ class kartustok_list extends kartustok
 				$this->id_klinik->setSort("");
 				$this->tanggal->setSort("");
 				$this->id_terimabarang->setSort("");
+				$this->id_terimagudang->setSort("");
 				$this->id_penjualan->setSort("");
 				$this->id_kirimbarang->setSort("");
 				$this->id_retur->setSort("");
@@ -2011,6 +2030,13 @@ class kartustok_list extends kartustok
 				$this->Command = "search";
 		}
 
+		// id_terimagudang
+		if (!$this->isAddOrEdit() && $this->id_terimagudang->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->id_terimagudang->AdvancedSearch->SearchValue != "" || $this->id_terimagudang->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
 		// id_penjualan
 		if (!$this->isAddOrEdit() && $this->id_penjualan->AdvancedSearch->get()) {
 			$got = TRUE;
@@ -2108,6 +2134,7 @@ class kartustok_list extends kartustok
 		$this->id_klinik->setDbValue($row['id_klinik']);
 		$this->tanggal->setDbValue($row['tanggal']);
 		$this->id_terimabarang->setDbValue($row['id_terimabarang']);
+		$this->id_terimagudang->setDbValue($row['id_terimagudang']);
 		$this->id_penjualan->setDbValue($row['id_penjualan']);
 		$this->id_kirimbarang->setDbValue($row['id_kirimbarang']);
 		$this->id_nonjual->setDbValue($row['id_nonjual']);
@@ -2133,6 +2160,7 @@ class kartustok_list extends kartustok
 		$row['id_klinik'] = NULL;
 		$row['tanggal'] = NULL;
 		$row['id_terimabarang'] = NULL;
+		$row['id_terimagudang'] = NULL;
 		$row['id_penjualan'] = NULL;
 		$row['id_kirimbarang'] = NULL;
 		$row['id_nonjual'] = NULL;
@@ -2231,6 +2259,7 @@ class kartustok_list extends kartustok
 		// id_klinik
 		// tanggal
 		// id_terimabarang
+		// id_terimagudang
 		// id_penjualan
 		// id_kirimbarang
 		// id_nonjual
@@ -2323,6 +2352,29 @@ class kartustok_list extends kartustok
 				$this->id_terimabarang->ViewValue = NULL;
 			}
 			$this->id_terimabarang->ViewCustomAttributes = "";
+
+			// id_terimagudang
+			$this->id_terimagudang->ViewValue = $this->id_terimagudang->CurrentValue;
+			$curVal = strval($this->id_terimagudang->CurrentValue);
+			if ($curVal != "") {
+				$this->id_terimagudang->ViewValue = $this->id_terimagudang->lookupCacheOption($curVal);
+				if ($this->id_terimagudang->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id_terimagudang`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->id_terimagudang->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->id_terimagudang->ViewValue = $this->id_terimagudang->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->id_terimagudang->ViewValue = $this->id_terimagudang->CurrentValue;
+					}
+				}
+			} else {
+				$this->id_terimagudang->ViewValue = NULL;
+			}
+			$this->id_terimagudang->ViewCustomAttributes = "";
 
 			// id_penjualan
 			$this->id_penjualan->ViewValue = $this->id_penjualan->CurrentValue;
@@ -2484,6 +2536,11 @@ class kartustok_list extends kartustok
 			$this->id_terimabarang->HrefValue = "";
 			$this->id_terimabarang->TooltipValue = "";
 
+			// id_terimagudang
+			$this->id_terimagudang->LinkCustomAttributes = "";
+			$this->id_terimagudang->HrefValue = "";
+			$this->id_terimagudang->TooltipValue = "";
+
 			// id_penjualan
 			$this->id_penjualan->LinkCustomAttributes = "";
 			$this->id_penjualan->HrefValue = "";
@@ -2585,6 +2642,7 @@ class kartustok_list extends kartustok
 		$this->id_barang->AdvancedSearch->load();
 		$this->id_klinik->AdvancedSearch->load();
 		$this->tanggal->AdvancedSearch->load();
+		$this->id_terimagudang->AdvancedSearch->load();
 		$this->id_penjualan->AdvancedSearch->load();
 		$this->id_kirimbarang->AdvancedSearch->load();
 		$this->id_nonjual->AdvancedSearch->load();
@@ -2953,6 +3011,8 @@ class kartustok_list extends kartustok
 					break;
 				case "x_id_terimabarang":
 					break;
+				case "x_id_terimagudang":
+					break;
 				case "x_id_penjualan":
 					break;
 				case "x_id_kirimbarang":
@@ -2986,6 +3046,8 @@ class kartustok_list extends kartustok
 						case "x_id_klinik":
 							break;
 						case "x_id_terimabarang":
+							break;
+						case "x_id_terimagudang":
 							break;
 						case "x_id_penjualan":
 							break;

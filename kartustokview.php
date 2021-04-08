@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 // Autoload
 include_once "autoload.php";
@@ -97,6 +97,16 @@ $kartustok_view->showMessage();
 		<td data-name="id_terimabarang" <?php echo $kartustok_view->id_terimabarang->cellAttributes() ?>>
 <span id="el_kartustok_id_terimabarang">
 <span<?php echo $kartustok_view->id_terimabarang->viewAttributes() ?>><?php echo $kartustok_view->id_terimabarang->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
+<?php if ($kartustok_view->id_terimagudang->Visible) { // id_terimagudang ?>
+	<tr id="r_id_terimagudang">
+		<td class="<?php echo $kartustok_view->TableLeftColumnClass ?>"><span id="elh_kartustok_id_terimagudang"><?php echo $kartustok_view->id_terimagudang->caption() ?></span></td>
+		<td data-name="id_terimagudang" <?php echo $kartustok_view->id_terimagudang->cellAttributes() ?>>
+<span id="el_kartustok_id_terimagudang">
+<span<?php echo $kartustok_view->id_terimagudang->viewAttributes() ?>><?php echo $kartustok_view->id_terimagudang->getViewValue() ?></span>
 </span>
 </td>
 	</tr>

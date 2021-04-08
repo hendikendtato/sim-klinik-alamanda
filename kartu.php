@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 // Autoload
 include_once "autoload.php";
@@ -73,7 +73,7 @@ Page_Rendering();
 
 		if ($_POST['InputOrderBy'] != null) {
 			$orderBy = $_POST['InputOrderBy'];
-			$and .= "ORDER BY m_barang.$orderBy";
+			$and .= ", m_barang.$orderBy";
 		}
 
 		if ($_POST['InputAscDesc'] != null) {
@@ -86,7 +86,7 @@ Page_Rendering();
 			//var_dump($multi_klinik); die();
 
 			if ($Input == "All") {
-				$query = "(SELECT 'kartustok' AS TYPE, kartustok.id_barang, m_barang.nama_barang, kartustok.id_kartustok, m_klinik.nama_klinik, kartustok.tanggal, terimabarang.no_terima, penjualan.kode_penjualan, kirimbarang.no_kirimbarang, returbarang.kode, penyesuaianstok.kode_penyesuaian, kartustok.stok_awal, kartustok.masuk, kartustok.masuk_penyesuaian, kartustok.keluar, kartustok.keluar_nonjual, kartustok.keluar_penyesuaian, kartustok.keluar_kirim, kartustok.retur, kartustok.stok_akhir  FROM kartustok
+				$query = "(SELECT 'kartustok' AS TYPE, kartustok.id_barang, m_barang.nama_barang, kartustok.id_kartustok, m_klinik.nama_klinik, kartustok.tanggal, terimabarang.no_terima, terimagudang.kode_terimagudang, penjualan.kode_penjualan, kirimbarang.no_kirimbarang, returbarang.kode, penyesuaianstok.kode_penyesuaian, kartustok.stok_awal, kartustok.masuk, kartustok.masuk_penyesuaian, kartustok.keluar, kartustok.keluar_nonjual, kartustok.keluar_penyesuaian, kartustok.keluar_kirim, kartustok.retur, kartustok.stok_akhir  FROM kartustok
 				JOIN m_barang ON m_barang.id = kartustok.id_barang
 				JOIN m_klinik ON m_klinik.id_klinik = kartustok.id_klinik
 				LEFT JOIN terimabarang ON kartustok.id_terimabarang = terimabarang.id
@@ -94,16 +94,17 @@ Page_Rendering();
 				LEFT JOIN kirimbarang ON kartustok.id_kirimbarang = kirimbarang.id
 				LEFT JOIN returbarang ON kartustok.id_retur = returbarang.id_retur
 				LEFT JOIN penyesuaianstok ON kartustok.id_penyesuaian = penyesuaianstok.id_penyesuaianstok
-				WHERE (kartustok.tanggal BETWEEN '$dateFrom' AND '$dateTo') AND ($multi_klinik) $and)
+				LEFT JOIN terimagudang ON kartustok.id_terimagudang = terimagudang.id_terimagudang
+				WHERE (kartustok.tanggal BETWEEN '$dateFrom' AND '$dateTo') AND ($multi_klinik) ORDER BY $and)
 				UNION ALL
-				(SELECT 'm_hargajual', id_barang, m_barang.nama_barang, NULL, m_klinik.nama_klinik, NULL, NULL, NULL, NULL, NULL, NULL,  m_hargajual.stok, NULL, NULL, NULL, NULL, NULL, NULL, NULL, m_hargajual.stok FROM m_hargajual
+				(SELECT 'm_hargajual', id_barang, m_barang.nama_barang, NULL, m_klinik.nama_klinik, NULL, NULL, NULL, NULL, NULL, NULL, NULL,  m_hargajual.stok, NULL, NULL, NULL, NULL, NULL, NULL, NULL, m_hargajual.stok FROM m_hargajual
 				LEFT JOIN m_barang ON m_hargajual.id_barang = m_barang.id
 				LEFT JOIN m_klinik ON m_hargajual.id_klinik = m_klinik.id_klinik
-				WHERE m_hargajual.id_barang NOT IN(SELECT id_barang FROM kartustok JOIN m_klinik ON m_klinik.id_klinik = kartustok.id_klinik WHERE (tanggal BETWEEN '$dateFrom' AND '$dateTo') AND ($multi_klinik)) AND ($multi_klinik) $and)";
-					$result = ExecuteRows($query);
+				WHERE m_hargajual.id_barang NOT IN(SELECT id_barang FROM kartustok JOIN m_klinik ON m_klinik.id_klinik = kartustok.id_klinik WHERE (tanggal BETWEEN '$dateFrom' AND '$dateTo') AND ($multi_klinik)) AND ($multi_klinik) ORDER BY $and)";
+				$result = ExecuteRows($query);
 				//print_r($query);
 			} else {
-				$query = "SELECT kartustok.*, m_barang.*, m_klinik.nama_klinik, penjualan.kode_penjualan, returbarang.kode, terimabarang.no_terima, kirimbarang.no_kirimbarang, penyesuaianstok.kode_penyesuaian 
+				$query = "SELECT kartustok.*, m_barang.*, m_klinik.nama_klinik, penjualan.kode_penjualan, returbarang.kode, terimabarang.no_terima, terimagudang.kode_terimagudang, kirimbarang.no_kirimbarang, penyesuaianstok.kode_penyesuaian 
 						FROM kartustok 
 						LEFT JOIN m_barang ON kartustok.id_barang = m_barang.id 
 						LEFT JOIN m_klinik ON kartustok.id_klinik = m_klinik.id_klinik 
@@ -112,7 +113,8 @@ Page_Rendering();
 						LEFT JOIN terimabarang ON kartustok.id_terimabarang = terimabarang.id
 						LEFT JOIN kirimbarang ON kartustok.id_kirimbarang = kirimbarang.id
 						LEFT JOIN penyesuaianstok ON kartustok.id_penyesuaian = penyesuaianstok.id_penyesuaianstok
-						WHERE (kartustok.tanggal BETWEEN '$dateFrom' AND '$dateTo') AND m_barang.nama_barang = '$Input' AND ($multi_klinik) $and";
+						LEFT JOIN terimagudang ON kartustok.id_terimagudang = terimagudang.id_terimagudang
+						WHERE (kartustok.tanggal BETWEEN '$dateFrom' AND '$dateTo') AND m_barang.nama_barang = '$Input' AND ($multi_klinik) ORDER BY kartustok.tanggal ASC, kartustok.id_kartustok ASC $and";
 				$result = ExecuteRows($query);
 				//print_r($query);
 			}
@@ -219,7 +221,7 @@ Page_Rendering();
 					<table class="table table-bordered table-hover table-striped" id="printTable">
 						<thead>
 							<tr>
-								<td colspan="18" style="text-align: center;">
+								<td colspan="19" style="text-align: center;">
 									<div class="col">
 										<h5>Laporan Kartu Stok</h5>
 										<h5>Cabang 
@@ -253,6 +255,7 @@ Page_Rendering();
 								<th>Klinik</th>
 								<th>Tanggal</th>
 								<th>Kode Terima</th>
+								<th>Kode Terima Gudang</th>
 								<th>Kode Penjualan</th>
 								<th>Kode Kirim</th>
 								<th>Kode Retur</th>
@@ -272,7 +275,7 @@ Page_Rendering();
 							<?php
 								$no=1;
 								if (is_null($result) OR $result == false) {
-									echo '<tr><td  colspan="18" align="center">Kosong</td></tr>';							
+									echo '<tr><td  colspan="19" align="center">Kosong</td></tr>';							
 								}else{
 									foreach ($result as $rs) {
 											$stok_akhir = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = ".$rs['id_barang']." ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1 ");																				
@@ -285,6 +288,11 @@ Page_Rendering();
 																		echo "-----:-----";
 																		}else{
 																		echo $rs["no_terima"];
+																		}echo "</td>
+												<td align='center'>"; 	if(is_null($rs["kode_terimagudang"])){
+																		echo "-----:-----";
+																		}else{
+																		echo $rs["kode_terimagudang"];
 																		}echo "</td>
 												<td align='center'>" ; 	if(is_null($rs["kode_penjualan"])){
 																		echo "-----:-----";

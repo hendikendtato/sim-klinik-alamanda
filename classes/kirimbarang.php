@@ -1,4 +1,4 @@
-<?php namespace PHPMaker2020\klinik_latest_26_03_21; ?>
+<?php namespace PHPMaker2020\klinik_latest_08_04_21; ?>
 <?php
 
 /**
@@ -32,6 +32,7 @@ class kirimbarang extends DbTable
 	public $id_klinik;
 	public $id_pegawai;
 	public $tanggal;
+	public $status_kirim;
 	public $keterangan;
 
 	// Constructor
@@ -124,6 +125,13 @@ class kirimbarang extends DbTable
 		$this->tanggal->Sortable = TRUE; // Allow sort
 		$this->tanggal->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_FORMAT"], $Language->phrase("IncorrectDate"));
 		$this->fields['tanggal'] = &$this->tanggal;
+
+		// status_kirim
+		$this->status_kirim = new DbField('kirimbarang', 'kirimbarang', 'x_status_kirim', 'status_kirim', '`status_kirim`', '`status_kirim`', 202, 7, -1, FALSE, '`status_kirim`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'RADIO');
+		$this->status_kirim->Sortable = TRUE; // Allow sort
+		$this->status_kirim->Lookup = new Lookup('status_kirim', 'kirimbarang', FALSE, '', ["","","",""], [], [], [], [], [], [], '', '');
+		$this->status_kirim->OptionCount = 2;
+		$this->fields['status_kirim'] = &$this->status_kirim;
 
 		// keterangan
 		$this->keterangan = new DbField('kirimbarang', 'kirimbarang', 'x_keterangan', 'keterangan', '`keterangan`', '`keterangan`', 200, 255, -1, FALSE, '`keterangan`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXTAREA');
@@ -516,6 +524,7 @@ class kirimbarang extends DbTable
 		$this->id_klinik->DbValue = $row['id_klinik'];
 		$this->id_pegawai->DbValue = $row['id_pegawai'];
 		$this->tanggal->DbValue = $row['tanggal'];
+		$this->status_kirim->DbValue = $row['status_kirim'];
 		$this->keterangan->DbValue = $row['keterangan'];
 	}
 
@@ -760,6 +769,7 @@ class kirimbarang extends DbTable
 		$this->id_klinik->setDbValue($rs->fields('id_klinik'));
 		$this->id_pegawai->setDbValue($rs->fields('id_pegawai'));
 		$this->tanggal->setDbValue($rs->fields('tanggal'));
+		$this->status_kirim->setDbValue($rs->fields('status_kirim'));
 		$this->keterangan->setDbValue($rs->fields('keterangan'));
 	}
 
@@ -779,6 +789,7 @@ class kirimbarang extends DbTable
 		// id_klinik
 		// id_pegawai
 		// tanggal
+		// status_kirim
 		// keterangan
 		// id
 
@@ -796,7 +807,7 @@ class kirimbarang extends DbTable
 			if ($this->id_po->ViewValue === NULL) { // Lookup from database
 				$filterWrk = "`id_po`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
 				$lookupFilter = function() {
-					return (CurrentPageID() == "edit" || CurrentPageID() == "add") ? "status_po = 'open'" : "";
+					return (CurrentPageID() == "add") ? "status_po = 'open'" : "";
 				};
 				$lookupFilter = $lookupFilter->bindTo($this);
 				$sqlWrk = $this->id_po->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
@@ -886,6 +897,14 @@ class kirimbarang extends DbTable
 		$this->tanggal->ViewValue = FormatDateTime($this->tanggal->ViewValue, 0);
 		$this->tanggal->ViewCustomAttributes = "";
 
+		// status_kirim
+		if (strval($this->status_kirim->CurrentValue) != "") {
+			$this->status_kirim->ViewValue = $this->status_kirim->optionCaption($this->status_kirim->CurrentValue);
+		} else {
+			$this->status_kirim->ViewValue = NULL;
+		}
+		$this->status_kirim->ViewCustomAttributes = "";
+
 		// keterangan
 		$this->keterangan->ViewValue = $this->keterangan->CurrentValue;
 		$this->keterangan->ViewCustomAttributes = "";
@@ -924,6 +943,11 @@ class kirimbarang extends DbTable
 		$this->tanggal->LinkCustomAttributes = "";
 		$this->tanggal->HrefValue = "";
 		$this->tanggal->TooltipValue = "";
+
+		// status_kirim
+		$this->status_kirim->LinkCustomAttributes = "";
+		$this->status_kirim->HrefValue = "";
+		$this->status_kirim->TooltipValue = "";
 
 		// keterangan
 		$this->keterangan->LinkCustomAttributes = "";
@@ -981,6 +1005,10 @@ class kirimbarang extends DbTable
 		$this->tanggal->EditValue = FormatDateTime($this->tanggal->CurrentValue, 8);
 		$this->tanggal->PlaceHolder = RemoveHtml($this->tanggal->caption());
 
+		// status_kirim
+		$this->status_kirim->EditCustomAttributes = "";
+		$this->status_kirim->EditValue = $this->status_kirim->options(FALSE);
+
 		// keterangan
 		$this->keterangan->EditAttrs["class"] = "form-control";
 		$this->keterangan->EditCustomAttributes = "";
@@ -1022,6 +1050,7 @@ class kirimbarang extends DbTable
 					$doc->exportCaption($this->id_klinik);
 					$doc->exportCaption($this->id_pegawai);
 					$doc->exportCaption($this->tanggal);
+					$doc->exportCaption($this->status_kirim);
 					$doc->exportCaption($this->keterangan);
 				} else {
 					$doc->exportCaption($this->id);
@@ -1031,6 +1060,7 @@ class kirimbarang extends DbTable
 					$doc->exportCaption($this->id_klinik);
 					$doc->exportCaption($this->id_pegawai);
 					$doc->exportCaption($this->tanggal);
+					$doc->exportCaption($this->status_kirim);
 					$doc->exportCaption($this->keterangan);
 				}
 				$doc->endExportRow();
@@ -1069,6 +1099,7 @@ class kirimbarang extends DbTable
 						$doc->exportField($this->id_klinik);
 						$doc->exportField($this->id_pegawai);
 						$doc->exportField($this->tanggal);
+						$doc->exportField($this->status_kirim);
 						$doc->exportField($this->keterangan);
 					} else {
 						$doc->exportField($this->id);
@@ -1078,6 +1109,7 @@ class kirimbarang extends DbTable
 						$doc->exportField($this->id_klinik);
 						$doc->exportField($this->id_pegawai);
 						$doc->exportField($this->tanggal);
+						$doc->exportField($this->status_kirim);
 						$doc->exportField($this->keterangan);
 					}
 					$doc->endExportRow($rowCnt);

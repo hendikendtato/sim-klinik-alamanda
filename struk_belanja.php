@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 // Autoload
 include_once "autoload.php";
@@ -33,17 +33,17 @@ Page_Rendering();
 <?php
 	$id_penjualan = Get("id");
 
-	$penjualan = "SELECT * FROM penjualan WHERE penjualan.id=$id_penjualan";
-	$nama = "SELECT nama_pelanggan FROM m_pelanggan INNER JOIN penjualan ON m_pelanggan.id_pelanggan = penjualan.id_pelanggan WHERE id=$id_penjualan";
+	$penjualan = "SELECT * FROM penjualan WHERE penjualan.id='$id_penjualan'";
+	$nama = "SELECT nama_pelanggan FROM m_pelanggan INNER JOIN penjualan ON m_pelanggan.id_pelanggan = penjualan.id_pelanggan WHERE id='$id_penjualan'";
 
 	$result = ExecuteRow($penjualan);
 	$name = ExecuteRow($nama);
-	$klinik = ExecuteRow("SELECT * FROM m_klinik WHERE id_klinik=".$result['id_klinik']);
-	$sum_subtotal = ExecuteScalar("SELECT SUM(subtotal) FROM detailpenjualan WHERE id_penjualan = $id_penjualan");
-	$voucher = ExecuteScalar("SELECT id_kartu FROM penjualan WHERE id = $id_penjualan");
-	$metode_pembayaran = ExecuteScalar("SELECT metode_pembayaran FROM penjualan WHERE id = $id_penjualan");
-	$bank = ExecuteScalar("SELECT id_bank FROM penjualan WHERE id = $id_penjualan");
-	$id_kartubank = ExecuteScalar("SELECT id_kartubank FROM penjualan WHERE id = $id_penjualan");
+	$klinik = ExecuteRow("SELECT * FROM m_klinik WHERE id_klinik='".$result['id_klinik']."'");
+	$sum_subtotal = ExecuteScalar("SELECT SUM(subtotal) FROM detailpenjualan WHERE id_penjualan = '$id_penjualan'");
+	$voucher = ExecuteScalar("SELECT id_kartu FROM penjualan WHERE id = '$id_penjualan'");
+	$metode_pembayaran = ExecuteScalar("SELECT metode_pembayaran FROM penjualan WHERE id = '$id_penjualan'");
+	$bank = ExecuteScalar("SELECT id_bank FROM penjualan WHERE id = '$id_penjualan'");
+	$id_kartubank = ExecuteScalar("SELECT id_kartubank FROM penjualan WHERE id = '$id_penjualan'");
 	
 	function rupiah($angka){
 		 $hasil_rupiah = "Rp" . number_format($angka);
@@ -52,22 +52,22 @@ Page_Rendering();
 
 	$sales = '';
 	if($result['sales']) { 
-		$sales = ExecuteScalar("SELECT nama_pegawai FROM m_pegawai WHERE id_pegawai = ".$result['sales']); 
+		$sales = ExecuteScalar("SELECT nama_pegawai FROM m_pegawai WHERE id_pegawai = '".$result['sales']."'"); 
 	}
 
 	$dokter = '';
 	if($result['dokter']) { 
-		$dokter = ExecuteScalar("SELECT nama_pegawai FROM m_pegawai WHERE id_pegawai = ".$result['dokter']); 
+		$dokter = ExecuteScalar("SELECT nama_pegawai FROM m_pegawai WHERE id_pegawai = '".$result['dokter']."'"); 
 	}
 
 	$be_wajah = '';
 	if($result['dok_be_wajah']) { 
-		$be_wajah = ExecuteScalar("SELECT nama_pegawai FROM m_pegawai WHERE id_pegawai = ".$result['dok_be_wajah']); 
+		$be_wajah = ExecuteScalar("SELECT nama_pegawai FROM m_pegawai WHERE id_pegawai = '".$result['dok_be_wajah']."'"); 
 	}
 
 	$be_body = '';
 	if($result['be_body']) { 
-		$be_body = ExecuteScalar("SELECT nama_pegawai FROM m_pegawai WHERE id_pegawai = ".$result['be_body']); 
+		$be_body = ExecuteScalar("SELECT nama_pegawai FROM m_pegawai WHERE id_pegawai = '".$result['be_body']."'"); 
 	}
 	
 ?>
@@ -77,7 +77,7 @@ Page_Rendering();
  <link rel="stylesheet" type="text/css" href="css/printstyle.css">
  
 <div class="form-inline">
-	<a class="btn btn-primary" href="/klinik/penjualanlist.php" role="button">Penjualan</a>
+	<a class="btn btn-primary" href="/klinik_testing/penjualanlist.php" role="button">Penjualan</a>
 	<button type="button" class="btn btn-primary" onclick="printJS({
 		printable: 'print',
 		type: 'html',
@@ -117,7 +117,7 @@ Page_Rendering();
 
 	<table class="daftar-produk">
 		<?php
-			$detail = "SELECT m_barang.shortname_barang, detailpenjualan.qty, detailpenjualan.harga_jual, detailpenjualan.disc_pr, detailpenjualan.subtotal FROM m_barang INNER JOIN detailpenjualan ON m_barang.id = detailpenjualan.id_barang WHERE id_penjualan=$id_penjualan";
+			$detail = "SELECT m_barang.shortname_barang, detailpenjualan.qty, detailpenjualan.harga_jual, detailpenjualan.disc_pr, detailpenjualan.subtotal FROM m_barang INNER JOIN detailpenjualan ON m_barang.id = detailpenjualan.id_barang WHERE id_penjualan='$id_penjualan'";
 			$res = ExecuteRows($detail);
 			$no=1;
 				foreach ($res as $rs) {
@@ -151,7 +151,7 @@ Page_Rendering();
 		<?php
 			if(is_null($voucher) OR $voucher == FALSE){
 			} else {
-				$nominal_voucher = ExecuteScalar("SELECT charge_price FROM m_kartu WHERE id_kartu = $voucher");
+				$nominal_voucher = ExecuteScalar("SELECT charge_price FROM m_kartu WHERE id_kartu = '$voucher'");
 				echo "<tr>
 						<td>Voucher</td>
 						<td>".rupiah($nominal_voucher)."</td>

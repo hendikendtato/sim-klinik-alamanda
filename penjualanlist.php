@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 // Autoload
 include_once "autoload.php";
@@ -294,15 +294,6 @@ $penjualan_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
-<?php if ($penjualan_list->status_void->Visible) { // status_void ?>
-	<?php if ($penjualan_list->SortUrl($penjualan_list->status_void) == "") { ?>
-		<th data-name="status_void" class="<?php echo $penjualan_list->status_void->headerCellClass() ?>"><div id="elh_penjualan_status_void" class="penjualan_status_void"><div class="ew-table-header-caption"><?php echo $penjualan_list->status_void->caption() ?></div></div></th>
-	<?php } else { ?>
-		<th data-name="status_void" class="<?php echo $penjualan_list->status_void->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $penjualan_list->SortUrl($penjualan_list->status_void) ?>', 1);"><div id="elh_penjualan_status_void" class="penjualan_status_void">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $penjualan_list->status_void->caption() ?></span><span class="ew-table-header-sort"><?php if ($penjualan_list->status_void->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($penjualan_list->status_void->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-		</div></div></th>
-	<?php } ?>
-<?php } ?>
 <?php
 
 // Render list options (header, right)
@@ -456,13 +447,6 @@ $penjualan_list->ListOptions->render("body", "left", $penjualan_list->RowCount);
 		<td data-name="status" <?php echo $penjualan_list->status->cellAttributes() ?>>
 <span id="el<?php echo $penjualan_list->RowCount ?>_penjualan_status">
 <span<?php echo $penjualan_list->status->viewAttributes() ?>><?php echo $penjualan_list->status->getViewValue() ?></span>
-</span>
-</td>
-	<?php } ?>
-	<?php if ($penjualan_list->status_void->Visible) { // status_void ?>
-		<td data-name="status_void" <?php echo $penjualan_list->status_void->cellAttributes() ?>>
-<span id="el<?php echo $penjualan_list->RowCount ?>_penjualan_status_void">
-<span<?php echo $penjualan_list->status_void->viewAttributes() ?>><?php echo $penjualan_list->status_void->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>

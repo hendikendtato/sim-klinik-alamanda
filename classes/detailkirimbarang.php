@@ -1,4 +1,4 @@
-<?php namespace PHPMaker2020\klinik_latest_26_03_21; ?>
+<?php namespace PHPMaker2020\klinik_latest_08_04_21; ?>
 <?php
 
 /**
@@ -1134,16 +1134,20 @@ class detailkirimbarang extends DbTable
 		$qty = $rsnew['jumlah'];
 		$id_supplier = ExecuteScalar("SELECT id_supplier FROM kirimbarang WHERE id='$pid_kirimbarang'");
 		$id_klinik = ExecuteScalar("SELECT id_klinik FROM kirimbarang WHERE id='$pid_kirimbarang'");
+		$status_kirim = ExecuteScalar("SELECT status_kirim FROM kirimbarang WHERE id='$pid_kirimbarang'");
+		$tanggal = ExecuteScalar("SELECT tanggal FROM kirimbarang WHERE id='$pid_kirimbarang'");
 
 		//var_dump($id_supplier); exit();
 		$stok_lama = ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_barang='$id_barang' AND id_klinik = '$id_supplier'");
 		$stok_baru = $stok_lama - $qty;
-		if($stok_baru <= 0){
-			$update_stok = Execute("UPDATE m_hargajual SET stok='0' WHERE id_barang = $id_barang AND id_klinik = $id_supplier");
-			$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, id_kirimbarang, tanggal, stok_awal, keluar_kirim, stok_akhir) VALUES ('$id_barang', '$id_supplier', '$pid_kirimbarang', DATE(NOW()), '$stok_lama', '$qty', '0')");		
-		} else {
-			$update_stok = Execute("UPDATE m_hargajual SET stok=$stok_baru WHERE id_barang = $id_barang AND id_klinik = $id_supplier");
-			$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, id_kirimbarang, tanggal, stok_awal, keluar_kirim, stok_akhir) VALUES ('$id_barang', '$id_supplier', '$pid_kirimbarang', DATE(NOW()), '$stok_lama', '$qty', '$stok_baru')");		
+		if($status_kirim == 'dikirim'){
+			if($stok_baru <= 0){
+				$update_stok = Execute("UPDATE m_hargajual SET stok='0' WHERE id_barang = $id_barang AND id_klinik = $id_supplier");
+				$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, id_kirimbarang, tanggal, stok_awal, keluar_kirim, stok_akhir) VALUES ('$id_barang', '$id_supplier', '$pid_kirimbarang', '$tanggal', '$stok_lama', '$qty', '0')");		
+			} else {
+				$update_stok = Execute("UPDATE m_hargajual SET stok=$stok_baru WHERE id_barang = $id_barang AND id_klinik = $id_supplier");
+				$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, id_kirimbarang, tanggal, stok_awal, keluar_kirim, stok_akhir) VALUES ('$id_barang', '$id_supplier', '$pid_kirimbarang', '$tanggal', '$stok_lama', '$qty', '$stok_baru')");		
+			}	
 		}
 	}
 
@@ -1160,6 +1164,26 @@ class detailkirimbarang extends DbTable
 	function Row_Updated($rsold, &$rsnew) {
 
 		//echo "Row Updated";
+		$pid_kirimbarang = $rsnew['id_kirimbarang'];
+		$id_barang = $rsnew['id_barang'];
+		$qty = $rsnew['jumlah'];
+		$id_supplier = ExecuteScalar("SELECT id_supplier FROM kirimbarang WHERE id='$pid_kirimbarang'");
+		$id_klinik = ExecuteScalar("SELECT id_klinik FROM kirimbarang WHERE id='$pid_kirimbarang'");
+		$status_kirim = ExecuteScalar("SELECT status_kirim FROM kirimbarang WHERE id='$pid_kirimbarang'");
+		$tanggal = ExecuteScalar("SELECT tanggal FROM kirimbarang WHERE id='$pid_kirimbarang'");
+
+		//var_dump($id_supplier); exit();
+		$stok_lama = ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_barang='$id_barang' AND id_klinik = '$id_supplier'");
+		$stok_baru = $stok_lama - $qty;
+		if($status_kirim == 'dikirim'){
+			if($stok_baru <= 0){
+				$update_stok = Execute("UPDATE m_hargajual SET stok='0' WHERE id_barang = $id_barang AND id_klinik = $id_supplier");
+				$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, id_kirimbarang, tanggal, stok_awal, keluar_kirim, stok_akhir) VALUES ('$id_barang', '$id_supplier', '$pid_kirimbarang', '$tanggal', '$stok_lama', '$qty', '0')");		
+			} else {
+				$update_stok = Execute("UPDATE m_hargajual SET stok=$stok_baru WHERE id_barang = $id_barang AND id_klinik = $id_supplier");
+				$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, id_kirimbarang, tanggal, stok_awal, keluar_kirim, stok_akhir) VALUES ('$id_barang', '$id_supplier', '$pid_kirimbarang', '$tanggal', '$stok_lama', '$qty', '$stok_baru')");		
+			}	
+		}
 	}
 
 	// Row Update Conflict event

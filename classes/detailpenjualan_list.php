@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 /**
  * Page class
@@ -11,7 +11,7 @@ class detailpenjualan_list extends detailpenjualan
 	public $PageID = "list";
 
 	// Project ID
-	public $ProjectID = "{7561FF98-88C2-4B76-B5C9-C5F11860BCF7}";
+	public $ProjectID = "{4E2A1FD4-0074-4494-903F-430527A228F4}";
 
 	// Table name
 	public $TableName = 'detailpenjualan';
@@ -2385,7 +2385,9 @@ class detailpenjualan_list extends detailpenjualan
 
 		// Return error message in CustomError
 		$rs = $this->GetFieldValues("FormValue"); // Get the form values as array
+		$penjualan = $GLOBALS["penjualan"]->GetFieldValues("FormValue");
 		$tipe = ExecuteScalar("SELECT tipe FROM m_barang WHERE id='".intval($rs["id_barang"])."'");
+		$id_klinik = intval($penjualan["id_klinik"]);
 		$stok = $rs["stok"];
 		$result = str_replace('.', '', $stok);
 
@@ -2394,7 +2396,36 @@ class detailpenjualan_list extends detailpenjualan
 			if (intval($rs["qty"]) > $result) {
 
 				// Return error message in $customError
-				$customError = "Jumlah tidak boleh melebihi stok barang.";
+				$nama_barang = ExecuteScalar("SELECT nama_barang FROM m_barang WHERE id = '".intval($rs["id_barang"])."'");
+				$customError = "Jumlah $nama_barang tidak boleh melebihi stok.";
+				return FALSE;
+			}
+		} else {
+			$id_komposisi = ExecuteScalar("SELECT id_komposisi FROM komposisi WHERE id_barang='10'");
+			$detail_barang = ExecuteRows("SELECT id_barang, jumlah FROM detailkomposisi WHERE id_komposisi = '$id_komposisi'");
+			$sMsG = "";
+			$i = 0;
+			foreach($detail_barang AS $dk){
+				$id_barang = $dk['id_barang'];
+				$jumlah = $dk['jumlah'];
+				$stok_barang = ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_barang = '$id_barang' AND id_klinik = '21'");
+				$jumlah_get_stok = $rs["qty"] * $jumlah;
+
+				//var_dump($jumlah_get_stok);
+				$sisa_stok = $stok_barang - $jumlah_get_stok;
+
+				//var_dump($sisa_stok);
+				if($sisa_stok < 0){
+					$nama_barang = ExecuteScalar("SELECT nama_barang FROM m_barang WHERE id = '$id_barang'");
+					$sMsG .= $nama_barang . ", ";
+					$i++;
+
+					//var_dump($nama_barang);
+				}
+			}
+			$sMsG = rtrim($sMsG, ", ");
+			if (!empty($sMsG)) {
+				$customError = "Stok barang ".$sMsG." tidak mencukupi";
 				return FALSE;
 			}
 		}

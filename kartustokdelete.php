@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 // Autoload
 include_once "autoload.php";
@@ -81,6 +81,9 @@ $kartustok_delete->showMessage();
 <?php } ?>
 <?php if ($kartustok_delete->id_terimabarang->Visible) { // id_terimabarang ?>
 		<th class="<?php echo $kartustok_delete->id_terimabarang->headerCellClass() ?>"><span id="elh_kartustok_id_terimabarang" class="kartustok_id_terimabarang"><?php echo $kartustok_delete->id_terimabarang->caption() ?></span></th>
+<?php } ?>
+<?php if ($kartustok_delete->id_terimagudang->Visible) { // id_terimagudang ?>
+		<th class="<?php echo $kartustok_delete->id_terimagudang->headerCellClass() ?>"><span id="elh_kartustok_id_terimagudang" class="kartustok_id_terimagudang"><?php echo $kartustok_delete->id_terimagudang->caption() ?></span></th>
 <?php } ?>
 <?php if ($kartustok_delete->id_penjualan->Visible) { // id_penjualan ?>
 		<th class="<?php echo $kartustok_delete->id_penjualan->headerCellClass() ?>"><span id="elh_kartustok_id_penjualan" class="kartustok_id_penjualan"><?php echo $kartustok_delete->id_penjualan->caption() ?></span></th>
@@ -167,6 +170,13 @@ while (!$kartustok_delete->Recordset->EOF) {
 		<td <?php echo $kartustok_delete->id_terimabarang->cellAttributes() ?>>
 <span id="el<?php echo $kartustok_delete->RowCount ?>_kartustok_id_terimabarang" class="kartustok_id_terimabarang">
 <span<?php echo $kartustok_delete->id_terimabarang->viewAttributes() ?>><?php echo $kartustok_delete->id_terimabarang->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($kartustok_delete->id_terimagudang->Visible) { // id_terimagudang ?>
+		<td <?php echo $kartustok_delete->id_terimagudang->cellAttributes() ?>>
+<span id="el<?php echo $kartustok_delete->RowCount ?>_kartustok_id_terimagudang" class="kartustok_id_terimagudang">
+<span<?php echo $kartustok_delete->id_terimagudang->viewAttributes() ?>><?php echo $kartustok_delete->id_terimagudang->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

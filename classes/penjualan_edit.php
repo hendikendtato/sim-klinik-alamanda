@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 /**
  * Page class
@@ -11,7 +11,7 @@ class penjualan_edit extends penjualan
 	public $PageID = "edit";
 
 	// Project ID
-	public $ProjectID = "{7561FF98-88C2-4B76-B5C9-C5F11860BCF7}";
+	public $ProjectID = "{4E2A1FD4-0074-4494-903F-430527A228F4}";
 
 	// Table name
 	public $TableName = 'penjualan';
@@ -709,7 +709,7 @@ class penjualan_edit extends penjualan
 		$this->ongkir->setVisibility();
 		$this->_action->setVisibility();
 		$this->status->setVisibility();
-		$this->status_void->setVisibility();
+		$this->status_void->Visible = FALSE;
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -1177,15 +1177,6 @@ class penjualan_edit extends penjualan
 				$this->status->setFormValue($val);
 		}
 
-		// Check field name 'status_void' first before field var 'x_status_void'
-		$val = $CurrentForm->hasValue("status_void") ? $CurrentForm->getValue("status_void") : $CurrentForm->getValue("x_status_void");
-		if (!$this->status_void->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->status_void->Visible = FALSE; // Disable update for API request
-			else
-				$this->status_void->setFormValue($val);
-		}
-
 		// Check field name 'id' first before field var 'x_id'
 		$val = $CurrentForm->hasValue("id") ? $CurrentForm->getValue("id") : $CurrentForm->getValue("x_id");
 		if (!$this->id->IsDetailKey)
@@ -1228,7 +1219,6 @@ class penjualan_edit extends penjualan
 		$this->ongkir->CurrentValue = $this->ongkir->FormValue;
 		$this->_action->CurrentValue = $this->_action->FormValue;
 		$this->status->CurrentValue = $this->status->FormValue;
-		$this->status_void->CurrentValue = $this->status_void->FormValue;
 	}
 
 	// Load row based on key values
@@ -2022,11 +2012,6 @@ class penjualan_edit extends penjualan
 			$this->status->LinkCustomAttributes = "";
 			$this->status->HrefValue = "";
 			$this->status->TooltipValue = "";
-
-			// status_void
-			$this->status_void->LinkCustomAttributes = "";
-			$this->status_void->HrefValue = "";
-			$this->status_void->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_EDIT) { // Edit row
 
 			// kode_penjualan
@@ -2536,14 +2521,6 @@ class penjualan_edit extends penjualan
 			$this->status->EditCustomAttributes = "";
 			$this->status->EditValue = $this->status->options(FALSE);
 
-			// status_void
-			$this->status_void->EditAttrs["class"] = "form-control";
-			$this->status_void->EditCustomAttributes = "";
-			if (!$this->status_void->Raw)
-				$this->status_void->CurrentValue = HtmlDecode($this->status_void->CurrentValue);
-			$this->status_void->EditValue = HtmlEncode($this->status_void->CurrentValue);
-			$this->status_void->PlaceHolder = RemoveHtml($this->status_void->caption());
-
 			// Edit refer script
 			// kode_penjualan
 
@@ -2665,10 +2642,6 @@ class penjualan_edit extends penjualan
 			// status
 			$this->status->LinkCustomAttributes = "";
 			$this->status->HrefValue = "";
-
-			// status_void
-			$this->status_void->LinkCustomAttributes = "";
-			$this->status_void->HrefValue = "";
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -2882,11 +2855,6 @@ class penjualan_edit extends penjualan
 				AddMessage($FormError, str_replace("%s", $this->status->caption(), $this->status->RequiredErrorMessage));
 			}
 		}
-		if ($this->status_void->Required) {
-			if (!$this->status_void->IsDetailKey && $this->status_void->FormValue != NULL && $this->status_void->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->status_void->caption(), $this->status_void->RequiredErrorMessage));
-			}
-		}
 
 		// Validate detail grid
 		$detailTblVar = explode(",", $this->getCurrentDetailTable());
@@ -3025,9 +2993,6 @@ class penjualan_edit extends penjualan
 
 			// status
 			$this->status->setDbValueDef($rsnew, $this->status->CurrentValue, "", $this->status->ReadOnly);
-
-			// status_void
-			$this->status_void->setDbValueDef($rsnew, $this->status_void->CurrentValue, NULL, $this->status_void->ReadOnly);
 
 			// Call Row Updating event
 			$updateRow = $this->Row_Updating($rsold, $rsnew);
@@ -3345,7 +3310,7 @@ class penjualan_edit extends penjualan
 		$id = $this->id->CurrentValue;
 		$session = $_SESSION["id_penjualan"];
 		if ($this->IsUpdate()) {
-			$pid_penjualan = ExecuteScalar("SELECT id_penjualan FROM detailpenjualan WHERE id_penjualan = $id");
+			$pid_penjualan = ExecuteScalar("SELECT id_penjualan FROM detailpenjualan WHERE id_penjualan = '$id'");
 
 			//var_dump($session); exit();	
 			if($pid_penjualan != NULL OR $pid_penjualan != FALSE){

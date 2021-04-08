@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 /**
  * Page class
@@ -11,7 +11,7 @@ class kartustok_preview extends kartustok
 	public $PageID = "preview";
 
 	// Project ID
-	public $ProjectID = "{7561FF98-88C2-4B76-B5C9-C5F11860BCF7}";
+	public $ProjectID = "{4E2A1FD4-0074-4494-903F-430527A228F4}";
 
 	// Table name
 	public $TableName = 'kartustok';
@@ -594,6 +594,7 @@ class kartustok_preview extends kartustok
 		$this->id_klinik->setVisibility();
 		$this->tanggal->setVisibility();
 		$this->id_terimabarang->setVisibility();
+		$this->id_terimagudang->setVisibility();
 		$this->id_penjualan->setVisibility();
 		$this->id_kirimbarang->setVisibility();
 		$this->id_nonjual->Visible = FALSE;
@@ -635,6 +636,7 @@ class kartustok_preview extends kartustok
 		$this->setupLookupOptions($this->id_barang);
 		$this->setupLookupOptions($this->id_klinik);
 		$this->setupLookupOptions($this->id_terimabarang);
+		$this->setupLookupOptions($this->id_terimagudang);
 		$this->setupLookupOptions($this->id_penjualan);
 		$this->setupLookupOptions($this->id_kirimbarang);
 		$this->setupLookupOptions($this->id_retur);
@@ -921,6 +923,8 @@ class kartustok_preview extends kartustok
 					break;
 				case "x_id_terimabarang":
 					break;
+				case "x_id_terimagudang":
+					break;
 				case "x_id_penjualan":
 					break;
 				case "x_id_kirimbarang":
@@ -954,6 +958,8 @@ class kartustok_preview extends kartustok
 						case "x_id_klinik":
 							break;
 						case "x_id_terimabarang":
+							break;
+						case "x_id_terimagudang":
 							break;
 						case "x_id_penjualan":
 							break;

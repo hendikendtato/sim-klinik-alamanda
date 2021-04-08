@@ -1,4 +1,4 @@
-<?php namespace PHPMaker2020\klinik_latest_26_03_21; ?>
+<?php namespace PHPMaker2020\klinik_latest_08_04_21; ?>
 <?php
 
 /**
@@ -47,6 +47,7 @@ class report_rekap extends ReportTable
 	public $keluar_penyesuaian;
 	public $id_kirimbarang;
 	public $keluar_kirim;
+	public $id_terimagudang;
 
 	// Constructor
 	public function __construct()
@@ -230,6 +231,13 @@ class report_rekap extends ReportTable
 		$this->keluar_kirim->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
 		$this->keluar_kirim->SourceTableVar = 'kartustok';
 		$this->fields['keluar_kirim'] = &$this->keluar_kirim;
+
+		// id_terimagudang
+		$this->id_terimagudang = new ReportField('report_rekap', 'report_rekap', 'x_id_terimagudang', 'id_terimagudang', '`id_terimagudang`', '`id_terimagudang`', 3, 11, -1, FALSE, '`id_terimagudang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->id_terimagudang->Sortable = TRUE; // Allow sort
+		$this->id_terimagudang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->id_terimagudang->SourceTableVar = 'kartustok';
+		$this->fields['id_terimagudang'] = &$this->id_terimagudang;
 
 		// Chart Tes
 		$this->Chart_Tes = new DbChart($this, 'Chart_Tes', 'Chart Tes', 'id_barang', 'keluar', 1002, '', 0, 'SUM', 600, 500);

@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 // Autoload
 include_once "autoload.php";
@@ -63,7 +63,7 @@ Page_Rendering();
 	  JOIN m_klinik ON penjualan.id_klinik = m_klinik.id_klinik 
 	  JOIN m_pelanggan ON penjualan.id_pelanggan = m_pelanggan.id_pelanggan 
 	  JOIN detailpenjualan ON penjualan.id = detailpenjualan.id_penjualan
-	  WHERE (penjualan.waktu BETWEEN '$dateFrom' AND '$dateTo') AND m_klinik.id_klinik = '$cabang' AND penjualan.status = 'Printed' GROUP BY detailpenjualan.id_penjualan ORDER BY penjualan.waktu ASC";
+	  WHERE (penjualan.waktu BETWEEN '$dateFrom' AND '$dateTo') AND m_klinik.id_klinik = '$cabang' AND penjualan.status = 'Printed' GROUP BY detailpenjualan.id_penjualan ORDER BY penjualan.waktu ASC, penjualan.id ASC";
 	  $result = ExecuteRows($query);
 }
 

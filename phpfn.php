@@ -4,7 +4,7 @@
  * PHPMaker Common classes and functions
  * (C) 2002-2020 e.World Technology Limited. All rights reserved.
 */
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 // Config data
 $CONFIG_DATA = new \Dflydev\DotAccessData\Data($CONFIG);

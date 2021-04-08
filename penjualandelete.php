@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 // Autoload
 include_once "autoload.php";
@@ -107,9 +107,6 @@ $penjualan_delete->showMessage();
 <?php } ?>
 <?php if ($penjualan_delete->status->Visible) { // status ?>
 		<th class="<?php echo $penjualan_delete->status->headerCellClass() ?>"><span id="elh_penjualan_status" class="penjualan_status"><?php echo $penjualan_delete->status->caption() ?></span></th>
-<?php } ?>
-<?php if ($penjualan_delete->status_void->Visible) { // status_void ?>
-		<th class="<?php echo $penjualan_delete->status_void->headerCellClass() ?>"><span id="elh_penjualan_status_void" class="penjualan_status_void"><?php echo $penjualan_delete->status_void->caption() ?></span></th>
 <?php } ?>
 	</tr>
 	</thead>
@@ -220,13 +217,6 @@ while (!$penjualan_delete->Recordset->EOF) {
 		<td <?php echo $penjualan_delete->status->cellAttributes() ?>>
 <span id="el<?php echo $penjualan_delete->RowCount ?>_penjualan_status" class="penjualan_status">
 <span<?php echo $penjualan_delete->status->viewAttributes() ?>><?php echo $penjualan_delete->status->getViewValue() ?></span>
-</span>
-</td>
-<?php } ?>
-<?php if ($penjualan_delete->status_void->Visible) { // status_void ?>
-		<td <?php echo $penjualan_delete->status_void->cellAttributes() ?>>
-<span id="el<?php echo $penjualan_delete->RowCount ?>_penjualan_status_void" class="penjualan_status_void">
-<span<?php echo $penjualan_delete->status_void->viewAttributes() ?>><?php echo $penjualan_delete->status_void->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

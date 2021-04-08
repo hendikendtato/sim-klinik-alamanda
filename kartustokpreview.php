@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 // Autoload
 include_once "autoload.php";
@@ -80,6 +80,15 @@ $kartustok_preview->ListOptions->render("header", "left");
 	<?php } else { ?>
 		<th class="<?php echo $kartustok_preview->id_terimabarang->headerCellClass() ?>"><div class="ew-pointer" data-sort="<?php echo HtmlEncode($kartustok_preview->id_terimabarang->Name) ?>" data-sort-order="<?php echo $kartustok_preview->SortField == $kartustok_preview->id_terimabarang->Name && $kartustok_preview->SortOrder == "ASC" ? "DESC" : "ASC" ?>">
 			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $kartustok_preview->id_terimabarang->caption() ?></span><span class="ew-table-header-sort"><?php if ($kartustok_preview->SortField == $kartustok_preview->id_terimabarang->Name) { ?><?php if ($kartustok_preview->SortOrder == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($kartustok_preview->SortOrder == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?><?php } ?></span>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
+<?php if ($kartustok_preview->id_terimagudang->Visible) { // id_terimagudang ?>
+	<?php if ($kartustok->SortUrl($kartustok_preview->id_terimagudang) == "") { ?>
+		<th class="<?php echo $kartustok_preview->id_terimagudang->headerCellClass() ?>"><?php echo $kartustok_preview->id_terimagudang->caption() ?></th>
+	<?php } else { ?>
+		<th class="<?php echo $kartustok_preview->id_terimagudang->headerCellClass() ?>"><div class="ew-pointer" data-sort="<?php echo HtmlEncode($kartustok_preview->id_terimagudang->Name) ?>" data-sort-order="<?php echo $kartustok_preview->SortField == $kartustok_preview->id_terimagudang->Name && $kartustok_preview->SortOrder == "ASC" ? "DESC" : "ASC" ?>">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $kartustok_preview->id_terimagudang->caption() ?></span><span class="ew-table-header-sort"><?php if ($kartustok_preview->SortField == $kartustok_preview->id_terimagudang->Name) { ?><?php if ($kartustok_preview->SortOrder == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($kartustok_preview->SortOrder == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?><?php } ?></span>
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -255,6 +264,12 @@ $kartustok_preview->ListOptions->render("body", "left", $kartustok_preview->RowC
 		<!-- id_terimabarang -->
 		<td<?php echo $kartustok_preview->id_terimabarang->cellAttributes() ?>>
 <span<?php echo $kartustok_preview->id_terimabarang->viewAttributes() ?>><?php echo $kartustok_preview->id_terimabarang->getViewValue() ?></span>
+</td>
+<?php } ?>
+<?php if ($kartustok_preview->id_terimagudang->Visible) { // id_terimagudang ?>
+		<!-- id_terimagudang -->
+		<td<?php echo $kartustok_preview->id_terimagudang->cellAttributes() ?>>
+<span<?php echo $kartustok_preview->id_terimagudang->viewAttributes() ?>><?php echo $kartustok_preview->id_terimagudang->getViewValue() ?></span>
 </td>
 <?php } ?>
 <?php if ($kartustok_preview->id_penjualan->Visible) { // id_penjualan ?>

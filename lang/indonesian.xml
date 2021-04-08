@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<ew-language date="2021/3/27" version="16.0.1" id="id" name="Indonesian" desc="Indonesian" author="e.World Technology Ltd.">
+<ew-language date="2021/4/8" version="16.0.1" id="id" name="Indonesian" desc="Indonesian" author="e.World Technology Ltd.">
   <!--
 	*** Important Notes:
 	1. Language ID should follow: https://developers.google.com/recaptcha/docs/language,
@@ -856,6 +856,9 @@
   <project>
     <phrase id="bodytitle" value="Sistem Informasi Klinik" />
     <phrase id="footertext" value="&amp;copy;2020 PT. Primavisi Global Indo." />
+    <menu id="1074">
+      <phrase id="menutext" value="Detail Terima Barang Gudang" />
+    </menu>
     <menu id="1073">
       <phrase id="menutext" value="Dasbor" />
     </menu>
@@ -1107,6 +1110,9 @@
     </menu>
     <menu id="55">
       <phrase id="menutext" value="Terima Barang" />
+    </menu>
+    <menu id="1075">
+      <phrase id="menutext" value="Terima Barang Gudang" />
     </menu>
     <menu id="48">
       <phrase id="menutext" value="Retur Barang" />
@@ -1727,6 +1733,9 @@
       <field id="id_terimabarang">
         <phrase id="fldcaption" value="Kode Terima" />
       </field>
+      <field id="id_terimagudang">
+        <phrase id="fldcaption" value="Kode Terima Gudang" />
+      </field>
       <field id="id_penjualan">
         <phrase id="fldcaption" value="Kode Penjualan" />
       </field>
@@ -1804,6 +1813,13 @@
       </field>
       <field id="tanggal">
         <phrase id="fldcaption" value="Tanggal Kirim" />
+      </field>
+      <field id="status_kirim">
+        <phrase id="fldcaption" value="Status Kirim" />
+        <phrase id="fldtagvalue1" value="dikirim" />
+        <phrase id="fldtagcaption1" value="Dikirim" />
+        <phrase id="fldtagvalue2" value="draft" />
+        <phrase id="fldtagcaption2" value="Draft" />
       </field>
       <field id="keterangan">
         <phrase id="fldcaption" value="Keterangan" />
@@ -2880,6 +2896,9 @@
       <field id="keluar_kirim">
         <phrase id="fldcaption" value="keluar kirim" />
       </field>
+      <field id="id_terimagudang">
+        <phrase id="fldcaption" value="id terimagudang" />
+      </field>
     </table>
     <table id="returbarang">
       <phrase id="tblcaption" value="Retur Barang" />
@@ -3908,6 +3927,45 @@
     </table>
     <table id="dasbor">
       <phrase id="tblcaption" value="Dasbor" />
+    </table>
+    <table id="detailterimagudang">
+      <phrase id="tblcaption" value="Detail Terima Barang Gudang" />
+      <field id="id_detailterimagudang">
+        <phrase id="fldcaption" value="id detailterimagudang" />
+      </field>
+      <field id="pid_terimagudang">
+        <phrase id="fldcaption" value="pid terimagudang" />
+      </field>
+      <field id="id_barang">
+        <phrase id="fldcaption" value="Barang" />
+      </field>
+      <field id="qty">
+        <phrase id="fldcaption" value="Jumlah" />
+      </field>
+      <field id="id_satuan">
+        <phrase id="fldcaption" value="Satuan" />
+      </field>
+    </table>
+    <table id="terimagudang">
+      <phrase id="tblcaption" value="Terima Barang Gudang" />
+      <field id="id_terimagudang">
+        <phrase id="fldcaption" value="id terimagudang" />
+      </field>
+      <field id="kode_terimagudang">
+        <phrase id="fldcaption" value="Kode Terima Barang Gudang" />
+      </field>
+      <field id="id_klinik">
+        <phrase id="fldcaption" value="Klinik" />
+      </field>
+      <field id="diterima">
+        <phrase id="fldcaption" value="Diterima Oleh" />
+      </field>
+      <field id="tanggal_terima">
+        <phrase id="fldcaption" value="Tanggal Terima" />
+      </field>
+      <field id="keterangan">
+        <phrase id="fldcaption" value="Keterangan" />
+      </field>
     </table>
   </project>
 </ew-language>

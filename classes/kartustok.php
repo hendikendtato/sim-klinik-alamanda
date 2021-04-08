@@ -1,4 +1,4 @@
-<?php namespace PHPMaker2020\klinik_latest_26_03_21; ?>
+<?php namespace PHPMaker2020\klinik_latest_08_04_21; ?>
 <?php
 
 /**
@@ -30,6 +30,7 @@ class kartustok extends DbTable
 	public $id_klinik;
 	public $tanggal;
 	public $id_terimabarang;
+	public $id_terimagudang;
 	public $id_penjualan;
 	public $id_kirimbarang;
 	public $id_nonjual;
@@ -117,6 +118,13 @@ class kartustok extends DbTable
 		$this->id_terimabarang->Lookup = new Lookup('id_terimabarang', 'terimabarang', FALSE, 'id', ["no_terima","","",""], [], [], [], [], [], [], '', '');
 		$this->id_terimabarang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id_terimabarang'] = &$this->id_terimabarang;
+
+		// id_terimagudang
+		$this->id_terimagudang = new DbField('kartustok', 'kartustok', 'x_id_terimagudang', 'id_terimagudang', '`id_terimagudang`', '`id_terimagudang`', 3, 11, -1, FALSE, '`id_terimagudang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->id_terimagudang->Sortable = TRUE; // Allow sort
+		$this->id_terimagudang->Lookup = new Lookup('id_terimagudang', 'terimagudang', FALSE, 'id_terimagudang', ["kode_terimagudang","","",""], [], [], [], [], [], [], '', '');
+		$this->id_terimagudang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->fields['id_terimagudang'] = &$this->id_terimagudang;
 
 		// id_penjualan
 		$this->id_penjualan = new DbField('kartustok', 'kartustok', 'x_id_penjualan', 'id_penjualan', '`id_penjualan`', '`id_penjualan`', 3, 11, -1, FALSE, '`id_penjualan`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
@@ -621,6 +629,7 @@ class kartustok extends DbTable
 		$this->id_klinik->DbValue = $row['id_klinik'];
 		$this->tanggal->DbValue = $row['tanggal'];
 		$this->id_terimabarang->DbValue = $row['id_terimabarang'];
+		$this->id_terimagudang->DbValue = $row['id_terimagudang'];
 		$this->id_penjualan->DbValue = $row['id_penjualan'];
 		$this->id_kirimbarang->DbValue = $row['id_kirimbarang'];
 		$this->id_nonjual->DbValue = $row['id_nonjual'];
@@ -874,6 +883,7 @@ class kartustok extends DbTable
 		$this->id_klinik->setDbValue($rs->fields('id_klinik'));
 		$this->tanggal->setDbValue($rs->fields('tanggal'));
 		$this->id_terimabarang->setDbValue($rs->fields('id_terimabarang'));
+		$this->id_terimagudang->setDbValue($rs->fields('id_terimagudang'));
 		$this->id_penjualan->setDbValue($rs->fields('id_penjualan'));
 		$this->id_kirimbarang->setDbValue($rs->fields('id_kirimbarang'));
 		$this->id_nonjual->setDbValue($rs->fields('id_nonjual'));
@@ -904,6 +914,7 @@ class kartustok extends DbTable
 		// id_klinik
 		// tanggal
 		// id_terimabarang
+		// id_terimagudang
 		// id_penjualan
 		// id_kirimbarang
 		// id_nonjual
@@ -994,6 +1005,29 @@ class kartustok extends DbTable
 			$this->id_terimabarang->ViewValue = NULL;
 		}
 		$this->id_terimabarang->ViewCustomAttributes = "";
+
+		// id_terimagudang
+		$this->id_terimagudang->ViewValue = $this->id_terimagudang->CurrentValue;
+		$curVal = strval($this->id_terimagudang->CurrentValue);
+		if ($curVal != "") {
+			$this->id_terimagudang->ViewValue = $this->id_terimagudang->lookupCacheOption($curVal);
+			if ($this->id_terimagudang->ViewValue === NULL) { // Lookup from database
+				$filterWrk = "`id_terimagudang`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+				$sqlWrk = $this->id_terimagudang->Lookup->getSql(FALSE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = $rswrk->fields('df');
+					$this->id_terimagudang->ViewValue = $this->id_terimagudang->displayValue($arwrk);
+					$rswrk->Close();
+				} else {
+					$this->id_terimagudang->ViewValue = $this->id_terimagudang->CurrentValue;
+				}
+			}
+		} else {
+			$this->id_terimagudang->ViewValue = NULL;
+		}
+		$this->id_terimagudang->ViewCustomAttributes = "";
 
 		// id_penjualan
 		$this->id_penjualan->ViewValue = $this->id_penjualan->CurrentValue;
@@ -1160,6 +1194,11 @@ class kartustok extends DbTable
 		$this->id_terimabarang->HrefValue = "";
 		$this->id_terimabarang->TooltipValue = "";
 
+		// id_terimagudang
+		$this->id_terimagudang->LinkCustomAttributes = "";
+		$this->id_terimagudang->HrefValue = "";
+		$this->id_terimagudang->TooltipValue = "";
+
 		// id_penjualan
 		$this->id_penjualan->LinkCustomAttributes = "";
 		$this->id_penjualan->HrefValue = "";
@@ -1295,6 +1334,12 @@ class kartustok extends DbTable
 		// id_terimabarang
 		$this->id_terimabarang->EditAttrs["class"] = "form-control";
 		$this->id_terimabarang->EditCustomAttributes = "";
+
+		// id_terimagudang
+		$this->id_terimagudang->EditAttrs["class"] = "form-control";
+		$this->id_terimagudang->EditCustomAttributes = "";
+		$this->id_terimagudang->EditValue = $this->id_terimagudang->CurrentValue;
+		$this->id_terimagudang->PlaceHolder = RemoveHtml($this->id_terimagudang->caption());
 
 		// id_penjualan
 		$this->id_penjualan->EditAttrs["class"] = "form-control";
@@ -1435,6 +1480,7 @@ class kartustok extends DbTable
 					$doc->exportCaption($this->id_klinik);
 					$doc->exportCaption($this->tanggal);
 					$doc->exportCaption($this->id_terimabarang);
+					$doc->exportCaption($this->id_terimagudang);
 					$doc->exportCaption($this->id_penjualan);
 					$doc->exportCaption($this->id_kirimbarang);
 					$doc->exportCaption($this->id_retur);
@@ -1454,6 +1500,7 @@ class kartustok extends DbTable
 					$doc->exportCaption($this->id_klinik);
 					$doc->exportCaption($this->tanggal);
 					$doc->exportCaption($this->id_terimabarang);
+					$doc->exportCaption($this->id_terimagudang);
 					$doc->exportCaption($this->id_penjualan);
 					$doc->exportCaption($this->id_kirimbarang);
 					$doc->exportCaption($this->id_nonjual);
@@ -1502,6 +1549,7 @@ class kartustok extends DbTable
 						$doc->exportField($this->id_klinik);
 						$doc->exportField($this->tanggal);
 						$doc->exportField($this->id_terimabarang);
+						$doc->exportField($this->id_terimagudang);
 						$doc->exportField($this->id_penjualan);
 						$doc->exportField($this->id_kirimbarang);
 						$doc->exportField($this->id_retur);
@@ -1521,6 +1569,7 @@ class kartustok extends DbTable
 						$doc->exportField($this->id_klinik);
 						$doc->exportField($this->tanggal);
 						$doc->exportField($this->id_terimabarang);
+						$doc->exportField($this->id_terimagudang);
 						$doc->exportField($this->id_penjualan);
 						$doc->exportField($this->id_kirimbarang);
 						$doc->exportField($this->id_nonjual);
@@ -1723,6 +1772,9 @@ class kartustok extends DbTable
 
 			if(is_null($this->id_terimabarang->CurrentValue)) {
 				$this->id_terimabarang->ViewValue  = '-----:-----' ;
+			}
+			if(is_null($this->id_terimagudang->CurrentValue)) {
+				$this->id_terimagudang->ViewValue  = '-----:-----' ;
 			}
 			if(is_null($this->id_penjualan->CurrentValue)) {
 				$this->id_penjualan->ViewValue  = '-----:-----' ;

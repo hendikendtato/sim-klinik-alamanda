@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
@@ -34,9 +34,9 @@ function Database_Connecting(&$info) {
 
 	if ($_SERVER['SERVER_NAME'] != "localhost") {
 		$info["host"] = "localhost";
-		$info["user"] = "root";
-		$info["pass"] = "alamanda";
-		$info["port"] = "14044";
+		$info["user"] = "regiadi";
+		$info["pass"] = "mysql-regiadi";
+		$info["port"] = "3306";
 		$info["db"] = "si_klinik_alamanda";
 	}
 }

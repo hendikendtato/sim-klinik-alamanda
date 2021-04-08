@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 ?>
 <?php if ($terimabarang->Visible) { ?>
 <div class="ew-master-div">

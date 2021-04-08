@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 // Autoload
 include_once "autoload.php";
@@ -139,8 +139,7 @@ loadjs.ready("head", function() {
 loadjs.ready("head", function() {
 
 	// Client script
-	// Write your client script here, no need to add script tags.
-
+	$('select[name="x_id_supplier"]').prop("disabled",!0),$('select[name="x_id_klinik"]').prop("disabled",!0);
 });
 </script>
 <?php $terimabarang_add->showPageHeader(); ?>

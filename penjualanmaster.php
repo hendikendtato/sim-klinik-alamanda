@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 ?>
 <?php if ($penjualan->Visible) { ?>
 <div class="ew-master-div">
@@ -131,16 +131,6 @@ namespace PHPMaker2020\klinik_latest_26_03_21;
 			<td <?php echo $penjualan->status->cellAttributes() ?>>
 <span id="el_penjualan_status">
 <span<?php echo $penjualan->status->viewAttributes() ?>><?php echo $penjualan->status->getViewValue() ?></span>
-</span>
-</td>
-		</tr>
-<?php } ?>
-<?php if ($penjualan->status_void->Visible) { // status_void ?>
-		<tr id="r_status_void">
-			<td class="<?php echo $penjualan->TableLeftColumnClass ?>"><?php echo $penjualan->status_void->caption() ?></td>
-			<td <?php echo $penjualan->status_void->cellAttributes() ?>>
-<span id="el_penjualan_status_void">
-<span<?php echo $penjualan->status_void->viewAttributes() ?>><?php echo $penjualan->status_void->getViewValue() ?></span>
 </span>
 </td>
 		</tr>

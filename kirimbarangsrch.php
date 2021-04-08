@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 // Autoload
 include_once "autoload.php";
@@ -83,6 +83,8 @@ loadjs.ready("head", function() {
 	fkirimbarangsearch.lists["x_id_klinik"].options = <?php echo JsonEncode($kirimbarang_search->id_klinik->lookupOptions()) ?>;
 	fkirimbarangsearch.lists["x_id_pegawai"] = <?php echo $kirimbarang_search->id_pegawai->Lookup->toClientList($kirimbarang_search) ?>;
 	fkirimbarangsearch.lists["x_id_pegawai"].options = <?php echo JsonEncode($kirimbarang_search->id_pegawai->lookupOptions()) ?>;
+	fkirimbarangsearch.lists["x_status_kirim"] = <?php echo $kirimbarang_search->status_kirim->Lookup->toClientList($kirimbarang_search) ?>;
+	fkirimbarangsearch.lists["x_status_kirim"].options = <?php echo JsonEncode($kirimbarang_search->status_kirim->options(FALSE, TRUE)) ?>;
 	loadjs.done("fkirimbarangsearch");
 });
 </script>
@@ -234,6 +236,24 @@ loadjs.ready(["fkirimbarangsearch", "datetimepicker"], function() {
 });
 </script>
 <?php } ?>
+</span>
+		</div></div>
+	</div>
+<?php } ?>
+<?php if ($kirimbarang_search->status_kirim->Visible) { // status_kirim ?>
+	<div id="r_status_kirim" class="form-group row">
+		<label class="<?php echo $kirimbarang_search->LeftColumnClass ?>"><span id="elh_kirimbarang_status_kirim"><?php echo $kirimbarang_search->status_kirim->caption() ?></span>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_status_kirim" id="z_status_kirim" value="=">
+</span>
+		</label>
+		<div class="<?php echo $kirimbarang_search->RightColumnClass ?>"><div <?php echo $kirimbarang_search->status_kirim->cellAttributes() ?>>
+			<span id="el_kirimbarang_status_kirim" class="ew-search-field">
+<div id="tp_x_status_kirim" class="ew-template"><input type="radio" class="custom-control-input" data-table="kirimbarang" data-field="x_status_kirim" data-value-separator="<?php echo $kirimbarang_search->status_kirim->displayValueSeparatorAttribute() ?>" name="x_status_kirim" id="x_status_kirim" value="{value}"<?php echo $kirimbarang_search->status_kirim->editAttributes() ?>></div>
+<div id="dsl_x_status_kirim" data-repeatcolumn="5" class="ew-item-list d-none"><div>
+<?php echo $kirimbarang_search->status_kirim->radioButtonListHtml(FALSE, "x_status_kirim") ?>
+</div></div>
 </span>
 		</div></div>
 	</div>

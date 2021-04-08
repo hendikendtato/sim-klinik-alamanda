@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 // Autoload
 include_once "autoload.php";
@@ -88,6 +88,9 @@ $kirimbarang_delete->showMessage();
 <?php if ($kirimbarang_delete->tanggal->Visible) { // tanggal ?>
 		<th class="<?php echo $kirimbarang_delete->tanggal->headerCellClass() ?>"><span id="elh_kirimbarang_tanggal" class="kirimbarang_tanggal"><?php echo $kirimbarang_delete->tanggal->caption() ?></span></th>
 <?php } ?>
+<?php if ($kirimbarang_delete->status_kirim->Visible) { // status_kirim ?>
+		<th class="<?php echo $kirimbarang_delete->status_kirim->headerCellClass() ?>"><span id="elh_kirimbarang_status_kirim" class="kirimbarang_status_kirim"><?php echo $kirimbarang_delete->status_kirim->caption() ?></span></th>
+<?php } ?>
 <?php if ($kirimbarang_delete->keterangan->Visible) { // keterangan ?>
 		<th class="<?php echo $kirimbarang_delete->keterangan->headerCellClass() ?>"><span id="elh_kirimbarang_keterangan" class="kirimbarang_keterangan"><?php echo $kirimbarang_delete->keterangan->caption() ?></span></th>
 <?php } ?>
@@ -151,6 +154,13 @@ while (!$kirimbarang_delete->Recordset->EOF) {
 		<td <?php echo $kirimbarang_delete->tanggal->cellAttributes() ?>>
 <span id="el<?php echo $kirimbarang_delete->RowCount ?>_kirimbarang_tanggal" class="kirimbarang_tanggal">
 <span<?php echo $kirimbarang_delete->tanggal->viewAttributes() ?>><?php echo $kirimbarang_delete->tanggal->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($kirimbarang_delete->status_kirim->Visible) { // status_kirim ?>
+		<td <?php echo $kirimbarang_delete->status_kirim->cellAttributes() ?>>
+<span id="el<?php echo $kirimbarang_delete->RowCount ?>_kirimbarang_status_kirim" class="kirimbarang_status_kirim">
+<span<?php echo $kirimbarang_delete->status_kirim->viewAttributes() ?>><?php echo $kirimbarang_delete->status_kirim->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

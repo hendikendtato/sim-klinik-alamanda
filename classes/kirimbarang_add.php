@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 /**
  * Page class
@@ -11,7 +11,7 @@ class kirimbarang_add extends kirimbarang
 	public $PageID = "add";
 
 	// Project ID
-	public $ProjectID = "{7561FF98-88C2-4B76-B5C9-C5F11860BCF7}";
+	public $ProjectID = "{4E2A1FD4-0074-4494-903F-430527A228F4}";
 
 	// Table name
 	public $TableName = 'kirimbarang';
@@ -681,6 +681,7 @@ class kirimbarang_add extends kirimbarang
 		$this->id_klinik->setVisibility();
 		$this->id_pegawai->setVisibility();
 		$this->tanggal->setVisibility();
+		$this->status_kirim->setVisibility();
 		$this->keterangan->setVisibility();
 		$this->hideFieldsForAddEdit();
 
@@ -846,6 +847,8 @@ class kirimbarang_add extends kirimbarang
 		$this->id_pegawai->OldValue = $this->id_pegawai->CurrentValue;
 		$this->tanggal->CurrentValue = NULL;
 		$this->tanggal->OldValue = $this->tanggal->CurrentValue;
+		$this->status_kirim->CurrentValue = NULL;
+		$this->status_kirim->OldValue = $this->status_kirim->CurrentValue;
 		$this->keterangan->CurrentValue = NULL;
 		$this->keterangan->OldValue = $this->keterangan->CurrentValue;
 	}
@@ -903,6 +906,15 @@ class kirimbarang_add extends kirimbarang
 			$this->tanggal->CurrentValue = UnFormatDateTime($this->tanggal->CurrentValue, 0);
 		}
 
+		// Check field name 'status_kirim' first before field var 'x_status_kirim'
+		$val = $CurrentForm->hasValue("status_kirim") ? $CurrentForm->getValue("status_kirim") : $CurrentForm->getValue("x_status_kirim");
+		if (!$this->status_kirim->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->status_kirim->Visible = FALSE; // Disable update for API request
+			else
+				$this->status_kirim->setFormValue($val);
+		}
+
 		// Check field name 'keterangan' first before field var 'x_keterangan'
 		$val = $CurrentForm->hasValue("keterangan") ? $CurrentForm->getValue("keterangan") : $CurrentForm->getValue("x_keterangan");
 		if (!$this->keterangan->IsDetailKey) {
@@ -926,6 +938,7 @@ class kirimbarang_add extends kirimbarang
 		$this->id_pegawai->CurrentValue = $this->id_pegawai->FormValue;
 		$this->tanggal->CurrentValue = $this->tanggal->FormValue;
 		$this->tanggal->CurrentValue = UnFormatDateTime($this->tanggal->CurrentValue, 0);
+		$this->status_kirim->CurrentValue = $this->status_kirim->FormValue;
 		$this->keterangan->CurrentValue = $this->keterangan->FormValue;
 	}
 
@@ -971,6 +984,7 @@ class kirimbarang_add extends kirimbarang
 		$this->id_klinik->setDbValue($row['id_klinik']);
 		$this->id_pegawai->setDbValue($row['id_pegawai']);
 		$this->tanggal->setDbValue($row['tanggal']);
+		$this->status_kirim->setDbValue($row['status_kirim']);
 		$this->keterangan->setDbValue($row['keterangan']);
 	}
 
@@ -986,6 +1000,7 @@ class kirimbarang_add extends kirimbarang
 		$row['id_klinik'] = $this->id_klinik->CurrentValue;
 		$row['id_pegawai'] = $this->id_pegawai->CurrentValue;
 		$row['tanggal'] = $this->tanggal->CurrentValue;
+		$row['status_kirim'] = $this->status_kirim->CurrentValue;
 		$row['keterangan'] = $this->keterangan->CurrentValue;
 		return $row;
 	}
@@ -1031,6 +1046,7 @@ class kirimbarang_add extends kirimbarang
 		// id_klinik
 		// id_pegawai
 		// tanggal
+		// status_kirim
 		// keterangan
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
@@ -1050,7 +1066,7 @@ class kirimbarang_add extends kirimbarang
 				if ($this->id_po->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id_po`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
 					$lookupFilter = function() {
-						return (CurrentPageID() == "edit" || CurrentPageID() == "add") ? "status_po = 'open'" : "";
+						return (CurrentPageID() == "add") ? "status_po = 'open'" : "";
 					};
 					$lookupFilter = $lookupFilter->bindTo($this);
 					$sqlWrk = $this->id_po->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
@@ -1140,6 +1156,14 @@ class kirimbarang_add extends kirimbarang
 			$this->tanggal->ViewValue = FormatDateTime($this->tanggal->ViewValue, 0);
 			$this->tanggal->ViewCustomAttributes = "";
 
+			// status_kirim
+			if (strval($this->status_kirim->CurrentValue) != "") {
+				$this->status_kirim->ViewValue = $this->status_kirim->optionCaption($this->status_kirim->CurrentValue);
+			} else {
+				$this->status_kirim->ViewValue = NULL;
+			}
+			$this->status_kirim->ViewCustomAttributes = "";
+
 			// keterangan
 			$this->keterangan->ViewValue = $this->keterangan->CurrentValue;
 			$this->keterangan->ViewCustomAttributes = "";
@@ -1169,6 +1193,11 @@ class kirimbarang_add extends kirimbarang
 			$this->tanggal->HrefValue = "";
 			$this->tanggal->TooltipValue = "";
 
+			// status_kirim
+			$this->status_kirim->LinkCustomAttributes = "";
+			$this->status_kirim->HrefValue = "";
+			$this->status_kirim->TooltipValue = "";
+
 			// keterangan
 			$this->keterangan->LinkCustomAttributes = "";
 			$this->keterangan->HrefValue = "";
@@ -1192,7 +1221,7 @@ class kirimbarang_add extends kirimbarang
 					$filterWrk = "`id_po`" . SearchString("=", $this->id_po->CurrentValue, DATATYPE_NUMBER, "");
 				}
 				$lookupFilter = function() {
-					return (CurrentPageID() == "edit" || CurrentPageID() == "add") ? "status_po = 'open'" : "";
+					return (CurrentPageID() == "add") ? "status_po = 'open'" : "";
 				};
 				$lookupFilter = $lookupFilter->bindTo($this);
 				$sqlWrk = $this->id_po->Lookup->getSql(TRUE, $filterWrk, $lookupFilter, $this);
@@ -1281,6 +1310,10 @@ class kirimbarang_add extends kirimbarang
 			$this->tanggal->EditValue = HtmlEncode(FormatDateTime($this->tanggal->CurrentValue, 8));
 			$this->tanggal->PlaceHolder = RemoveHtml($this->tanggal->caption());
 
+			// status_kirim
+			$this->status_kirim->EditCustomAttributes = "";
+			$this->status_kirim->EditValue = $this->status_kirim->options(FALSE);
+
 			// keterangan
 			$this->keterangan->EditAttrs["class"] = "form-control";
 			$this->keterangan->EditCustomAttributes = "";
@@ -1308,6 +1341,10 @@ class kirimbarang_add extends kirimbarang
 			// tanggal
 			$this->tanggal->LinkCustomAttributes = "";
 			$this->tanggal->HrefValue = "";
+
+			// status_kirim
+			$this->status_kirim->LinkCustomAttributes = "";
+			$this->status_kirim->HrefValue = "";
 
 			// keterangan
 			$this->keterangan->LinkCustomAttributes = "";
@@ -1359,6 +1396,11 @@ class kirimbarang_add extends kirimbarang
 		}
 		if (!CheckDate($this->tanggal->FormValue)) {
 			AddMessage($FormError, $this->tanggal->errorMessage());
+		}
+		if ($this->status_kirim->Required) {
+			if ($this->status_kirim->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->status_kirim->caption(), $this->status_kirim->RequiredErrorMessage));
+			}
 		}
 		if ($this->keterangan->Required) {
 			if (!$this->keterangan->IsDetailKey && $this->keterangan->FormValue != NULL && $this->keterangan->FormValue == "") {
@@ -1416,6 +1458,9 @@ class kirimbarang_add extends kirimbarang
 
 		// tanggal
 		$this->tanggal->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal->CurrentValue, 0), NULL, FALSE);
+
+		// status_kirim
+		$this->status_kirim->setDbValueDef($rsnew, $this->status_kirim->CurrentValue, NULL, FALSE);
 
 		// keterangan
 		$this->keterangan->setDbValueDef($rsnew, $this->keterangan->CurrentValue, NULL, FALSE);
@@ -1546,7 +1591,7 @@ class kirimbarang_add extends kirimbarang
 			switch ($fld->FieldVar) {
 				case "x_id_po":
 					$lookupFilter = function() {
-						return (CurrentPageID() == "edit" || CurrentPageID() == "add") ? "status_po = 'open'" : "";
+						return (CurrentPageID() == "add") ? "status_po = 'open'" : "";
 					};
 					$lookupFilter = $lookupFilter->bindTo($this);
 					break;
@@ -1555,6 +1600,8 @@ class kirimbarang_add extends kirimbarang
 				case "x_id_klinik":
 					break;
 				case "x_id_pegawai":
+					break;
+				case "x_status_kirim":
 					break;
 				default:
 					$lookupFilter = "";

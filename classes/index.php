@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 /**
  * Class for index
@@ -8,7 +8,7 @@ class index
 {
 
 	// Project ID
-	public $ProjectID = "{7561FF98-88C2-4B76-B5C9-C5F11860BCF7}";
+	public $ProjectID = "{4E2A1FD4-0074-4494-903F-430527A228F4}";
 
 	// Messages
 	private $_message = "";
@@ -535,6 +535,10 @@ class index
 			$this->terminate("view_memberlist.php");
 		if ($Security->allowList(CurrentProjectID() . 'laporan_stokhargajual.php'))
 			$this->terminate("laporan_stokhargajual.php");
+		if ($Security->allowList(CurrentProjectID() . 'detailterimagudang'))
+			$this->terminate("detailterimagudanglist.php");
+		if ($Security->allowList(CurrentProjectID() . 'terimagudang'))
+			$this->terminate("terimagudanglist.php");
 		if ($Security->isLoggedIn()) {
 			$this->setFailureMessage(DeniedMessage() . "<br><br><a href=\"logout.php\">" . $Language->phrase("BackToLogin") . "</a>");
 		} else {

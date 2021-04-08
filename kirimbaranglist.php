@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 // Autoload
 include_once "autoload.php";
@@ -231,6 +231,15 @@ $kirimbarang_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
+<?php if ($kirimbarang_list->status_kirim->Visible) { // status_kirim ?>
+	<?php if ($kirimbarang_list->SortUrl($kirimbarang_list->status_kirim) == "") { ?>
+		<th data-name="status_kirim" class="<?php echo $kirimbarang_list->status_kirim->headerCellClass() ?>"><div id="elh_kirimbarang_status_kirim" class="kirimbarang_status_kirim"><div class="ew-table-header-caption"><?php echo $kirimbarang_list->status_kirim->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="status_kirim" class="<?php echo $kirimbarang_list->status_kirim->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $kirimbarang_list->SortUrl($kirimbarang_list->status_kirim) ?>', 1);"><div id="elh_kirimbarang_status_kirim" class="kirimbarang_status_kirim">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $kirimbarang_list->status_kirim->caption() ?></span><span class="ew-table-header-sort"><?php if ($kirimbarang_list->status_kirim->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($kirimbarang_list->status_kirim->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
 <?php if ($kirimbarang_list->keterangan->Visible) { // keterangan ?>
 	<?php if ($kirimbarang_list->SortUrl($kirimbarang_list->keterangan) == "") { ?>
 		<th data-name="keterangan" class="<?php echo $kirimbarang_list->keterangan->headerCellClass() ?>"><div id="elh_kirimbarang_keterangan" class="kirimbarang_keterangan"><div class="ew-table-header-caption"><?php echo $kirimbarang_list->keterangan->caption() ?></div></div></th>
@@ -344,6 +353,13 @@ $kirimbarang_list->ListOptions->render("body", "left", $kirimbarang_list->RowCou
 		<td data-name="tanggal" <?php echo $kirimbarang_list->tanggal->cellAttributes() ?>>
 <span id="el<?php echo $kirimbarang_list->RowCount ?>_kirimbarang_tanggal">
 <span<?php echo $kirimbarang_list->tanggal->viewAttributes() ?>><?php echo $kirimbarang_list->tanggal->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
+	<?php if ($kirimbarang_list->status_kirim->Visible) { // status_kirim ?>
+		<td data-name="status_kirim" <?php echo $kirimbarang_list->status_kirim->cellAttributes() ?>>
+<span id="el<?php echo $kirimbarang_list->RowCount ?>_kirimbarang_status_kirim">
+<span<?php echo $kirimbarang_list->status_kirim->viewAttributes() ?>><?php echo $kirimbarang_list->status_kirim->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>

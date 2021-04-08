@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 /**
  * Page class
@@ -11,7 +11,7 @@ class kartustok_delete extends kartustok
 	public $PageID = "delete";
 
 	// Project ID
-	public $ProjectID = "{7561FF98-88C2-4B76-B5C9-C5F11860BCF7}";
+	public $ProjectID = "{4E2A1FD4-0074-4494-903F-430527A228F4}";
 
 	// Table name
 	public $TableName = 'kartustok';
@@ -585,6 +585,7 @@ class kartustok_delete extends kartustok
 		$this->id_klinik->setVisibility();
 		$this->tanggal->setVisibility();
 		$this->id_terimabarang->setVisibility();
+		$this->id_terimagudang->setVisibility();
 		$this->id_penjualan->setVisibility();
 		$this->id_kirimbarang->setVisibility();
 		$this->id_nonjual->Visible = FALSE;
@@ -623,6 +624,7 @@ class kartustok_delete extends kartustok
 		$this->setupLookupOptions($this->id_barang);
 		$this->setupLookupOptions($this->id_klinik);
 		$this->setupLookupOptions($this->id_terimabarang);
+		$this->setupLookupOptions($this->id_terimagudang);
 		$this->setupLookupOptions($this->id_penjualan);
 		$this->setupLookupOptions($this->id_kirimbarang);
 		$this->setupLookupOptions($this->id_retur);
@@ -759,6 +761,7 @@ class kartustok_delete extends kartustok
 		$this->id_klinik->setDbValue($row['id_klinik']);
 		$this->tanggal->setDbValue($row['tanggal']);
 		$this->id_terimabarang->setDbValue($row['id_terimabarang']);
+		$this->id_terimagudang->setDbValue($row['id_terimagudang']);
 		$this->id_penjualan->setDbValue($row['id_penjualan']);
 		$this->id_kirimbarang->setDbValue($row['id_kirimbarang']);
 		$this->id_nonjual->setDbValue($row['id_nonjual']);
@@ -784,6 +787,7 @@ class kartustok_delete extends kartustok
 		$row['id_klinik'] = NULL;
 		$row['tanggal'] = NULL;
 		$row['id_terimabarang'] = NULL;
+		$row['id_terimagudang'] = NULL;
 		$row['id_penjualan'] = NULL;
 		$row['id_kirimbarang'] = NULL;
 		$row['id_nonjual'] = NULL;
@@ -853,6 +857,7 @@ class kartustok_delete extends kartustok
 		// id_klinik
 		// tanggal
 		// id_terimabarang
+		// id_terimagudang
 		// id_penjualan
 		// id_kirimbarang
 		// id_nonjual
@@ -945,6 +950,29 @@ class kartustok_delete extends kartustok
 				$this->id_terimabarang->ViewValue = NULL;
 			}
 			$this->id_terimabarang->ViewCustomAttributes = "";
+
+			// id_terimagudang
+			$this->id_terimagudang->ViewValue = $this->id_terimagudang->CurrentValue;
+			$curVal = strval($this->id_terimagudang->CurrentValue);
+			if ($curVal != "") {
+				$this->id_terimagudang->ViewValue = $this->id_terimagudang->lookupCacheOption($curVal);
+				if ($this->id_terimagudang->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id_terimagudang`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->id_terimagudang->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->id_terimagudang->ViewValue = $this->id_terimagudang->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->id_terimagudang->ViewValue = $this->id_terimagudang->CurrentValue;
+					}
+				}
+			} else {
+				$this->id_terimagudang->ViewValue = NULL;
+			}
+			$this->id_terimagudang->ViewCustomAttributes = "";
 
 			// id_penjualan
 			$this->id_penjualan->ViewValue = $this->id_penjualan->CurrentValue;
@@ -1105,6 +1133,11 @@ class kartustok_delete extends kartustok
 			$this->id_terimabarang->LinkCustomAttributes = "";
 			$this->id_terimabarang->HrefValue = "";
 			$this->id_terimabarang->TooltipValue = "";
+
+			// id_terimagudang
+			$this->id_terimagudang->LinkCustomAttributes = "";
+			$this->id_terimagudang->HrefValue = "";
+			$this->id_terimagudang->TooltipValue = "";
 
 			// id_penjualan
 			$this->id_penjualan->LinkCustomAttributes = "";
@@ -1364,6 +1397,8 @@ class kartustok_delete extends kartustok
 					break;
 				case "x_id_terimabarang":
 					break;
+				case "x_id_terimagudang":
+					break;
 				case "x_id_penjualan":
 					break;
 				case "x_id_kirimbarang":
@@ -1397,6 +1432,8 @@ class kartustok_delete extends kartustok
 						case "x_id_klinik":
 							break;
 						case "x_id_terimabarang":
+							break;
+						case "x_id_terimagudang":
 							break;
 						case "x_id_penjualan":
 							break;

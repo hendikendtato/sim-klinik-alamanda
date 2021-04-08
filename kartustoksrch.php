@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 // Autoload
 include_once "autoload.php";
@@ -57,6 +57,9 @@ loadjs.ready("head", function() {
 		elm = this.getElements("x" + infix + "_tanggal");
 		if (elm && !ew.checkDateDef(elm.value))
 			return this.onError(elm, "<?php echo JsEncode($kartustok_search->tanggal->errorMessage()) ?>");
+		elm = this.getElements("x" + infix + "_id_terimagudang");
+		if (elm && !ew.checkInteger(elm.value))
+			return this.onError(elm, "<?php echo JsEncode($kartustok_search->id_terimagudang->errorMessage()) ?>");
 		elm = this.getElements("x" + infix + "_id_penjualan");
 		if (elm && !ew.checkInteger(elm.value))
 			return this.onError(elm, "<?php echo JsEncode($kartustok_search->id_penjualan->errorMessage()) ?>");
@@ -86,6 +89,9 @@ loadjs.ready("head", function() {
 	fkartustoksearch.autoSuggests["x_id_barang"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
 	fkartustoksearch.lists["x_id_klinik"] = <?php echo $kartustok_search->id_klinik->Lookup->toClientList($kartustok_search) ?>;
 	fkartustoksearch.lists["x_id_klinik"].options = <?php echo JsonEncode($kartustok_search->id_klinik->lookupOptions()) ?>;
+	fkartustoksearch.lists["x_id_terimagudang"] = <?php echo $kartustok_search->id_terimagudang->Lookup->toClientList($kartustok_search) ?>;
+	fkartustoksearch.lists["x_id_terimagudang"].options = <?php echo JsonEncode($kartustok_search->id_terimagudang->lookupOptions()) ?>;
+	fkartustoksearch.autoSuggests["x_id_terimagudang"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
 	fkartustoksearch.lists["x_id_penjualan"] = <?php echo $kartustok_search->id_penjualan->Lookup->toClientList($kartustok_search) ?>;
 	fkartustoksearch.lists["x_id_penjualan"].options = <?php echo JsonEncode($kartustok_search->id_penjualan->lookupOptions()) ?>;
 	fkartustoksearch.autoSuggests["x_id_penjualan"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
@@ -188,6 +194,35 @@ loadjs.ready(["fkartustoksearch", "datetimepicker"], function() {
 });
 </script>
 <?php } ?>
+</span>
+		</div></div>
+	</div>
+<?php } ?>
+<?php if ($kartustok_search->id_terimagudang->Visible) { // id_terimagudang ?>
+	<div id="r_id_terimagudang" class="form-group row">
+		<label class="<?php echo $kartustok_search->LeftColumnClass ?>"><span id="elh_kartustok_id_terimagudang"><?php echo $kartustok_search->id_terimagudang->caption() ?></span>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_id_terimagudang" id="z_id_terimagudang" value="=">
+</span>
+		</label>
+		<div class="<?php echo $kartustok_search->RightColumnClass ?>"><div <?php echo $kartustok_search->id_terimagudang->cellAttributes() ?>>
+			<span id="el_kartustok_id_terimagudang" class="ew-search-field">
+<?php
+$onchange = $kartustok_search->id_terimagudang->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$kartustok_search->id_terimagudang->EditAttrs["onchange"] = "";
+?>
+<span id="as_x_id_terimagudang">
+	<input type="text" class="form-control" name="sv_x_id_terimagudang" id="sv_x_id_terimagudang" value="<?php echo RemoveHtml($kartustok_search->id_terimagudang->EditValue) ?>" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($kartustok_search->id_terimagudang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_search->id_terimagudang->getPlaceHolder()) ?>"<?php echo $kartustok_search->id_terimagudang->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="kartustok" data-field="x_id_terimagudang" data-value-separator="<?php echo $kartustok_search->id_terimagudang->displayValueSeparatorAttribute() ?>" name="x_id_terimagudang" id="x_id_terimagudang" value="<?php echo HtmlEncode($kartustok_search->id_terimagudang->AdvancedSearch->SearchValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fkartustoksearch"], function() {
+	fkartustoksearch.createAutoSuggest({"id":"x_id_terimagudang","forceSelect":false});
+});
+</script>
+<?php echo $kartustok_search->id_terimagudang->Lookup->getParamTag($kartustok_search, "p_x_id_terimagudang") ?>
 </span>
 		</div></div>
 	</div>

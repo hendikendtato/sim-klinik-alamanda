@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 // Autoload
 include_once "autoload.php";
@@ -227,6 +227,15 @@ $kartustok_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
+<?php if ($kartustok_list->id_terimagudang->Visible) { // id_terimagudang ?>
+	<?php if ($kartustok_list->SortUrl($kartustok_list->id_terimagudang) == "") { ?>
+		<th data-name="id_terimagudang" class="<?php echo $kartustok_list->id_terimagudang->headerCellClass() ?>"><div id="elh_kartustok_id_terimagudang" class="kartustok_id_terimagudang"><div class="ew-table-header-caption"><?php echo $kartustok_list->id_terimagudang->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="id_terimagudang" class="<?php echo $kartustok_list->id_terimagudang->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $kartustok_list->SortUrl($kartustok_list->id_terimagudang) ?>', 1);"><div id="elh_kartustok_id_terimagudang" class="kartustok_id_terimagudang">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $kartustok_list->id_terimagudang->caption() ?></span><span class="ew-table-header-sort"><?php if ($kartustok_list->id_terimagudang->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($kartustok_list->id_terimagudang->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
 <?php if ($kartustok_list->id_penjualan->Visible) { // id_penjualan ?>
 	<?php if ($kartustok_list->SortUrl($kartustok_list->id_penjualan) == "") { ?>
 		<th data-name="id_penjualan" class="<?php echo $kartustok_list->id_penjualan->headerCellClass() ?>"><div id="elh_kartustok_id_penjualan" class="kartustok_id_penjualan"><div class="ew-table-header-caption"><?php echo $kartustok_list->id_penjualan->caption() ?></div></div></th>
@@ -434,6 +443,13 @@ $kartustok_list->ListOptions->render("body", "left", $kartustok_list->RowCount);
 		<td data-name="id_terimabarang" <?php echo $kartustok_list->id_terimabarang->cellAttributes() ?>>
 <span id="el<?php echo $kartustok_list->RowCount ?>_kartustok_id_terimabarang">
 <span<?php echo $kartustok_list->id_terimabarang->viewAttributes() ?>><?php echo $kartustok_list->id_terimabarang->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
+	<?php if ($kartustok_list->id_terimagudang->Visible) { // id_terimagudang ?>
+		<td data-name="id_terimagudang" <?php echo $kartustok_list->id_terimagudang->cellAttributes() ?>>
+<span id="el<?php echo $kartustok_list->RowCount ?>_kartustok_id_terimagudang">
+<span<?php echo $kartustok_list->id_terimagudang->viewAttributes() ?>><?php echo $kartustok_list->id_terimagudang->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>

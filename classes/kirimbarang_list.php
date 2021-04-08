@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 /**
  * Page class
@@ -11,7 +11,7 @@ class kirimbarang_list extends kirimbarang
 	public $PageID = "list";
 
 	// Project ID
-	public $ProjectID = "{7561FF98-88C2-4B76-B5C9-C5F11860BCF7}";
+	public $ProjectID = "{4E2A1FD4-0074-4494-903F-430527A228F4}";
 
 	// Table name
 	public $TableName = 'kirimbarang';
@@ -823,6 +823,7 @@ class kirimbarang_list extends kirimbarang
 		$this->id_klinik->setVisibility();
 		$this->id_pegawai->setVisibility();
 		$this->tanggal->setVisibility();
+		$this->status_kirim->setVisibility();
 		$this->keterangan->setVisibility();
 		$this->hideFieldsForAddEdit();
 
@@ -1139,6 +1140,7 @@ class kirimbarang_list extends kirimbarang
 		$filterList = Concat($filterList, $this->id_klinik->AdvancedSearch->toJson(), ","); // Field id_klinik
 		$filterList = Concat($filterList, $this->id_pegawai->AdvancedSearch->toJson(), ","); // Field id_pegawai
 		$filterList = Concat($filterList, $this->tanggal->AdvancedSearch->toJson(), ","); // Field tanggal
+		$filterList = Concat($filterList, $this->status_kirim->AdvancedSearch->toJson(), ","); // Field status_kirim
 		$filterList = Concat($filterList, $this->keterangan->AdvancedSearch->toJson(), ","); // Field keterangan
 		if ($this->BasicSearch->Keyword != "") {
 			$wrk = "\"" . Config("TABLE_BASIC_SEARCH") . "\":\"" . JsEncode($this->BasicSearch->Keyword) . "\",\"" . Config("TABLE_BASIC_SEARCH_TYPE") . "\":\"" . JsEncode($this->BasicSearch->Type) . "\"";
@@ -1234,6 +1236,14 @@ class kirimbarang_list extends kirimbarang
 		$this->tanggal->AdvancedSearch->SearchOperator2 = @$filter["w_tanggal"];
 		$this->tanggal->AdvancedSearch->save();
 
+		// Field status_kirim
+		$this->status_kirim->AdvancedSearch->SearchValue = @$filter["x_status_kirim"];
+		$this->status_kirim->AdvancedSearch->SearchOperator = @$filter["z_status_kirim"];
+		$this->status_kirim->AdvancedSearch->SearchCondition = @$filter["v_status_kirim"];
+		$this->status_kirim->AdvancedSearch->SearchValue2 = @$filter["y_status_kirim"];
+		$this->status_kirim->AdvancedSearch->SearchOperator2 = @$filter["w_status_kirim"];
+		$this->status_kirim->AdvancedSearch->save();
+
 		// Field keterangan
 		$this->keterangan->AdvancedSearch->SearchValue = @$filter["x_keterangan"];
 		$this->keterangan->AdvancedSearch->SearchOperator = @$filter["z_keterangan"];
@@ -1259,6 +1269,7 @@ class kirimbarang_list extends kirimbarang
 		$this->buildSearchSql($where, $this->id_klinik, $default, FALSE); // id_klinik
 		$this->buildSearchSql($where, $this->id_pegawai, $default, FALSE); // id_pegawai
 		$this->buildSearchSql($where, $this->tanggal, $default, FALSE); // tanggal
+		$this->buildSearchSql($where, $this->status_kirim, $default, FALSE); // status_kirim
 		$this->buildSearchSql($where, $this->keterangan, $default, FALSE); // keterangan
 
 		// Set up search parm
@@ -1273,6 +1284,7 @@ class kirimbarang_list extends kirimbarang
 			$this->id_klinik->AdvancedSearch->save(); // id_klinik
 			$this->id_pegawai->AdvancedSearch->save(); // id_pegawai
 			$this->tanggal->AdvancedSearch->save(); // tanggal
+			$this->status_kirim->AdvancedSearch->save(); // status_kirim
 			$this->keterangan->AdvancedSearch->save(); // keterangan
 		}
 		return $where;
@@ -1463,6 +1475,8 @@ class kirimbarang_list extends kirimbarang
 			return TRUE;
 		if ($this->tanggal->AdvancedSearch->issetSession())
 			return TRUE;
+		if ($this->status_kirim->AdvancedSearch->issetSession())
+			return TRUE;
 		if ($this->keterangan->AdvancedSearch->issetSession())
 			return TRUE;
 		return FALSE;
@@ -1505,6 +1519,7 @@ class kirimbarang_list extends kirimbarang
 		$this->id_klinik->AdvancedSearch->unsetSession();
 		$this->id_pegawai->AdvancedSearch->unsetSession();
 		$this->tanggal->AdvancedSearch->unsetSession();
+		$this->status_kirim->AdvancedSearch->unsetSession();
 		$this->keterangan->AdvancedSearch->unsetSession();
 	}
 
@@ -1524,6 +1539,7 @@ class kirimbarang_list extends kirimbarang
 		$this->id_klinik->AdvancedSearch->load();
 		$this->id_pegawai->AdvancedSearch->load();
 		$this->tanggal->AdvancedSearch->load();
+		$this->status_kirim->AdvancedSearch->load();
 		$this->keterangan->AdvancedSearch->load();
 	}
 
@@ -1541,6 +1557,7 @@ class kirimbarang_list extends kirimbarang
 			$this->updateSort($this->id_klinik); // id_klinik
 			$this->updateSort($this->id_pegawai); // id_pegawai
 			$this->updateSort($this->tanggal); // tanggal
+			$this->updateSort($this->status_kirim); // status_kirim
 			$this->updateSort($this->keterangan); // keterangan
 			$this->setStartRecordNumber(1); // Reset start position
 		}
@@ -1583,6 +1600,7 @@ class kirimbarang_list extends kirimbarang
 				$this->id_klinik->setSort("");
 				$this->id_pegawai->setSort("");
 				$this->tanggal->setSort("");
+				$this->status_kirim->setSort("");
 				$this->keterangan->setSort("");
 			}
 
@@ -1602,6 +1620,12 @@ class kirimbarang_list extends kirimbarang
 		$item->Body = "";
 		$item->OnLeft = FALSE;
 		$item->Visible = FALSE;
+
+		// "view"
+		$item = &$this->ListOptions->add("view");
+		$item->CssClass = "text-nowrap";
+		$item->Visible = $Security->canView();
+		$item->OnLeft = FALSE;
 
 		// "edit"
 		$item = &$this->ListOptions->add("edit");
@@ -1679,6 +1703,15 @@ class kirimbarang_list extends kirimbarang
 		// Call ListOptions_Rendering event
 		$this->ListOptions_Rendering();
 
+		// "view"
+		$opt = $this->ListOptions["view"];
+		$viewcaption = HtmlTitle($Language->phrase("ViewLink"));
+		if ($Security->canView()) {
+			$opt->Body = "<a class=\"ew-row-link ew-view\" title=\"" . $viewcaption . "\" data-caption=\"" . $viewcaption . "\" href=\"" . HtmlEncode($this->ViewUrl) . "\">" . $Language->phrase("ViewLink") . "</a>";
+		} else {
+			$opt->Body = "";
+		}
+
 		// "edit"
 		$opt = $this->ListOptions["edit"];
 		$editcaption = HtmlTitle($Language->phrase("EditLink"));
@@ -1734,6 +1767,14 @@ class kirimbarang_list extends kirimbarang
 			$body .= "&nbsp;" . str_replace("%c", $this->detailkirimbarang_Count, $Language->phrase("DetailCount"));
 			$body = "<a class=\"btn btn-default ew-row-link ew-detail\" data-action=\"list\" href=\"" . HtmlEncode("detailkirimbaranglist.php?" . Config("TABLE_SHOW_MASTER") . "=kirimbarang&fk_id=" . urlencode(strval($this->id->CurrentValue)) . "") . "\">" . $body . "</a>";
 			$links = "";
+			if ($GLOBALS["detailkirimbarang_grid"]->DetailView && $Security->canView() && $Security->allowView(CurrentProjectID() . 'kirimbarang')) {
+				$caption = $Language->phrase("MasterDetailViewLink");
+				$url = $this->getViewUrl(Config("TABLE_SHOW_DETAIL") . "=detailkirimbarang");
+				$links .= "<li><a class=\"dropdown-item ew-row-link ew-detail-view\" data-action=\"view\" data-caption=\"" . HtmlTitle($caption) . "\" href=\"" . HtmlEncode($url) . "\">" . HtmlImageAndText($caption) . "</a></li>";
+				if ($detailViewTblVar != "")
+					$detailViewTblVar .= ",";
+				$detailViewTblVar .= "detailkirimbarang";
+			}
 			if ($GLOBALS["detailkirimbarang_grid"]->DetailEdit && $Security->canEdit() && $Security->allowEdit(CurrentProjectID() . 'kirimbarang')) {
 				$caption = $Language->phrase("MasterDetailEditLink");
 				$url = $this->getEditUrl(Config("TABLE_SHOW_DETAIL") . "=detailkirimbarang");
@@ -2116,6 +2157,13 @@ class kirimbarang_list extends kirimbarang
 				$this->Command = "search";
 		}
 
+		// status_kirim
+		if (!$this->isAddOrEdit() && $this->status_kirim->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->status_kirim->AdvancedSearch->SearchValue != "" || $this->status_kirim->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
 		// keterangan
 		if (!$this->isAddOrEdit() && $this->keterangan->AdvancedSearch->get()) {
 			$got = TRUE;
@@ -2194,6 +2242,7 @@ class kirimbarang_list extends kirimbarang
 		$this->id_klinik->setDbValue($row['id_klinik']);
 		$this->id_pegawai->setDbValue($row['id_pegawai']);
 		$this->tanggal->setDbValue($row['tanggal']);
+		$this->status_kirim->setDbValue($row['status_kirim']);
 		$this->keterangan->setDbValue($row['keterangan']);
 		if (!isset($GLOBALS["detailkirimbarang_grid"]))
 			$GLOBALS["detailkirimbarang_grid"] = new detailkirimbarang_grid();
@@ -2215,6 +2264,7 @@ class kirimbarang_list extends kirimbarang
 		$row['id_klinik'] = NULL;
 		$row['id_pegawai'] = NULL;
 		$row['tanggal'] = NULL;
+		$row['status_kirim'] = NULL;
 		$row['keterangan'] = NULL;
 		return $row;
 	}
@@ -2266,6 +2316,7 @@ class kirimbarang_list extends kirimbarang
 		// id_klinik
 		// id_pegawai
 		// tanggal
+		// status_kirim
 		// keterangan
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
@@ -2285,7 +2336,7 @@ class kirimbarang_list extends kirimbarang
 				if ($this->id_po->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id_po`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
 					$lookupFilter = function() {
-						return (CurrentPageID() == "edit" || CurrentPageID() == "add") ? "status_po = 'open'" : "";
+						return (CurrentPageID() == "add") ? "status_po = 'open'" : "";
 					};
 					$lookupFilter = $lookupFilter->bindTo($this);
 					$sqlWrk = $this->id_po->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
@@ -2375,6 +2426,14 @@ class kirimbarang_list extends kirimbarang
 			$this->tanggal->ViewValue = FormatDateTime($this->tanggal->ViewValue, 0);
 			$this->tanggal->ViewCustomAttributes = "";
 
+			// status_kirim
+			if (strval($this->status_kirim->CurrentValue) != "") {
+				$this->status_kirim->ViewValue = $this->status_kirim->optionCaption($this->status_kirim->CurrentValue);
+			} else {
+				$this->status_kirim->ViewValue = NULL;
+			}
+			$this->status_kirim->ViewCustomAttributes = "";
+
 			// keterangan
 			$this->keterangan->ViewValue = $this->keterangan->CurrentValue;
 			$this->keterangan->ViewCustomAttributes = "";
@@ -2408,6 +2467,11 @@ class kirimbarang_list extends kirimbarang
 			$this->tanggal->LinkCustomAttributes = "";
 			$this->tanggal->HrefValue = "";
 			$this->tanggal->TooltipValue = "";
+
+			// status_kirim
+			$this->status_kirim->LinkCustomAttributes = "";
+			$this->status_kirim->HrefValue = "";
+			$this->status_kirim->TooltipValue = "";
 
 			// keterangan
 			$this->keterangan->LinkCustomAttributes = "";
@@ -2454,6 +2518,7 @@ class kirimbarang_list extends kirimbarang
 		$this->id_klinik->AdvancedSearch->load();
 		$this->id_pegawai->AdvancedSearch->load();
 		$this->tanggal->AdvancedSearch->load();
+		$this->status_kirim->AdvancedSearch->load();
 		$this->keterangan->AdvancedSearch->load();
 	}
 
@@ -2723,7 +2788,7 @@ class kirimbarang_list extends kirimbarang
 			switch ($fld->FieldVar) {
 				case "x_id_po":
 					$lookupFilter = function() {
-						return (CurrentPageID() == "edit" || CurrentPageID() == "add") ? "status_po = 'open'" : "";
+						return (CurrentPageID() == "add") ? "status_po = 'open'" : "";
 					};
 					$lookupFilter = $lookupFilter->bindTo($this);
 					break;
@@ -2732,6 +2797,8 @@ class kirimbarang_list extends kirimbarang
 				case "x_id_klinik":
 					break;
 				case "x_id_pegawai":
+					break;
+				case "x_status_kirim":
 					break;
 				default:
 					$lookupFilter = "";
@@ -2903,6 +2970,10 @@ class kirimbarang_list extends kirimbarang
 		// Example:
 		//$this->ListOptions["new"]->Body = "xxx";
 
+		$status_kirim =  CurrentTable()->status_kirim->CurrentValue;
+		if($status_kirim == 'dikirim'){
+			$this->ListOptions->Items["edit"]->Body = "";
+		}	
 	}
 
 	// Row Custom Action event

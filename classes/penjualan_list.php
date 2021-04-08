@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 /**
  * Page class
@@ -11,7 +11,7 @@ class penjualan_list extends penjualan
 	public $PageID = "list";
 
 	// Project ID
-	public $ProjectID = "{7561FF98-88C2-4B76-B5C9-C5F11860BCF7}";
+	public $ProjectID = "{4E2A1FD4-0074-4494-903F-430527A228F4}";
 
 	// Table name
 	public $TableName = 'penjualan';
@@ -847,7 +847,7 @@ class penjualan_list extends penjualan
 		$this->ongkir->Visible = FALSE;
 		$this->_action->Visible = FALSE;
 		$this->status->setVisibility();
-		$this->status_void->setVisibility();
+		$this->status_void->Visible = FALSE;
 		$this->hideFieldsForAddEdit();
 
 		// Global Page Loading event (in userfn*.php)
@@ -1951,7 +1951,6 @@ class penjualan_list extends penjualan
 			$this->updateSort($this->klaim_poin); // klaim_poin
 			$this->updateSort($this->total_penukaran_poin); // total_penukaran_poin
 			$this->updateSort($this->status); // status
-			$this->updateSort($this->status_void); // status_void
 			$this->setStartRecordNumber(1); // Reset start position
 		}
 	}
@@ -2001,7 +2000,6 @@ class penjualan_list extends penjualan
 				$this->klaim_poin->setSort("");
 				$this->total_penukaran_poin->setSort("");
 				$this->status->setSort("");
-				$this->status_void->setSort("");
 			}
 
 			// Reset start position
@@ -3495,11 +3493,6 @@ class penjualan_list extends penjualan
 			$this->status->LinkCustomAttributes = "";
 			$this->status->HrefValue = "";
 			$this->status->TooltipValue = "";
-
-			// status_void
-			$this->status_void->LinkCustomAttributes = "";
-			$this->status_void->HrefValue = "";
-			$this->status_void->TooltipValue = "";
 		}
 
 		// Call Row Rendered event

@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 // Autoload
 include_once "autoload.php";
@@ -319,7 +319,7 @@ Page_Rendering();
 					foreach ($query as $rs) {
 						//echo each <tr>
 							// $stok_awal = ExecuteScalar("SELECT stok_awal FROM kartustok WHERE (kartustok.tanggal BETWEEN '$dateFrom' AND '$dateTo') AND m_klinik.nama_klinik = '$Inputklinik' AND id_kartustok IN (SELECT MAX(id_kartustok) FROM kartustok GROUP BY id_barang) GROUP BY id_barang");
-							$stok_awal = ExecuteScalar("SELECT stok_awal FROM kartustok WHERE id_barang = ".$rs['id_barang']." AND id_klinik = ".$rs['id_klinik']." AND (tanggal BETWEEN '$dateFrom' AND '$dateTo') ORDER BY id_kartustok ASC LIMIT 1");
+							$stok_awal = ExecuteScalar("SELECT stok_awal FROM kartustok WHERE id_barang = ".$rs['id_barang']." AND id_klinik = ".$rs['id_klinik']." AND (tanggal BETWEEN '$dateFrom' AND '$dateTo') ORDER BY tanggal ASC, id_kartustok ASC LIMIT 1");
 							$jml_masuk = ExecuteScalar("SELECT SUM(masuk) FROM kartustok WHERE id_barang = ".$rs['id_barang']." AND id_klinik = ".$rs['id_klinik']." AND (tanggal BETWEEN '$dateFrom' AND '$dateTo')");
 							$jml_masuk_penyesuaian = ExecuteScalar("SELECT SUM(masuk_penyesuaian) FROM kartustok WHERE id_barang = ".$rs['id_barang']." AND id_klinik = ".$rs['id_klinik']." AND (tanggal BETWEEN '$dateFrom' AND '$dateTo')");
 							$jml_keluar = ExecuteScalar("SELECT SUM(keluar) FROM kartustok WHERE id_barang = ".$rs['id_barang']." AND id_klinik = ".$rs['id_klinik']." AND (tanggal BETWEEN '$dateFrom' AND '$dateTo')");
@@ -327,14 +327,14 @@ Page_Rendering();
 							$jml_keluar_penyesuaian = ExecuteScalar("SELECT SUM(keluar_penyesuaian) FROM kartustok WHERE id_barang = ".$rs['id_barang']." AND id_klinik = ".$rs['id_klinik']." AND (tanggal BETWEEN '$dateFrom' AND '$dateTo')");
 							$jml_keluar_kirim = ExecuteScalar("SELECT SUM(keluar_kirim) FROM kartustok WHERE id_barang = ".$rs['id_barang']." AND id_klinik = ".$rs['id_klinik']." AND (tanggal BETWEEN '$dateFrom' AND '$dateTo')");
 							$jml_retur = ExecuteScalar("SELECT SUM(retur) FROM kartustok WHERE id_barang = ".$rs['id_barang']." AND id_klinik = ".$rs['id_klinik']." AND (tanggal BETWEEN '$dateFrom' AND '$dateTo')");
-							$stok_akhir = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = ".$rs['id_barang']." AND id_klinik = ".$rs['id_klinik']." AND (tanggal BETWEEN '$dateFrom' AND '$dateTo') ORDER BY id_kartustok DESC LIMIT 1 ");										
+							$stok_akhir = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = ".$rs['id_barang']." AND id_klinik = ".$rs['id_klinik']." AND (tanggal BETWEEN '$dateFrom' AND '$dateTo') ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1 ");										
 						echo "<tr>
 								<td align='center'>" . $no . ".</td>
 								<td align='center'>" . $rs["nama_barang"] . "</td>
 								<td align='center'>" . $rs["nama_klinik"] . "</td>								
 								<td align='center'>" ; 
 											if(is_null($stok_awal) OR $stok_awal == ''){
-												$stok_awal_sebelumnya = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = ".$rs['id_barang']." AND id_klinik = ".$rs['id_klinik']." AND tanggal < '$dateFrom' ORDER BY id_kartustok DESC LIMIT 1");
+												$stok_awal_sebelumnya = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = ".$rs['id_barang']." AND id_klinik = ".$rs['id_klinik']." AND tanggal < '$dateFrom' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
 												if(is_null($stok_awal_sebelumnya) OR $stok_awal_sebelumnya == ''){
 													echo "0.00";
 												}else{
@@ -387,7 +387,7 @@ Page_Rendering();
 											}echo  "</td>		
 								<td align='center'>" ; 
 											if(is_null($stok_akhir) OR $stok_akhir == ''){
-												$stok_akhir_sebelumnya = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = ".$rs['id_barang']." AND id_klinik = ".$rs['id_klinik']." AND tanggal < '$dateTo' ORDER BY id_kartustok DESC LIMIT 1");
+												$stok_akhir_sebelumnya = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = ".$rs['id_barang']." AND id_klinik = ".$rs['id_klinik']." AND tanggal < '$dateTo' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
 												if(is_null($stok_akhir_sebelumnya) OR $stok_akhir_sebelumnya == ''){
 													echo "0.00";
 												}else{

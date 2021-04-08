@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 ?>
 <?php if ($kirimbarang->Visible) { ?>
 <div class="ew-master-div">
@@ -61,6 +61,16 @@ namespace PHPMaker2020\klinik_latest_26_03_21;
 			<td <?php echo $kirimbarang->tanggal->cellAttributes() ?>>
 <span id="el_kirimbarang_tanggal">
 <span<?php echo $kirimbarang->tanggal->viewAttributes() ?>><?php echo $kirimbarang->tanggal->getViewValue() ?></span>
+</span>
+</td>
+		</tr>
+<?php } ?>
+<?php if ($kirimbarang->status_kirim->Visible) { // status_kirim ?>
+		<tr id="r_status_kirim">
+			<td class="<?php echo $kirimbarang->TableLeftColumnClass ?>"><?php echo $kirimbarang->status_kirim->caption() ?></td>
+			<td <?php echo $kirimbarang->status_kirim->cellAttributes() ?>>
+<span id="el_kirimbarang_status_kirim">
+<span<?php echo $kirimbarang->status_kirim->viewAttributes() ?>><?php echo $kirimbarang->status_kirim->getViewValue() ?></span>
 </span>
 </td>
 		</tr>

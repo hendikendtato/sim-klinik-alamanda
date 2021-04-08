@@ -1,0 +1,58 @@
+	@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@200;300&display=swap');
+
+	#print {
+		width: 284px;
+		font-family: 'Open Sans';
+		font-size: 14px;
+		color: rgb(38, 12, 12);
+		font-weight: 300;
+		font-weight: bold;
+		padding: 10px;
+	}
+
+	hr {
+		margin-top: 4px;
+		margin-bottom: 4px;
+	}
+	
+	.btn {
+		margin: 10px 5px;
+	}
+
+	.table-header {
+		table-layout: fixed;
+		word-wrap: break-word;
+		width: 100%;
+	}
+
+	.table-header>td {
+		width: 240px;
+	}
+
+	.daftar-produk {
+		text-align: right;
+		width: 100%;
+	}
+
+	.daftar-produk tr td:nth-child(2) {
+		text-align: left;
+		width: 80px;
+	}
+
+	.dp-produk {
+		
+	}
+
+	.logo-alamanda {
+		width: 100px;
+		margin-bottom: 5px;
+	}
+
+	.total {
+		width: 100%;
+		text-align: right;
+	}
+
+	.footer {
+		text-align: center;
+	}

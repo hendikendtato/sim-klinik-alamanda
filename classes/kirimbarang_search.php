@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 /**
  * Page class
@@ -11,7 +11,7 @@ class kirimbarang_search extends kirimbarang
 	public $PageID = "search";
 
 	// Project ID
-	public $ProjectID = "{7561FF98-88C2-4B76-B5C9-C5F11860BCF7}";
+	public $ProjectID = "{4E2A1FD4-0074-4494-903F-430527A228F4}";
 
 	// Table name
 	public $TableName = 'kirimbarang';
@@ -671,6 +671,7 @@ class kirimbarang_search extends kirimbarang
 		$this->id_klinik->setVisibility();
 		$this->id_pegawai->setVisibility();
 		$this->tanggal->setVisibility();
+		$this->status_kirim->setVisibility();
 		$this->keterangan->setVisibility();
 		$this->hideFieldsForAddEdit();
 
@@ -748,6 +749,7 @@ class kirimbarang_search extends kirimbarang
 		$this->buildSearchUrl($srchUrl, $this->id_klinik); // id_klinik
 		$this->buildSearchUrl($srchUrl, $this->id_pegawai); // id_pegawai
 		$this->buildSearchUrl($srchUrl, $this->tanggal); // tanggal
+		$this->buildSearchUrl($srchUrl, $this->status_kirim); // status_kirim
 		$this->buildSearchUrl($srchUrl, $this->keterangan); // keterangan
 		if ($srchUrl != "")
 			$srchUrl .= "&";
@@ -835,6 +837,8 @@ class kirimbarang_search extends kirimbarang
 			$got = TRUE;
 		if ($this->tanggal->AdvancedSearch->post())
 			$got = TRUE;
+		if ($this->status_kirim->AdvancedSearch->post())
+			$got = TRUE;
 		if ($this->keterangan->AdvancedSearch->post())
 			$got = TRUE;
 		return $got;
@@ -858,6 +862,7 @@ class kirimbarang_search extends kirimbarang
 		// id_klinik
 		// id_pegawai
 		// tanggal
+		// status_kirim
 		// keterangan
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
@@ -877,7 +882,7 @@ class kirimbarang_search extends kirimbarang
 				if ($this->id_po->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id_po`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
 					$lookupFilter = function() {
-						return (CurrentPageID() == "edit" || CurrentPageID() == "add") ? "status_po = 'open'" : "";
+						return (CurrentPageID() == "add") ? "status_po = 'open'" : "";
 					};
 					$lookupFilter = $lookupFilter->bindTo($this);
 					$sqlWrk = $this->id_po->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
@@ -967,6 +972,14 @@ class kirimbarang_search extends kirimbarang
 			$this->tanggal->ViewValue = FormatDateTime($this->tanggal->ViewValue, 0);
 			$this->tanggal->ViewCustomAttributes = "";
 
+			// status_kirim
+			if (strval($this->status_kirim->CurrentValue) != "") {
+				$this->status_kirim->ViewValue = $this->status_kirim->optionCaption($this->status_kirim->CurrentValue);
+			} else {
+				$this->status_kirim->ViewValue = NULL;
+			}
+			$this->status_kirim->ViewCustomAttributes = "";
+
 			// keterangan
 			$this->keterangan->ViewValue = $this->keterangan->CurrentValue;
 			$this->keterangan->ViewCustomAttributes = "";
@@ -1006,6 +1019,11 @@ class kirimbarang_search extends kirimbarang
 			$this->tanggal->HrefValue = "";
 			$this->tanggal->TooltipValue = "";
 
+			// status_kirim
+			$this->status_kirim->LinkCustomAttributes = "";
+			$this->status_kirim->HrefValue = "";
+			$this->status_kirim->TooltipValue = "";
+
 			// keterangan
 			$this->keterangan->LinkCustomAttributes = "";
 			$this->keterangan->HrefValue = "";
@@ -1043,7 +1061,7 @@ class kirimbarang_search extends kirimbarang
 					$filterWrk = "`id_po`" . SearchString("=", $this->id_po->AdvancedSearch->SearchValue, DATATYPE_NUMBER, "");
 				}
 				$lookupFilter = function() {
-					return (CurrentPageID() == "edit" || CurrentPageID() == "add") ? "status_po = 'open'" : "";
+					return (CurrentPageID() == "add") ? "status_po = 'open'" : "";
 				};
 				$lookupFilter = $lookupFilter->bindTo($this);
 				$sqlWrk = $this->id_po->Lookup->getSql(TRUE, $filterWrk, $lookupFilter, $this);
@@ -1132,6 +1150,10 @@ class kirimbarang_search extends kirimbarang
 			$this->tanggal->EditValue = HtmlEncode(FormatDateTime(UnFormatDateTime($this->tanggal->AdvancedSearch->SearchValue, 0), 8));
 			$this->tanggal->PlaceHolder = RemoveHtml($this->tanggal->caption());
 
+			// status_kirim
+			$this->status_kirim->EditCustomAttributes = "";
+			$this->status_kirim->EditValue = $this->status_kirim->options(FALSE);
+
 			// keterangan
 			$this->keterangan->EditAttrs["class"] = "form-control";
 			$this->keterangan->EditCustomAttributes = "";
@@ -1186,6 +1208,7 @@ class kirimbarang_search extends kirimbarang
 		$this->id_klinik->AdvancedSearch->load();
 		$this->id_pegawai->AdvancedSearch->load();
 		$this->tanggal->AdvancedSearch->load();
+		$this->status_kirim->AdvancedSearch->load();
 		$this->keterangan->AdvancedSearch->load();
 	}
 
@@ -1216,7 +1239,7 @@ class kirimbarang_search extends kirimbarang
 			switch ($fld->FieldVar) {
 				case "x_id_po":
 					$lookupFilter = function() {
-						return (CurrentPageID() == "edit" || CurrentPageID() == "add") ? "status_po = 'open'" : "";
+						return (CurrentPageID() == "add") ? "status_po = 'open'" : "";
 					};
 					$lookupFilter = $lookupFilter->bindTo($this);
 					break;
@@ -1225,6 +1248,8 @@ class kirimbarang_search extends kirimbarang
 				case "x_id_klinik":
 					break;
 				case "x_id_pegawai":
+					break;
+				case "x_status_kirim":
 					break;
 				default:
 					$lookupFilter = "";

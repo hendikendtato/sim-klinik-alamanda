@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 /**
  * Page class
@@ -11,7 +11,7 @@ class report_rekap_summary extends report_rekap
 	public $PageID = "summary";
 
 	// Project ID
-	public $ProjectID = "{7561FF98-88C2-4B76-B5C9-C5F11860BCF7}";
+	public $ProjectID = "{4E2A1FD4-0074-4494-903F-430527A228F4}";
 
 	// Table name
 	public $TableName = 'report_rekap';
@@ -698,6 +698,7 @@ class report_rekap_summary extends report_rekap
 		$this->keluar_penyesuaian->setVisibility();
 		$this->id_kirimbarang->setVisibility();
 		$this->keluar_kirim->setVisibility();
+		$this->id_terimagudang->setVisibility();
 
 		// Set up groups per page dynamically
 		$this->setupDisplayGroups();
@@ -836,6 +837,7 @@ class report_rekap_summary extends report_rekap
 			$data["keluar_penyesuaian"] = $record['keluar_penyesuaian'];
 			$data["id_kirimbarang"] = $record['id_kirimbarang'];
 			$data["keluar_kirim"] = $record['keluar_kirim'];
+			$data["id_terimagudang"] = $record['id_terimagudang'];
 			$this->Rows[] = $data;
 		}
 		$this->id_kartustok->setDbValue($record['id_kartustok']);
@@ -857,6 +859,7 @@ class report_rekap_summary extends report_rekap
 		$this->keluar_penyesuaian->setDbValue($record['keluar_penyesuaian']);
 		$this->id_kirimbarang->setDbValue($record['id_kirimbarang']);
 		$this->keluar_kirim->setDbValue($record['keluar_kirim']);
+		$this->id_terimagudang->setDbValue($record['id_terimagudang']);
 	}
 
 	// Render row
@@ -921,6 +924,7 @@ class report_rekap_summary extends report_rekap
 				$this->keluar_penyesuaian->Count = $this->TotalCount;
 				$this->id_kirimbarang->Count = $this->TotalCount;
 				$this->keluar_kirim->Count = $this->TotalCount;
+				$this->id_terimagudang->Count = $this->TotalCount;
 				$rsagg->close();
 				$hasSummary = TRUE;
 			}
@@ -956,6 +960,7 @@ class report_rekap_summary extends report_rekap
 		// keluar_penyesuaian
 		// id_kirimbarang
 		// keluar_kirim
+		// id_terimagudang
 
 		if ($this->RowType == ROWTYPE_SEARCH) { // Search row
 		} elseif ($this->RowType == ROWTYPE_TOTAL && !($this->RowTotalType == ROWTOTAL_GROUP && $this->RowTotalSubType == ROWTOTAL_HEADER)) { // Summary row
@@ -1066,6 +1071,9 @@ class report_rekap_summary extends report_rekap
 
 			// keluar_kirim
 			$this->keluar_kirim->HrefValue = "";
+
+			// id_terimagudang
+			$this->id_terimagudang->HrefValue = "";
 		} else {
 			if ($this->RowTotalType == ROWTOTAL_GROUP && $this->RowTotalSubType == ROWTOTAL_HEADER) {
 			$this->RowAttrs["data-group"] = $this->id_barang->groupValue(); // Set up group attribute
@@ -1202,6 +1210,12 @@ class report_rekap_summary extends report_rekap
 			$this->keluar_kirim->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
 			$this->keluar_kirim->ViewCustomAttributes = "";
 
+			// id_terimagudang
+			$this->id_terimagudang->ViewValue = $this->id_terimagudang->CurrentValue;
+			$this->id_terimagudang->ViewValue = FormatNumber($this->id_terimagudang->ViewValue, 0, -2, -2, -2);
+			$this->id_terimagudang->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
+			$this->id_terimagudang->ViewCustomAttributes = "";
+
 			// id_barang
 			$this->id_barang->LinkCustomAttributes = "";
 			$this->id_barang->HrefValue = "";
@@ -1276,6 +1290,11 @@ class report_rekap_summary extends report_rekap
 			$this->keluar_kirim->LinkCustomAttributes = "";
 			$this->keluar_kirim->HrefValue = "";
 			$this->keluar_kirim->TooltipValue = "";
+
+			// id_terimagudang
+			$this->id_terimagudang->LinkCustomAttributes = "";
+			$this->id_terimagudang->HrefValue = "";
+			$this->id_terimagudang->TooltipValue = "";
 		}
 
 		// Call Cell_Rendered event
@@ -1470,6 +1489,15 @@ class report_rekap_summary extends report_rekap
 			$hrefValue = &$this->keluar_kirim->HrefValue;
 			$linkAttrs = &$this->keluar_kirim->LinkAttrs;
 			$this->Cell_Rendered($this->keluar_kirim, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
+
+			// id_terimagudang
+			$currentValue = $this->id_terimagudang->CurrentValue;
+			$viewValue = &$this->id_terimagudang->ViewValue;
+			$viewAttrs = &$this->id_terimagudang->ViewAttrs;
+			$cellAttrs = &$this->id_terimagudang->CellAttrs;
+			$hrefValue = &$this->id_terimagudang->HrefValue;
+			$linkAttrs = &$this->id_terimagudang->LinkAttrs;
+			$this->Cell_Rendered($this->id_terimagudang, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
 		}
 
 		// Call Row_Rendered event
@@ -1547,6 +1575,8 @@ class report_rekap_summary extends report_rekap
 		if ($this->id_kirimbarang->Visible)
 			$this->DetailColumnCount += 1;
 		if ($this->keluar_kirim->Visible)
+			$this->DetailColumnCount += 1;
+		if ($this->id_terimagudang->Visible)
 			$this->DetailColumnCount += 1;
 	}
 
@@ -2190,6 +2220,7 @@ class report_rekap_summary extends report_rekap
 			$this->keluar_penyesuaian->setSort("");
 			$this->id_kirimbarang->setSort("");
 			$this->keluar_kirim->setSort("");
+			$this->id_terimagudang->setSort("");
 
 		// Check for an Order parameter
 		} elseif ($orderBy != "") {
@@ -2210,6 +2241,7 @@ class report_rekap_summary extends report_rekap
 			$this->updateSort($this->keluar_penyesuaian); // keluar_penyesuaian
 			$this->updateSort($this->id_kirimbarang); // id_kirimbarang
 			$this->updateSort($this->keluar_kirim); // keluar_kirim
+			$this->updateSort($this->id_terimagudang); // id_terimagudang
 			$sortSql = $this->sortSql();
 			$this->setOrderBy($sortSql);
 			$this->setStartGroup(1);

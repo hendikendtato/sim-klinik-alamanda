@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 // Autoload
 include_once "autoload.php";
@@ -82,6 +82,14 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $kartustok_edit->id_terimabarang->caption(), $kartustok_edit->id_terimabarang->RequiredErrorMessage)) ?>");
 			<?php } ?>
+			<?php if ($kartustok_edit->id_terimagudang->Required) { ?>
+				elm = this.getElements("x" + infix + "_id_terimagudang");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $kartustok_edit->id_terimagudang->caption(), $kartustok_edit->id_terimagudang->RequiredErrorMessage)) ?>");
+			<?php } ?>
+				elm = this.getElements("x" + infix + "_id_terimagudang");
+				if (elm && !ew.checkInteger(elm.value))
+					return this.onError(elm, "<?php echo JsEncode($kartustok_edit->id_terimagudang->errorMessage()) ?>");
 			<?php if ($kartustok_edit->id_penjualan->Required) { ?>
 				elm = this.getElements("x" + infix + "_id_penjualan");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
@@ -215,6 +223,9 @@ loadjs.ready("head", function() {
 	fkartustokedit.lists["x_id_klinik"].options = <?php echo JsonEncode($kartustok_edit->id_klinik->lookupOptions()) ?>;
 	fkartustokedit.lists["x_id_terimabarang"] = <?php echo $kartustok_edit->id_terimabarang->Lookup->toClientList($kartustok_edit) ?>;
 	fkartustokedit.lists["x_id_terimabarang"].options = <?php echo JsonEncode($kartustok_edit->id_terimabarang->lookupOptions()) ?>;
+	fkartustokedit.lists["x_id_terimagudang"] = <?php echo $kartustok_edit->id_terimagudang->Lookup->toClientList($kartustok_edit) ?>;
+	fkartustokedit.lists["x_id_terimagudang"].options = <?php echo JsonEncode($kartustok_edit->id_terimagudang->lookupOptions()) ?>;
+	fkartustokedit.autoSuggests["x_id_terimagudang"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
 	fkartustokedit.lists["x_id_penjualan"] = <?php echo $kartustok_edit->id_penjualan->Lookup->toClientList($kartustok_edit) ?>;
 	fkartustokedit.lists["x_id_penjualan"].options = <?php echo JsonEncode($kartustok_edit->id_penjualan->lookupOptions()) ?>;
 	fkartustokedit.autoSuggests["x_id_penjualan"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
@@ -333,6 +344,30 @@ loadjs.ready(["fkartustokedit", "datetimepicker"], function() {
 <?php echo $kartustok_edit->id_terimabarang->Lookup->getParamTag($kartustok_edit, "p_x_id_terimabarang") ?>
 </span>
 <?php echo $kartustok_edit->id_terimabarang->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
+<?php if ($kartustok_edit->id_terimagudang->Visible) { // id_terimagudang ?>
+	<div id="r_id_terimagudang" class="form-group row">
+		<label id="elh_kartustok_id_terimagudang" class="<?php echo $kartustok_edit->LeftColumnClass ?>"><?php echo $kartustok_edit->id_terimagudang->caption() ?><?php echo $kartustok_edit->id_terimagudang->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $kartustok_edit->RightColumnClass ?>"><div <?php echo $kartustok_edit->id_terimagudang->cellAttributes() ?>>
+<span id="el_kartustok_id_terimagudang">
+<?php
+$onchange = $kartustok_edit->id_terimagudang->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$kartustok_edit->id_terimagudang->EditAttrs["onchange"] = "";
+?>
+<span id="as_x_id_terimagudang">
+	<input type="text" class="form-control" name="sv_x_id_terimagudang" id="sv_x_id_terimagudang" value="<?php echo RemoveHtml($kartustok_edit->id_terimagudang->EditValue) ?>" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($kartustok_edit->id_terimagudang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_edit->id_terimagudang->getPlaceHolder()) ?>"<?php echo $kartustok_edit->id_terimagudang->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="kartustok" data-field="x_id_terimagudang" data-value-separator="<?php echo $kartustok_edit->id_terimagudang->displayValueSeparatorAttribute() ?>" name="x_id_terimagudang" id="x_id_terimagudang" value="<?php echo HtmlEncode($kartustok_edit->id_terimagudang->CurrentValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fkartustokedit"], function() {
+	fkartustokedit.createAutoSuggest({"id":"x_id_terimagudang","forceSelect":false});
+});
+</script>
+<?php echo $kartustok_edit->id_terimagudang->Lookup->getParamTag($kartustok_edit, "p_x_id_terimagudang") ?>
+</span>
+<?php echo $kartustok_edit->id_terimagudang->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 <?php if ($kartustok_edit->id_penjualan->Visible) { // id_penjualan ?>

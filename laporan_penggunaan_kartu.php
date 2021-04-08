@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_26_03_21;
+namespace PHPMaker2020\klinik_latest_08_04_21;
 
 // Autoload
 include_once "autoload.php";
@@ -143,12 +143,6 @@ Page_Rendering();
 				<button class="btn btn-primary btn-md p-2" type="submit" name="srhDate">
 				Search 
 				<i class="fa fa-search h-3"></i>
-				</button>
-			</li>
-			<li class="d-inline-block">
-				<button class="btn btn-primary btn-md p-2"onclick="exportTableToExcel('printTable')">
-				Export Table Data To Excel File
-				<i class="fa fa-file-excel-o"></i>
 				</button>
 			</li>
 		</ul>
