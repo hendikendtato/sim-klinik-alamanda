@@ -1712,8 +1712,8 @@ class terimabarang_add extends terimabarang
 		//echo "Page Render";
 		$levelid = CurrentUserLevel();
 		if($levelid != '-1') {
-			$this->id_supplier->Disabled = TRUE;
-			$this->id_klinik->Disabled = TRUE;
+			$this->id_supplier->ReadOnly = TRUE;
+			$this->id_klinik->ReadOnly = TRUE;
 		} 	
 	}
 

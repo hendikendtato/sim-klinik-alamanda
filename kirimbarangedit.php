@@ -144,7 +144,30 @@ loadjs.ready("head", function() {
 loadjs.ready("head", function() {
 
 	// Client script
-	$("div[id=r_status_kirim]").css({display:"none"}),$("#btn-action").after('&nbsp;<button class="btn btn-info ew-btn" name="btn-action-draft" id="btn-action-draft" type="submit" style="height: 50px !important; width: 20% !important;">Draft</button>'),$("#btn-action").click(function(){$('input[name="x_status_kirim"][value="dikirim"]').prop("checked",!0),$('input[name="x_status_kirim"][value="draft"]').prop("checked",null)}),$("#btn-action-draft").click(function(){$('input[name="x_status_kirim"][value="dikirim"]').prop("checked",null),$('input[name="x_status_kirim"][value="draft"]').prop("checked",!0)});
+	// Write your client script here, no need to add script tags.
+	//hidden status kirim
+
+	$('div[id=r_status_kirim]').css({"display": "none"});
+
+	//tambah button draft
+	$("#btn-action").after('&nbsp;<button class="btn btn-info ew-btn" name="btn-action-draft" id="btn-action-draft" type="submit" style="height: 50px !important; width: 20% !important;">Draft</button>');
+
+	//if click button add
+	$('#btn-action').click(function() {
+		$('input[name="x_status_kirim"][value="dikirim"]').prop('checked', true);
+		$('input[name="x_status_kirim"][value="draft"]').prop('checked', null);
+	});
+
+	//if click button draft
+	$('#btn-action-draft').click(function() {
+		$('input[name="x_status_kirim"][value="dikirim"]').prop('checked', null);
+		$('input[name="x_status_kirim"][value="draft"]').prop('checked', true);
+	});
+	var userlevel = <?php echo CurrentUserLevel(); ?>;
+	if(userlevel != '-1'){
+		$('select[name="x_id_supplier"]').prop('readonly', true);
+		$('select[name="x_id_klinik"]').prop('readonly', true);
+	}
 });
 </script>
 <?php $kirimbarang_edit->showPageHeader(); ?>
