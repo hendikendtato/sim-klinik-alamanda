@@ -1,4 +1,4 @@
-<?php namespace PHPMaker2020\klinik_latest_08_04_21; ?>
+<?php namespace PHPMaker2020\klinik_latest_09_04_21; ?>
 <form id="ew-email-form" class="ew-horizontal ew-form ew-email-form" action="<?php echo CurrentPageName() ?>">
 <?php if ($Page->CheckToken) { ?>
 <input type="hidden" name="<?php echo Config("TOKEN_NAME") ?>" value="<?php echo $Page->Token ?>">

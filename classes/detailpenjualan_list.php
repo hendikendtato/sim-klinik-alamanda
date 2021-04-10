@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_08_04_21;
+namespace PHPMaker2020\klinik_latest_09_04_21;
 
 /**
  * Page class
@@ -11,7 +11,7 @@ class detailpenjualan_list extends detailpenjualan
 	public $PageID = "list";
 
 	// Project ID
-	public $ProjectID = "{4E2A1FD4-0074-4494-903F-430527A228F4}";
+	public $ProjectID = "{8C91985A-7590-4658-895B-4BCC6B46002F}";
 
 	// Table name
 	public $TableName = 'detailpenjualan';
@@ -2401,14 +2401,14 @@ class detailpenjualan_list extends detailpenjualan
 				return FALSE;
 			}
 		} else {
-			$id_komposisi = ExecuteScalar("SELECT id_komposisi FROM komposisi WHERE id_barang='10'");
+			$id_komposisi = ExecuteScalar("SELECT id_komposisi FROM komposisi WHERE id_barang='".intval($rs["id_barang"])."'");
 			$detail_barang = ExecuteRows("SELECT id_barang, jumlah FROM detailkomposisi WHERE id_komposisi = '$id_komposisi'");
 			$sMsG = "";
 			$i = 0;
 			foreach($detail_barang AS $dk){
 				$id_barang = $dk['id_barang'];
 				$jumlah = $dk['jumlah'];
-				$stok_barang = ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_barang = '$id_barang' AND id_klinik = '21'");
+				$stok_barang = ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik'");
 				$jumlah_get_stok = $rs["qty"] * $jumlah;
 
 				//var_dump($jumlah_get_stok);

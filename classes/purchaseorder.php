@@ -1,4 +1,4 @@
-<?php namespace PHPMaker2020\klinik_latest_08_04_21; ?>
+<?php namespace PHPMaker2020\klinik_latest_09_04_21; ?>
 <?php
 
 /**
@@ -1259,18 +1259,11 @@ class purchaseorder extends DbTable
 		// To view properties of field class, use:
 		//var_dump($this-><FieldName>);
 
-		$id_klinik = CurrentUserInfo("id_klinik");
-		if($id_klinik != '' OR $id_klinik != FALSE){
-			$this->idklinik->CurrentValue = $id_klinik ;
-			$this->idklinik->ReadOnly = TRUE; 
-		}
 		$id_pegawai = CurrentUserInfo("id_pegawai");
 		if($id_pegawai != '' OR $id_pegawai != FALSE){
 			$this->idstaff_po->CurrentValue = $id_pegawai ;
 			$this->idstaff_po->ReadOnly = TRUE; 
 		}
-		$default_support = ExecuteScalar("SELECT id_klinik FROM m_klinik WHERE nama_klinik LIKE '%Support%'");
-		$this->id_supplier->CurrentValue = $default_support;
 	}
 
 	// User ID Filtering event

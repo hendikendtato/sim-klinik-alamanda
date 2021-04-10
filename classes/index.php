@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_08_04_21;
+namespace PHPMaker2020\klinik_latest_09_04_21;
 
 /**
  * Class for index
@@ -8,7 +8,7 @@ class index
 {
 
 	// Project ID
-	public $ProjectID = "{4E2A1FD4-0074-4494-903F-430527A228F4}";
+	public $ProjectID = "{8C91985A-7590-4658-895B-4BCC6B46002F}";
 
 	// Messages
 	private $_message = "";

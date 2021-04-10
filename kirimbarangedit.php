@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_08_04_21;
+namespace PHPMaker2020\klinik_latest_09_04_21;
 
 // Autoload
 include_once "autoload.php";
@@ -144,7 +144,7 @@ loadjs.ready("head", function() {
 loadjs.ready("head", function() {
 
 	// Client script
-	$("div[id=r_status_kirim]").css({display:"none"}),$("#btn-action").after('&nbsp;<button class="btn btn-info ew-btn" name="btn-action-draft" id="btn-action-draft" type="submit" style="height: 50px !important; width: 20% !important;">Draft</button>'),$("#btn-action").click(function(){$('input[name="x_status_kirim"][value="dikirim"]').prop("checked",!0),$('input[name="x_status_kirim"][value="draft"]').prop("checked",null)}),$("#btn-action-draft").click(function(){$('input[name="x_status_kirim"][value="dikirim"]').prop("checked",null),$('input[name="x_status_kirim"][value="draft"]').prop("checked",!0)}),$('select[name="x_id_supplier"]').prop("disabled",!0),$('select[name="x_id_klinik"]').prop("disabled",!0);
+	$("div[id=r_status_kirim]").css({display:"none"}),$("#btn-action").after('&nbsp;<button class="btn btn-info ew-btn" name="btn-action-draft" id="btn-action-draft" type="submit" style="height: 50px !important; width: 20% !important;">Draft</button>'),$("#btn-action").click(function(){$('input[name="x_status_kirim"][value="dikirim"]').prop("checked",!0),$('input[name="x_status_kirim"][value="draft"]').prop("checked",null)}),$("#btn-action-draft").click(function(){$('input[name="x_status_kirim"][value="dikirim"]').prop("checked",null),$('input[name="x_status_kirim"][value="draft"]').prop("checked",!0)});
 });
 </script>
 <?php $kirimbarang_edit->showPageHeader(); ?>

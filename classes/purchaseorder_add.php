@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_08_04_21;
+namespace PHPMaker2020\klinik_latest_09_04_21;
 
 /**
  * Page class
@@ -11,7 +11,7 @@ class purchaseorder_add extends purchaseorder
 	public $PageID = "add";
 
 	// Project ID
-	public $ProjectID = "{4E2A1FD4-0074-4494-903F-430527A228F4}";
+	public $ProjectID = "{8C91985A-7590-4658-895B-4BCC6B46002F}";
 
 	// Table name
 	public $TableName = 'purchaseorder';
@@ -1558,6 +1558,13 @@ class purchaseorder_add extends purchaseorder
 	function Page_Render() {
 
 		//echo "Page Render";
+		$id_klinik = CurrentUserInfo("id_klinik");
+		if($id_klinik != '' OR $id_klinik != FALSE){
+			$this->idklinik->CurrentValue = $id_klinik ;
+			$this->idklinik->ReadOnly = TRUE; 
+		}	
+		$default_support = ExecuteScalar("SELECT id_klinik FROM m_klinik WHERE nama_klinik LIKE '%Support%'");
+		$this->id_supplier->CurrentValue = $default_support;
 	}
 
 	// Page Data Rendering event

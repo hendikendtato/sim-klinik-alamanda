@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_08_04_21;
+namespace PHPMaker2020\klinik_latest_09_04_21;
 
 // Autoload
 include_once "autoload.php";
@@ -205,9 +205,9 @@ Page_Rendering();
 							<?php } ?>
 								<select class="custom-select" id="select-periode" name="select-periode">
 									<option selected>Pilih Periode</option>
-									<option value="harian">Harian</option>
-									<option value="mingguan">Mingguan</option>
-									<option value="bulanan">Bulanan</option>
+									<option value="harian">Hari Ini</option>
+									<option value="mingguan">1 Minggu</option>
+									<option value="bulanan">1 Bulan</option>
 								</select>
 							<button class="btn btn-primary btn-md p-2" type="submit" name="periode" id="periode" hidden></button>
 						</form>
