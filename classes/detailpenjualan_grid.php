@@ -3014,7 +3014,7 @@ class detailpenjualan_grid extends detailpenjualan
 		$this->stok->setDbValueDef($rsnew, $this->stok->CurrentValue, NULL, FALSE);
 
 		// qty
-		$this->qty->setDbValueDef($rsnew, $this->qty->CurrentValue, 0, strval($this->qty->CurrentValue) == "");
+		$this->qty->setDbValueDef($rsnew, $this->qty->CurrentValue, 0, FALSE);
 
 		// disc_pr
 		$this->disc_pr->setDbValueDef($rsnew, $this->disc_pr->CurrentValue, NULL, FALSE);

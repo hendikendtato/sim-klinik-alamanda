@@ -1012,7 +1012,7 @@ class pos_antrian_add extends pos_antrian
 		$rsnew = [];
 
 		// nama_pos
-		$this->nama_pos->setDbValueDef($rsnew, $this->nama_pos->CurrentValue, NULL, FALSE);
+		$this->nama_pos->setDbValueDef($rsnew, $this->nama_pos->CurrentValue, "", strval($this->nama_pos->CurrentValue) == "");
 
 		// Call Row Inserting event
 		$rs = ($rsold) ? $rsold->fields : NULL;

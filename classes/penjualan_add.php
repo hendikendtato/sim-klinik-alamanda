@@ -2905,13 +2905,13 @@ class penjualan_add extends penjualan
 		$this->waktu->setDbValueDef($rsnew, UnFormatDateTime($this->waktu->CurrentValue, 7), CurrentDate(), FALSE);
 
 		// diskon_persen
-		$this->diskon_persen->setDbValueDef($rsnew, $this->diskon_persen->CurrentValue, "", FALSE);
+		$this->diskon_persen->setDbValueDef($rsnew, $this->diskon_persen->CurrentValue, NULL, FALSE);
 
 		// diskon_rupiah
-		$this->diskon_rupiah->setDbValueDef($rsnew, $this->diskon_rupiah->CurrentValue, 0, FALSE);
+		$this->diskon_rupiah->setDbValueDef($rsnew, $this->diskon_rupiah->CurrentValue, NULL, FALSE);
 
 		// ppn
-		$this->ppn->setDbValueDef($rsnew, $this->ppn->CurrentValue, 0, FALSE);
+		$this->ppn->setDbValueDef($rsnew, $this->ppn->CurrentValue, NULL, FALSE);
 
 		// total
 		$this->total->setDbValueDef($rsnew, $this->total->CurrentValue, 0, FALSE);
@@ -2935,10 +2935,10 @@ class penjualan_add extends penjualan
 		$this->id_rmd->setDbValueDef($rsnew, $this->id_rmd->CurrentValue, NULL, FALSE);
 
 		// metode_pembayaran
-		$this->metode_pembayaran->setDbValueDef($rsnew, $this->metode_pembayaran->CurrentValue, "", FALSE);
+		$this->metode_pembayaran->setDbValueDef($rsnew, $this->metode_pembayaran->CurrentValue, NULL, FALSE);
 
 		// id_bank
-		$this->id_bank->setDbValueDef($rsnew, $this->id_bank->CurrentValue, 0, FALSE);
+		$this->id_bank->setDbValueDef($rsnew, $this->id_bank->CurrentValue, NULL, FALSE);
 
 		// id_kartu
 		$this->id_kartu->setDbValueDef($rsnew, $this->id_kartu->CurrentValue, NULL, FALSE);
@@ -2959,10 +2959,10 @@ class penjualan_add extends penjualan
 		$this->dokter->setDbValueDef($rsnew, $this->dokter->CurrentValue, NULL, FALSE);
 
 		// id_kartubank
-		$this->id_kartubank->setDbValueDef($rsnew, $this->id_kartubank->CurrentValue, 0, FALSE);
+		$this->id_kartubank->setDbValueDef($rsnew, $this->id_kartubank->CurrentValue, NULL, FALSE);
 
 		// id_kas
-		$this->id_kas->setDbValueDef($rsnew, $this->id_kas->CurrentValue, 0, FALSE);
+		$this->id_kas->setDbValueDef($rsnew, $this->id_kas->CurrentValue, NULL, FALSE);
 
 		// charge
 		$this->charge->setDbValueDef($rsnew, $this->charge->CurrentValue, NULL, FALSE);
@@ -2980,7 +2980,7 @@ class penjualan_add extends penjualan
 		$this->_action->setDbValueDef($rsnew, $this->_action->CurrentValue, NULL, FALSE);
 
 		// status
-		$this->status->setDbValueDef($rsnew, $this->status->CurrentValue, "", FALSE);
+		$this->status->setDbValueDef($rsnew, $this->status->CurrentValue, NULL, FALSE);
 
 		// Call Row Inserting event
 		$rs = ($rsold) ? $rsold->fields : NULL;

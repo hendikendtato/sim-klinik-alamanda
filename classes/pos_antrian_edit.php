@@ -1066,7 +1066,7 @@ class pos_antrian_edit extends pos_antrian
 			$rsnew = [];
 
 			// nama_pos
-			$this->nama_pos->setDbValueDef($rsnew, $this->nama_pos->CurrentValue, NULL, $this->nama_pos->ReadOnly);
+			$this->nama_pos->setDbValueDef($rsnew, $this->nama_pos->CurrentValue, "", $this->nama_pos->ReadOnly);
 
 			// Call Row Updating event
 			$updateRow = $this->Row_Updating($rsold, $rsnew);

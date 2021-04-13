@@ -1391,7 +1391,7 @@ class m_member_add extends m_member
 		$this->id_klinik->setDbValueDef($rsnew, $this->id_klinik->CurrentValue, 0, strval($this->id_klinik->CurrentValue) == "");
 
 		// id_pelanggan
-		$this->id_pelanggan->setDbValueDef($rsnew, $this->id_pelanggan->CurrentValue, 0, FALSE);
+		$this->id_pelanggan->setDbValueDef($rsnew, $this->id_pelanggan->CurrentValue, NULL, FALSE);
 
 		// jenis_member
 		$this->jenis_member->setDbValueDef($rsnew, $this->jenis_member->CurrentValue, NULL, FALSE);

@@ -1066,7 +1066,7 @@ class m_bank_edit extends m_bank
 			$rsnew = [];
 
 			// nama_bank
-			$this->nama_bank->setDbValueDef($rsnew, $this->nama_bank->CurrentValue, NULL, $this->nama_bank->ReadOnly);
+			$this->nama_bank->setDbValueDef($rsnew, $this->nama_bank->CurrentValue, "", $this->nama_bank->ReadOnly);
 
 			// Call Row Updating event
 			$updateRow = $this->Row_Updating($rsold, $rsnew);

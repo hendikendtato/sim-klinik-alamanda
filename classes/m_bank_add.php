@@ -1013,7 +1013,7 @@ class m_bank_add extends m_bank
 		$rsnew = [];
 
 		// nama_bank
-		$this->nama_bank->setDbValueDef($rsnew, $this->nama_bank->CurrentValue, NULL, FALSE);
+		$this->nama_bank->setDbValueDef($rsnew, $this->nama_bank->CurrentValue, "", strval($this->nama_bank->CurrentValue) == "");
 
 		// Call Row Inserting event
 		$rs = ($rsold) ? $rsold->fields : NULL;

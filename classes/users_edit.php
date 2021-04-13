@@ -1354,7 +1354,7 @@ class users_edit extends users
 			$this->id_klinik->setDbValueDef($rsnew, $this->id_klinik->CurrentValue, NULL, $this->id_klinik->ReadOnly);
 
 			// id_pegawai
-			$this->id_pegawai->setDbValueDef($rsnew, $this->id_pegawai->CurrentValue, NULL, $this->id_pegawai->ReadOnly);
+			$this->id_pegawai->setDbValueDef($rsnew, $this->id_pegawai->CurrentValue, 0, $this->id_pegawai->ReadOnly);
 
 			// username
 			$this->username->setDbValueDef($rsnew, $this->username->CurrentValue, NULL, $this->username->ReadOnly);

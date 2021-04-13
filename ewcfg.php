@@ -161,7 +161,7 @@ $CONFIG = [
 
 	// General
 	"UNFORMAT_YEAR" => 50, // Unformat year
-	"RANDOM_KEY" => '1ERmA2UR4u6it3iI', // Random key for encryption
+	"RANDOM_KEY" => 'YyIYvR1oy2QYYjEK', // Random key for encryption
 	"ENCRYPTION_KEY" => '', // Encryption key for data protection
 	"PROJECT_STYLESHEET_FILENAME" => "css/klinik_latest_09_04_21.css", // Project stylesheet file name
 	"PROJECT_CHARSET" => "utf-8", // Project charset
@@ -218,7 +218,7 @@ $CONFIG = [
 
 	// Database connection info
 	"CONNECTION_INFO" => [
-		"DB" => ["id" => "DB", "type" => "MYSQL", "qs" => "`", "qe" => "`", "host" => "159.65.2.14", "port" => 3306, "user" => "regiadi", "pass" => "mysql-regiadi", "db" => "si_klinik_alamanda_dev"]
+		"DB" => ["id" => "DB", "type" => "MYSQL", "qs" => "`", "qe" => "`", "host" => "159.65.2.14", "port" => 3306, "user" => "regiadi", "pass" => "mysql-regiadi", "db" => "si_klinik_alamanda"]
 	],
 
 	// Database error function

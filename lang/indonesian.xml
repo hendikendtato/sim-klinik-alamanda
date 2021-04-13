@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<ew-language date="2021/4/10" version="16.0.1" id="id" name="Indonesian" desc="Indonesian" author="e.World Technology Ltd.">
+<ew-language date="2021/4/13" version="16.0.1" id="id" name="Indonesian" desc="Indonesian" author="e.World Technology Ltd.">
   <!--
 	*** Important Notes:
 	1. Language ID should follow: https://developers.google.com/recaptcha/docs/language,
@@ -2748,10 +2748,10 @@
         <phrase id="fldcaption" value="Status" />
         <phrase id="fldtagvalue1" value="open" />
         <phrase id="fldtagcaption1" value="Open" />
-        <phrase id="fldtagvalue2" value="sent" />
-        <phrase id="fldtagcaption2" value="sent" />
-        <phrase id="fldtagvalue3" value="close" />
-        <phrase id="fldtagcaption3" value="Close" />
+        <phrase id="fldtagvalue2" value="close" />
+        <phrase id="fldtagcaption2" value="Close" />
+        <phrase id="fldtagvalue3" value="sent" />
+        <phrase id="fldtagcaption3" value="sent" />
       </field>
       <field id="keterangan">
         <phrase id="fldcaption" value="Keterangan" />

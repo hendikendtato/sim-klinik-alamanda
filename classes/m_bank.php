@@ -70,7 +70,8 @@ class m_bank extends DbTable
 		$this->fields['id_bank'] = &$this->id_bank;
 
 		// nama_bank
-		$this->nama_bank = new DbField('m_bank', 'm_bank', 'x_nama_bank', 'nama_bank', '`nama_bank`', '`nama_bank`', 200, 255, -1, FALSE, '`nama_bank`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->nama_bank = new DbField('m_bank', 'm_bank', 'x_nama_bank', 'nama_bank', '`nama_bank`', '`nama_bank`', 200, 50, -1, FALSE, '`nama_bank`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->nama_bank->Nullable = FALSE; // NOT NULL field
 		$this->nama_bank->Sortable = TRUE; // Allow sort
 		$this->fields['nama_bank'] = &$this->nama_bank;
 	}

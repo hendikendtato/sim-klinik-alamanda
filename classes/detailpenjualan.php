@@ -148,6 +148,7 @@ class detailpenjualan extends DbTable
 		// qty
 		$this->qty = new DbField('detailpenjualan', 'detailpenjualan', 'x_qty', 'qty', '`qty`', '`qty`', 5, 22, -1, FALSE, '`qty`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->qty->Nullable = FALSE; // NOT NULL field
+		$this->qty->Required = TRUE; // Required field
 		$this->qty->Sortable = TRUE; // Allow sort
 		$this->qty->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
 		$this->fields['qty'] = &$this->qty;
@@ -1513,7 +1514,13 @@ class detailpenjualan extends DbTable
 											$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
 											foreach($data_stok AS $ds){
 												$id = $ds['id_kartustok'];
-												$stok_awal = $ds['stok_awal'] - $jumlah_barang_komposisi;
+												$stok_awal = 0;
+												$stok = $ds['stok_awal'];
+												if($stok == NULL OR $stok == FALSE){
+													$stok_awal = $stok_baru_komposisi;											
+												} else {
+													$stok_awal = $ds['stok_awal'] - $jumlah_barang_komposisi;
+												}
 												$stok_akhir = $ds['stok_akhir'] - $jumlah_barang_komposisi;
 												Execute("UPDATE kartustok SET stok_awal = '$stok_awal', stok_akhir = '$stok_akhir' WHERE id_kartustok = $id ");
 											}
@@ -1535,7 +1542,13 @@ class detailpenjualan extends DbTable
 											$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
 											foreach($data_stok AS $ds){
 												$id = $ds['id_kartustok'];
-												$stok_awal = $ds['stok_awal'] - $jumlah_barang_komposisi;
+												$stok_awal = 0;
+												$stok = $ds['stok_awal'];											
+												if($stok == NULL OR $stok == FALSE){
+													$stok_awal = $stok_baru_komposisi;											
+												} else {
+													$stok_awal = $ds['stok_awal'] - $jumlah_barang_komposisi;
+												}
 												$stok_akhir = $ds['stok_akhir'] - $jumlah_barang_komposisi;
 												Execute("UPDATE kartustok SET stok_awal = '$stok_awal', stok_akhir = '$stok_akhir' WHERE id_kartustok = '$id' ");
 											}
@@ -1558,7 +1571,13 @@ class detailpenjualan extends DbTable
 										$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
 										foreach($data_stok AS $ds){
 											$id = $ds['id_kartustok'];
-											$stok_awal = $ds['stok_awal'] - $jumlah_barang_komposisi;
+											$stok_awal = 0;
+											$stok = $ds['stok_awal'];											
+											if($stok == NULL OR $stok == FALSE){
+												$stok_awal = $stok_baru_komposisi;											
+											} else {
+												$stok_awal = $ds['stok_awal'] - $jumlah_barang_komposisi;
+											}										
 											$stok_akhir = $ds['stok_akhir'] - $jumlah_barang_komposisi;
 											Execute("UPDATE kartustok SET stok_awal = '$stok_awal', stok_akhir = '$stok_akhir' WHERE id_kartustok = '$id' ");
 										}
@@ -1581,7 +1600,13 @@ class detailpenjualan extends DbTable
 									$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
 									foreach($data_stok AS $ds){
 										$id = $ds['id_kartustok'];
-										$stok_awal = $ds['stok_awal'] - $jumlah_barang_komposisi;
+										$stok_awal = 0;
+										$stok = $ds['stok_awal'];											
+										if($stok == NULL OR $stok == FALSE){
+											$stok_awal = $stok_baru_komposisi;											
+										} else {
+											$stok_awal = $ds['stok_awal'] - $jumlah_barang_komposisi;
+										}
 										$stok_akhir = $ds['stok_akhir'] - $jumlah_barang_komposisi;
 										Execute("UPDATE kartustok SET stok_awal = '$stok_awal', stok_akhir = '$stok_akhir' WHERE id_kartustok = '$id' ");
 									}
@@ -1635,7 +1660,13 @@ class detailpenjualan extends DbTable
 											$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = $id_barang_promo AND id_klinik = $id_klinik AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
 											foreach($data_stok AS $ds){
 												$id = $ds['id_kartustok'];
-												$stok_awal = $ds['stok_awal'] - $jumlah_barang_promo;
+												$stok_awal = 0;
+												$stok = $ds['stok_awal'];											
+												if($stok == NULL OR $stok == FALSE){
+													$stok_awal = $stok_barang_promo;											
+												} else {
+													$stok_awal = $ds['stok_awal'] - $jumlah_barang_promo;
+												}
 												$stok_akhir = $ds['stok_akhir'] - $jumlah_barang_promo;
 												Execute("UPDATE kartustok SET stok_awal = '$stok_awal', stok_akhir = '$stok_akhir' WHERE id_kartustok = '$id' ");
 											}
@@ -1655,7 +1686,13 @@ class detailpenjualan extends DbTable
 											$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
 											foreach($data_stok AS $ds){
 												$id = $ds['id_kartustok'];
-												$stok_awal = $ds['stok_awal'] - $jumlah_barang_promo;
+												$stok_awal = 0;
+												$stok = $ds['stok_awal'];											
+												if($stok == NULL OR $stok == FALSE){
+													$stok_awal = $stok_baru_barang_promo;											
+												} else {
+													$stok_awal = $ds['stok_awal'] - $jumlah_barang_promo;
+												}
 												$stok_akhir = $ds['stok_akhir'] - $jumlah_barang_promo;
 												Execute("UPDATE kartustok SET stok_awal = '$stok_awal', stok_akhir = '$stok_akhir' WHERE id_kartustok = '$id' ");
 											}
@@ -1676,7 +1713,13 @@ class detailpenjualan extends DbTable
 										$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
 										foreach($data_stok AS $ds){
 											$id = $ds['id_kartustok'];
-											$stok_awal = $ds['stok_awal'] - $jumlah_barang_promo;
+											$stok_awal = 0;
+											$stok = $ds['stok_awal'];											
+											if($stok == NULL OR $stok == FALSE){
+												$stok_awal = $stok_baru_barang_promo;											
+											} else {
+												$stok_awal = $ds['stok_awal'] - $jumlah_barang_promo;
+											}
 											$stok_akhir = $ds['stok_akhir'] - $jumlah_barang_promo;
 											Execute("UPDATE kartustok SET stok_awal = '$stok_awal', stok_akhir = '$stok_akhir' WHERE id_kartustok = '$id' ");
 										}
@@ -1697,6 +1740,13 @@ class detailpenjualan extends DbTable
 									$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
 									foreach($data_stok AS $ds){
 										$id = $ds['id_kartustok'];
+										$stok_awal = 0;
+										$stok = $ds['stok_awal'];											
+										if($stok == NULL OR $stok == FALSE){
+											$stok_awal = $stok_baru_barang_promo;											
+										} else {
+											$stok_awal = $ds['stok_awal'] - $jumlah_barang_promo;
+										}									
 										$stok_awal = $ds['stok_awal'] - $jumlah_barang_promo;
 										$stok_akhir = $ds['stok_akhir'] - $jumlah_barang_promo;
 										Execute("UPDATE kartustok SET stok_awal = '$stok_awal', stok_akhir = '$stok_akhir' WHERE id_kartustok = '$id' ");
@@ -1770,7 +1820,13 @@ class detailpenjualan extends DbTable
 									$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
 									foreach($data_stok AS $ds){
 										$id = $ds['id_kartustok'];
-										$stok_awal = $ds['stok_awal'] - $qty;
+										$stok_awal = 0;
+										$stok = $ds['stok_awal'];											
+										if($stok == NULL OR $stok == FALSE){
+											$stok_awal = $stok_terbaru;											
+										} else {
+											$stok_awal = $ds['stok_awal'] - $qty;
+										}
 										$stok_akhir = $ds['stok_akhir'] - $qty;
 										Execute("UPDATE kartustok SET stok_awal = '$stok_awal', stok_akhir = '$stok_akhir' WHERE id_kartustok = $id ");
 									}
@@ -1795,7 +1851,13 @@ class detailpenjualan extends DbTable
 								$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
 								foreach($data_stok AS $ds){
 									$id = $ds['id_kartustok'];
-									$stok_awal = $ds['stok_awal'] - $qty;
+									$stok_awal = 0;
+									$stok = $ds['stok_awal'];											
+									if($stok == NULL OR $stok == FALSE){
+										$stok_awal = $stok_terbaru;											
+									} else {
+										$stok_awal = $ds['stok_awal'] - $qty;
+									}								
 									$stok_akhir = $ds['stok_akhir'] - $qty;
 									Execute("UPDATE kartustok SET stok_awal = '$stok_awal', stok_akhir = '$stok_akhir' WHERE id_kartustok = $id ");
 								}
@@ -1822,7 +1884,13 @@ class detailpenjualan extends DbTable
 							$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
 							foreach($data_stok AS $ds){
 								$id = $ds['id_kartustok'];
-								$stok_awal = $ds['stok_awal'] - $qty;
+								$stok_awal = 0;
+								$stok = $ds['stok_awal'];											
+								if($stok == NULL OR $stok == FALSE){
+									$stok_awal = $stok_update;											
+								} else {
+									$stok_awal = $ds['stok_awal'] - $qty;
+								}
 								$stok_akhir = $ds['stok_akhir'] - $qty;
 								Execute("UPDATE kartustok SET stok_awal = '$stok_awal', stok_akhir = '$stok_akhir' WHERE id_kartustok = '$id' ");
 							}

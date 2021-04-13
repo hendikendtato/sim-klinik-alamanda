@@ -71,6 +71,7 @@ class pos_antrian extends DbTable
 
 		// nama_pos
 		$this->nama_pos = new DbField('pos_antrian', 'pos_antrian', 'x_nama_pos', 'nama_pos', '`nama_pos`', '`nama_pos`', 200, 50, -1, FALSE, '`nama_pos`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->nama_pos->Nullable = FALSE; // NOT NULL field
 		$this->nama_pos->Sortable = TRUE; // Allow sort
 		$this->fields['nama_pos'] = &$this->nama_pos;
 	}

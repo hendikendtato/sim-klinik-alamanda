@@ -2917,13 +2917,13 @@ class penjualan_edit extends penjualan
 			$this->waktu->setDbValueDef($rsnew, UnFormatDateTime($this->waktu->CurrentValue, 7), CurrentDate(), $this->waktu->ReadOnly);
 
 			// diskon_persen
-			$this->diskon_persen->setDbValueDef($rsnew, $this->diskon_persen->CurrentValue, "", $this->diskon_persen->ReadOnly);
+			$this->diskon_persen->setDbValueDef($rsnew, $this->diskon_persen->CurrentValue, NULL, $this->diskon_persen->ReadOnly);
 
 			// diskon_rupiah
-			$this->diskon_rupiah->setDbValueDef($rsnew, $this->diskon_rupiah->CurrentValue, 0, $this->diskon_rupiah->ReadOnly);
+			$this->diskon_rupiah->setDbValueDef($rsnew, $this->diskon_rupiah->CurrentValue, NULL, $this->diskon_rupiah->ReadOnly);
 
 			// ppn
-			$this->ppn->setDbValueDef($rsnew, $this->ppn->CurrentValue, 0, $this->ppn->ReadOnly);
+			$this->ppn->setDbValueDef($rsnew, $this->ppn->CurrentValue, NULL, $this->ppn->ReadOnly);
 
 			// total
 			$this->total->setDbValueDef($rsnew, $this->total->CurrentValue, 0, $this->total->ReadOnly);
@@ -2947,10 +2947,10 @@ class penjualan_edit extends penjualan
 			$this->id_rmd->setDbValueDef($rsnew, $this->id_rmd->CurrentValue, NULL, $this->id_rmd->ReadOnly);
 
 			// metode_pembayaran
-			$this->metode_pembayaran->setDbValueDef($rsnew, $this->metode_pembayaran->CurrentValue, "", $this->metode_pembayaran->ReadOnly);
+			$this->metode_pembayaran->setDbValueDef($rsnew, $this->metode_pembayaran->CurrentValue, NULL, $this->metode_pembayaran->ReadOnly);
 
 			// id_bank
-			$this->id_bank->setDbValueDef($rsnew, $this->id_bank->CurrentValue, 0, $this->id_bank->ReadOnly);
+			$this->id_bank->setDbValueDef($rsnew, $this->id_bank->CurrentValue, NULL, $this->id_bank->ReadOnly);
 
 			// id_kartu
 			$this->id_kartu->setDbValueDef($rsnew, $this->id_kartu->CurrentValue, NULL, $this->id_kartu->ReadOnly);
@@ -2971,10 +2971,10 @@ class penjualan_edit extends penjualan
 			$this->dokter->setDbValueDef($rsnew, $this->dokter->CurrentValue, NULL, $this->dokter->ReadOnly);
 
 			// id_kartubank
-			$this->id_kartubank->setDbValueDef($rsnew, $this->id_kartubank->CurrentValue, 0, $this->id_kartubank->ReadOnly);
+			$this->id_kartubank->setDbValueDef($rsnew, $this->id_kartubank->CurrentValue, NULL, $this->id_kartubank->ReadOnly);
 
 			// id_kas
-			$this->id_kas->setDbValueDef($rsnew, $this->id_kas->CurrentValue, 0, $this->id_kas->ReadOnly);
+			$this->id_kas->setDbValueDef($rsnew, $this->id_kas->CurrentValue, NULL, $this->id_kas->ReadOnly);
 
 			// charge
 			$this->charge->setDbValueDef($rsnew, $this->charge->CurrentValue, NULL, $this->charge->ReadOnly);
@@ -2992,7 +2992,7 @@ class penjualan_edit extends penjualan
 			$this->_action->setDbValueDef($rsnew, $this->_action->CurrentValue, NULL, $this->_action->ReadOnly);
 
 			// status
-			$this->status->setDbValueDef($rsnew, $this->status->CurrentValue, "", $this->status->ReadOnly);
+			$this->status->setDbValueDef($rsnew, $this->status->CurrentValue, NULL, $this->status->ReadOnly);
 
 			// Call Row Updating event
 			$updateRow = $this->Row_Updating($rsold, $rsnew);

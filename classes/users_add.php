@@ -1309,7 +1309,7 @@ class users_add extends users
 		$this->id_klinik->setDbValueDef($rsnew, $this->id_klinik->CurrentValue, NULL, FALSE);
 
 		// id_pegawai
-		$this->id_pegawai->setDbValueDef($rsnew, $this->id_pegawai->CurrentValue, NULL, FALSE);
+		$this->id_pegawai->setDbValueDef($rsnew, $this->id_pegawai->CurrentValue, 0, strval($this->id_pegawai->CurrentValue) == "");
 
 		// username
 		$this->username->setDbValueDef($rsnew, $this->username->CurrentValue, NULL, FALSE);

@@ -1081,23 +1081,43 @@ class detailterimagudang extends DbTable
 
 					//ambil stok akhir tanggal itu
 					$get_stok = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' AND tanggal='$tanggal' ORDER BY id_kartustok DESC LIMIT 1");
+
+					//jika stok akhir tanggal itu ada
 					if($get_stok != NULL OR $get_stok != FALSE){
+
+						//stok update
 						$stok_update = $get_stok + $jumlah;
+
+						//insert kartustok
 						Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_terimagudang, masuk, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$get_stok', '$id_terimagudang', '$jumlah', '$stok_update')");
+
+						//ambil data kartustok setelah tanggal itu
 						$get_data = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' AND tanggal>'$tanggal' ORDER BY id_kartustok ASC");
 						foreach($get_data AS $gd){
 							$id = $gd['id_kartustok'];
 							$stok_awal = $gd['stok_awal'] + $jumlah;
 							$stok_akhir = $gd['stok_akhir'] + $jumlah;
+
+							//update data kartustok setelah tanggal itu
 							Execute("UPDATE kartustok SET stok_awal = '$stok_awal', stok_akhir = '$stok_akhir' WHERE id_kartustok = '$id'");
 						}
+
+					//jika stok akhir tanggal itu tidak ada
 					} else {
 
 						//ambil stok akhir tanggal sebelumnya
-						$get_stok_sebelumnya = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' AND tanggal < '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
+						$get_stok_sebelumnya = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' AND tanggal < '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");					
+
+						//jika stok akhir tanggal sebelumnya ada
 						if($get_stok_sebelumnya != NULL OR $get_stok_sebelumnya != FALSE){
+
+							//stok update
 							$stok_update_sebelumnya = $get_stok_sebelumnya + $jumlah;
+
+							//insert kartustok
 							Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_terimagudang, masuk, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$get_stok_sebelumnya', '$id_terimagudang', '$jumlah', '$stok_update_sebelumnya')");
+
+							//ambil data kartustok tanggal setelah itu
 							$get_data = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
 							foreach($get_data AS $gd){
 								$id = $gd['id_kartustok'];
@@ -1107,18 +1127,31 @@ class detailterimagudang extends DbTable
 							}
 						} else {
 
-							//ambil stok awal tanggal setelahnya
+							//ambil stok awal dan id tanggal setelahnya
 							$get_stok_kartustok = ExecuteScalar("SELECT stok_awal FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' ORDER BY tanggal ASC, id_kartustok ASC LIMIT 1");
+							$get_id_kartustok = ExecuteScalar("SELECT id_kartustok FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' ORDER BY tanggal ASC, id_kartustok ASC LIMIT 1");
+
+							//jika stok awal dan id tanggal setelahnya ada
 							if($get_stok_kartustok != NULL OR $get_stok_kartustok != FALSE){
+
+								//stok update
 								$stok_update_kartustok = $get_stok_kartustok + $jumlah;
+
+								//insert kartustok
 								Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_terimagudang, masuk, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$get_stok_kartustok', '$id_terimagudang', '$jumlah', '$stok_update_kartustok')");				
-								$get_data = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
+
+								//get data kartustok tanggal setelah itu berdasarkan id_kartustok
+								$get_data = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' AND id_kartustok > '$get_id_kartustok' ORDER BY id_kartustok ASC");
 								foreach($get_data AS $gd){
 									$id = $gd['id_kartustok'];
 									$stok_awal = $gd['stok_awal'] + $jumlah;
 									$stok_akhir = $gd['stok_akhir'] + $jumlah;
+
+									//update kartustok
 									Execute("UPDATE kartustok SET stok_awal = '$stok_awal', stok_akhir = '$stok_akhir' WHERE id_kartustok = '$id'");
 								}
+
+							//jika stok awal dan id tanggal setelahnya tidak ada
 							} else{	
 
 								//ambil stok hargajual

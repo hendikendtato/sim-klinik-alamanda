@@ -95,9 +95,7 @@ class m_member extends DbTable
 		$this->fields['id_klinik'] = &$this->id_klinik;
 
 		// id_pelanggan
-		$this->id_pelanggan = new DbField('m_member', 'm_member', 'x_id_pelanggan', 'id_pelanggan', '`id_pelanggan`', '`id_pelanggan`', 3, 11, -1, FALSE, '`id_pelanggan`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
-		$this->id_pelanggan->Nullable = FALSE; // NOT NULL field
-		$this->id_pelanggan->Required = TRUE; // Required field
+		$this->id_pelanggan = new DbField('m_member', 'm_member', 'x_id_pelanggan', 'id_pelanggan', '`id_pelanggan`', '`id_pelanggan`', 3, 255, -1, FALSE, '`id_pelanggan`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
 		$this->id_pelanggan->Sortable = TRUE; // Allow sort
 		$this->id_pelanggan->UsePleaseSelect = TRUE; // Use PleaseSelect by default
 		$this->id_pelanggan->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text

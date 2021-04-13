@@ -1175,8 +1175,6 @@ class terimagudang extends DbTable
 		// To view properties of field class, use:
 		//var_dump($this-><FieldName>);
 
-		$default_support = ExecuteScalar("SELECT id_klinik FROM m_klinik WHERE nama_klinik LIKE '%Support%'");
-		$this->id_klinik->CurrentValue = $default_support;
 	}
 
 	// User ID Filtering event

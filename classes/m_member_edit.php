@@ -1526,7 +1526,7 @@ class m_member_edit extends m_member
 			$this->id_klinik->setDbValueDef($rsnew, $this->id_klinik->CurrentValue, 0, $this->id_klinik->ReadOnly);
 
 			// id_pelanggan
-			$this->id_pelanggan->setDbValueDef($rsnew, $this->id_pelanggan->CurrentValue, 0, $this->id_pelanggan->ReadOnly);
+			$this->id_pelanggan->setDbValueDef($rsnew, $this->id_pelanggan->CurrentValue, NULL, $this->id_pelanggan->ReadOnly);
 
 			// jenis_member
 			$this->jenis_member->setDbValueDef($rsnew, $this->jenis_member->CurrentValue, NULL, $this->jenis_member->ReadOnly);
