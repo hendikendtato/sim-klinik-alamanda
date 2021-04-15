@@ -1,4 +1,4 @@
-<?php namespace PHPMaker2020\klinik_latest_09_04_21; ?>
+<?php namespace PHPMaker2020\sim_klinik_alamanda; ?>
 <?php
 
 /**
@@ -91,7 +91,7 @@ class detailpenyesuaianstok extends DbTable
 		$this->fields['kode_barang'] = &$this->kode_barang;
 
 		// id_barang
-		$this->id_barang = new DbField('detailpenyesuaianstok', 'detailpenyesuaianstok', 'x_id_barang', 'id_barang', '`id_barang`', '`id_barang`', 3, 11, -1, FALSE, '`id_barang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->id_barang = new DbField('detailpenyesuaianstok', 'detailpenyesuaianstok', 'x_id_barang', 'id_barang', '`id_barang`', '`id_barang`', 3, 255, -1, FALSE, '`id_barang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->id_barang->Sortable = TRUE; // Allow sort
 		$this->id_barang->Lookup = new Lookup('id_barang', 'view_hargajual', FALSE, 'id', ["nama_barang","","",""], ["penyesuaianstok x_id_klinik"], [], ["id_klinik"], ["x_id_klinik"], ["stok"], ["x_stokdatabase"], '', '');
 		$this->id_barang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");

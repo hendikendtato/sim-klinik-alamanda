@@ -1,4 +1,4 @@
-<?php namespace PHPMaker2020\klinik_latest_09_04_21; ?>
+<?php namespace PHPMaker2020\sim_klinik_alamanda; ?>
 <?php
 
 /**
@@ -82,7 +82,6 @@ class users extends DbTable
 
 		// id_pegawai
 		$this->id_pegawai = new DbField('users', 'users', 'x_id_pegawai', 'id_pegawai', '`id_pegawai`', '`id_pegawai`', 3, 11, -1, FALSE, '`id_pegawai`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
-		$this->id_pegawai->Nullable = FALSE; // NOT NULL field
 		$this->id_pegawai->Sortable = TRUE; // Allow sort
 		$this->id_pegawai->UsePleaseSelect = TRUE; // Use PleaseSelect by default
 		$this->id_pegawai->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text

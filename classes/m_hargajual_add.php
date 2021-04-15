@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_09_04_21;
+namespace PHPMaker2020\sim_klinik_alamanda;
 
 /**
  * Page class
@@ -11,7 +11,7 @@ class m_hargajual_add extends m_hargajual
 	public $PageID = "add";
 
 	// Project ID
-	public $ProjectID = "{8C91985A-7590-4658-895B-4BCC6B46002F}";
+	public $ProjectID = "{8546B030-7993-4749-BFDB-17AFAAF4065D}";
 
 	// Table name
 	public $TableName = 'm_hargajual';
@@ -842,8 +842,7 @@ class m_hargajual_add extends m_hargajual
 		$this->disc_rp->OldValue = $this->disc_rp->CurrentValue;
 		$this->id_klinik->CurrentValue = NULL;
 		$this->id_klinik->OldValue = $this->id_klinik->CurrentValue;
-		$this->stok->CurrentValue = NULL;
-		$this->stok->OldValue = $this->stok->CurrentValue;
+		$this->stok->CurrentValue = 0;
 		$this->satuan->CurrentValue = NULL;
 		$this->satuan->OldValue = $this->satuan->CurrentValue;
 		$this->minimum_stok->CurrentValue = NULL;

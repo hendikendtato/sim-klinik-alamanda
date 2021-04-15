@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_09_04_21;
+namespace PHPMaker2020\sim_klinik_alamanda;
 
 /**
  * Page class
@@ -11,7 +11,7 @@ class detailpenjualan_grid extends detailpenjualan
 	public $PageID = "grid";
 
 	// Project ID
-	public $ProjectID = "{8C91985A-7590-4658-895B-4BCC6B46002F}";
+	public $ProjectID = "{8546B030-7993-4749-BFDB-17AFAAF4065D}";
 
 	// Table name
 	public $TableName = 'detailpenjualan';
@@ -3014,7 +3014,7 @@ class detailpenjualan_grid extends detailpenjualan
 		$this->stok->setDbValueDef($rsnew, $this->stok->CurrentValue, NULL, FALSE);
 
 		// qty
-		$this->qty->setDbValueDef($rsnew, $this->qty->CurrentValue, 0, FALSE);
+		$this->qty->setDbValueDef($rsnew, $this->qty->CurrentValue, 0, strval($this->qty->CurrentValue) == "");
 
 		// disc_pr
 		$this->disc_pr->setDbValueDef($rsnew, $this->disc_pr->CurrentValue, NULL, FALSE);

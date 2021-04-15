@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_09_04_21;
+namespace PHPMaker2020\sim_klinik_alamanda;
 
 /**
  * Page class
@@ -11,7 +11,7 @@ class m_member_edit extends m_member
 	public $PageID = "edit";
 
 	// Project ID
-	public $ProjectID = "{8C91985A-7590-4658-895B-4BCC6B46002F}";
+	public $ProjectID = "{8546B030-7993-4749-BFDB-17AFAAF4065D}";
 
 	// Table name
 	public $TableName = 'm_member';
@@ -1526,7 +1526,7 @@ class m_member_edit extends m_member
 			$this->id_klinik->setDbValueDef($rsnew, $this->id_klinik->CurrentValue, 0, $this->id_klinik->ReadOnly);
 
 			// id_pelanggan
-			$this->id_pelanggan->setDbValueDef($rsnew, $this->id_pelanggan->CurrentValue, NULL, $this->id_pelanggan->ReadOnly);
+			$this->id_pelanggan->setDbValueDef($rsnew, $this->id_pelanggan->CurrentValue, 0, $this->id_pelanggan->ReadOnly);
 
 			// jenis_member
 			$this->jenis_member->setDbValueDef($rsnew, $this->jenis_member->CurrentValue, NULL, $this->jenis_member->ReadOnly);

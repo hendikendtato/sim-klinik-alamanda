@@ -1,4 +1,4 @@
-<?php namespace PHPMaker2020\klinik_latest_09_04_21; ?>
+<?php namespace PHPMaker2020\sim_klinik_alamanda; ?>
 <?php
 
 /**
@@ -125,7 +125,7 @@ class transaksi_komisi extends DbTable
 		$this->fields['subtotal'] = &$this->subtotal;
 
 		// jenis_komisi
-		$this->jenis_komisi = new DbField('transaksi_komisi', 'transaksi_komisi', 'x_jenis_komisi', 'jenis_komisi', '`jenis_komisi`', '`jenis_komisi`', 200, 255, -1, FALSE, '`jenis_komisi`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->jenis_komisi = new DbField('transaksi_komisi', 'transaksi_komisi', 'x_jenis_komisi', 'jenis_komisi', '`jenis_komisi`', '`jenis_komisi`', 200, 50, -1, FALSE, '`jenis_komisi`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->jenis_komisi->Sortable = TRUE; // Allow sort
 		$this->fields['jenis_komisi'] = &$this->jenis_komisi;
 

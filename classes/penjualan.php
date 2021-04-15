@@ -1,4 +1,4 @@
-<?php namespace PHPMaker2020\klinik_latest_09_04_21; ?>
+<?php namespace PHPMaker2020\sim_klinik_alamanda; ?>
 <?php
 
 /**
@@ -133,17 +133,23 @@ class penjualan extends DbTable
 
 		// diskon_persen
 		$this->diskon_persen = new DbField('penjualan', 'penjualan', 'x_diskon_persen', 'diskon_persen', '`diskon_persen`', '`diskon_persen`', 200, 50, -1, FALSE, '`diskon_persen`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->diskon_persen->Nullable = FALSE; // NOT NULL field
+		$this->diskon_persen->Required = TRUE; // Required field
 		$this->diskon_persen->Sortable = TRUE; // Allow sort
 		$this->fields['diskon_persen'] = &$this->diskon_persen;
 
 		// diskon_rupiah
 		$this->diskon_rupiah = new DbField('penjualan', 'penjualan', 'x_diskon_rupiah', 'diskon_rupiah', '`diskon_rupiah`', '`diskon_rupiah`', 5, 22, -1, FALSE, '`diskon_rupiah`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->diskon_rupiah->Nullable = FALSE; // NOT NULL field
+		$this->diskon_rupiah->Required = TRUE; // Required field
 		$this->diskon_rupiah->Sortable = TRUE; // Allow sort
 		$this->diskon_rupiah->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
 		$this->fields['diskon_rupiah'] = &$this->diskon_rupiah;
 
 		// ppn
 		$this->ppn = new DbField('penjualan', 'penjualan', 'x_ppn', 'ppn', '`ppn`', '`ppn`', 5, 22, -1, FALSE, '`ppn`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->ppn->Nullable = FALSE; // NOT NULL field
+		$this->ppn->Required = TRUE; // Required field
 		$this->ppn->Sortable = TRUE; // Allow sort
 		$this->ppn->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
 		$this->fields['ppn'] = &$this->ppn;
@@ -204,6 +210,8 @@ class penjualan extends DbTable
 
 		// metode_pembayaran
 		$this->metode_pembayaran = new DbField('penjualan', 'penjualan', 'x_metode_pembayaran', 'metode_pembayaran', '`metode_pembayaran`', '`metode_pembayaran`', 200, 50, -1, FALSE, '`metode_pembayaran`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->metode_pembayaran->Nullable = FALSE; // NOT NULL field
+		$this->metode_pembayaran->Required = TRUE; // Required field
 		$this->metode_pembayaran->Sortable = TRUE; // Allow sort
 		$this->metode_pembayaran->UsePleaseSelect = TRUE; // Use PleaseSelect by default
 		$this->metode_pembayaran->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
@@ -213,6 +221,8 @@ class penjualan extends DbTable
 
 		// id_bank
 		$this->id_bank = new DbField('penjualan', 'penjualan', 'x_id_bank', 'id_bank', '`id_bank`', '`id_bank`', 3, 11, -1, FALSE, '`id_bank`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->id_bank->Nullable = FALSE; // NOT NULL field
+		$this->id_bank->Required = TRUE; // Required field
 		$this->id_bank->Sortable = TRUE; // Allow sort
 		$this->id_bank->UsePleaseSelect = TRUE; // Use PleaseSelect by default
 		$this->id_bank->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
@@ -276,6 +286,8 @@ class penjualan extends DbTable
 
 		// id_kartubank
 		$this->id_kartubank = new DbField('penjualan', 'penjualan', 'x_id_kartubank', 'id_kartubank', '`id_kartubank`', '`id_kartubank`', 3, 11, -1, FALSE, '`id_kartubank`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->id_kartubank->Nullable = FALSE; // NOT NULL field
+		$this->id_kartubank->Required = TRUE; // Required field
 		$this->id_kartubank->Sortable = TRUE; // Allow sort
 		$this->id_kartubank->UsePleaseSelect = TRUE; // Use PleaseSelect by default
 		$this->id_kartubank->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
@@ -285,6 +297,8 @@ class penjualan extends DbTable
 
 		// id_kas
 		$this->id_kas = new DbField('penjualan', 'penjualan', 'x_id_kas', 'id_kas', '`id_kas`', '`id_kas`', 3, 11, -1, FALSE, '`id_kas`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->id_kas->Nullable = FALSE; // NOT NULL field
+		$this->id_kas->Required = TRUE; // Required field
 		$this->id_kas->Sortable = TRUE; // Allow sort
 		$this->id_kas->UsePleaseSelect = TRUE; // Use PleaseSelect by default
 		$this->id_kas->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
@@ -323,6 +337,8 @@ class penjualan extends DbTable
 
 		// status
 		$this->status = new DbField('penjualan', 'penjualan', 'x_status', 'status', '`status`', '`status`', 202, 7, -1, FALSE, '`status`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'RADIO');
+		$this->status->Nullable = FALSE; // NOT NULL field
+		$this->status->Required = TRUE; // Required field
 		$this->status->Sortable = TRUE; // Allow sort
 		$this->status->Lookup = new Lookup('status', 'penjualan', FALSE, '', ["","","",""], [], [], [], [], [], [], '', '');
 		$this->status->OptionCount = 2;

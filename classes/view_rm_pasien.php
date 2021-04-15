@@ -1,4 +1,4 @@
-<?php namespace PHPMaker2020\klinik_latest_09_04_21; ?>
+<?php namespace PHPMaker2020\sim_klinik_alamanda; ?>
 <?php
 
 /**
@@ -156,7 +156,6 @@ class view_rm_pasien extends DbTable
 		// qty
 		$this->qty = new DbField('view_rm_pasien', 'view_rm_pasien', 'x_qty', 'qty', '`qty`', '`qty`', 5, 22, -1, FALSE, '`qty`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->qty->Nullable = FALSE; // NOT NULL field
-		$this->qty->Required = TRUE; // Required field
 		$this->qty->Sortable = TRUE; // Allow sort
 		$this->qty->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
 		$this->fields['qty'] = &$this->qty;

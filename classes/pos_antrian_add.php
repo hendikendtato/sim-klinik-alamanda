@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_09_04_21;
+namespace PHPMaker2020\sim_klinik_alamanda;
 
 /**
  * Page class
@@ -11,7 +11,7 @@ class pos_antrian_add extends pos_antrian
 	public $PageID = "add";
 
 	// Project ID
-	public $ProjectID = "{8C91985A-7590-4658-895B-4BCC6B46002F}";
+	public $ProjectID = "{8546B030-7993-4749-BFDB-17AFAAF4065D}";
 
 	// Table name
 	public $TableName = 'pos_antrian';
@@ -1012,7 +1012,7 @@ class pos_antrian_add extends pos_antrian
 		$rsnew = [];
 
 		// nama_pos
-		$this->nama_pos->setDbValueDef($rsnew, $this->nama_pos->CurrentValue, "", strval($this->nama_pos->CurrentValue) == "");
+		$this->nama_pos->setDbValueDef($rsnew, $this->nama_pos->CurrentValue, NULL, FALSE);
 
 		// Call Row Inserting event
 		$rs = ($rsold) ? $rsold->fields : NULL;
