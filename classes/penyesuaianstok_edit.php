@@ -1296,7 +1296,7 @@ class penyesuaianstok_edit extends penyesuaianstok
 			$this->kode_penyesuaian->setDbValueDef($rsnew, $this->kode_penyesuaian->CurrentValue, NULL, $this->kode_penyesuaian->ReadOnly);
 
 			// tanggal
-			$this->tanggal->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal->CurrentValue, 7), NULL, $this->tanggal->ReadOnly);
+			$this->tanggal->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal->CurrentValue, 7), CurrentDate(), $this->tanggal->ReadOnly);
 
 			// id_klinik
 			$this->id_klinik->setDbValueDef($rsnew, $this->id_klinik->CurrentValue, 0, $this->id_klinik->ReadOnly);

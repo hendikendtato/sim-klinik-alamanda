@@ -17,7 +17,6 @@ echo $topMenu->toScript();
 
 // Sidebar menu
 $sideMenu = new Menu("menu", TRUE, FALSE);
-$sideMenu->addMenuItem(1073, "mi_Dasbor", $MenuLanguage->MenuPhrase("1073", "MenuText"), $MenuRelativePath . "Dasbor.php", -1, "", AllowListMenu('{8546B030-7993-4749-BFDB-17AFAAF4065D}Dasbor.php'), FALSE, FALSE, "fa-tachometer-alt", "", FALSE);
 $sideMenu->addMenuItem(16, "mci_Master", $MenuLanguage->MenuPhrase("16", "MenuText"), "", -1, "", IsLoggedIn(), FALSE, TRUE, "fa-clinic-medical", "", FALSE);
 $sideMenu->addMenuItem(8, "mi_m_pelanggan", $MenuLanguage->MenuPhrase("8", "MenuText"), $MenuRelativePath . "m_pelangganlist.php", 16, "", AllowListMenu('{8546B030-7993-4749-BFDB-17AFAAF4065D}m_pelanggan'), FALSE, FALSE, "fa-caret-right", "", FALSE);
 $sideMenu->addMenuItem(245, "mi_m_kategoripelanggan", $MenuLanguage->MenuPhrase("245", "MenuText"), $MenuRelativePath . "m_kategoripelangganlist.php", 16, "", AllowListMenu('{8546B030-7993-4749-BFDB-17AFAAF4065D}m_kategoripelanggan'), FALSE, FALSE, "fa-caret-right", "", FALSE);

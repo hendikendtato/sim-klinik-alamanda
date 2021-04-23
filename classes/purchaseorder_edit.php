@@ -1420,7 +1420,7 @@ class purchaseorder_edit extends purchaseorder
 			$this->no_po->setDbValueDef($rsnew, $this->no_po->CurrentValue, NULL, $this->no_po->ReadOnly);
 
 			// tgl_po
-			$this->tgl_po->setDbValueDef($rsnew, UnFormatDateTime($this->tgl_po->CurrentValue, 0), NULL, $this->tgl_po->ReadOnly);
+			$this->tgl_po->setDbValueDef($rsnew, UnFormatDateTime($this->tgl_po->CurrentValue, 0), CurrentDate(), $this->tgl_po->ReadOnly);
 
 			// idstaff_po
 			$this->idstaff_po->setDbValueDef($rsnew, $this->idstaff_po->CurrentValue, NULL, $this->idstaff_po->ReadOnly);

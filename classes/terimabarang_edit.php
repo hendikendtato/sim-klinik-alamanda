@@ -1545,7 +1545,7 @@ class terimabarang_edit extends terimabarang
 			$this->id_pegawai->setDbValueDef($rsnew, $this->id_pegawai->CurrentValue, NULL, $this->id_pegawai->ReadOnly);
 
 			// tanggal_terima
-			$this->tanggal_terima->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal_terima->CurrentValue, 0), NULL, $this->tanggal_terima->ReadOnly);
+			$this->tanggal_terima->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal_terima->CurrentValue, 0), CurrentDate(), $this->tanggal_terima->ReadOnly);
 
 			// keterangan
 			$this->keterangan->setDbValueDef($rsnew, $this->keterangan->CurrentValue, NULL, $this->keterangan->ReadOnly);

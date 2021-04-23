@@ -131,6 +131,8 @@ class terimabarang extends DbTable
 
 		// tanggal_terima
 		$this->tanggal_terima = new DbField('terimabarang', 'terimabarang', 'x_tanggal_terima', 'tanggal_terima', '`tanggal_terima`', CastDateFieldForLike("`tanggal_terima`", 0, "DB"), 133, 10, 0, FALSE, '`tanggal_terima`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->tanggal_terima->Nullable = FALSE; // NOT NULL field
+		$this->tanggal_terima->Required = TRUE; // Required field
 		$this->tanggal_terima->Sortable = TRUE; // Allow sort
 		$this->tanggal_terima->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_FORMAT"], $Language->phrase("IncorrectDate"));
 		$this->fields['tanggal_terima'] = &$this->tanggal_terima;

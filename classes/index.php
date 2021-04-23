@@ -435,8 +435,6 @@ class index
 			$this->terminate("userslist.php");
 		if ($Security->allowList(CurrentProjectID() . 'V_kartustok'))
 			$this->terminate("V_kartustoklist.php");
-		if ($Security->allowList(CurrentProjectID() . 'v_lap_retur'))
-			$this->terminate("v_lap_returlist.php");
 		if ($Security->allowList(CurrentProjectID() . 'v_stokbarang'))
 			$this->terminate("v_stokbaranglist.php");
 		if ($Security->allowList(CurrentProjectID() . 'view_hargajual'))
@@ -535,8 +533,6 @@ class index
 			$this->terminate("view_memberlist.php");
 		if ($Security->allowList(CurrentProjectID() . 'laporan_stokhargajual.php'))
 			$this->terminate("laporan_stokhargajual.php");
-		if ($Security->allowList(CurrentProjectID() . 'Dasbor.php'))
-			$this->terminate("Dasbor.php");
 		if ($Security->allowList(CurrentProjectID() . 'detailterimagudang'))
 			$this->terminate("detailterimagudanglist.php");
 		if ($Security->allowList(CurrentProjectID() . 'terimagudang'))

@@ -51,6 +51,14 @@ class terimagudang_view extends terimagudang
 	public $MultiDeleteUrl;
 	public $MultiUpdateUrl;
 
+	// Audit Trail
+	public $AuditTrailOnAdd = TRUE;
+	public $AuditTrailOnEdit = TRUE;
+	public $AuditTrailOnDelete = TRUE;
+	public $AuditTrailOnView = FALSE;
+	public $AuditTrailOnViewData = FALSE;
+	public $AuditTrailOnSearch = FALSE;
+
 	// Page headings
 	public $Heading = "";
 	public $Subheading = "";
@@ -1086,6 +1094,8 @@ class terimagudang_view extends terimagudang
 		$this->Row_Selected($row);
 		if (!$rs || $rs->EOF)
 			return;
+		if ($this->AuditTrailOnView)
+			$this->writeAuditTrailOnView($row);
 		$this->id_terimagudang->setDbValue($row['id_terimagudang']);
 		$this->kode_terimagudang->setDbValue($row['kode_terimagudang']);
 		$this->id_klinik->setDbValue($row['id_klinik']);

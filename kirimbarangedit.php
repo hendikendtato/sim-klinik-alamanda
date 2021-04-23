@@ -154,8 +154,8 @@ loadjs.ready("head", function() {
 
 	//if click button add
 	$('#btn-action').click(function() {
-		$('input[name="x_status_kirim"][value="dikirim"]').prop('checked', true);
 		$('input[name="x_status_kirim"][value="draft"]').prop('checked', null);
+		$('input[name="x_status_kirim"][value="dikirim"]').prop('checked', true);
 	});
 
 	//if click button draft

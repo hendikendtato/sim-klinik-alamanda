@@ -82,6 +82,8 @@ class mutasi_kas extends DbTable
 
 		// tgl
 		$this->tgl = new DbField('mutasi_kas', 'mutasi_kas', 'x_tgl', 'tgl', '`tgl`', CastDateFieldForLike("`tgl`", 0, "DB"), 133, 10, 0, FALSE, '`tgl`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->tgl->Nullable = FALSE; // NOT NULL field
+		$this->tgl->Required = TRUE; // Required field
 		$this->tgl->Sortable = TRUE; // Allow sort
 		$this->tgl->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_FORMAT"], $Language->phrase("IncorrectDate"));
 		$this->fields['tgl'] = &$this->tgl;

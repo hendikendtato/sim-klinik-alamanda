@@ -1147,17 +1147,17 @@ class detailterimabarang extends DbTable
 		$id_barang = $rsnew['id_barang'];
 		$cek_barang = ExecuteScalar("SELECT id_barang FROM m_hargajual WHERE id_klinik='$id_klinik' AND id_barang='$id_barang'");
 
-		// jika barang sudah ada
+		//jika barang sudah ada
 		if ($cek_barang == $id_barang) {
 
-			// update yg sudah ada
+			//update yg sudah ada
 			$stok = ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_klinik='$id_klinik' AND id_barang='$id_barang'");
 			$stok_terbaru = $stok + $jumlah;
 			$update_saldo = Execute("UPDATE m_hargajual SET stok='$stok_terbaru' WHERE id_klinik='$id_klinik' AND id_barang='$id_barang'");
 			$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_terimabarang, masuk, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal_terima', '$stok', '$pid_terimabarang', '$jumlah', '$stok_terbaru')");
-		} else { // jika belum ada
+		} else { //jika belum ada
 
-			// tambah baru
+			//tambah baru
 			$tambah_baru = Execute("INSERT INTO m_hargajual (id_barang, id_klinik, stok) VALUES ('$id_barang', '$id_klinik', '$jumlah')");
 			$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_terimabarang, masuk, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal_terima', '0', '$pid_terimabarang', '$jumlah', '$jumlah')");
 		}

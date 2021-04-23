@@ -19,6 +19,14 @@ class terimagudang_add extends terimagudang
 	// Page object name
 	public $PageObjName = "terimagudang_add";
 
+	// Audit Trail
+	public $AuditTrailOnAdd = TRUE;
+	public $AuditTrailOnEdit = TRUE;
+	public $AuditTrailOnDelete = TRUE;
+	public $AuditTrailOnView = FALSE;
+	public $AuditTrailOnViewData = FALSE;
+	public $AuditTrailOnSearch = FALSE;
+
 	// Page headings
 	public $Heading = "";
 	public $Subheading = "";
@@ -1256,7 +1264,7 @@ class terimagudang_add extends terimagudang
 		$this->diterima->setDbValueDef($rsnew, $this->diterima->CurrentValue, NULL, FALSE);
 
 		// tanggal_terima
-		$this->tanggal_terima->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal_terima->CurrentValue, 0), NULL, FALSE);
+		$this->tanggal_terima->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal_terima->CurrentValue, 0), CurrentDate(), FALSE);
 
 		// keterangan
 		$this->keterangan->setDbValueDef($rsnew, $this->keterangan->CurrentValue, NULL, FALSE);

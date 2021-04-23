@@ -19,6 +19,14 @@ class penjualan_edit extends penjualan
 	// Page object name
 	public $PageObjName = "penjualan_edit";
 
+	// Audit Trail
+	public $AuditTrailOnAdd = TRUE;
+	public $AuditTrailOnEdit = TRUE;
+	public $AuditTrailOnDelete = TRUE;
+	public $AuditTrailOnView = FALSE;
+	public $AuditTrailOnViewData = FALSE;
+	public $AuditTrailOnSearch = FALSE;
+
 	// Page headings
 	public $Heading = "";
 	public $Subheading = "";
@@ -3308,7 +3316,6 @@ class penjualan_edit extends penjualan
 
 		$status = $this->status->CurrentValue;
 		$id = $this->id->CurrentValue;
-		$session = $_SESSION["id_penjualan"];
 		if ($this->IsUpdate()) {
 			$pid_penjualan = ExecuteScalar("SELECT id_penjualan FROM detailpenjualan WHERE id_penjualan = '$id'");
 
@@ -3357,6 +3364,15 @@ class penjualan_edit extends penjualan
 		$valuebayar = $this->bayar->CurrentValue;
 		$valuebayar1 = str_replace(".", "", $valuebayar);
 		$this->bayar->EditValue = $valuebayar1;
+		$value_akumulasi_poin = $this->total_penukaran_poin->CurrentValue;
+		$set_akumulasi_poin = str_replace(".", "", $value_akumulasi_poin);
+		$this->total_penukaran_poin->EditValue = $set_akumulasi_poin;
+		$value_diskon_rupiah = $this->diskon_rupiah->CurrentValue;
+		$set_diskon_rupiah = str_replace(".", "", $value_diskon_rupiah);
+		$this->diskon_rupiah->EditValue = $set_diskon_rupiah;	
+		$value_total_non_tunai = $this->total_non_tunai_charge->CurrentValue;
+		$set_total_non_tunai = str_replace(".", "", $value_total_non_tunai);
+		$this->total_non_tunai_charge->EditValue = $set_total_non_tunai;
 		$valuebayarnontunai = $this->bayar_non_tunai->CurrentValue;
 		$valuebayarnontunai1 = str_replace(".", "", $valuebayarnontunai);
 		$this->bayar_non_tunai->EditValue = $valuebayarnontunai1;

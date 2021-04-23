@@ -815,16 +815,16 @@ class audittrail_list extends audittrail
 
 		// Setup export options
 		$this->setupExportOptions();
-		$this->id->setVisibility();
+		$this->id->Visible = FALSE;
 		$this->datetime->setVisibility();
-		$this->script->setVisibility();
+		$this->script->Visible = FALSE;
 		$this->user->setVisibility();
 		$this->_action->setVisibility();
 		$this->_table->setVisibility();
 		$this->field->setVisibility();
 		$this->keyvalue->Visible = FALSE;
-		$this->oldvalue->Visible = FALSE;
-		$this->newvalue->Visible = FALSE;
+		$this->oldvalue->setVisibility();
+		$this->newvalue->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Global Page Loading event (in userfn*.php)
@@ -1411,13 +1411,13 @@ class audittrail_list extends audittrail
 		if (Get("order") !== NULL) {
 			$this->CurrentOrder = Get("order");
 			$this->CurrentOrderType = Get("ordertype", "");
-			$this->updateSort($this->id); // id
 			$this->updateSort($this->datetime); // datetime
-			$this->updateSort($this->script); // script
 			$this->updateSort($this->user); // user
 			$this->updateSort($this->_action); // action
 			$this->updateSort($this->_table); // table
 			$this->updateSort($this->field); // field
+			$this->updateSort($this->oldvalue); // oldvalue
+			$this->updateSort($this->newvalue); // newvalue
 			$this->setStartRecordNumber(1); // Reset start position
 		}
 	}
@@ -1453,13 +1453,13 @@ class audittrail_list extends audittrail
 			if ($this->Command == "resetsort") {
 				$orderBy = "";
 				$this->setSessionOrderBy($orderBy);
-				$this->id->setSort("");
 				$this->datetime->setSort("");
-				$this->script->setSort("");
 				$this->user->setSort("");
 				$this->_action->setSort("");
 				$this->_table->setSort("");
 				$this->field->setSort("");
+				$this->oldvalue->setSort("");
+				$this->newvalue->setSort("");
 			}
 
 			// Reset start position
@@ -1886,12 +1886,8 @@ class audittrail_list extends audittrail
 
 			// datetime
 			$this->datetime->ViewValue = $this->datetime->CurrentValue;
-			$this->datetime->ViewValue = FormatDateTime($this->datetime->ViewValue, 0);
+			$this->datetime->ViewValue = FormatDateTime($this->datetime->ViewValue, 1);
 			$this->datetime->ViewCustomAttributes = "";
-
-			// script
-			$this->script->ViewValue = $this->script->CurrentValue;
-			$this->script->ViewCustomAttributes = "";
 
 			// user
 			$this->user->ViewValue = $this->user->CurrentValue;
@@ -1909,20 +1905,18 @@ class audittrail_list extends audittrail
 			$this->field->ViewValue = $this->field->CurrentValue;
 			$this->field->ViewCustomAttributes = "";
 
-			// id
-			$this->id->LinkCustomAttributes = "";
-			$this->id->HrefValue = "";
-			$this->id->TooltipValue = "";
+			// oldvalue
+			$this->oldvalue->ViewValue = $this->oldvalue->CurrentValue;
+			$this->oldvalue->ViewCustomAttributes = "";
+
+			// newvalue
+			$this->newvalue->ViewValue = $this->newvalue->CurrentValue;
+			$this->newvalue->ViewCustomAttributes = "";
 
 			// datetime
 			$this->datetime->LinkCustomAttributes = "";
 			$this->datetime->HrefValue = "";
 			$this->datetime->TooltipValue = "";
-
-			// script
-			$this->script->LinkCustomAttributes = "";
-			$this->script->HrefValue = "";
-			$this->script->TooltipValue = "";
 
 			// user
 			$this->user->LinkCustomAttributes = "";
@@ -1943,6 +1937,16 @@ class audittrail_list extends audittrail
 			$this->field->LinkCustomAttributes = "";
 			$this->field->HrefValue = "";
 			$this->field->TooltipValue = "";
+
+			// oldvalue
+			$this->oldvalue->LinkCustomAttributes = "";
+			$this->oldvalue->HrefValue = "";
+			$this->oldvalue->TooltipValue = "";
+
+			// newvalue
+			$this->newvalue->LinkCustomAttributes = "";
+			$this->newvalue->HrefValue = "";
+			$this->newvalue->TooltipValue = "";
 		}
 
 		// Call Row Rendered event

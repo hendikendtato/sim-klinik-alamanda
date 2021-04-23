@@ -1488,7 +1488,7 @@ class terimabarang_add extends terimabarang
 		$this->id_pegawai->setDbValueDef($rsnew, $this->id_pegawai->CurrentValue, NULL, FALSE);
 
 		// tanggal_terima
-		$this->tanggal_terima->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal_terima->CurrentValue, 0), NULL, FALSE);
+		$this->tanggal_terima->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal_terima->CurrentValue, 0), CurrentDate(), FALSE);
 
 		// keterangan
 		$this->keterangan->setDbValueDef($rsnew, $this->keterangan->CurrentValue, NULL, FALSE);

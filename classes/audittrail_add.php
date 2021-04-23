@@ -858,7 +858,7 @@ class audittrail_add extends audittrail
 				$this->datetime->Visible = FALSE; // Disable update for API request
 			else
 				$this->datetime->setFormValue($val);
-			$this->datetime->CurrentValue = UnFormatDateTime($this->datetime->CurrentValue, 0);
+			$this->datetime->CurrentValue = UnFormatDateTime($this->datetime->CurrentValue, 1);
 		}
 
 		// Check field name 'script' first before field var 'x_script'
@@ -942,7 +942,7 @@ class audittrail_add extends audittrail
 	{
 		global $CurrentForm;
 		$this->datetime->CurrentValue = $this->datetime->FormValue;
-		$this->datetime->CurrentValue = UnFormatDateTime($this->datetime->CurrentValue, 0);
+		$this->datetime->CurrentValue = UnFormatDateTime($this->datetime->CurrentValue, 1);
 		$this->script->CurrentValue = $this->script->FormValue;
 		$this->user->CurrentValue = $this->user->FormValue;
 		$this->_action->CurrentValue = $this->_action->FormValue;
@@ -1071,7 +1071,7 @@ class audittrail_add extends audittrail
 
 			// datetime
 			$this->datetime->ViewValue = $this->datetime->CurrentValue;
-			$this->datetime->ViewValue = FormatDateTime($this->datetime->ViewValue, 0);
+			$this->datetime->ViewValue = FormatDateTime($this->datetime->ViewValue, 1);
 			$this->datetime->ViewCustomAttributes = "";
 
 			// script
@@ -1347,7 +1347,7 @@ class audittrail_add extends audittrail
 		$rsnew = [];
 
 		// datetime
-		$this->datetime->setDbValueDef($rsnew, UnFormatDateTime($this->datetime->CurrentValue, 0), CurrentDate(), FALSE);
+		$this->datetime->setDbValueDef($rsnew, UnFormatDateTime($this->datetime->CurrentValue, 1), CurrentDate(), FALSE);
 
 		// script
 		$this->script->setDbValueDef($rsnew, $this->script->CurrentValue, NULL, FALSE);

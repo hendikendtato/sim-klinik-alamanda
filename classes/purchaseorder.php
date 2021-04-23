@@ -83,6 +83,8 @@ class purchaseorder extends DbTable
 
 		// tgl_po
 		$this->tgl_po = new DbField('purchaseorder', 'purchaseorder', 'x_tgl_po', 'tgl_po', '`tgl_po`', CastDateFieldForLike("`tgl_po`", 0, "DB"), 133, 10, 0, FALSE, '`tgl_po`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->tgl_po->Nullable = FALSE; // NOT NULL field
+		$this->tgl_po->Required = TRUE; // Required field
 		$this->tgl_po->Sortable = TRUE; // Allow sort
 		$this->tgl_po->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_FORMAT"], $Language->phrase("IncorrectDate"));
 		$this->fields['tgl_po'] = &$this->tgl_po;

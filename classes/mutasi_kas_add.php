@@ -1285,7 +1285,7 @@ class mutasi_kas_add extends mutasi_kas
 		$rsnew = [];
 
 		// tgl
-		$this->tgl->setDbValueDef($rsnew, UnFormatDateTime($this->tgl->CurrentValue, 0), NULL, FALSE);
+		$this->tgl->setDbValueDef($rsnew, UnFormatDateTime($this->tgl->CurrentValue, 0), CurrentDate(), FALSE);
 
 		// id_klinik
 		$this->id_klinik->setDbValueDef($rsnew, $this->id_klinik->CurrentValue, NULL, FALSE);

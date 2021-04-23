@@ -1216,7 +1216,7 @@ class penyesuaianstok_add extends penyesuaianstok
 		$rsnew = [];
 
 		// tanggal
-		$this->tanggal->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal->CurrentValue, 7), NULL, FALSE);
+		$this->tanggal->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal->CurrentValue, 7), CurrentDate(), FALSE);
 
 		// id_klinik
 		$this->id_klinik->setDbValueDef($rsnew, $this->id_klinik->CurrentValue, 0, strval($this->id_klinik->CurrentValue) == "");

@@ -1333,7 +1333,7 @@ class purchaseorder_add extends purchaseorder
 		$rsnew = [];
 
 		// tgl_po
-		$this->tgl_po->setDbValueDef($rsnew, UnFormatDateTime($this->tgl_po->CurrentValue, 0), NULL, FALSE);
+		$this->tgl_po->setDbValueDef($rsnew, UnFormatDateTime($this->tgl_po->CurrentValue, 0), CurrentDate(), FALSE);
 
 		// idstaff_po
 		$this->idstaff_po->setDbValueDef($rsnew, $this->idstaff_po->CurrentValue, NULL, FALSE);

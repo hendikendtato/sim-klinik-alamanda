@@ -1515,7 +1515,7 @@ class kirimbarang_edit extends kirimbarang
 			$this->id_pegawai->setDbValueDef($rsnew, $this->id_pegawai->CurrentValue, NULL, $this->id_pegawai->ReadOnly);
 
 			// tanggal
-			$this->tanggal->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal->CurrentValue, 0), NULL, $this->tanggal->ReadOnly);
+			$this->tanggal->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal->CurrentValue, 0), CurrentDate(), $this->tanggal->ReadOnly);
 
 			// status_kirim
 			$this->status_kirim->setDbValueDef($rsnew, $this->status_kirim->CurrentValue, NULL, $this->status_kirim->ReadOnly);

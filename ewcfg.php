@@ -161,7 +161,7 @@ $CONFIG = [
 
 	// General
 	"UNFORMAT_YEAR" => 50, // Unformat year
-	"RANDOM_KEY" => 'THEHhhGnCV2OVXgd', // Random key for encryption
+	"RANDOM_KEY" => '19w79MgjU5RA8B13', // Random key for encryption
 	"ENCRYPTION_KEY" => '', // Encryption key for data protection
 	"PROJECT_STYLESHEET_FILENAME" => "css/sim_klinik_alamanda.css", // Project stylesheet file name
 	"PROJECT_CHARSET" => "utf-8", // Project charset

@@ -19,6 +19,14 @@ class penjualan_add extends penjualan
 	// Page object name
 	public $PageObjName = "penjualan_add";
 
+	// Audit Trail
+	public $AuditTrailOnAdd = TRUE;
+	public $AuditTrailOnEdit = TRUE;
+	public $AuditTrailOnDelete = TRUE;
+	public $AuditTrailOnView = FALSE;
+	public $AuditTrailOnViewData = FALSE;
+	public $AuditTrailOnSearch = FALSE;
+
 	// Page headings
 	public $Heading = "";
 	public $Subheading = "";
@@ -3249,7 +3257,6 @@ class penjualan_add extends penjualan
 
 		$status = $this->status->CurrentValue;
 		$id = $this->id->CurrentValue;
-		$session = $_SESSION["id_penjualan"];
 
 		//var_dump($session); exit();
 		if ($this->IsInsert()) {

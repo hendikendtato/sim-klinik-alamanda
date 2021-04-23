@@ -1457,7 +1457,7 @@ class kirimbarang_add extends kirimbarang
 		$this->id_pegawai->setDbValueDef($rsnew, $this->id_pegawai->CurrentValue, NULL, FALSE);
 
 		// tanggal
-		$this->tanggal->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal->CurrentValue, 0), NULL, FALSE);
+		$this->tanggal->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal->CurrentValue, 0), CurrentDate(), FALSE);
 
 		// status_kirim
 		$this->status_kirim->setDbValueDef($rsnew, $this->status_kirim->CurrentValue, NULL, FALSE);
