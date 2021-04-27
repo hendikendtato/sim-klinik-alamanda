@@ -111,6 +111,16 @@ $mutasi_kas_view->showMessage();
 </td>
 	</tr>
 <?php } ?>
+<?php if ($mutasi_kas_view->staff->Visible) { // staff ?>
+	<tr id="r_staff">
+		<td class="<?php echo $mutasi_kas_view->TableLeftColumnClass ?>"><span id="elh_mutasi_kas_staff"><?php echo $mutasi_kas_view->staff->caption() ?></span></td>
+		<td data-name="staff" <?php echo $mutasi_kas_view->staff->cellAttributes() ?>>
+<span id="el_mutasi_kas_staff">
+<span<?php echo $mutasi_kas_view->staff->viewAttributes() ?>><?php echo $mutasi_kas_view->staff->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
 <?php if ($mutasi_kas_view->keterangan->Visible) { // keterangan ?>
 	<tr id="r_keterangan">
 		<td class="<?php echo $mutasi_kas_view->TableLeftColumnClass ?>"><span id="elh_mutasi_kas_keterangan"><?php echo $mutasi_kas_view->keterangan->caption() ?></span></td>

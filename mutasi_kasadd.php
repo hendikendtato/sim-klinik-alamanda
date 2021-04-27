@@ -79,6 +79,11 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $mutasi_kas_add->tipe->caption(), $mutasi_kas_add->tipe->RequiredErrorMessage)) ?>");
 			<?php } ?>
+			<?php if ($mutasi_kas_add->staff->Required) { ?>
+				elm = this.getElements("x" + infix + "_staff");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $mutasi_kas_add->staff->caption(), $mutasi_kas_add->staff->RequiredErrorMessage)) ?>");
+			<?php } ?>
 			<?php if ($mutasi_kas_add->keterangan->Required) { ?>
 				elm = this.getElements("x" + infix + "_keterangan");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
@@ -118,6 +123,8 @@ loadjs.ready("head", function() {
 	fmutasi_kasadd.lists["x_id_kas"].options = <?php echo JsonEncode($mutasi_kas_add->id_kas->lookupOptions()) ?>;
 	fmutasi_kasadd.lists["x_tipe"] = <?php echo $mutasi_kas_add->tipe->Lookup->toClientList($mutasi_kas_add) ?>;
 	fmutasi_kasadd.lists["x_tipe"].options = <?php echo JsonEncode($mutasi_kas_add->tipe->options(FALSE, TRUE)) ?>;
+	fmutasi_kasadd.lists["x_staff"] = <?php echo $mutasi_kas_add->staff->Lookup->toClientList($mutasi_kas_add) ?>;
+	fmutasi_kasadd.lists["x_staff"].options = <?php echo JsonEncode($mutasi_kas_add->staff->lookupOptions()) ?>;
 	loadjs.done("fmutasi_kasadd");
 });
 </script>
@@ -199,6 +206,21 @@ loadjs.ready(["fmutasi_kasadd", "datetimepicker"], function() {
 </div></div>
 </span>
 <?php echo $mutasi_kas_add->tipe->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
+<?php if ($mutasi_kas_add->staff->Visible) { // staff ?>
+	<div id="r_staff" class="form-group row">
+		<label id="elh_mutasi_kas_staff" for="x_staff" class="<?php echo $mutasi_kas_add->LeftColumnClass ?>"><?php echo $mutasi_kas_add->staff->caption() ?><?php echo $mutasi_kas_add->staff->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $mutasi_kas_add->RightColumnClass ?>"><div <?php echo $mutasi_kas_add->staff->cellAttributes() ?>>
+<span id="el_mutasi_kas_staff">
+<div class="input-group">
+	<select class="custom-select ew-custom-select" data-table="mutasi_kas" data-field="x_staff" data-value-separator="<?php echo $mutasi_kas_add->staff->displayValueSeparatorAttribute() ?>" id="x_staff" name="x_staff"<?php echo $mutasi_kas_add->staff->editAttributes() ?>>
+			<?php echo $mutasi_kas_add->staff->selectOptionListHtml("x_staff") ?>
+		</select>
+</div>
+<?php echo $mutasi_kas_add->staff->Lookup->getParamTag($mutasi_kas_add, "p_x_staff") ?>
+</span>
+<?php echo $mutasi_kas_add->staff->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 <?php if ($mutasi_kas_add->keterangan->Visible) { // keterangan ?>

@@ -582,6 +582,7 @@ class mutasi_kas_delete extends mutasi_kas
 		$this->id_klinik->setVisibility();
 		$this->id_kas->setVisibility();
 		$this->tipe->setVisibility();
+		$this->staff->setVisibility();
 		$this->keterangan->setVisibility();
 		$this->hideFieldsForAddEdit();
 
@@ -606,6 +607,7 @@ class mutasi_kas_delete extends mutasi_kas
 		// Set up lookup cache
 		$this->setupLookupOptions($this->id_klinik);
 		$this->setupLookupOptions($this->id_kas);
+		$this->setupLookupOptions($this->staff);
 
 		// Check permission
 		if (!$Security->canDelete()) {
@@ -736,6 +738,7 @@ class mutasi_kas_delete extends mutasi_kas
 		$this->id_klinik->setDbValue($row['id_klinik']);
 		$this->id_kas->setDbValue($row['id_kas']);
 		$this->tipe->setDbValue($row['tipe']);
+		$this->staff->setDbValue($row['staff']);
 		$this->keterangan->setDbValue($row['keterangan']);
 	}
 
@@ -749,6 +752,7 @@ class mutasi_kas_delete extends mutasi_kas
 		$row['id_klinik'] = NULL;
 		$row['id_kas'] = NULL;
 		$row['tipe'] = NULL;
+		$row['staff'] = NULL;
 		$row['keterangan'] = NULL;
 		return $row;
 	}
@@ -773,6 +777,7 @@ class mutasi_kas_delete extends mutasi_kas
 		// id_klinik
 		// id_kas
 		// tipe
+		// staff
 		// keterangan
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
@@ -838,6 +843,28 @@ class mutasi_kas_delete extends mutasi_kas
 			}
 			$this->tipe->ViewCustomAttributes = "";
 
+			// staff
+			$curVal = strval($this->staff->CurrentValue);
+			if ($curVal != "") {
+				$this->staff->ViewValue = $this->staff->lookupCacheOption($curVal);
+				if ($this->staff->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->staff->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->staff->ViewValue = $this->staff->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->staff->ViewValue = $this->staff->CurrentValue;
+					}
+				}
+			} else {
+				$this->staff->ViewValue = NULL;
+			}
+			$this->staff->ViewCustomAttributes = "";
+
 			// keterangan
 			$this->keterangan->ViewValue = $this->keterangan->CurrentValue;
 			$this->keterangan->ViewCustomAttributes = "";
@@ -866,6 +893,11 @@ class mutasi_kas_delete extends mutasi_kas
 			$this->tipe->LinkCustomAttributes = "";
 			$this->tipe->HrefValue = "";
 			$this->tipe->TooltipValue = "";
+
+			// staff
+			$this->staff->LinkCustomAttributes = "";
+			$this->staff->HrefValue = "";
+			$this->staff->TooltipValue = "";
 
 			// keterangan
 			$this->keterangan->LinkCustomAttributes = "";
@@ -999,6 +1031,8 @@ class mutasi_kas_delete extends mutasi_kas
 					break;
 				case "x_tipe":
 					break;
+				case "x_staff":
+					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -1022,6 +1056,8 @@ class mutasi_kas_delete extends mutasi_kas
 						case "x_id_klinik":
 							break;
 						case "x_id_kas":
+							break;
+						case "x_staff":
 							break;
 					}
 					$ar[strval($row[0])] = $row;

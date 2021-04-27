@@ -822,6 +822,7 @@ class mutasi_kas_list extends mutasi_kas
 		$this->id_klinik->setVisibility();
 		$this->id_kas->setVisibility();
 		$this->tipe->setVisibility();
+		$this->staff->setVisibility();
 		$this->keterangan->setVisibility();
 		$this->hideFieldsForAddEdit();
 
@@ -858,6 +859,7 @@ class mutasi_kas_list extends mutasi_kas
 		// Set up lookup cache
 		$this->setupLookupOptions($this->id_klinik);
 		$this->setupLookupOptions($this->id_kas);
+		$this->setupLookupOptions($this->staff);
 
 		// Search filters
 		$srchAdvanced = ""; // Advanced search filter
@@ -1133,6 +1135,7 @@ class mutasi_kas_list extends mutasi_kas
 		$filterList = Concat($filterList, $this->id_klinik->AdvancedSearch->toJson(), ","); // Field id_klinik
 		$filterList = Concat($filterList, $this->id_kas->AdvancedSearch->toJson(), ","); // Field id_kas
 		$filterList = Concat($filterList, $this->tipe->AdvancedSearch->toJson(), ","); // Field tipe
+		$filterList = Concat($filterList, $this->staff->AdvancedSearch->toJson(), ","); // Field staff
 		$filterList = Concat($filterList, $this->keterangan->AdvancedSearch->toJson(), ","); // Field keterangan
 		if ($this->BasicSearch->Keyword != "") {
 			$wrk = "\"" . Config("TABLE_BASIC_SEARCH") . "\":\"" . JsEncode($this->BasicSearch->Keyword) . "\",\"" . Config("TABLE_BASIC_SEARCH_TYPE") . "\":\"" . JsEncode($this->BasicSearch->Type) . "\"";
@@ -1204,6 +1207,14 @@ class mutasi_kas_list extends mutasi_kas
 		$this->tipe->AdvancedSearch->SearchOperator2 = @$filter["w_tipe"];
 		$this->tipe->AdvancedSearch->save();
 
+		// Field staff
+		$this->staff->AdvancedSearch->SearchValue = @$filter["x_staff"];
+		$this->staff->AdvancedSearch->SearchOperator = @$filter["z_staff"];
+		$this->staff->AdvancedSearch->SearchCondition = @$filter["v_staff"];
+		$this->staff->AdvancedSearch->SearchValue2 = @$filter["y_staff"];
+		$this->staff->AdvancedSearch->SearchOperator2 = @$filter["w_staff"];
+		$this->staff->AdvancedSearch->save();
+
 		// Field keterangan
 		$this->keterangan->AdvancedSearch->SearchValue = @$filter["x_keterangan"];
 		$this->keterangan->AdvancedSearch->SearchOperator = @$filter["z_keterangan"];
@@ -1226,6 +1237,7 @@ class mutasi_kas_list extends mutasi_kas
 		$this->buildSearchSql($where, $this->id_klinik, $default, FALSE); // id_klinik
 		$this->buildSearchSql($where, $this->id_kas, $default, FALSE); // id_kas
 		$this->buildSearchSql($where, $this->tipe, $default, FALSE); // tipe
+		$this->buildSearchSql($where, $this->staff, $default, FALSE); // staff
 		$this->buildSearchSql($where, $this->keterangan, $default, FALSE); // keterangan
 
 		// Set up search parm
@@ -1237,6 +1249,7 @@ class mutasi_kas_list extends mutasi_kas
 			$this->id_klinik->AdvancedSearch->save(); // id_klinik
 			$this->id_kas->AdvancedSearch->save(); // id_kas
 			$this->tipe->AdvancedSearch->save(); // tipe
+			$this->staff->AdvancedSearch->save(); // staff
 			$this->keterangan->AdvancedSearch->save(); // keterangan
 		}
 		return $where;
@@ -1422,6 +1435,8 @@ class mutasi_kas_list extends mutasi_kas
 			return TRUE;
 		if ($this->tipe->AdvancedSearch->issetSession())
 			return TRUE;
+		if ($this->staff->AdvancedSearch->issetSession())
+			return TRUE;
 		if ($this->keterangan->AdvancedSearch->issetSession())
 			return TRUE;
 		return FALSE;
@@ -1461,6 +1476,7 @@ class mutasi_kas_list extends mutasi_kas
 		$this->id_klinik->AdvancedSearch->unsetSession();
 		$this->id_kas->AdvancedSearch->unsetSession();
 		$this->tipe->AdvancedSearch->unsetSession();
+		$this->staff->AdvancedSearch->unsetSession();
 		$this->keterangan->AdvancedSearch->unsetSession();
 	}
 
@@ -1477,6 +1493,7 @@ class mutasi_kas_list extends mutasi_kas
 		$this->id_klinik->AdvancedSearch->load();
 		$this->id_kas->AdvancedSearch->load();
 		$this->tipe->AdvancedSearch->load();
+		$this->staff->AdvancedSearch->load();
 		$this->keterangan->AdvancedSearch->load();
 	}
 
@@ -1493,6 +1510,7 @@ class mutasi_kas_list extends mutasi_kas
 			$this->updateSort($this->id_klinik); // id_klinik
 			$this->updateSort($this->id_kas); // id_kas
 			$this->updateSort($this->tipe); // tipe
+			$this->updateSort($this->staff); // staff
 			$this->updateSort($this->keterangan); // keterangan
 			$this->setStartRecordNumber(1); // Reset start position
 		}
@@ -1534,6 +1552,7 @@ class mutasi_kas_list extends mutasi_kas
 				$this->id_klinik->setSort("");
 				$this->id_kas->setSort("");
 				$this->tipe->setSort("");
+				$this->staff->setSort("");
 				$this->keterangan->setSort("");
 			}
 
@@ -2069,6 +2088,13 @@ class mutasi_kas_list extends mutasi_kas
 				$this->Command = "search";
 		}
 
+		// staff
+		if (!$this->isAddOrEdit() && $this->staff->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->staff->AdvancedSearch->SearchValue != "" || $this->staff->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
 		// keterangan
 		if (!$this->isAddOrEdit() && $this->keterangan->AdvancedSearch->get()) {
 			$got = TRUE;
@@ -2146,6 +2172,7 @@ class mutasi_kas_list extends mutasi_kas
 		$this->id_klinik->setDbValue($row['id_klinik']);
 		$this->id_kas->setDbValue($row['id_kas']);
 		$this->tipe->setDbValue($row['tipe']);
+		$this->staff->setDbValue($row['staff']);
 		$this->keterangan->setDbValue($row['keterangan']);
 		if (!isset($GLOBALS["detailmutasibank_grid"]))
 			$GLOBALS["detailmutasibank_grid"] = new detailmutasibank_grid();
@@ -2166,6 +2193,7 @@ class mutasi_kas_list extends mutasi_kas
 		$row['id_klinik'] = NULL;
 		$row['id_kas'] = NULL;
 		$row['tipe'] = NULL;
+		$row['staff'] = NULL;
 		$row['keterangan'] = NULL;
 		return $row;
 	}
@@ -2219,6 +2247,7 @@ class mutasi_kas_list extends mutasi_kas
 		// id_klinik
 		// id_kas
 		// tipe
+		// staff
 		// keterangan
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
@@ -2284,6 +2313,28 @@ class mutasi_kas_list extends mutasi_kas
 			}
 			$this->tipe->ViewCustomAttributes = "";
 
+			// staff
+			$curVal = strval($this->staff->CurrentValue);
+			if ($curVal != "") {
+				$this->staff->ViewValue = $this->staff->lookupCacheOption($curVal);
+				if ($this->staff->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->staff->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->staff->ViewValue = $this->staff->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->staff->ViewValue = $this->staff->CurrentValue;
+					}
+				}
+			} else {
+				$this->staff->ViewValue = NULL;
+			}
+			$this->staff->ViewCustomAttributes = "";
+
 			// keterangan
 			$this->keterangan->ViewValue = $this->keterangan->CurrentValue;
 			$this->keterangan->ViewCustomAttributes = "";
@@ -2312,6 +2363,11 @@ class mutasi_kas_list extends mutasi_kas
 			$this->tipe->LinkCustomAttributes = "";
 			$this->tipe->HrefValue = "";
 			$this->tipe->TooltipValue = "";
+
+			// staff
+			$this->staff->LinkCustomAttributes = "";
+			$this->staff->HrefValue = "";
+			$this->staff->TooltipValue = "";
 
 			// keterangan
 			$this->keterangan->LinkCustomAttributes = "";
@@ -2355,6 +2411,7 @@ class mutasi_kas_list extends mutasi_kas
 		$this->id_klinik->AdvancedSearch->load();
 		$this->id_kas->AdvancedSearch->load();
 		$this->tipe->AdvancedSearch->load();
+		$this->staff->AdvancedSearch->load();
 		$this->keterangan->AdvancedSearch->load();
 	}
 
@@ -2628,6 +2685,8 @@ class mutasi_kas_list extends mutasi_kas
 					break;
 				case "x_tipe":
 					break;
+				case "x_staff":
+					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -2651,6 +2710,8 @@ class mutasi_kas_list extends mutasi_kas
 						case "x_id_klinik":
 							break;
 						case "x_id_kas":
+							break;
+						case "x_staff":
 							break;
 					}
 					$ar[strval($row[0])] = $row;

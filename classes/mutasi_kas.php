@@ -31,6 +31,7 @@ class mutasi_kas extends DbTable
 	public $id_klinik;
 	public $id_kas;
 	public $tipe;
+	public $staff;
 	public $keterangan;
 
 	// Constructor
@@ -99,6 +100,8 @@ class mutasi_kas extends DbTable
 
 		// id_kas
 		$this->id_kas = new DbField('mutasi_kas', 'mutasi_kas', 'x_id_kas', 'id_kas', '`id_kas`', '`id_kas`', 3, 11, -1, FALSE, '`id_kas`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->id_kas->Nullable = FALSE; // NOT NULL field
+		$this->id_kas->Required = TRUE; // Required field
 		$this->id_kas->Sortable = TRUE; // Allow sort
 		$this->id_kas->UsePleaseSelect = TRUE; // Use PleaseSelect by default
 		$this->id_kas->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
@@ -114,6 +117,15 @@ class mutasi_kas extends DbTable
 		$this->tipe->Lookup = new Lookup('tipe', 'mutasi_kas', FALSE, '', ["","","",""], [], [], [], [], [], [], '', '');
 		$this->tipe->OptionCount = 2;
 		$this->fields['tipe'] = &$this->tipe;
+
+		// staff
+		$this->staff = new DbField('mutasi_kas', 'mutasi_kas', 'x_staff', 'staff', '`staff`', '`staff`', 3, 11, -1, FALSE, '`staff`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->staff->Sortable = TRUE; // Allow sort
+		$this->staff->UsePleaseSelect = TRUE; // Use PleaseSelect by default
+		$this->staff->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
+		$this->staff->Lookup = new Lookup('staff', 'm_pegawai', FALSE, 'id_pegawai', ["nama_pegawai","","",""], [], [], [], [], [], [], '', '');
+		$this->staff->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->fields['staff'] = &$this->staff;
 
 		// keterangan
 		$this->keterangan = new DbField('mutasi_kas', 'mutasi_kas', 'x_keterangan', 'keterangan', '`keterangan`', '`keterangan`', 200, 255, -1, FALSE, '`keterangan`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
@@ -505,6 +517,7 @@ class mutasi_kas extends DbTable
 		$this->id_klinik->DbValue = $row['id_klinik'];
 		$this->id_kas->DbValue = $row['id_kas'];
 		$this->tipe->DbValue = $row['tipe'];
+		$this->staff->DbValue = $row['staff'];
 		$this->keterangan->DbValue = $row['keterangan'];
 	}
 
@@ -748,6 +761,7 @@ class mutasi_kas extends DbTable
 		$this->id_klinik->setDbValue($rs->fields('id_klinik'));
 		$this->id_kas->setDbValue($rs->fields('id_kas'));
 		$this->tipe->setDbValue($rs->fields('tipe'));
+		$this->staff->setDbValue($rs->fields('staff'));
 		$this->keterangan->setDbValue($rs->fields('keterangan'));
 	}
 
@@ -769,6 +783,7 @@ class mutasi_kas extends DbTable
 		// id_klinik
 		// id_kas
 		// tipe
+		// staff
 		// keterangan
 		// id
 
@@ -836,6 +851,28 @@ class mutasi_kas extends DbTable
 		}
 		$this->tipe->ViewCustomAttributes = "";
 
+		// staff
+		$curVal = strval($this->staff->CurrentValue);
+		if ($curVal != "") {
+			$this->staff->ViewValue = $this->staff->lookupCacheOption($curVal);
+			if ($this->staff->ViewValue === NULL) { // Lookup from database
+				$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+				$sqlWrk = $this->staff->Lookup->getSql(FALSE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = $rswrk->fields('df');
+					$this->staff->ViewValue = $this->staff->displayValue($arwrk);
+					$rswrk->Close();
+				} else {
+					$this->staff->ViewValue = $this->staff->CurrentValue;
+				}
+			}
+		} else {
+			$this->staff->ViewValue = NULL;
+		}
+		$this->staff->ViewCustomAttributes = "";
+
 		// keterangan
 		$this->keterangan->ViewValue = $this->keterangan->CurrentValue;
 		$this->keterangan->ViewCustomAttributes = "";
@@ -869,6 +906,11 @@ class mutasi_kas extends DbTable
 		$this->tipe->LinkCustomAttributes = "";
 		$this->tipe->HrefValue = "";
 		$this->tipe->TooltipValue = "";
+
+		// staff
+		$this->staff->LinkCustomAttributes = "";
+		$this->staff->HrefValue = "";
+		$this->staff->TooltipValue = "";
 
 		// keterangan
 		$this->keterangan->LinkCustomAttributes = "";
@@ -922,6 +964,10 @@ class mutasi_kas extends DbTable
 		$this->tipe->EditCustomAttributes = "";
 		$this->tipe->EditValue = $this->tipe->options(FALSE);
 
+		// staff
+		$this->staff->EditAttrs["class"] = "form-control";
+		$this->staff->EditCustomAttributes = "";
+
 		// keterangan
 		$this->keterangan->EditAttrs["class"] = "form-control";
 		$this->keterangan->EditCustomAttributes = "";
@@ -963,6 +1009,7 @@ class mutasi_kas extends DbTable
 					$doc->exportCaption($this->id_klinik);
 					$doc->exportCaption($this->id_kas);
 					$doc->exportCaption($this->tipe);
+					$doc->exportCaption($this->staff);
 					$doc->exportCaption($this->keterangan);
 				} else {
 					$doc->exportCaption($this->no_bukti);
@@ -970,6 +1017,7 @@ class mutasi_kas extends DbTable
 					$doc->exportCaption($this->id_klinik);
 					$doc->exportCaption($this->id_kas);
 					$doc->exportCaption($this->tipe);
+					$doc->exportCaption($this->staff);
 					$doc->exportCaption($this->keterangan);
 				}
 				$doc->endExportRow();
@@ -1006,6 +1054,7 @@ class mutasi_kas extends DbTable
 						$doc->exportField($this->id_klinik);
 						$doc->exportField($this->id_kas);
 						$doc->exportField($this->tipe);
+						$doc->exportField($this->staff);
 						$doc->exportField($this->keterangan);
 					} else {
 						$doc->exportField($this->no_bukti);
@@ -1013,6 +1062,7 @@ class mutasi_kas extends DbTable
 						$doc->exportField($this->id_klinik);
 						$doc->exportField($this->id_kas);
 						$doc->exportField($this->tipe);
+						$doc->exportField($this->staff);
 						$doc->exportField($this->keterangan);
 					}
 					$doc->endExportRow($rowCnt);
@@ -1240,6 +1290,11 @@ class mutasi_kas extends DbTable
 			$this->id_klinik->CurrentValue = $id_klinik ;
 			$this->id_klinik->ReadOnly = TRUE; 
 		}
+		$id_pegawai = CurrentUserInfo("id_pegawai");
+		if($id_pegawai != '' OR $id_pegawai != FALSE){
+			$this->staff->CurrentValue = $id_pegawai ;
+			$this->staff->ReadOnly = TRUE; 
+		}	
 	}
 
 	// User ID Filtering event

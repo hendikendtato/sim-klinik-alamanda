@@ -2440,6 +2440,9 @@
         <phrase id="fldtagvalue2" value="Mutasi Kas Keluar" />
         <phrase id="fldtagcaption2" value="Mutasi Kas Keluar" />
       </field>
+      <field id="staff">
+        <phrase id="fldcaption" value="Staf" />
+      </field>
       <field id="keterangan">
         <phrase id="fldcaption" value="Keterangan" />
       </field>

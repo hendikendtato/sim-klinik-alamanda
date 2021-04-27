@@ -85,6 +85,9 @@ $mutasi_kas_delete->showMessage();
 <?php if ($mutasi_kas_delete->tipe->Visible) { // tipe ?>
 		<th class="<?php echo $mutasi_kas_delete->tipe->headerCellClass() ?>"><span id="elh_mutasi_kas_tipe" class="mutasi_kas_tipe"><?php echo $mutasi_kas_delete->tipe->caption() ?></span></th>
 <?php } ?>
+<?php if ($mutasi_kas_delete->staff->Visible) { // staff ?>
+		<th class="<?php echo $mutasi_kas_delete->staff->headerCellClass() ?>"><span id="elh_mutasi_kas_staff" class="mutasi_kas_staff"><?php echo $mutasi_kas_delete->staff->caption() ?></span></th>
+<?php } ?>
 <?php if ($mutasi_kas_delete->keterangan->Visible) { // keterangan ?>
 		<th class="<?php echo $mutasi_kas_delete->keterangan->headerCellClass() ?>"><span id="elh_mutasi_kas_keterangan" class="mutasi_kas_keterangan"><?php echo $mutasi_kas_delete->keterangan->caption() ?></span></th>
 <?php } ?>
@@ -141,6 +144,13 @@ while (!$mutasi_kas_delete->Recordset->EOF) {
 		<td <?php echo $mutasi_kas_delete->tipe->cellAttributes() ?>>
 <span id="el<?php echo $mutasi_kas_delete->RowCount ?>_mutasi_kas_tipe" class="mutasi_kas_tipe">
 <span<?php echo $mutasi_kas_delete->tipe->viewAttributes() ?>><?php echo $mutasi_kas_delete->tipe->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($mutasi_kas_delete->staff->Visible) { // staff ?>
+		<td <?php echo $mutasi_kas_delete->staff->cellAttributes() ?>>
+<span id="el<?php echo $mutasi_kas_delete->RowCount ?>_mutasi_kas_staff" class="mutasi_kas_staff">
+<span<?php echo $mutasi_kas_delete->staff->viewAttributes() ?>><?php echo $mutasi_kas_delete->staff->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

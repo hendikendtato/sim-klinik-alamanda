@@ -670,6 +670,7 @@ class mutasi_kas_search extends mutasi_kas
 		$this->id_klinik->setVisibility();
 		$this->id_kas->setVisibility();
 		$this->tipe->setVisibility();
+		$this->staff->setVisibility();
 		$this->keterangan->setVisibility();
 		$this->hideFieldsForAddEdit();
 
@@ -694,6 +695,7 @@ class mutasi_kas_search extends mutasi_kas
 		// Set up lookup cache
 		$this->setupLookupOptions($this->id_klinik);
 		$this->setupLookupOptions($this->id_kas);
+		$this->setupLookupOptions($this->staff);
 
 		// Set up Breadcrumb
 		$this->setupBreadcrumb();
@@ -742,6 +744,7 @@ class mutasi_kas_search extends mutasi_kas
 		$this->buildSearchUrl($srchUrl, $this->id_klinik); // id_klinik
 		$this->buildSearchUrl($srchUrl, $this->id_kas); // id_kas
 		$this->buildSearchUrl($srchUrl, $this->tipe); // tipe
+		$this->buildSearchUrl($srchUrl, $this->staff); // staff
 		$this->buildSearchUrl($srchUrl, $this->keterangan); // keterangan
 		if ($srchUrl != "")
 			$srchUrl .= "&";
@@ -823,6 +826,8 @@ class mutasi_kas_search extends mutasi_kas
 			$got = TRUE;
 		if ($this->tipe->AdvancedSearch->post())
 			$got = TRUE;
+		if ($this->staff->AdvancedSearch->post())
+			$got = TRUE;
 		if ($this->keterangan->AdvancedSearch->post())
 			$got = TRUE;
 		return $got;
@@ -845,6 +850,7 @@ class mutasi_kas_search extends mutasi_kas
 		// id_klinik
 		// id_kas
 		// tipe
+		// staff
 		// keterangan
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
@@ -910,6 +916,28 @@ class mutasi_kas_search extends mutasi_kas
 			}
 			$this->tipe->ViewCustomAttributes = "";
 
+			// staff
+			$curVal = strval($this->staff->CurrentValue);
+			if ($curVal != "") {
+				$this->staff->ViewValue = $this->staff->lookupCacheOption($curVal);
+				if ($this->staff->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->staff->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->staff->ViewValue = $this->staff->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->staff->ViewValue = $this->staff->CurrentValue;
+					}
+				}
+			} else {
+				$this->staff->ViewValue = NULL;
+			}
+			$this->staff->ViewCustomAttributes = "";
+
 			// keterangan
 			$this->keterangan->ViewValue = $this->keterangan->CurrentValue;
 			$this->keterangan->ViewCustomAttributes = "";
@@ -933,6 +961,11 @@ class mutasi_kas_search extends mutasi_kas
 			$this->tipe->LinkCustomAttributes = "";
 			$this->tipe->HrefValue = "";
 			$this->tipe->TooltipValue = "";
+
+			// staff
+			$this->staff->LinkCustomAttributes = "";
+			$this->staff->HrefValue = "";
+			$this->staff->TooltipValue = "";
 
 			// keterangan
 			$this->keterangan->LinkCustomAttributes = "";
@@ -1002,6 +1035,30 @@ class mutasi_kas_search extends mutasi_kas
 			$this->tipe->EditCustomAttributes = "";
 			$this->tipe->EditValue = $this->tipe->options(FALSE);
 
+			// staff
+			$this->staff->EditAttrs["class"] = "form-control";
+			$this->staff->EditCustomAttributes = "";
+			$curVal = trim(strval($this->staff->AdvancedSearch->SearchValue));
+			if ($curVal != "")
+				$this->staff->AdvancedSearch->ViewValue = $this->staff->lookupCacheOption($curVal);
+			else
+				$this->staff->AdvancedSearch->ViewValue = $this->staff->Lookup !== NULL && is_array($this->staff->Lookup->Options) ? $curVal : NULL;
+			if ($this->staff->AdvancedSearch->ViewValue !== NULL) { // Load from cache
+				$this->staff->EditValue = array_values($this->staff->Lookup->Options);
+			} else { // Lookup from database
+				if ($curVal == "") {
+					$filterWrk = "0=1";
+				} else {
+					$filterWrk = "`id_pegawai`" . SearchString("=", $this->staff->AdvancedSearch->SearchValue, DATATYPE_NUMBER, "");
+				}
+				$sqlWrk = $this->staff->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				$arwrk = $rswrk ? $rswrk->getRows() : [];
+				if ($rswrk)
+					$rswrk->close();
+				$this->staff->EditValue = $arwrk;
+			}
+
 			// keterangan
 			$this->keterangan->EditAttrs["class"] = "form-control";
 			$this->keterangan->EditCustomAttributes = "";
@@ -1055,6 +1112,7 @@ class mutasi_kas_search extends mutasi_kas
 		$this->id_klinik->AdvancedSearch->load();
 		$this->id_kas->AdvancedSearch->load();
 		$this->tipe->AdvancedSearch->load();
+		$this->staff->AdvancedSearch->load();
 		$this->keterangan->AdvancedSearch->load();
 	}
 
@@ -1089,6 +1147,8 @@ class mutasi_kas_search extends mutasi_kas
 					break;
 				case "x_tipe":
 					break;
+				case "x_staff":
+					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -1112,6 +1172,8 @@ class mutasi_kas_search extends mutasi_kas
 						case "x_id_klinik":
 							break;
 						case "x_id_kas":
+							break;
+						case "x_staff":
 							break;
 					}
 					$ar[strval($row[0])] = $row;

@@ -222,6 +222,15 @@ $mutasi_kas_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
+<?php if ($mutasi_kas_list->staff->Visible) { // staff ?>
+	<?php if ($mutasi_kas_list->SortUrl($mutasi_kas_list->staff) == "") { ?>
+		<th data-name="staff" class="<?php echo $mutasi_kas_list->staff->headerCellClass() ?>"><div id="elh_mutasi_kas_staff" class="mutasi_kas_staff"><div class="ew-table-header-caption"><?php echo $mutasi_kas_list->staff->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="staff" class="<?php echo $mutasi_kas_list->staff->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $mutasi_kas_list->SortUrl($mutasi_kas_list->staff) ?>', 1);"><div id="elh_mutasi_kas_staff" class="mutasi_kas_staff">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $mutasi_kas_list->staff->caption() ?></span><span class="ew-table-header-sort"><?php if ($mutasi_kas_list->staff->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($mutasi_kas_list->staff->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
 <?php if ($mutasi_kas_list->keterangan->Visible) { // keterangan ?>
 	<?php if ($mutasi_kas_list->SortUrl($mutasi_kas_list->keterangan) == "") { ?>
 		<th data-name="keterangan" class="<?php echo $mutasi_kas_list->keterangan->headerCellClass() ?>"><div id="elh_mutasi_kas_keterangan" class="mutasi_kas_keterangan"><div class="ew-table-header-caption"><?php echo $mutasi_kas_list->keterangan->caption() ?></div></div></th>
@@ -328,6 +337,13 @@ $mutasi_kas_list->ListOptions->render("body", "left", $mutasi_kas_list->RowCount
 		<td data-name="tipe" <?php echo $mutasi_kas_list->tipe->cellAttributes() ?>>
 <span id="el<?php echo $mutasi_kas_list->RowCount ?>_mutasi_kas_tipe">
 <span<?php echo $mutasi_kas_list->tipe->viewAttributes() ?>><?php echo $mutasi_kas_list->tipe->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
+	<?php if ($mutasi_kas_list->staff->Visible) { // staff ?>
+		<td data-name="staff" <?php echo $mutasi_kas_list->staff->cellAttributes() ?>>
+<span id="el<?php echo $mutasi_kas_list->RowCount ?>_mutasi_kas_staff">
+<span<?php echo $mutasi_kas_list->staff->viewAttributes() ?>><?php echo $mutasi_kas_list->staff->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>

@@ -78,6 +78,8 @@ loadjs.ready("head", function() {
 	fmutasi_kassearch.lists["x_id_kas"].options = <?php echo JsonEncode($mutasi_kas_search->id_kas->lookupOptions()) ?>;
 	fmutasi_kassearch.lists["x_tipe"] = <?php echo $mutasi_kas_search->tipe->Lookup->toClientList($mutasi_kas_search) ?>;
 	fmutasi_kassearch.lists["x_tipe"].options = <?php echo JsonEncode($mutasi_kas_search->tipe->options(FALSE, TRUE)) ?>;
+	fmutasi_kassearch.lists["x_staff"] = <?php echo $mutasi_kas_search->staff->Lookup->toClientList($mutasi_kas_search) ?>;
+	fmutasi_kassearch.lists["x_staff"].options = <?php echo JsonEncode($mutasi_kas_search->staff->lookupOptions()) ?>;
 	loadjs.done("fmutasi_kassearch");
 });
 </script>
@@ -189,6 +191,26 @@ loadjs.ready(["fmutasi_kassearch", "datetimepicker"], function() {
 <div id="dsl_x_tipe" data-repeatcolumn="5" class="ew-item-list d-none"><div>
 <?php echo $mutasi_kas_search->tipe->radioButtonListHtml(FALSE, "x_tipe") ?>
 </div></div>
+</span>
+		</div></div>
+	</div>
+<?php } ?>
+<?php if ($mutasi_kas_search->staff->Visible) { // staff ?>
+	<div id="r_staff" class="form-group row">
+		<label for="x_staff" class="<?php echo $mutasi_kas_search->LeftColumnClass ?>"><span id="elh_mutasi_kas_staff"><?php echo $mutasi_kas_search->staff->caption() ?></span>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_staff" id="z_staff" value="=">
+</span>
+		</label>
+		<div class="<?php echo $mutasi_kas_search->RightColumnClass ?>"><div <?php echo $mutasi_kas_search->staff->cellAttributes() ?>>
+			<span id="el_mutasi_kas_staff" class="ew-search-field">
+<div class="input-group">
+	<select class="custom-select ew-custom-select" data-table="mutasi_kas" data-field="x_staff" data-value-separator="<?php echo $mutasi_kas_search->staff->displayValueSeparatorAttribute() ?>" id="x_staff" name="x_staff"<?php echo $mutasi_kas_search->staff->editAttributes() ?>>
+			<?php echo $mutasi_kas_search->staff->selectOptionListHtml("x_staff") ?>
+		</select>
+</div>
+<?php echo $mutasi_kas_search->staff->Lookup->getParamTag($mutasi_kas_search, "p_x_staff") ?>
 </span>
 		</div></div>
 	</div>

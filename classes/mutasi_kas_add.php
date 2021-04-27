@@ -680,6 +680,7 @@ class mutasi_kas_add extends mutasi_kas
 		$this->id_klinik->setVisibility();
 		$this->id_kas->setVisibility();
 		$this->tipe->setVisibility();
+		$this->staff->setVisibility();
 		$this->keterangan->setVisibility();
 		$this->hideFieldsForAddEdit();
 
@@ -704,6 +705,7 @@ class mutasi_kas_add extends mutasi_kas
 		// Set up lookup cache
 		$this->setupLookupOptions($this->id_klinik);
 		$this->setupLookupOptions($this->id_kas);
+		$this->setupLookupOptions($this->staff);
 
 		// Check permission
 		if (!$Security->canAdd()) {
@@ -845,6 +847,7 @@ class mutasi_kas_add extends mutasi_kas
 		$this->id_kas->OldValue = $this->id_kas->CurrentValue;
 		$this->tipe->CurrentValue = NULL;
 		$this->tipe->OldValue = $this->tipe->CurrentValue;
+		$this->staff->CurrentValue = 0;
 		$this->keterangan->CurrentValue = NULL;
 		$this->keterangan->OldValue = $this->keterangan->CurrentValue;
 	}
@@ -893,6 +896,15 @@ class mutasi_kas_add extends mutasi_kas
 				$this->tipe->setFormValue($val);
 		}
 
+		// Check field name 'staff' first before field var 'x_staff'
+		$val = $CurrentForm->hasValue("staff") ? $CurrentForm->getValue("staff") : $CurrentForm->getValue("x_staff");
+		if (!$this->staff->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->staff->Visible = FALSE; // Disable update for API request
+			else
+				$this->staff->setFormValue($val);
+		}
+
 		// Check field name 'keterangan' first before field var 'x_keterangan'
 		$val = $CurrentForm->hasValue("keterangan") ? $CurrentForm->getValue("keterangan") : $CurrentForm->getValue("x_keterangan");
 		if (!$this->keterangan->IsDetailKey) {
@@ -915,6 +927,7 @@ class mutasi_kas_add extends mutasi_kas
 		$this->id_klinik->CurrentValue = $this->id_klinik->FormValue;
 		$this->id_kas->CurrentValue = $this->id_kas->FormValue;
 		$this->tipe->CurrentValue = $this->tipe->FormValue;
+		$this->staff->CurrentValue = $this->staff->FormValue;
 		$this->keterangan->CurrentValue = $this->keterangan->FormValue;
 	}
 
@@ -959,6 +972,7 @@ class mutasi_kas_add extends mutasi_kas
 		$this->id_klinik->setDbValue($row['id_klinik']);
 		$this->id_kas->setDbValue($row['id_kas']);
 		$this->tipe->setDbValue($row['tipe']);
+		$this->staff->setDbValue($row['staff']);
 		$this->keterangan->setDbValue($row['keterangan']);
 	}
 
@@ -973,6 +987,7 @@ class mutasi_kas_add extends mutasi_kas
 		$row['id_klinik'] = $this->id_klinik->CurrentValue;
 		$row['id_kas'] = $this->id_kas->CurrentValue;
 		$row['tipe'] = $this->tipe->CurrentValue;
+		$row['staff'] = $this->staff->CurrentValue;
 		$row['keterangan'] = $this->keterangan->CurrentValue;
 		return $row;
 	}
@@ -1017,6 +1032,7 @@ class mutasi_kas_add extends mutasi_kas
 		// id_klinik
 		// id_kas
 		// tipe
+		// staff
 		// keterangan
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
@@ -1082,6 +1098,28 @@ class mutasi_kas_add extends mutasi_kas
 			}
 			$this->tipe->ViewCustomAttributes = "";
 
+			// staff
+			$curVal = strval($this->staff->CurrentValue);
+			if ($curVal != "") {
+				$this->staff->ViewValue = $this->staff->lookupCacheOption($curVal);
+				if ($this->staff->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->staff->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->staff->ViewValue = $this->staff->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->staff->ViewValue = $this->staff->CurrentValue;
+					}
+				}
+			} else {
+				$this->staff->ViewValue = NULL;
+			}
+			$this->staff->ViewCustomAttributes = "";
+
 			// keterangan
 			$this->keterangan->ViewValue = $this->keterangan->CurrentValue;
 			$this->keterangan->ViewCustomAttributes = "";
@@ -1105,6 +1143,11 @@ class mutasi_kas_add extends mutasi_kas
 			$this->tipe->LinkCustomAttributes = "";
 			$this->tipe->HrefValue = "";
 			$this->tipe->TooltipValue = "";
+
+			// staff
+			$this->staff->LinkCustomAttributes = "";
+			$this->staff->HrefValue = "";
+			$this->staff->TooltipValue = "";
 
 			// keterangan
 			$this->keterangan->LinkCustomAttributes = "";
@@ -1170,6 +1213,30 @@ class mutasi_kas_add extends mutasi_kas
 			$this->tipe->EditCustomAttributes = "";
 			$this->tipe->EditValue = $this->tipe->options(FALSE);
 
+			// staff
+			$this->staff->EditAttrs["class"] = "form-control";
+			$this->staff->EditCustomAttributes = "";
+			$curVal = trim(strval($this->staff->CurrentValue));
+			if ($curVal != "")
+				$this->staff->ViewValue = $this->staff->lookupCacheOption($curVal);
+			else
+				$this->staff->ViewValue = $this->staff->Lookup !== NULL && is_array($this->staff->Lookup->Options) ? $curVal : NULL;
+			if ($this->staff->ViewValue !== NULL) { // Load from cache
+				$this->staff->EditValue = array_values($this->staff->Lookup->Options);
+			} else { // Lookup from database
+				if ($curVal == "") {
+					$filterWrk = "0=1";
+				} else {
+					$filterWrk = "`id_pegawai`" . SearchString("=", $this->staff->CurrentValue, DATATYPE_NUMBER, "");
+				}
+				$sqlWrk = $this->staff->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				$arwrk = $rswrk ? $rswrk->getRows() : [];
+				if ($rswrk)
+					$rswrk->close();
+				$this->staff->EditValue = $arwrk;
+			}
+
 			// keterangan
 			$this->keterangan->EditAttrs["class"] = "form-control";
 			$this->keterangan->EditCustomAttributes = "";
@@ -1195,6 +1262,10 @@ class mutasi_kas_add extends mutasi_kas
 			// tipe
 			$this->tipe->LinkCustomAttributes = "";
 			$this->tipe->HrefValue = "";
+
+			// staff
+			$this->staff->LinkCustomAttributes = "";
+			$this->staff->HrefValue = "";
 
 			// keterangan
 			$this->keterangan->LinkCustomAttributes = "";
@@ -1240,6 +1311,11 @@ class mutasi_kas_add extends mutasi_kas
 		if ($this->tipe->Required) {
 			if ($this->tipe->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->tipe->caption(), $this->tipe->RequiredErrorMessage));
+			}
+		}
+		if ($this->staff->Required) {
+			if (!$this->staff->IsDetailKey && $this->staff->FormValue != NULL && $this->staff->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->staff->caption(), $this->staff->RequiredErrorMessage));
 			}
 		}
 		if ($this->keterangan->Required) {
@@ -1291,10 +1367,13 @@ class mutasi_kas_add extends mutasi_kas
 		$this->id_klinik->setDbValueDef($rsnew, $this->id_klinik->CurrentValue, NULL, FALSE);
 
 		// id_kas
-		$this->id_kas->setDbValueDef($rsnew, $this->id_kas->CurrentValue, NULL, FALSE);
+		$this->id_kas->setDbValueDef($rsnew, $this->id_kas->CurrentValue, 0, FALSE);
 
 		// tipe
 		$this->tipe->setDbValueDef($rsnew, $this->tipe->CurrentValue, "", FALSE);
+
+		// staff
+		$this->staff->setDbValueDef($rsnew, $this->staff->CurrentValue, NULL, strval($this->staff->CurrentValue) == "");
 
 		// keterangan
 		$this->keterangan->setDbValueDef($rsnew, $this->keterangan->CurrentValue, NULL, FALSE);
@@ -1429,6 +1508,8 @@ class mutasi_kas_add extends mutasi_kas
 					break;
 				case "x_tipe":
 					break;
+				case "x_staff":
+					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -1452,6 +1533,8 @@ class mutasi_kas_add extends mutasi_kas
 						case "x_id_klinik":
 							break;
 						case "x_id_kas":
+							break;
+						case "x_staff":
 							break;
 					}
 					$ar[strval($row[0])] = $row;

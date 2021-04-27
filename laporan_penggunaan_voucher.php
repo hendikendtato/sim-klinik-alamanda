@@ -157,7 +157,7 @@ Page_Rendering();
 				Export to Excel
 				<i class="far fa-file-excel"></i>
 			</button>					
-			<table class="table table-hover table-striped" id="printTable">
+			<table class="table table-hover table-striped table-bordered" id="printTable">
 				<thead>
 				<tr>
 					<td colspan="6" style="text-align: center;">
@@ -192,6 +192,7 @@ Page_Rendering();
 					echo '<tr><td  colspan="6" align="center">Kosong</td></tr>';							
 				}else{
 					$totalcabang_total = 0;
+					$totalcabang_potongan = 0;
 					$totalcabang_total_charge = 0;
 					foreach ($result as $rs) {
 		
@@ -204,9 +205,9 @@ Page_Rendering();
 								</td>
 							</tr>
 							<tr id='".$rs["id_kartu"]."_detil' class='collapse'>
-								<td class='ew-table-last-col' colspan='5'>
+								<td colspan='5'>
 									<div>
-										<table class='table'>
+										<table class='table table-bordered'>
 											<thead>
 												<tr>
 													<th>Tanggal</th>
@@ -224,6 +225,7 @@ Page_Rendering();
 														$details = ExecuteRows("SELECT * FROM penggunaan_kartu	  										
 														WHERE id_kartu = '" .$rs['id_kartu']. "' AND id_klinik ='$cabang' AND (tgl BETWEEN '$dateFrom' AND '$dateTo') ");
 														$total = 0;
+														$charge = 0;
 														$total_charge = 0;
 														foreach ($details as $row) {
 															echo "<tr>
@@ -234,6 +236,7 @@ Page_Rendering();
 																<td align='right'>".rupiah($row["total_charge"])."</td>
 															</tr>";
 															$total += $row["total"];
+															$charge += $row["charge"];
 															$total_charge += $row["total_charge"];
 														}
 														echo "<tr>
@@ -248,13 +251,13 @@ Page_Rendering();
 							</tr>";			 		
 							$no++;		
 							$totalcabang_total += $total;	  
+							$totalcabang_potongan += $charge;	  
 							$totalcabang_total_charge += $total_charge;	  
 					}
 				}						
 				?>
-
 					<tr>
-						<td colspan='2' align="right">
+						<td colspan='1' align="right" width="37%">
 							<b>Total Cabang Alamanda 								
 									<?php
 										$resKlinik=ExecuteRows("SELECT * FROM m_klinik WHERE id_klinik=$cabang");
@@ -266,15 +269,26 @@ Page_Rendering();
 									?>
 							</b>
 						</td>
-						<td align="right">
+						<td align="right" width="16%">
 							<b>
 								<?php if(isset($totalcabang_total)) {
 										echo rupiah($totalcabang_total);							
 									}
 									$totalcabang_total = isset($totalcabang_total) ? $totalcabang_total : '0';
+									?>
+							</b>
+						</td>
+
+						<td align="right" width="22%">
+							<b>
+								<?php if(isset($totalcabang_potongan)) {
+										echo rupiah($totalcabang_potongan);							
+									}
+									$totalcabang_potongan = isset($totalcabang_potongan) ? $totalcabang_potongan : '0';
 								?>
 							</b>
 						</td>
+
 						<td colspan='2' align="right">
 							<b>
 								<?php if(isset($totalcabang_total_charge)) {
@@ -286,17 +300,27 @@ Page_Rendering();
 						</td>
 						<td></td>
 					</tr>
-
+					
+					<!-- Grandtotal -->
 					<tr>
-						<td colspan='2' align="right">
+						<td colspan='1' align="right" width="37%">
 							<b>Grand Total</b>
 						</td>
-						<td align="right">
+						<td align="right" width="16%">
 							<b>
 								<?php if(isset($totalcabang_total)) {
 										echo rupiah($totalcabang_total);							
 									}
 									$totalcabang_total = isset($totalcabang_total) ? $totalcabang_total : '0';
+								?>
+							</b>
+						</td>
+						<td align="right" width="22%">
+							<b>
+								<?php if(isset($totalcabang_potongan)) {
+										echo rupiah($totalcabang_potongan);							
+									}
+									$totalcabang_potongan = isset($totalcabang_potongan) ? $totalcabang_potongan : '0';
 								?>
 							</b>
 						</td>

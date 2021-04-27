@@ -55,6 +55,16 @@ namespace PHPMaker2020\sim_klinik_alamanda;
 </td>
 		</tr>
 <?php } ?>
+<?php if ($mutasi_kas->staff->Visible) { // staff ?>
+		<tr id="r_staff">
+			<td class="<?php echo $mutasi_kas->TableLeftColumnClass ?>"><?php echo $mutasi_kas->staff->caption() ?></td>
+			<td <?php echo $mutasi_kas->staff->cellAttributes() ?>>
+<span id="el_mutasi_kas_staff">
+<span<?php echo $mutasi_kas->staff->viewAttributes() ?>><?php echo $mutasi_kas->staff->getViewValue() ?></span>
+</span>
+</td>
+		</tr>
+<?php } ?>
 <?php if ($mutasi_kas->keterangan->Visible) { // keterangan ?>
 		<tr id="r_keterangan">
 			<td class="<?php echo $mutasi_kas->TableLeftColumnClass ?>"><?php echo $mutasi_kas->keterangan->caption() ?></td>
