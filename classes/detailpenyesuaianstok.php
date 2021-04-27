@@ -1,4 +1,4 @@
-<?php namespace PHPMaker2020\klinik_latest_08_04_21; ?>
+<?php namespace PHPMaker2020\sim_klinik_alamanda; ?>
 <?php
 
 /**
@@ -1174,8 +1174,8 @@ class detailpenyesuaianstok extends DbTable
 		$jumlah = $rsnew["jumlah"];
 		$selisih = $rsnew["selisih"];
 		$id_penyesuaianstok = $rsnew["pid"];
-		$id_klinik = ExecuteScalar("SELECT id_klinik FROM penyesuaianstok WHERE id_penyesuaianstok = $id_penyesuaianstok");
-		$tanggal = ExecuteScalar("SELECT tanggal FROM penyesuaianstok WHERE id_penyesuaianstok = $id_penyesuaianstok");
+		$id_klinik = ExecuteScalar("SELECT id_klinik FROM penyesuaianstok WHERE id_penyesuaianstok = '$id_penyesuaianstok'");
+		$tanggal = ExecuteScalar("SELECT tanggal FROM penyesuaianstok WHERE id_penyesuaianstok = '$id_penyesuaianstok'");
 		$tanggal_sekarang = date("Y-m-d");
 		print_r($tanggal);
 		print_r($tanggal_sekarang);
@@ -1231,15 +1231,15 @@ class detailpenyesuaianstok extends DbTable
 			        		print_r($update);
 			        	}
 			        	$id_terakhir = ExecuteScalar("SELECT id_kartustok FROM kartustok ORDER BY id_kartustok DESC LIMIT 1");
-			        	$update2 = Execute("UPDATE kartustok SET id_kartustok='$id_kartustok_awal' WHERE id_kartustok=$id_terakhir");
+			        	$update2 = Execute("UPDATE kartustok SET id_kartustok='$id_kartustok_awal' WHERE id_kartustok='$id_terakhir'");
 			        	$selisih_penyesuaian = $stok_baru - $stok_awal_penyesuaian;
-			        	$datakartustok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_klinik ='$id_klinik' AND id_barang='$id_barang' AND id_kartustok > $id_kartustok_awal");
+			        	$datakartustok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_klinik ='$id_klinik' AND id_barang='$id_barang' AND id_kartustok > '$id_kartustok_awal'");
 			        	print_r($datakartustok);
 			        	foreach($datakartustok AS $dk){
 							$id_kartustok = $dk['id_kartustok'];
 							$stok_awal = $dk['stok_awal'] + $selisih_penyesuaian;
 							$stok_akhir = $dk['stok_akhir'] + $selisih_penyesuaian;
-						$update_kartu = Execute("UPDATE kartustok SET stok_awal=$stok_awal, stok_akhir=$stok_akhir WHERE id_klinik ='$id_klinik' AND id_barang='$id_barang' AND id_kartustok = $id_kartustok");
+						$update_kartu = Execute("UPDATE kartustok SET stok_awal='$stok_awal', stok_akhir='$stok_akhir' WHERE id_klinik ='$id_klinik' AND id_barang='$id_barang' AND id_kartustok = '$id_kartustok'");
 							print_r($stok_awal);
 							print_r($stok_akhir);
 						}
@@ -1260,15 +1260,15 @@ class detailpenyesuaianstok extends DbTable
 			        		print_r($update);
 			        	}
 			        	$id_terakhir = ExecuteScalar("SELECT id_kartustok FROM kartustok ORDER BY id_kartustok DESC LIMIT 1");
-			        	$update2 = Execute("UPDATE kartustok SET id_kartustok='$id_kartustok_awal' WHERE id_kartustok=$id_terakhir");
+			        	$update2 = Execute("UPDATE kartustok SET id_kartustok='$id_kartustok_awal' WHERE id_kartustok='$id_terakhir'");
 			        	$selisih_penyesuaian = $stok_baru - $stok_awal_penyesuaian;
-			        	$datakartustok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_klinik ='$id_klinik' AND id_barang='$id_barang' AND id_kartustok > $id_kartustok_awal");
+			        	$datakartustok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_klinik ='$id_klinik' AND id_barang='$id_barang' AND id_kartustok > '$id_kartustok_awal'");
 			        	print_r($datakartustok);
 			        	foreach($datakartustok AS $dk){
 							$id_kartustok = $dk['id_kartustok'];
 							$stok_awal = $dk['stok_awal'] + $selisih_penyesuaian;
 							$stok_akhir = $dk['stok_akhir'] + $selisih_penyesuaian;
-						$update_kartu = Execute("UPDATE kartustok SET stok_awal=$stok_awal, stok_akhir=$stok_akhir WHERE id_klinik ='$id_klinik' AND id_barang='$id_barang' AND id_kartustok = $id_kartustok");
+						$update_kartu = Execute("UPDATE kartustok SET stok_awal='$stok_awal', stok_akhir='$stok_akhir' WHERE id_klinik ='$id_klinik' AND id_barang='$id_barang' AND id_kartustok = '$id_kartustok'");
 							print_r($stok_awal);
 							print_r($stok_akhir);
 						}
@@ -1280,7 +1280,7 @@ class detailpenyesuaianstok extends DbTable
 			if($tipe == 'Masuk') {
 				$stok_baru = $stok_lama + $selisih;
 				// update stok
-				$update_stok = Execute("UPDATE m_hargajual SET stok=$stok_baru WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik'");
+				$update_stok = Execute("UPDATE m_hargajual SET stok='$stok_baru' WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik'");
 				// insert into kartu stok
 				$kartu_stok = Execute("INSERT INTO kartustok (
 			        					id_barang,
@@ -1302,7 +1302,7 @@ class detailpenyesuaianstok extends DbTable
 				$stok_baru = $stok_lama - $selisih;
 				if($stok_baru < 0) { $stok_baru = 0; }
 				// update stok
-				$update_stok = Execute("UPDATE m_hargajual SET stok=$stok_baru WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik'");
+				$update_stok = Execute("UPDATE m_hargajual SET stok='$stok_baru' WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik'");
 				// insert into kartu stok
 				$kartu_stok = Execute("INSERT INTO kartustok (
 										id_barang,

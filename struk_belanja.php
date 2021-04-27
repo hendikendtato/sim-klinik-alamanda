@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_08_04_21;
+namespace PHPMaker2020\sim_klinik_alamanda;
 
 // Autoload
 include_once "autoload.php";
@@ -77,7 +77,7 @@ Page_Rendering();
  <link rel="stylesheet" type="text/css" href="css/printstyle.css">
  
 <div class="form-inline">
-	<a class="btn btn-primary" href="/klinik_testing/penjualanlist.php" role="button">Penjualan</a>
+	<a class="btn btn-primary" href="/klinik/penjualanlist.php" role="button">Penjualan</a>
 	<button type="button" class="btn btn-primary" onclick="printJS({
 		printable: 'print',
 		type: 'html',

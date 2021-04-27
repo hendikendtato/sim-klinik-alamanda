@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_08_04_21;
+namespace PHPMaker2020\sim_klinik_alamanda;
 
 /**
  * Page class
@@ -11,7 +11,7 @@ class penjualan_list extends penjualan
 	public $PageID = "list";
 
 	// Project ID
-	public $ProjectID = "{4E2A1FD4-0074-4494-903F-430527A228F4}";
+	public $ProjectID = "{8546B030-7993-4749-BFDB-17AFAAF4065D}";
 
 	// Table name
 	public $TableName = 'penjualan';
@@ -58,6 +58,14 @@ class penjualan_list extends penjualan
 	public $GridEditUrl;
 	public $MultiDeleteUrl;
 	public $MultiUpdateUrl;
+
+	// Audit Trail
+	public $AuditTrailOnAdd = TRUE;
+	public $AuditTrailOnEdit = TRUE;
+	public $AuditTrailOnDelete = TRUE;
+	public $AuditTrailOnView = FALSE;
+	public $AuditTrailOnViewData = FALSE;
+	public $AuditTrailOnSearch = FALSE;
 
 	// Page headings
 	public $Heading = "";
@@ -1072,6 +1080,13 @@ class penjualan_list extends penjualan
 					$this->setWarningMessage($Language->phrase("EnterSearchCriteria"));
 				else
 					$this->setWarningMessage($Language->phrase("NoRecord"));
+			}
+
+			// Audit trail on search
+			if ($this->AuditTrailOnSearch && $this->Command == "search" && !$this->RestoreSearch) {
+				$searchParm = ServerVar("QUERY_STRING");
+				$searchSql = $this->getSessionWhere();
+				$this->writeAuditTrailOnSearch($searchParm, $searchSql);
 			}
 		}
 

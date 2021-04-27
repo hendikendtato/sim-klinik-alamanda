@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_08_04_21;
+namespace PHPMaker2020\sim_klinik_alamanda;
 
 /**
  * Page class
@@ -11,7 +11,7 @@ class detailkirimbarang_list extends detailkirimbarang
 	public $PageID = "list";
 
 	// Project ID
-	public $ProjectID = "{4E2A1FD4-0074-4494-903F-430527A228F4}";
+	public $ProjectID = "{8546B030-7993-4749-BFDB-17AFAAF4065D}";
 
 	// Table name
 	public $TableName = 'detailkirimbarang';
@@ -2608,6 +2608,20 @@ class detailkirimbarang_list extends detailkirimbarang
 	function Form_CustomValidate(&$customError) {
 
 		// Return error message in CustomError
+		$rs = $this->GetFieldValues("FormValue"); // Get the form values as array
+		$kirimbarang = $GLOBALS["kirimbarang"]->GetFieldValues("FormValue");
+		$id_klinik = intval($kirimbarang["id_supplier"]);
+		$stok = ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_barang = '".intval($rs["id_barang"])."' AND id_klinik = '$id_klinik'");
+		$result = str_replace('.', '', $stok);
+
+		//print_r($result);
+		if (intval($rs["jumlah"]) > $result) {
+
+			// Return error message in $customError
+			$nama_barang = ExecuteScalar("SELECT nama_barang FROM m_barang WHERE id = '".intval($rs["id_barang"])."'");
+			$customError = "Jumlah $nama_barang tidak mencukupi.";
+			return FALSE;
+		}
 		return TRUE;
 	}
 

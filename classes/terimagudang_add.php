@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_08_04_21;
+namespace PHPMaker2020\sim_klinik_alamanda;
 
 /**
  * Page class
@@ -11,13 +11,21 @@ class terimagudang_add extends terimagudang
 	public $PageID = "add";
 
 	// Project ID
-	public $ProjectID = "{4E2A1FD4-0074-4494-903F-430527A228F4}";
+	public $ProjectID = "{8546B030-7993-4749-BFDB-17AFAAF4065D}";
 
 	// Table name
 	public $TableName = 'terimagudang';
 
 	// Page object name
 	public $PageObjName = "terimagudang_add";
+
+	// Audit Trail
+	public $AuditTrailOnAdd = TRUE;
+	public $AuditTrailOnEdit = TRUE;
+	public $AuditTrailOnDelete = TRUE;
+	public $AuditTrailOnView = FALSE;
+	public $AuditTrailOnViewData = FALSE;
+	public $AuditTrailOnSearch = FALSE;
 
 	// Page headings
 	public $Heading = "";
@@ -1256,7 +1264,7 @@ class terimagudang_add extends terimagudang
 		$this->diterima->setDbValueDef($rsnew, $this->diterima->CurrentValue, NULL, FALSE);
 
 		// tanggal_terima
-		$this->tanggal_terima->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal_terima->CurrentValue, 0), NULL, FALSE);
+		$this->tanggal_terima->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal_terima->CurrentValue, 0), CurrentDate(), FALSE);
 
 		// keterangan
 		$this->keterangan->setDbValueDef($rsnew, $this->keterangan->CurrentValue, NULL, FALSE);
@@ -1466,6 +1474,8 @@ class terimagudang_add extends terimagudang
 	function Page_Render() {
 
 		//echo "Page Render";
+		$default_support = ExecuteScalar("SELECT id_klinik FROM m_klinik WHERE nama_klinik LIKE '%Support%'");
+		$this->id_klinik->CurrentValue = $default_support;	
 	}
 
 	// Page Data Rendering event

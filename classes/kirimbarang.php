@@ -1,4 +1,4 @@
-<?php namespace PHPMaker2020\klinik_latest_08_04_21; ?>
+<?php namespace PHPMaker2020\sim_klinik_alamanda; ?>
 <?php
 
 /**
@@ -121,6 +121,7 @@ class kirimbarang extends DbTable
 
 		// tanggal
 		$this->tanggal = new DbField('kirimbarang', 'kirimbarang', 'x_tanggal', 'tanggal', '`tanggal`', CastDateFieldForLike("`tanggal`", 0, "DB"), 135, 19, 0, FALSE, '`tanggal`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->tanggal->Nullable = FALSE; // NOT NULL field
 		$this->tanggal->Required = TRUE; // Required field
 		$this->tanggal->Sortable = TRUE; // Allow sort
 		$this->tanggal->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_FORMAT"], $Language->phrase("IncorrectDate"));

@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_08_04_21;
+namespace PHPMaker2020\sim_klinik_alamanda;
 
 // Autoload
 include_once "autoload.php";
@@ -160,11 +160,11 @@ $audittrail_add->showMessage();
 		<label id="elh_audittrail_datetime" for="x_datetime" class="<?php echo $audittrail_add->LeftColumnClass ?>"><?php echo $audittrail_add->datetime->caption() ?><?php echo $audittrail_add->datetime->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $audittrail_add->RightColumnClass ?>"><div <?php echo $audittrail_add->datetime->cellAttributes() ?>>
 <span id="el_audittrail_datetime">
-<input type="text" data-table="audittrail" data-field="x_datetime" name="x_datetime" id="x_datetime" maxlength="19" placeholder="<?php echo HtmlEncode($audittrail_add->datetime->getPlaceHolder()) ?>" value="<?php echo $audittrail_add->datetime->EditValue ?>"<?php echo $audittrail_add->datetime->editAttributes() ?>>
+<input type="text" data-table="audittrail" data-field="x_datetime" data-format="1" name="x_datetime" id="x_datetime" maxlength="19" placeholder="<?php echo HtmlEncode($audittrail_add->datetime->getPlaceHolder()) ?>" value="<?php echo $audittrail_add->datetime->EditValue ?>"<?php echo $audittrail_add->datetime->editAttributes() ?>>
 <?php if (!$audittrail_add->datetime->ReadOnly && !$audittrail_add->datetime->Disabled && !isset($audittrail_add->datetime->EditAttrs["readonly"]) && !isset($audittrail_add->datetime->EditAttrs["disabled"])) { ?>
 <script>
 loadjs.ready(["faudittrailadd", "datetimepicker"], function() {
-	ew.createDateTimePicker("faudittrailadd", "x_datetime", {"ignoreReadonly":true,"useCurrent":false,"format":0});
+	ew.createDateTimePicker("faudittrailadd", "x_datetime", {"ignoreReadonly":true,"useCurrent":false,"format":1});
 });
 </script>
 <?php } ?>

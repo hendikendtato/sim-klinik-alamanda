@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_08_04_21;
+namespace PHPMaker2020\sim_klinik_alamanda;
 
 /**
  * Page class
@@ -11,7 +11,7 @@ class purchaseorder_edit extends purchaseorder
 	public $PageID = "edit";
 
 	// Project ID
-	public $ProjectID = "{4E2A1FD4-0074-4494-903F-430527A228F4}";
+	public $ProjectID = "{8546B030-7993-4749-BFDB-17AFAAF4065D}";
 
 	// Table name
 	public $TableName = 'purchaseorder';
@@ -1420,7 +1420,7 @@ class purchaseorder_edit extends purchaseorder
 			$this->no_po->setDbValueDef($rsnew, $this->no_po->CurrentValue, NULL, $this->no_po->ReadOnly);
 
 			// tgl_po
-			$this->tgl_po->setDbValueDef($rsnew, UnFormatDateTime($this->tgl_po->CurrentValue, 0), NULL, $this->tgl_po->ReadOnly);
+			$this->tgl_po->setDbValueDef($rsnew, UnFormatDateTime($this->tgl_po->CurrentValue, 0), CurrentDate(), $this->tgl_po->ReadOnly);
 
 			// idstaff_po
 			$this->idstaff_po->setDbValueDef($rsnew, $this->idstaff_po->CurrentValue, NULL, $this->idstaff_po->ReadOnly);

@@ -1,4 +1,4 @@
-<?php namespace PHPMaker2020\klinik_latest_08_04_21; ?>
+<?php namespace PHPMaker2020\sim_klinik_alamanda; ?>
 <?php
 
 /**
@@ -20,6 +20,14 @@ class detailterimagudang extends DbTable
 	public $RightColumnClass = "col-sm-10";
 	public $OffsetColumnClass = "col-sm-10 offset-sm-2";
 	public $TableLeftColumnClass = "w-col-2";
+
+	// Audit trail
+	public $AuditTrailOnAdd = TRUE;
+	public $AuditTrailOnEdit = TRUE;
+	public $AuditTrailOnDelete = TRUE;
+	public $AuditTrailOnView = FALSE;
+	public $AuditTrailOnViewData = FALSE;
+	public $AuditTrailOnSearch = FALSE;
 
 	// Export
 	public $ExportDoc;
@@ -438,6 +446,8 @@ class detailterimagudang extends DbTable
 			// Get insert id if necessary
 			$this->id_detailterimagudang->setDbValue($conn->insert_ID());
 			$rs['id_detailterimagudang'] = $this->id_detailterimagudang->DbValue;
+			if ($this->AuditTrailOnAdd)
+				$this->writeAuditTrailOnAdd($rs);
 		}
 		return $success;
 	}
@@ -467,6 +477,13 @@ class detailterimagudang extends DbTable
 	{
 		$conn = $this->getConnection();
 		$success = $conn->execute($this->updateSql($rs, $where, $curfilter));
+		if ($success && $this->AuditTrailOnEdit && $rsold) {
+			$rsaudit = $rs;
+			$fldname = 'id_detailterimagudang';
+			if (!array_key_exists($fldname, $rsaudit))
+				$rsaudit[$fldname] = $rsold[$fldname];
+			$this->writeAuditTrailOnEdit($rsold, $rsaudit);
+		}
 		return $success;
 	}
 
@@ -496,6 +513,8 @@ class detailterimagudang extends DbTable
 		$conn = $this->getConnection();
 		if ($success)
 			$success = $conn->execute($this->deleteSql($rs, $where, $curfilter));
+		if ($success && $this->AuditTrailOnDelete)
+			$this->writeAuditTrailOnDelete($rs);
 		return $success;
 	}
 
@@ -1015,6 +1034,138 @@ class detailterimagudang extends DbTable
 		return FALSE;
 	}
 
+	// Write Audit Trail start/end for grid update
+	public function writeAuditTrailDummy($typ)
+	{
+		$table = 'detailterimagudang';
+		$usr = CurrentUserName();
+		WriteAuditTrail("log", DbCurrentDateTime(), ScriptName(), $usr, $typ, $table, "", "", "", "");
+	}
+
+	// Write Audit Trail (add page)
+	public function writeAuditTrailOnAdd(&$rs)
+	{
+		global $Language;
+		if (!$this->AuditTrailOnAdd)
+			return;
+		$table = 'detailterimagudang';
+
+		// Get key value
+		$key = "";
+		if ($key != "")
+			$key .= Config("COMPOSITE_KEY_SEPARATOR");
+		$key .= $rs['id_detailterimagudang'];
+
+		// Write Audit Trail
+		$dt = DbCurrentDateTime();
+		$id = ScriptName();
+		$usr = CurrentUserName();
+		foreach (array_keys($rs) as $fldname) {
+			if (array_key_exists($fldname, $this->fields) && $this->fields[$fldname]->DataType != DATATYPE_BLOB) { // Ignore BLOB fields
+				if ($this->fields[$fldname]->HtmlTag == "PASSWORD") {
+					$newvalue = $Language->phrase("PasswordMask"); // Password Field
+				} elseif ($this->fields[$fldname]->DataType == DATATYPE_MEMO) {
+					if (Config("AUDIT_TRAIL_TO_DATABASE"))
+						$newvalue = $rs[$fldname];
+					else
+						$newvalue = "[MEMO]"; // Memo Field
+				} elseif ($this->fields[$fldname]->DataType == DATATYPE_XML) {
+					$newvalue = "[XML]"; // XML Field
+				} else {
+					$newvalue = $rs[$fldname];
+				}
+				WriteAuditTrail("log", $dt, $id, $usr, "A", $table, $fldname, $key, "", $newvalue);
+			}
+		}
+	}
+
+	// Write Audit Trail (edit page)
+	public function writeAuditTrailOnEdit(&$rsold, &$rsnew)
+	{
+		global $Language;
+		if (!$this->AuditTrailOnEdit)
+			return;
+		$table = 'detailterimagudang';
+
+		// Get key value
+		$key = "";
+		if ($key != "")
+			$key .= Config("COMPOSITE_KEY_SEPARATOR");
+		$key .= $rsold['id_detailterimagudang'];
+
+		// Write Audit Trail
+		$dt = DbCurrentDateTime();
+		$id = ScriptName();
+		$usr = CurrentUserName();
+		foreach (array_keys($rsnew) as $fldname) {
+			if (array_key_exists($fldname, $this->fields) && array_key_exists($fldname, $rsold) && $this->fields[$fldname]->DataType != DATATYPE_BLOB) { // Ignore BLOB fields
+				if ($this->fields[$fldname]->DataType == DATATYPE_DATE) { // DateTime field
+					$modified = (FormatDateTime($rsold[$fldname], 0) != FormatDateTime($rsnew[$fldname], 0));
+				} else {
+					$modified = !CompareValue($rsold[$fldname], $rsnew[$fldname]);
+				}
+				if ($modified) {
+					if ($this->fields[$fldname]->HtmlTag == "PASSWORD") { // Password Field
+						$oldvalue = $Language->phrase("PasswordMask");
+						$newvalue = $Language->phrase("PasswordMask");
+					} elseif ($this->fields[$fldname]->DataType == DATATYPE_MEMO) { // Memo field
+						if (Config("AUDIT_TRAIL_TO_DATABASE")) {
+							$oldvalue = $rsold[$fldname];
+							$newvalue = $rsnew[$fldname];
+						} else {
+							$oldvalue = "[MEMO]";
+							$newvalue = "[MEMO]";
+						}
+					} elseif ($this->fields[$fldname]->DataType == DATATYPE_XML) { // XML field
+						$oldvalue = "[XML]";
+						$newvalue = "[XML]";
+					} else {
+						$oldvalue = $rsold[$fldname];
+						$newvalue = $rsnew[$fldname];
+					}
+					WriteAuditTrail("log", $dt, $id, $usr, "U", $table, $fldname, $key, $oldvalue, $newvalue);
+				}
+			}
+		}
+	}
+
+	// Write Audit Trail (delete page)
+	public function writeAuditTrailOnDelete(&$rs)
+	{
+		global $Language;
+		if (!$this->AuditTrailOnDelete)
+			return;
+		$table = 'detailterimagudang';
+
+		// Get key value
+		$key = "";
+		if ($key != "")
+			$key .= Config("COMPOSITE_KEY_SEPARATOR");
+		$key .= $rs['id_detailterimagudang'];
+
+		// Write Audit Trail
+		$dt = DbCurrentDateTime();
+		$id = ScriptName();
+		$curUser = CurrentUserName();
+		foreach (array_keys($rs) as $fldname) {
+			if (array_key_exists($fldname, $this->fields) && $this->fields[$fldname]->DataType != DATATYPE_BLOB) { // Ignore BLOB fields
+				if ($this->fields[$fldname]->HtmlTag == "PASSWORD") {
+					$oldvalue = $Language->phrase("PasswordMask"); // Password Field
+				} elseif ($this->fields[$fldname]->DataType == DATATYPE_MEMO) {
+					if (Config("AUDIT_TRAIL_TO_DATABASE"))
+						$oldvalue = $rs[$fldname];
+					else
+						$oldvalue = "[MEMO]"; // Memo field
+				} elseif ($this->fields[$fldname]->DataType == DATATYPE_XML) {
+					$oldvalue = "[XML]"; // XML field
+				} else {
+					$oldvalue = $rs[$fldname];
+				}
+				WriteAuditTrail("log", $dt, $id, $curUser, "D", $table, $fldname, $key, $oldvalue, "");
+			}
+		}
+	}
+
 	// Table level events
 	// Recordset Selecting event
 	function Recordset_Selecting(&$filter) {
@@ -1067,51 +1218,58 @@ class detailterimagudang extends DbTable
 	function Row_Inserted($rsold, &$rsnew) {
 
 			//echo "Row Inserted"
-			$id_barang = $rsnew["id_barang"];
-			$jumlah = $rsnew["qty"];
-			$id_terimagudang = $rsnew["pid_terimagudang"];
-			$id_klinik = ExecuteScalar("SELECT id_klinik FROM terimagudang WHERE id_terimagudang = '$id_terimagudang'");
-			$tanggal = ExecuteScalar("SELECT tanggal_terima FROM terimagudang WHERE id_terimagudang = '$id_terimagudang'");
-			$tanggal_sekarang = date('Y-m-d');
-			$cek_barang = ExecuteScalar("SELECT id_barang FROM m_hargajual WHERE id_klinik='$id_klinik' AND id_barang='$id_barang'");
+			$id_terimagudang[] = $rsnew["pid_terimagudang"];
+			foreach($id_terimagudang AS $id_terimagudang) {
+				$id_klinik = ExecuteScalar("SELECT id_klinik FROM terimagudang WHERE id_terimagudang = '$id_terimagudang'");
+				$tanggal = ExecuteScalar("SELECT tanggal_terima FROM terimagudang WHERE id_terimagudang = '$id_terimagudang'");
+				$id_barang = $rsnew["id_barang"];
+				$jumlah = $rsnew["qty"];
+				$tanggal_sekarang = date('Y-m-d');
+				$cek_barang = ExecuteScalar("SELECT id_barang FROM m_hargajual WHERE id_klinik='$id_klinik' AND id_barang='$id_barang'");
 
-			//jika menginputkan pada tanggal sebelumnya
-			if($tanggal < $tanggal_sekarang){
-				if ($cek_barang == $id_barang) {
+				//jika menginputkan pada tanggal sebelumnya
+				if($tanggal < $tanggal_sekarang){
+					if ($cek_barang == $id_barang) {
 
-					//ambil stok akhir tanggal itu
-					$get_stok = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' AND tanggal='$tanggal' ORDER BY id_kartustok DESC LIMIT 1");
-					if($get_stok != NULL OR $get_stok != FALSE){
-						$stok_update = $get_stok + $jumlah;
-						Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_terimagudang, masuk, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$get_stok', '$id_terimagudang', '$jumlah', '$stok_update')");
-						$get_data = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' AND tanggal>'$tanggal' ORDER BY id_kartustok ASC");
-						foreach($get_data AS $gd){
-							$id = $gd['id_kartustok'];
-							$stok_awal = $gd['stok_awal'] + $jumlah;
-							$stok_akhir = $gd['stok_akhir'] + $jumlah;
-							Execute("UPDATE kartustok SET stok_awal = '$stok_awal', stok_akhir = '$stok_akhir' WHERE id_kartustok = '$id'");
-						}
-					} else {
+						//ambil stok akhir tanggal itu
+						$get_stok = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' AND tanggal='$tanggal' ORDER BY id_kartustok DESC LIMIT 1");
 
-						//ambil stok akhir tanggal sebelumnya
-						$get_stok_sebelumnya = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' AND tanggal < '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
-						if($get_stok_sebelumnya != NULL OR $get_stok_sebelumnya != FALSE){
-							$stok_update_sebelumnya = $get_stok_sebelumnya + $jumlah;
-							Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_terimagudang, masuk, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$get_stok_sebelumnya', '$id_terimagudang', '$jumlah', '$stok_update_sebelumnya')");
-							$get_data = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
+						//jika stok akhir tanggal itu ada
+						if($get_stok != NULL OR $get_stok != FALSE){
+
+							//stok update
+							$stok_update = $get_stok + $jumlah;
+
+							//insert kartustok
+							Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_terimagudang, masuk, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$get_stok', '$id_terimagudang', '$jumlah', '$stok_update')");
+
+							//ambil data kartustok setelah tanggal itu
+							$get_data = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' AND tanggal>'$tanggal' ORDER BY id_kartustok ASC");
 							foreach($get_data AS $gd){
 								$id = $gd['id_kartustok'];
 								$stok_awal = $gd['stok_awal'] + $jumlah;
 								$stok_akhir = $gd['stok_akhir'] + $jumlah;
+
+								//update data kartustok setelah tanggal itu
 								Execute("UPDATE kartustok SET stok_awal = '$stok_awal', stok_akhir = '$stok_akhir' WHERE id_kartustok = '$id'");
 							}
+
+						//jika stok akhir tanggal itu tidak ada
 						} else {
 
-							//ambil stok awal tanggal setelahnya
-							$get_stok_kartustok = ExecuteScalar("SELECT stok_awal FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' ORDER BY tanggal ASC, id_kartustok ASC LIMIT 1");
-							if($get_stok_kartustok != NULL OR $get_stok_kartustok != FALSE){
-								$stok_update_kartustok = $get_stok_kartustok + $jumlah;
-								Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_terimagudang, masuk, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$get_stok_kartustok', '$id_terimagudang', '$jumlah', '$stok_update_kartustok')");				
+							//ambil stok akhir tanggal sebelumnya
+							$get_stok_sebelumnya = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' AND tanggal < '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");					
+
+							//jika stok akhir tanggal sebelumnya ada
+							if($get_stok_sebelumnya != NULL OR $get_stok_sebelumnya != FALSE){
+
+								//stok update
+								$stok_update_sebelumnya = $get_stok_sebelumnya + $jumlah;
+
+								//insert kartustok
+								Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_terimagudang, masuk, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$get_stok_sebelumnya', '$id_terimagudang', '$jumlah', '$stok_update_sebelumnya')");
+
+								//ambil data kartustok tanggal setelah itu
 								$get_data = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
 								foreach($get_data AS $gd){
 									$id = $gd['id_kartustok'];
@@ -1119,41 +1277,69 @@ class detailterimagudang extends DbTable
 									$stok_akhir = $gd['stok_akhir'] + $jumlah;
 									Execute("UPDATE kartustok SET stok_awal = '$stok_awal', stok_akhir = '$stok_akhir' WHERE id_kartustok = '$id'");
 								}
-							} else{	
+							} else {
 
-								//ambil stok hargajual
-								$get_stok_hargajual = ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_barang='$id_barang' AND id_klinik='$id_klinik'");
-								$update_stok = $get_stok_hargajual + $jumlah;
-								Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_terimagudang, masuk, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$get_stok_hargajual', '$id_terimagudang', '$jumlah', '$update_stok')");				
-							}						
+								//ambil stok awal dan id tanggal setelahnya
+								$get_stok_kartustok = ExecuteScalar("SELECT stok_awal FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' ORDER BY tanggal ASC, id_kartustok ASC LIMIT 1");
+								$get_id_kartustok = ExecuteScalar("SELECT id_kartustok FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' ORDER BY tanggal ASC, id_kartustok ASC LIMIT 1");
+
+								//jika stok awal dan id tanggal setelahnya ada
+								if($get_stok_kartustok != NULL OR $get_stok_kartustok != FALSE){
+
+									//stok update
+									$stok_update_kartustok = $get_stok_kartustok + $jumlah;
+
+									//insert kartustok
+									Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_terimagudang, masuk, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$get_stok_kartustok', '$id_terimagudang', '$jumlah', '$stok_update_kartustok')");				
+
+									//get data kartustok tanggal setelah itu berdasarkan id_kartustok
+									$get_data = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' AND id_kartustok > '$get_id_kartustok' ORDER BY id_kartustok ASC");
+									foreach($get_data AS $gd){
+										$id = $gd['id_kartustok'];
+										$stok_awal = $gd['stok_awal'] + $jumlah;
+										$stok_akhir = $gd['stok_akhir'] + $jumlah;
+
+										//update kartustok
+										Execute("UPDATE kartustok SET stok_awal = '$stok_awal', stok_akhir = '$stok_akhir' WHERE id_kartustok = '$id'");
+									}
+
+								//jika stok awal dan id tanggal setelahnya tidak ada
+								} else{	
+
+									//ambil stok hargajual
+									$get_stok_hargajual = ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_barang='$id_barang' AND id_klinik='$id_klinik'");
+									$update_stok = $get_stok_hargajual + $jumlah;
+									Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_terimagudang, masuk, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$get_stok_hargajual', '$id_terimagudang', '$jumlah', '$update_stok')");				
+								}						
+							}
 						}
+						$stok = ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_klinik='$id_klinik' AND id_barang='$id_barang'");
+						$stok_update_hargajual = $stok + $jumlah;
+						Execute("UPDATE m_hargajual SET stok='$stok_update_hargajual' WHERE id_klinik='$id_klinik' AND id_barang='$id_barang'");
+					} else { // jika belum ada
+
+						// tambah baru
+						$tambah_baru = Execute("INSERT INTO m_hargajual (id_barang, id_klinik, stok) VALUES ('$id_barang', '$id_klinik', '$jumlah')");
+						$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_terimagudang, masuk, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '0', '$id_terimagudang', '$jumlah', '$jumlah')");
+					}		
+				} else {
+
+					// jika barang sudah ada
+					if ($cek_barang == $id_barang) {
+
+						// update yg sudah ada
+						$stok = ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_klinik='$id_klinik' AND id_barang='$id_barang'");
+						$stok_terbaru = $stok + $jumlah;
+						$update_saldo = Execute("UPDATE m_hargajual SET stok='$stok_terbaru' WHERE id_klinik='$id_klinik' AND id_barang='$id_barang'");
+						$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_terimagudang, masuk, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok', '$id_terimagudang', '$jumlah', '$stok_terbaru')");
+					} else { // jika belum ada
+
+						// tambah baru
+						$tambah_baru = Execute("INSERT INTO m_hargajual (id_barang, id_klinik, stok) VALUES ('$id_barang', '$id_klinik', '$jumlah')");
+						$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_terimagudang, masuk, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '0', '$id_terimagudang', '$jumlah', '$jumlah')");
 					}
-					$stok = ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_klinik='$id_klinik' AND id_barang='$id_barang'");
-					$stok_update_hargajual = $stok + $jumlah;
-					Execute("UPDATE m_hargajual SET stok='$stok_update_hargajual' WHERE id_klinik='$id_klinik' AND id_barang='$id_barang'");
-				} else { // jika belum ada
-
-					// tambah baru
-					$tambah_baru = Execute("INSERT INTO m_hargajual (id_barang, id_klinik, stok) VALUES ('$id_barang', '$id_klinik', '$jumlah')");
-					$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_terimagudang, masuk, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '0', '$id_terimagudang', '$jumlah', '$jumlah')");
-				}		
-			} else {
-
-				// jika barang sudah ada
-				if ($cek_barang == $id_barang) {
-
-					// update yg sudah ada
-					$stok = ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_klinik='$id_klinik' AND id_barang='$id_barang'");
-					$stok_terbaru = $stok + $jumlah;
-					$update_saldo = Execute("UPDATE m_hargajual SET stok='$stok_terbaru' WHERE id_klinik='$id_klinik' AND id_barang='$id_barang'");
-					$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_terimagudang, masuk, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok', '$id_terimagudang', '$jumlah', '$stok_terbaru')");
-				} else { // jika belum ada
-
-					// tambah baru
-					$tambah_baru = Execute("INSERT INTO m_hargajual (id_barang, id_klinik, stok) VALUES ('$id_barang', '$id_klinik', '$jumlah')");
-					$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_terimagudang, masuk, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '0', '$id_terimagudang', '$jumlah', '$jumlah')");
 				}
-			}
+			};
 	}
 
 	// Row Updating event

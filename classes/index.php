@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_08_04_21;
+namespace PHPMaker2020\sim_klinik_alamanda;
 
 /**
  * Class for index
@@ -8,7 +8,7 @@ class index
 {
 
 	// Project ID
-	public $ProjectID = "{4E2A1FD4-0074-4494-903F-430527A228F4}";
+	public $ProjectID = "{8546B030-7993-4749-BFDB-17AFAAF4065D}";
 
 	// Messages
 	private $_message = "";
@@ -435,8 +435,6 @@ class index
 			$this->terminate("userslist.php");
 		if ($Security->allowList(CurrentProjectID() . 'V_kartustok'))
 			$this->terminate("V_kartustoklist.php");
-		if ($Security->allowList(CurrentProjectID() . 'v_lap_retur'))
-			$this->terminate("v_lap_returlist.php");
 		if ($Security->allowList(CurrentProjectID() . 'v_stokbarang'))
 			$this->terminate("v_stokbaranglist.php");
 		if ($Security->allowList(CurrentProjectID() . 'view_hargajual'))

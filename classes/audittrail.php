@@ -1,4 +1,4 @@
-<?php namespace PHPMaker2020\klinik_latest_08_04_21; ?>
+<?php namespace PHPMaker2020\sim_klinik_alamanda; ?>
 <?php
 
 /**
@@ -78,7 +78,7 @@ class audittrail extends DbTable
 		$this->fields['id'] = &$this->id;
 
 		// datetime
-		$this->datetime = new DbField('audittrail', 'audittrail', 'x_datetime', 'datetime', '`datetime`', CastDateFieldForLike("`datetime`", 0, "DB"), 135, 19, 0, FALSE, '`datetime`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->datetime = new DbField('audittrail', 'audittrail', 'x_datetime', 'datetime', '`datetime`', CastDateFieldForLike("`datetime`", 1, "DB"), 135, 19, 1, FALSE, '`datetime`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->datetime->Nullable = FALSE; // NOT NULL field
 		$this->datetime->Required = TRUE; // Required field
 		$this->datetime->Sortable = TRUE; // Allow sort
@@ -87,7 +87,7 @@ class audittrail extends DbTable
 
 		// script
 		$this->script = new DbField('audittrail', 'audittrail', 'x_script', 'script', '`script`', '`script`', 200, 80, -1, FALSE, '`script`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->script->Sortable = TRUE; // Allow sort
+		$this->script->Sortable = FALSE; // Allow sort
 		$this->fields['script'] = &$this->script;
 
 		// user
@@ -757,7 +757,7 @@ class audittrail extends DbTable
 
 		// datetime
 		$this->datetime->ViewValue = $this->datetime->CurrentValue;
-		$this->datetime->ViewValue = FormatDateTime($this->datetime->ViewValue, 0);
+		$this->datetime->ViewValue = FormatDateTime($this->datetime->ViewValue, 1);
 		$this->datetime->ViewCustomAttributes = "";
 
 		// script
@@ -969,7 +969,6 @@ class audittrail extends DbTable
 				} else {
 					$doc->exportCaption($this->id);
 					$doc->exportCaption($this->datetime);
-					$doc->exportCaption($this->script);
 					$doc->exportCaption($this->user);
 					$doc->exportCaption($this->_action);
 					$doc->exportCaption($this->_table);
@@ -1018,7 +1017,6 @@ class audittrail extends DbTable
 					} else {
 						$doc->exportField($this->id);
 						$doc->exportField($this->datetime);
-						$doc->exportField($this->script);
 						$doc->exportField($this->user);
 						$doc->exportField($this->_action);
 						$doc->exportField($this->_table);

@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_08_04_21;
+namespace PHPMaker2020\sim_klinik_alamanda;
 
 // Autoload
 include_once "autoload.php";
@@ -46,7 +46,8 @@ Page_Rendering();
 			'November',
 			'Desember'
 		);
-		$pecahkan = explode('-', $tanggal);
+		$hilangkan = explode(' ', $tanggal);
+		$pecahkan = explode('-', $hilangkan[0]);
 		
 		// variabel pecahkan 0 = tanggal
 		// variabel pecahkan 1 = bulan
@@ -58,13 +59,19 @@ Page_Rendering();
 	$dateFrom = $_POST['dateFrom'];
 	$dateTo = $_POST['dateTo'];
 	$cabang = $_POST['cabang'];
-	
-	$query = "SELECT *
-				FROM penggunaan_kartu
-				LEFT JOIN m_klinik ON penggunaan_kartu.id_klinik = m_klinik.id_klinik
-				LEFT JOIN m_kartu ON penggunaan_kartu.id_kartu = m_kartu.id_kartu
-				WHERE (penggunaan_kartu.tgl BETWEEN '$dateFrom' AND '$dateTo') AND penggunaan_kartu.id_klinik = '$cabang' AND  penggunaan_kartu.jenis_kartu = 'Voucher'";
-	$result = ExecuteRows($query);
+	$voucher = $_POST['Inputvoucher'];
+
+	if($voucher == 'All') {
+		$query = "SELECT m_kartu.nama_kartu, penggunaan_kartu.id_kartu FROM penggunaan_kartu
+		JOIN m_kartu ON m_kartu.id_kartu = penggunaan_kartu.id_kartu
+		WHERE penggunaan_kartu.jenis_kartu = 'Voucher' AND (penggunaan_kartu.tgl BETWEEN '$dateFrom' AND '$dateTo') AND penggunaan_kartu.id_klinik = '$cabang' GROUP BY penggunaan_kartu.id_kartu";
+		$result = ExecuteRows($query);
+	} else {
+		$query = "SELECT m_kartu.nama_kartu, penggunaan_kartu.id_kartu FROM penggunaan_kartu
+		LEFT JOIN m_kartu ON penggunaan_kartu.id_kartu = m_kartu.id_kartu
+		WHERE (penggunaan_kartu.tgl BETWEEN '$dateFrom' AND '$dateTo') AND penggunaan_kartu.id_kartu = '$voucher' AND penggunaan_kartu.id_klinik = '$cabang' GROUP BY penggunaan_kartu.id_kartu";
+		$result = ExecuteRows($query);
+	}	
 
 	function rupiah($angka){
 		 $hasil_rupiah = "Rp" . number_format($angka);
@@ -84,7 +91,23 @@ Page_Rendering();
 	  <div class="col-md-12">
 		<h3>Cari Data Berdasarkan</h3>
 		<ul class="list-unstyled">
-			
+			<!-- Input Voucher -->
+			<li class="d-inline-block">
+				<label class="d-block">Plih Voucher</label>
+				<select class="form-control product-select" name="Inputvoucher">
+					<option value="All">All</option>
+					<?php
+					$sql = "SELECT * FROM m_kartu WHERE jenis = 'Voucher'";
+					$res = ExecuteRows($sql);
+
+					foreach ($res as $rs) {
+						echo "<option value=" . $rs["id_kartu"] . ">" . $rs["nama_kartu"] . "</option>";
+					}
+					?>
+				</select>
+		  	</li>
+
+			<!-- Input Klinik -->
 			<li class="d-inline-block">
 				<label class="d-block">Cabang</label>
 					<select class="form-control product-select" name="cabang">
@@ -159,33 +182,135 @@ Page_Rendering();
 					</td>
 				</tr>
 					<tr style="background-color:#b7d8dc;">
-						<th>No</th>
-						<th>Voucher</th>
-						<th>Klinik</th>
-						<th>Kode Penjualan</th>
-						<th>Tanggal</th>
-						<th>Jumlah</th>
+						<th colspan='6'>Voucher</th>
 					</tr>
 				</thead>
 				<tbody>
 				<?php
 				$no=1;
 				if (is_null($result) OR $result == false) {
-					echo '<tr><td  colspan="12" align="center">Kosong</td></tr>';							
+					echo '<tr><td  colspan="6" align="center">Kosong</td></tr>';							
 				}else{
-					foreach ($result as $rs) {									
-						echo "<tr>
-								<td>" . $no . ".</td>
-								<td>" . $rs["nama_kartu"] . "</td>
-								<td>" . $rs["nama_klinik"] . "</td>
-								<td>" . $rs["kode_penjualan"] . "</td>
-								<td>" . $rs["tgl"] . "</td>
-								<td>" . rupiah($rs["jumlah"]) . "</td>
-							</tr>" ;
-						$no++;
+					$totalcabang_total = 0;
+					$totalcabang_total_charge = 0;
+					foreach ($result as $rs) {
+		
+						echo "<tr id=".$rs["id_kartu"].">
+								 <td colspan='5'>" . $rs["nama_kartu"] . "</td>			 			
+								<td align='center'>
+									<button class='btn btn-link' onclick='showDetails(".$rs["id_kartu"].");'>
+										  Detail
+									</button>
+								</td>
+							</tr>
+							<tr id='".$rs["id_kartu"]."_detil' class='collapse'>
+								<td class='ew-table-last-col' colspan='5'>
+									<div>
+										<table class='table'>
+											<thead>
+												<tr>
+													<th>Tanggal</th>
+													<th>Kode Penjualan</th>
+													<th align='right'>Pembayaran</th>
+													<th>Potongan Voucher</th>
+													<th>Total</th>										
+												</tr>
+											</thead>
+											<tbody>";
+														$dateFrom = $_POST['dateFrom'];
+														$dateTo = $_POST['dateTo'];
+														$cabang = $_POST['cabang'];
+		
+														$details = ExecuteRows("SELECT * FROM penggunaan_kartu	  										
+														WHERE id_kartu = '" .$rs['id_kartu']. "' AND id_klinik ='$cabang' AND (tgl BETWEEN '$dateFrom' AND '$dateTo') ");
+														$total = 0;
+														$total_charge = 0;
+														foreach ($details as $row) {
+															echo "<tr>
+																<td>".tgl_indo($row["tgl"])."</td>
+																<td>".$row["kode_penjualan"]."</td>
+																<td align='right'>".rupiah($row["total"])."</td>
+																<td align='right'>".$row["charge"]."</td>
+																<td align='right'>".rupiah($row["total_charge"])."</td>
+															</tr>";
+															$total += $row["total"];
+															$total_charge += $row["total_charge"];
+														}
+														echo "<tr>
+															<td colspan='2' align='right'><b>Total per Kartu ".$rs["nama_kartu"]."</b></td>
+															<td align='right'>".rupiah($total)."</td>
+															<td colspan='2' align='right'>".rupiah($total_charge)."</td>
+														</tr>";
+											echo "</tbody>
+										</table>
+									</div>
+								</td>
+							</tr>";			 		
+							$no++;		
+							$totalcabang_total += $total;	  
+							$totalcabang_total_charge += $total_charge;	  
 					}
 				}						
 				?>
+
+					<tr>
+						<td colspan='2' align="right">
+							<b>Total Cabang Alamanda 								
+									<?php
+										$resKlinik=ExecuteRows("SELECT * FROM m_klinik WHERE id_klinik=$cabang");
+										if($resKlinik != false) {
+											echo $resKlinik[0]['nama_klinik']; 
+										} else {
+											echo "--";
+										}
+									?>
+							</b>
+						</td>
+						<td align="right">
+							<b>
+								<?php if(isset($totalcabang_total)) {
+										echo rupiah($totalcabang_total);							
+									}
+									$totalcabang_total = isset($totalcabang_total) ? $totalcabang_total : '0';
+								?>
+							</b>
+						</td>
+						<td colspan='2' align="right">
+							<b>
+								<?php if(isset($totalcabang_total_charge)) {
+										echo rupiah($totalcabang_total_charge);							
+									}
+									$totalcabang_total_charge = isset($totalcabang_total_charge) ? $totalcabang_total_charge : '0';
+								?>
+							</b>
+						</td>
+						<td></td>
+					</tr>
+
+					<tr>
+						<td colspan='2' align="right">
+							<b>Grand Total</b>
+						</td>
+						<td align="right">
+							<b>
+								<?php if(isset($totalcabang_total)) {
+										echo rupiah($totalcabang_total);							
+									}
+									$totalcabang_total = isset($totalcabang_total) ? $totalcabang_total : '0';
+								?>
+							</b>
+						</td>
+						<td colspan='2' align="right">
+							<b>
+								<?php if(isset($totalcabang_total_charge)) {
+										echo rupiah($totalcabang_total_charge);							
+									}
+									$totalcabang_total_charge = isset($totalcabang_total_charge) ? $totalcabang_total_charge : '0';
+								?>
+							</b>
+						</td>
+						<td></td>
+					</tr>				
 				</tbody>
 			</table>
 
@@ -222,9 +347,17 @@ Page_Rendering();
 					downloadLink.click();
 				}
 			}
+			// hide and show detail
+			function showDetails(id) {
+				var classes = $(`#${id}_detil`).attr("class").split(/\s+/);
+				if(!classes[1]) {
+					$(`#${id}_detil`).addClass('show')
+				} else {
+					$(`#${id}_detil`).removeClass('show')
+				}
+			}
+		
 	</script>
-  </div>
-</div>
 
 <?php if (Config("DEBUG")) echo GetDebugMessage(); ?>
 <?php include_once "footer.php"; ?>

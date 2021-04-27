@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_08_04_21;
+namespace PHPMaker2020\sim_klinik_alamanda;
 
 // Autoload
 include_once "autoload.php";
@@ -30,7 +30,6 @@ SetClientVar("login", LoginStatus());
 Page_Rendering();
 ?>
 <?php include_once "header.php"; ?>
-<!-- Page level plugins -->
 <script src="js/Chart.min.js"></script>
 <style>
 	.card{
@@ -81,7 +80,7 @@ Page_Rendering();
 					<div class="text-md font-weight-bold text-primary text-uppercase mb-1">TOTAL PASIEN</div>
 					<?php
 						$tanggal = date("Y-m-d");
-						$pasien = ExecuteScalar("SELECT COUNT(DISTINCT(id_pelanggan)) FROM penjualan WHERE id_klinik = '21' AND waktu = '$tanggal' ");
+						$pasien = ExecuteScalar("SELECT COUNT(DISTINCT(id_pelanggan)) FROM penjualan WHERE waktu = '$tanggal' ");
 						echo "<div class='h5 mb-0 font-weight-bold text-gray-800'>".$pasien."</div>";
 					?>
 				</div>
@@ -167,21 +166,29 @@ Page_Rendering();
 	<div class="col-xl-4 col-lg-5">
 		<div class="card border-0 shadow mb-4">
 			<div class="card-header py-3">
-				<h6 class="m-0 font-weight-bold text-primary">Projects</h6>
+				<h6 class="m-0 font-weight-bold text-primary">Transaksi Penjualan</h6>
 			</div>
 			<div class="card-body">
-				<h4 class="small font-weight-bold">Server Migration <span class="float-right">20%</span></h4>
-				  <div class="progress mb-4">
-					<div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-				  </div>
-				  <h4 class="small font-weight-bold">Sales Tracking <span class="float-right">40%</span></h4>
-				  <div class="progress mb-4">
-					<div class="progress-bar bg-warning" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-				  </div>
-				  <h4 class="small font-weight-bold">Customer Database <span class="float-right">60%</span></h4>
-				  <div class="progress mb-4">
-					<div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-				  </div>
+   				<?php
+				$tanggal = date("Y-m-d");
+				$penjualan_perawatan = ExecuteScalar("SELECT COUNT(detailpenjualan.id) FROM detailpenjualan LEFT JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan
+				WHERE detailpenjualan.id_barang IN (SELECT id_barang FROM komposisi) AND penjualan.waktu = '$tanggal'");
+				
+				$penjualan_produk = ExecuteScalar("SELECT COUNT(detailpenjualan.id) FROM detailpenjualan LEFT JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan
+				WHERE detailpenjualan.id_barang NOT IN (SELECT id_barang FROM komposisi) AND penjualan.waktu = '$tanggal'");
+				$total_penjualan = ExecuteScalar("SELECT COUNT(detailpenjualan.id) FROM detailpenjualan LEFT JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE penjualan.waktu = '$tanggal'");
+				
+				$persentase_perawatan = number_format($penjualan_perawatan/$total_penjualan, 2, '.','') * 100;
+				$persentase_produk = number_format($penjualan_produk/$total_penjualan, 2, '.','') * 100;
+				echo "<h4 class='small font-weight-bold'>Perawatan <span class='float-right'>$persentase_perawatan%</span></h4>
+				<div class='progress mb-4'>
+					<div class='progress-bar bg-danger' role='progressbar' style='width: $persentase_perawatan%' aria-valuenow='$persentase_perawatan' aria-valuemin='0' aria-valuemax='100'></div>
+				</div>
+				<h4 class='small font-weight-bold'>Produk <span class='float-right'>$persentase_produk%</span></h4>
+				<div class='progress mb-4'>
+					<div class='progress-bar bg-warning' role='progressbar' style='width: $persentase_produk%' aria-valuenow='$persentase_produk' aria-valuemin='0' aria-valuemax='100'></div>
+				</div>"
+				?>
 			</div>
 		</div>
 	</div>
@@ -205,9 +212,9 @@ Page_Rendering();
 							<?php } ?>
 								<select class="custom-select" id="select-periode" name="select-periode">
 									<option selected>Pilih Periode</option>
-									<option value="harian">Harian</option>
-									<option value="mingguan">Mingguan</option>
-									<option value="bulanan">Bulanan</option>
+									<option value="harian">Hari Ini</option>
+									<option value="mingguan">1 Minggu</option>
+									<option value="bulanan">1 Bulan</option>
 								</select>
 							<button class="btn btn-primary btn-md p-2" type="submit" name="periode" id="periode" hidden></button>
 						</form>
@@ -373,7 +380,7 @@ var myLineChart = new Chart(ctx, {
 				}
 			
 				foreach ($dates as $value) {
-					$data =  ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE id_klinik = '21' AND waktu = '".$value."' ");
+					$data =  ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE waktu = '".$value."' ");
 					if(is_null($data) OR $data == FALSE){
 						echo ' 0,';
 					} else {

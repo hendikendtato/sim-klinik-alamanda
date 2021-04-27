@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_08_04_21;
+namespace PHPMaker2020\sim_klinik_alamanda;
 
 /**
  * Page class
@@ -11,7 +11,7 @@ class detailterimagudang_grid extends detailterimagudang
 	public $PageID = "grid";
 
 	// Project ID
-	public $ProjectID = "{4E2A1FD4-0074-4494-903F-430527A228F4}";
+	public $ProjectID = "{8546B030-7993-4749-BFDB-17AFAAF4065D}";
 
 	// Table name
 	public $TableName = 'detailterimagudang';
@@ -34,6 +34,14 @@ class detailterimagudang_grid extends detailterimagudang
 	public $DeleteUrl;
 	public $ViewUrl;
 	public $ListUrl;
+
+	// Audit Trail
+	public $AuditTrailOnAdd = TRUE;
+	public $AuditTrailOnEdit = TRUE;
+	public $AuditTrailOnDelete = TRUE;
+	public $AuditTrailOnView = FALSE;
+	public $AuditTrailOnViewData = FALSE;
+	public $AuditTrailOnSearch = FALSE;
 
 	// Page headings
 	public $Heading = "";
@@ -951,6 +959,8 @@ class detailterimagudang_grid extends detailterimagudang
 				$this->setFailureMessage($Language->phrase("GridEditCancelled")); // Set grid edit cancelled message
 			return FALSE;
 		}
+		if ($this->AuditTrailOnEdit)
+			$this->writeAuditTrailDummy($Language->phrase("BatchUpdateBegin")); // Batch update begin
 		$key = "";
 
 		// Update row index and get row key
@@ -1017,8 +1027,12 @@ class detailterimagudang_grid extends detailterimagudang
 
 			// Call Grid_Updated event
 			$this->Grid_Updated($rsold, $rsnew);
+			if ($this->AuditTrailOnEdit)
+				$this->writeAuditTrailDummy($Language->phrase("BatchUpdateSuccess")); // Batch update success
 			$this->clearInlineMode(); // Clear inline edit mode
 		} else {
+			if ($this->AuditTrailOnEdit)
+				$this->writeAuditTrailDummy($Language->phrase("BatchUpdateRollback")); // Batch update rollback
 			if ($this->getFailureMessage() == "")
 				$this->setFailureMessage($Language->phrase("UpdateFailed")); // Set update failed message
 		}
@@ -1084,6 +1098,8 @@ class detailterimagudang_grid extends detailterimagudang
 		// Init key filter
 		$wrkfilter = "";
 		$addcnt = 0;
+		if ($this->AuditTrailOnAdd)
+			$this->writeAuditTrailDummy($Language->phrase("BatchInsertBegin")); // Batch insert begin
 		$key = "";
 
 		// Get row count
@@ -1147,8 +1163,12 @@ class detailterimagudang_grid extends detailterimagudang
 
 			// Call Grid_Inserted event
 			$this->Grid_Inserted($rsnew);
+			if ($this->AuditTrailOnAdd)
+				$this->writeAuditTrailDummy($Language->phrase("BatchInsertSuccess")); // Batch insert success
 			$this->clearInlineMode(); // Clear grid add mode
 		} else {
+			if ($this->AuditTrailOnAdd)
+				$this->writeAuditTrailDummy($Language->phrase("BatchInsertRollback")); // Batch insert rollback
 			if ($this->getFailureMessage() == "")
 				$this->setFailureMessage($Language->phrase("InsertFailed")); // Set insert failed message
 		}
@@ -2043,6 +2063,8 @@ class detailterimagudang_grid extends detailterimagudang
 			return FALSE;
 		}
 		$rows = ($rs) ? $rs->getRows() : [];
+		if ($this->AuditTrailOnDelete)
+			$this->writeAuditTrailDummy($Language->phrase("BatchDeleteBegin")); // Batch delete begin
 
 		// Clone old rows
 		$rsold = $rows;

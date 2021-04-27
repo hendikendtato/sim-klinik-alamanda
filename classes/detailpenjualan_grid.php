@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_08_04_21;
+namespace PHPMaker2020\sim_klinik_alamanda;
 
 /**
  * Page class
@@ -11,7 +11,7 @@ class detailpenjualan_grid extends detailpenjualan
 	public $PageID = "grid";
 
 	// Project ID
-	public $ProjectID = "{4E2A1FD4-0074-4494-903F-430527A228F4}";
+	public $ProjectID = "{8546B030-7993-4749-BFDB-17AFAAF4065D}";
 
 	// Table name
 	public $TableName = 'detailpenjualan';
@@ -34,6 +34,14 @@ class detailpenjualan_grid extends detailpenjualan
 	public $DeleteUrl;
 	public $ViewUrl;
 	public $ListUrl;
+
+	// Audit Trail
+	public $AuditTrailOnAdd = TRUE;
+	public $AuditTrailOnEdit = TRUE;
+	public $AuditTrailOnDelete = TRUE;
+	public $AuditTrailOnView = FALSE;
+	public $AuditTrailOnViewData = FALSE;
+	public $AuditTrailOnSearch = FALSE;
 
 	// Page headings
 	public $Heading = "";
@@ -969,6 +977,8 @@ class detailpenjualan_grid extends detailpenjualan
 				$this->setFailureMessage($Language->phrase("GridEditCancelled")); // Set grid edit cancelled message
 			return FALSE;
 		}
+		if ($this->AuditTrailOnEdit)
+			$this->writeAuditTrailDummy($Language->phrase("BatchUpdateBegin")); // Batch update begin
 		$key = "";
 
 		// Update row index and get row key
@@ -1035,8 +1045,12 @@ class detailpenjualan_grid extends detailpenjualan
 
 			// Call Grid_Updated event
 			$this->Grid_Updated($rsold, $rsnew);
+			if ($this->AuditTrailOnEdit)
+				$this->writeAuditTrailDummy($Language->phrase("BatchUpdateSuccess")); // Batch update success
 			$this->clearInlineMode(); // Clear inline edit mode
 		} else {
+			if ($this->AuditTrailOnEdit)
+				$this->writeAuditTrailDummy($Language->phrase("BatchUpdateRollback")); // Batch update rollback
 			if ($this->getFailureMessage() == "")
 				$this->setFailureMessage($Language->phrase("UpdateFailed")); // Set update failed message
 		}
@@ -1102,6 +1116,8 @@ class detailpenjualan_grid extends detailpenjualan
 		// Init key filter
 		$wrkfilter = "";
 		$addcnt = 0;
+		if ($this->AuditTrailOnAdd)
+			$this->writeAuditTrailDummy($Language->phrase("BatchInsertBegin")); // Batch insert begin
 		$key = "";
 
 		// Get row count
@@ -1165,8 +1181,12 @@ class detailpenjualan_grid extends detailpenjualan
 
 			// Call Grid_Inserted event
 			$this->Grid_Inserted($rsnew);
+			if ($this->AuditTrailOnAdd)
+				$this->writeAuditTrailDummy($Language->phrase("BatchInsertSuccess")); // Batch insert success
 			$this->clearInlineMode(); // Clear grid add mode
 		} else {
+			if ($this->AuditTrailOnAdd)
+				$this->writeAuditTrailDummy($Language->phrase("BatchInsertRollback")); // Batch insert rollback
 			if ($this->getFailureMessage() == "")
 				$this->setFailureMessage($Language->phrase("InsertFailed")); // Set insert failed message
 		}
@@ -2806,6 +2826,8 @@ class detailpenjualan_grid extends detailpenjualan
 			return FALSE;
 		}
 		$rows = ($rs) ? $rs->getRows() : [];
+		if ($this->AuditTrailOnDelete)
+			$this->writeAuditTrailDummy($Language->phrase("BatchDeleteBegin")); // Batch delete begin
 
 		// Clone old rows
 		$rsold = $rows;
@@ -3237,14 +3259,14 @@ class detailpenjualan_grid extends detailpenjualan
 				return FALSE;
 			}
 		} else {
-			$id_komposisi = ExecuteScalar("SELECT id_komposisi FROM komposisi WHERE id_barang='10'");
+			$id_komposisi = ExecuteScalar("SELECT id_komposisi FROM komposisi WHERE id_barang='".intval($rs["id_barang"])."'");
 			$detail_barang = ExecuteRows("SELECT id_barang, jumlah FROM detailkomposisi WHERE id_komposisi = '$id_komposisi'");
 			$sMsG = "";
 			$i = 0;
 			foreach($detail_barang AS $dk){
 				$id_barang = $dk['id_barang'];
 				$jumlah = $dk['jumlah'];
-				$stok_barang = ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_barang = '$id_barang' AND id_klinik = '21'");
+				$stok_barang = ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik'");
 				$jumlah_get_stok = $rs["qty"] * $jumlah;
 
 				//var_dump($jumlah_get_stok);

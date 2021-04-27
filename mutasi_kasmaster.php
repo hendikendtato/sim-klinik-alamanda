@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_08_04_21;
+namespace PHPMaker2020\sim_klinik_alamanda;
 ?>
 <?php if ($mutasi_kas->Visible) { ?>
 <div class="ew-master-div">

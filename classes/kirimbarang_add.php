@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_08_04_21;
+namespace PHPMaker2020\sim_klinik_alamanda;
 
 /**
  * Page class
@@ -11,7 +11,7 @@ class kirimbarang_add extends kirimbarang
 	public $PageID = "add";
 
 	// Project ID
-	public $ProjectID = "{4E2A1FD4-0074-4494-903F-430527A228F4}";
+	public $ProjectID = "{8546B030-7993-4749-BFDB-17AFAAF4065D}";
 
 	// Table name
 	public $TableName = 'kirimbarang';
@@ -1457,7 +1457,7 @@ class kirimbarang_add extends kirimbarang
 		$this->id_pegawai->setDbValueDef($rsnew, $this->id_pegawai->CurrentValue, NULL, FALSE);
 
 		// tanggal
-		$this->tanggal->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal->CurrentValue, 0), NULL, FALSE);
+		$this->tanggal->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal->CurrentValue, 0), CurrentDate(), FALSE);
 
 		// status_kirim
 		$this->status_kirim->setDbValueDef($rsnew, $this->status_kirim->CurrentValue, NULL, FALSE);
@@ -1684,6 +1684,11 @@ class kirimbarang_add extends kirimbarang
 	function Page_Render() {
 
 		//echo "Page Render";
+		$levelid = CurrentUserLevel();
+		if($levelid != '-1') {
+			$this->id_supplier->ReadOnly = TRUE;
+			$this->id_klinik->ReadOnly = TRUE;
+		} 
 	}
 
 	// Page Data Rendering event

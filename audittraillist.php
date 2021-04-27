@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_08_04_21;
+namespace PHPMaker2020\sim_klinik_alamanda;
 
 // Autoload
 include_once "autoload.php";
@@ -178,30 +178,12 @@ $audittrail_list->renderListOptions();
 // Render list options (header, left)
 $audittrail_list->ListOptions->render("header", "left");
 ?>
-<?php if ($audittrail_list->id->Visible) { // id ?>
-	<?php if ($audittrail_list->SortUrl($audittrail_list->id) == "") { ?>
-		<th data-name="id" class="<?php echo $audittrail_list->id->headerCellClass() ?>"><div id="elh_audittrail_id" class="audittrail_id"><div class="ew-table-header-caption"><?php echo $audittrail_list->id->caption() ?></div></div></th>
-	<?php } else { ?>
-		<th data-name="id" class="<?php echo $audittrail_list->id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $audittrail_list->SortUrl($audittrail_list->id) ?>', 1);"><div id="elh_audittrail_id" class="audittrail_id">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $audittrail_list->id->caption() ?></span><span class="ew-table-header-sort"><?php if ($audittrail_list->id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($audittrail_list->id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-		</div></div></th>
-	<?php } ?>
-<?php } ?>
 <?php if ($audittrail_list->datetime->Visible) { // datetime ?>
 	<?php if ($audittrail_list->SortUrl($audittrail_list->datetime) == "") { ?>
 		<th data-name="datetime" class="<?php echo $audittrail_list->datetime->headerCellClass() ?>"><div id="elh_audittrail_datetime" class="audittrail_datetime"><div class="ew-table-header-caption"><?php echo $audittrail_list->datetime->caption() ?></div></div></th>
 	<?php } else { ?>
 		<th data-name="datetime" class="<?php echo $audittrail_list->datetime->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $audittrail_list->SortUrl($audittrail_list->datetime) ?>', 1);"><div id="elh_audittrail_datetime" class="audittrail_datetime">
 			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $audittrail_list->datetime->caption() ?></span><span class="ew-table-header-sort"><?php if ($audittrail_list->datetime->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($audittrail_list->datetime->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-		</div></div></th>
-	<?php } ?>
-<?php } ?>
-<?php if ($audittrail_list->script->Visible) { // script ?>
-	<?php if ($audittrail_list->SortUrl($audittrail_list->script) == "") { ?>
-		<th data-name="script" class="<?php echo $audittrail_list->script->headerCellClass() ?>"><div id="elh_audittrail_script" class="audittrail_script"><div class="ew-table-header-caption"><?php echo $audittrail_list->script->caption() ?></div></div></th>
-	<?php } else { ?>
-		<th data-name="script" class="<?php echo $audittrail_list->script->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $audittrail_list->SortUrl($audittrail_list->script) ?>', 1);"><div id="elh_audittrail_script" class="audittrail_script">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $audittrail_list->script->caption() ?><?php echo $Language->phrase("SrchLegend") ?></span><span class="ew-table-header-sort"><?php if ($audittrail_list->script->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($audittrail_list->script->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -238,6 +220,24 @@ $audittrail_list->ListOptions->render("header", "left");
 	<?php } else { ?>
 		<th data-name="field" class="<?php echo $audittrail_list->field->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $audittrail_list->SortUrl($audittrail_list->field) ?>', 1);"><div id="elh_audittrail_field" class="audittrail_field">
 			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $audittrail_list->field->caption() ?><?php echo $Language->phrase("SrchLegend") ?></span><span class="ew-table-header-sort"><?php if ($audittrail_list->field->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($audittrail_list->field->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
+<?php if ($audittrail_list->oldvalue->Visible) { // oldvalue ?>
+	<?php if ($audittrail_list->SortUrl($audittrail_list->oldvalue) == "") { ?>
+		<th data-name="oldvalue" class="<?php echo $audittrail_list->oldvalue->headerCellClass() ?>"><div id="elh_audittrail_oldvalue" class="audittrail_oldvalue"><div class="ew-table-header-caption"><?php echo $audittrail_list->oldvalue->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="oldvalue" class="<?php echo $audittrail_list->oldvalue->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $audittrail_list->SortUrl($audittrail_list->oldvalue) ?>', 1);"><div id="elh_audittrail_oldvalue" class="audittrail_oldvalue">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $audittrail_list->oldvalue->caption() ?><?php echo $Language->phrase("SrchLegend") ?></span><span class="ew-table-header-sort"><?php if ($audittrail_list->oldvalue->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($audittrail_list->oldvalue->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
+<?php if ($audittrail_list->newvalue->Visible) { // newvalue ?>
+	<?php if ($audittrail_list->SortUrl($audittrail_list->newvalue) == "") { ?>
+		<th data-name="newvalue" class="<?php echo $audittrail_list->newvalue->headerCellClass() ?>"><div id="elh_audittrail_newvalue" class="audittrail_newvalue"><div class="ew-table-header-caption"><?php echo $audittrail_list->newvalue->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="newvalue" class="<?php echo $audittrail_list->newvalue->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $audittrail_list->SortUrl($audittrail_list->newvalue) ?>', 1);"><div id="elh_audittrail_newvalue" class="audittrail_newvalue">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $audittrail_list->newvalue->caption() ?><?php echo $Language->phrase("SrchLegend") ?></span><span class="ew-table-header-sort"><?php if ($audittrail_list->newvalue->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($audittrail_list->newvalue->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -306,24 +306,10 @@ while ($audittrail_list->RecordCount < $audittrail_list->StopRecord) {
 // Render list options (body, left)
 $audittrail_list->ListOptions->render("body", "left", $audittrail_list->RowCount);
 ?>
-	<?php if ($audittrail_list->id->Visible) { // id ?>
-		<td data-name="id" <?php echo $audittrail_list->id->cellAttributes() ?>>
-<span id="el<?php echo $audittrail_list->RowCount ?>_audittrail_id">
-<span<?php echo $audittrail_list->id->viewAttributes() ?>><?php echo $audittrail_list->id->getViewValue() ?></span>
-</span>
-</td>
-	<?php } ?>
 	<?php if ($audittrail_list->datetime->Visible) { // datetime ?>
 		<td data-name="datetime" <?php echo $audittrail_list->datetime->cellAttributes() ?>>
 <span id="el<?php echo $audittrail_list->RowCount ?>_audittrail_datetime">
 <span<?php echo $audittrail_list->datetime->viewAttributes() ?>><?php echo $audittrail_list->datetime->getViewValue() ?></span>
-</span>
-</td>
-	<?php } ?>
-	<?php if ($audittrail_list->script->Visible) { // script ?>
-		<td data-name="script" <?php echo $audittrail_list->script->cellAttributes() ?>>
-<span id="el<?php echo $audittrail_list->RowCount ?>_audittrail_script">
-<span<?php echo $audittrail_list->script->viewAttributes() ?>><?php echo $audittrail_list->script->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>
@@ -352,6 +338,20 @@ $audittrail_list->ListOptions->render("body", "left", $audittrail_list->RowCount
 		<td data-name="field" <?php echo $audittrail_list->field->cellAttributes() ?>>
 <span id="el<?php echo $audittrail_list->RowCount ?>_audittrail_field">
 <span<?php echo $audittrail_list->field->viewAttributes() ?>><?php echo $audittrail_list->field->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
+	<?php if ($audittrail_list->oldvalue->Visible) { // oldvalue ?>
+		<td data-name="oldvalue" <?php echo $audittrail_list->oldvalue->cellAttributes() ?>>
+<span id="el<?php echo $audittrail_list->RowCount ?>_audittrail_oldvalue">
+<span<?php echo $audittrail_list->oldvalue->viewAttributes() ?>><?php echo $audittrail_list->oldvalue->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
+	<?php if ($audittrail_list->newvalue->Visible) { // newvalue ?>
+		<td data-name="newvalue" <?php echo $audittrail_list->newvalue->cellAttributes() ?>>
+<span id="el<?php echo $audittrail_list->RowCount ?>_audittrail_newvalue">
+<span<?php echo $audittrail_list->newvalue->viewAttributes() ?>><?php echo $audittrail_list->newvalue->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>

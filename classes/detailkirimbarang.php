@@ -1,4 +1,4 @@
-<?php namespace PHPMaker2020\klinik_latest_08_04_21; ?>
+<?php namespace PHPMaker2020\sim_klinik_alamanda; ?>
 <?php
 
 /**
@@ -1142,10 +1142,10 @@ class detailkirimbarang extends DbTable
 		$stok_baru = $stok_lama - $qty;
 		if($status_kirim == 'dikirim'){
 			if($stok_baru <= 0){
-				$update_stok = Execute("UPDATE m_hargajual SET stok='0' WHERE id_barang = $id_barang AND id_klinik = $id_supplier");
+				$update_stok = Execute("UPDATE m_hargajual SET stok='0' WHERE id_barang = '$id_barang' AND id_klinik = '$id_supplier'");
 				$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, id_kirimbarang, tanggal, stok_awal, keluar_kirim, stok_akhir) VALUES ('$id_barang', '$id_supplier', '$pid_kirimbarang', '$tanggal', '$stok_lama', '$qty', '0')");		
 			} else {
-				$update_stok = Execute("UPDATE m_hargajual SET stok=$stok_baru WHERE id_barang = $id_barang AND id_klinik = $id_supplier");
+				$update_stok = Execute("UPDATE m_hargajual SET stok='$stok_baru' WHERE id_barang = '$id_barang' AND id_klinik = '$id_supplier'");
 				$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, id_kirimbarang, tanggal, stok_awal, keluar_kirim, stok_akhir) VALUES ('$id_barang', '$id_supplier', '$pid_kirimbarang', '$tanggal', '$stok_lama', '$qty', '$stok_baru')");		
 			}	
 		}
@@ -1177,10 +1177,10 @@ class detailkirimbarang extends DbTable
 		$stok_baru = $stok_lama - $qty;
 		if($status_kirim == 'dikirim'){
 			if($stok_baru <= 0){
-				$update_stok = Execute("UPDATE m_hargajual SET stok='0' WHERE id_barang = $id_barang AND id_klinik = $id_supplier");
+				$update_stok = Execute("UPDATE m_hargajual SET stok='0' WHERE id_barang = '$id_barang' AND id_klinik = '$id_supplier'");
 				$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, id_kirimbarang, tanggal, stok_awal, keluar_kirim, stok_akhir) VALUES ('$id_barang', '$id_supplier', '$pid_kirimbarang', '$tanggal', '$stok_lama', '$qty', '0')");		
 			} else {
-				$update_stok = Execute("UPDATE m_hargajual SET stok=$stok_baru WHERE id_barang = $id_barang AND id_klinik = $id_supplier");
+				$update_stok = Execute("UPDATE m_hargajual SET stok='$stok_baru' WHERE id_barang = '$id_barang' AND id_klinik = '$id_supplier'");
 				$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, id_kirimbarang, tanggal, stok_awal, keluar_kirim, stok_akhir) VALUES ('$id_barang', '$id_supplier', '$pid_kirimbarang', '$tanggal', '$stok_lama', '$qty', '$stok_baru')");		
 			}	
 		}

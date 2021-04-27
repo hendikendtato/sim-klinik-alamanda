@@ -1,4 +1,4 @@
-<?php namespace PHPMaker2020\klinik_latest_08_04_21; ?>
+<?php namespace PHPMaker2020\sim_klinik_alamanda; ?>
 <?php
 
 /**
@@ -90,6 +90,8 @@ class penyesuaian_poin extends DbTable
 
 		// tgl
 		$this->tgl = new DbField('penyesuaian_poin', 'penyesuaian_poin', 'x_tgl', 'tgl', '`tgl`', CastDateFieldForLike("`tgl`", 0, "DB"), 133, 10, 0, FALSE, '`tgl`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->tgl->Nullable = FALSE; // NOT NULL field
+		$this->tgl->Required = TRUE; // Required field
 		$this->tgl->Sortable = TRUE; // Allow sort
 		$this->tgl->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_FORMAT"], $Language->phrase("IncorrectDate"));
 		$this->fields['tgl'] = &$this->tgl;

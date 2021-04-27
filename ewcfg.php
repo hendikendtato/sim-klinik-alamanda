@@ -3,7 +3,7 @@
 /**
  * PHPMaker 2020 configuration file
  */
-namespace PHPMaker2020\klinik_latest_08_04_21;
+namespace PHPMaker2020\sim_klinik_alamanda;
 
 // Prerequisite
 if (version_compare(PHP_VERSION, "5.6.0") < 0) // Is PHP 5.6 or later
@@ -88,7 +88,7 @@ define(PROJECT_NAMESPACE . "ALLOW_ALL", 511); // All (1 + 2 + 4 + 8 + 16 + 32 + 
 define(PROJECT_NAMESPACE . "PRODUCT_VERSION", "16.0.16");
 
 // Project
-define(PROJECT_NAMESPACE . "PROJECT_NAME", "klinik_latest_08_04_21"); // Project name
+define(PROJECT_NAMESPACE . "PROJECT_NAME", "sim_klinik_alamanda"); // Project name
 
 /**
  * Character encoding
@@ -161,14 +161,14 @@ $CONFIG = [
 
 	// General
 	"UNFORMAT_YEAR" => 50, // Unformat year
-	"RANDOM_KEY" => 'k75huXDZvxuhc0r1', // Random key for encryption
+	"RANDOM_KEY" => 'mNm5wgqxoe8F0kyu', // Random key for encryption
 	"ENCRYPTION_KEY" => '', // Encryption key for data protection
-	"PROJECT_STYLESHEET_FILENAME" => "css/klinik_latest_08_04_21.css", // Project stylesheet file name
+	"PROJECT_STYLESHEET_FILENAME" => "css/sim_klinik_alamanda.css", // Project stylesheet file name
 	"PROJECT_CHARSET" => "utf-8", // Project charset
 	"IS_UTF8" => TRUE, // Project charset
 	"EMAIL_CHARSET" => "utf-8", // Email charset
 	"HIGHLIGHT_COMPARE" => TRUE, // Highlight compare mode, TRUE(case-insensitive)|FALSE(case-sensitive)
-	"PROJECT_ID" => "{4E2A1FD4-0074-4494-903F-430527A228F4}", // Project ID (GUID)
+	"PROJECT_ID" => "{8546B030-7993-4749-BFDB-17AFAAF4065D}", // Project ID (GUID)
 	"RELATED_PROJECT_ID" => "", // Related Project ID (GUID)
 	"COMPOSITE_KEY_SEPARATOR" => ",", // Composite key separator
 	"LAZY_LOAD" => TRUE, // Lazy loading of images

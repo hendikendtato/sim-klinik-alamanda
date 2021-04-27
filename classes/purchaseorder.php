@@ -1,4 +1,4 @@
-<?php namespace PHPMaker2020\klinik_latest_08_04_21; ?>
+<?php namespace PHPMaker2020\sim_klinik_alamanda; ?>
 <?php
 
 /**
@@ -83,6 +83,8 @@ class purchaseorder extends DbTable
 
 		// tgl_po
 		$this->tgl_po = new DbField('purchaseorder', 'purchaseorder', 'x_tgl_po', 'tgl_po', '`tgl_po`', CastDateFieldForLike("`tgl_po`", 0, "DB"), 133, 10, 0, FALSE, '`tgl_po`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->tgl_po->Nullable = FALSE; // NOT NULL field
+		$this->tgl_po->Required = TRUE; // Required field
 		$this->tgl_po->Sortable = TRUE; // Allow sort
 		$this->tgl_po->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_FORMAT"], $Language->phrase("IncorrectDate"));
 		$this->fields['tgl_po'] = &$this->tgl_po;
@@ -1259,18 +1261,11 @@ class purchaseorder extends DbTable
 		// To view properties of field class, use:
 		//var_dump($this-><FieldName>);
 
-		$id_klinik = CurrentUserInfo("id_klinik");
-		if($id_klinik != '' OR $id_klinik != FALSE){
-			$this->idklinik->CurrentValue = $id_klinik ;
-			$this->idklinik->ReadOnly = TRUE; 
-		}
 		$id_pegawai = CurrentUserInfo("id_pegawai");
 		if($id_pegawai != '' OR $id_pegawai != FALSE){
 			$this->idstaff_po->CurrentValue = $id_pegawai ;
 			$this->idstaff_po->ReadOnly = TRUE; 
 		}
-		$default_support = ExecuteScalar("SELECT id_klinik FROM m_klinik WHERE nama_klinik LIKE '%Support%'");
-		$this->id_supplier->CurrentValue = $default_support;
 	}
 
 	// User ID Filtering event

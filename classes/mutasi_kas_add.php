@@ -1,5 +1,5 @@
 <?php
-namespace PHPMaker2020\klinik_latest_08_04_21;
+namespace PHPMaker2020\sim_klinik_alamanda;
 
 /**
  * Page class
@@ -11,7 +11,7 @@ class mutasi_kas_add extends mutasi_kas
 	public $PageID = "add";
 
 	// Project ID
-	public $ProjectID = "{4E2A1FD4-0074-4494-903F-430527A228F4}";
+	public $ProjectID = "{8546B030-7993-4749-BFDB-17AFAAF4065D}";
 
 	// Table name
 	public $TableName = 'mutasi_kas';
@@ -1285,7 +1285,7 @@ class mutasi_kas_add extends mutasi_kas
 		$rsnew = [];
 
 		// tgl
-		$this->tgl->setDbValueDef($rsnew, UnFormatDateTime($this->tgl->CurrentValue, 0), NULL, FALSE);
+		$this->tgl->setDbValueDef($rsnew, UnFormatDateTime($this->tgl->CurrentValue, 0), CurrentDate(), FALSE);
 
 		// id_klinik
 		$this->id_klinik->setDbValueDef($rsnew, $this->id_klinik->CurrentValue, NULL, FALSE);
@@ -1294,7 +1294,7 @@ class mutasi_kas_add extends mutasi_kas
 		$this->id_kas->setDbValueDef($rsnew, $this->id_kas->CurrentValue, NULL, FALSE);
 
 		// tipe
-		$this->tipe->setDbValueDef($rsnew, $this->tipe->CurrentValue, NULL, FALSE);
+		$this->tipe->setDbValueDef($rsnew, $this->tipe->CurrentValue, "", FALSE);
 
 		// keterangan
 		$this->keterangan->setDbValueDef($rsnew, $this->keterangan->CurrentValue, NULL, FALSE);

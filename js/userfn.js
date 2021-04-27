@@ -1,1 +1,1 @@
-var pathparts=location.pathname.split("/");if("localhost"==location.host){var base_url=location.origin+"/"+pathparts[1].trim("/")+"/";console.log("Tes 1"+base_url)}else{base_url=location.origin;console.log("Tes 2"+base_url)}
+var pathparts=location.pathname.split("/");if("localhost"==location.host)var base_url=location.origin+"/"+pathparts[1].trim("/")+"/";else base_url=location.origin;
