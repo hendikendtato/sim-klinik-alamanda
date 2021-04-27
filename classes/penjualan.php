@@ -2498,7 +2498,8 @@ class penjualan extends DbTable
 			if($kartu != '' OR $kartu != NULL){
 				$jenis_kartu_voucher = ExecuteScalar("SELECT jenis FROM m_kartu WHERE id_kartu = '$kartu'");
 				$charge_price_voucher = ExecuteScalar("SELECT charge_price FROM m_kartu WHERE id_kartu = '$kartu'");
-				Execute("INSERT INTO penggunaan_kartu (id_kartu, jenis_kartu, id_klinik, kode_penjualan, tgl, charge, total_charge) VALUES ('".$kartu."', '".$jenis_kartu_voucher."', '".$id_klinik."', '".$kode_penjualan."', '".$tanggal."', '".$charge_price_voucher."', '".$total."')");
+				$pembayaran = $total + $charge_price_voucher;
+				Execute("INSERT INTO penggunaan_kartu (id_kartu, jenis_kartu, id_klinik, kode_penjualan, tgl, total, charge, total_charge) VALUES ('".$kartu."', '".$jenis_kartu_voucher."', '".$id_klinik."', '".$kode_penjualan."', '".$tanggal."', '".$pembayaran."', '".$charge_price_voucher."', '".$total."')");
 			}
 
 			//ADDING POIN MEMBER
@@ -3415,7 +3416,8 @@ class penjualan extends DbTable
 			if($kartu != '' OR $kartu != NULL){
 				$jenis_kartu_voucher = ExecuteScalar("SELECT jenis FROM m_kartu WHERE id_kartu = '$kartu'");
 				$charge_price_voucher = ExecuteScalar("SELECT charge_price FROM m_kartu WHERE id_kartu = '$kartu'");	
-				Execute("INSERT INTO penggunaan_kartu (id_kartu, jenis_kartu, id_klinik, kode_penjualan, tgl, charge, total_charge) VALUES ('".$kartu."', '".$jenis_kartu_voucher."', '".$id_klinik."', '".$kode_penjualan."', '".$tanggal."', '".$charge_price_voucher."', '".$total."')");
+				$pembayaran = $total + $charge_price_voucher;
+				Execute("INSERT INTO penggunaan_kartu (id_kartu, jenis_kartu, id_klinik, kode_penjualan, tgl, total, charge, total_charge) VALUES ('".$kartu."', '".$jenis_kartu_voucher."', '".$id_klinik."', '".$kode_penjualan."', '".$tanggal."', '".$pembayaran."', '".$charge_price_voucher."', '".$total."')");
 			}
 
 			//ADDING POIN MEMBER

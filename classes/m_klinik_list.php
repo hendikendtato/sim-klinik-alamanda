@@ -2223,7 +2223,6 @@ class m_klinik_list extends m_klinik
 	function Page_Load() {
 
 		//echo "Page Load";
-		$response = file_get_contents('http://middleware.alamandaclinic.com/api/sync/mklinik');
 	}
 
 	// Page Unload event

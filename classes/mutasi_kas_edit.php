@@ -1341,7 +1341,7 @@ class mutasi_kas_edit extends mutasi_kas
 			$this->id_kas->setDbValueDef($rsnew, $this->id_kas->CurrentValue, NULL, $this->id_kas->ReadOnly);
 
 			// tipe
-			$this->tipe->setDbValueDef($rsnew, $this->tipe->CurrentValue, NULL, $this->tipe->ReadOnly);
+			$this->tipe->setDbValueDef($rsnew, $this->tipe->CurrentValue, "", $this->tipe->ReadOnly);
 
 			// keterangan
 			$this->keterangan->setDbValueDef($rsnew, $this->keterangan->CurrentValue, NULL, $this->keterangan->ReadOnly);

@@ -2527,6 +2527,20 @@ class detailkirimbarang_grid extends detailkirimbarang
 	function Form_CustomValidate(&$customError) {
 
 		// Return error message in CustomError
+		$rs = $this->GetFieldValues("FormValue"); // Get the form values as array
+		$kirimbarang = $GLOBALS["kirimbarang"]->GetFieldValues("FormValue");
+		$id_klinik = intval($kirimbarang["id_supplier"]);
+		$stok = ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_barang = '".intval($rs["id_barang"])."' AND id_klinik = '$id_klinik'");
+		$result = str_replace('.', '', $stok);
+
+		//print_r($result);
+		if (intval($rs["jumlah"]) > $result) {
+
+			// Return error message in $customError
+			$nama_barang = ExecuteScalar("SELECT nama_barang FROM m_barang WHERE id = '".intval($rs["id_barang"])."'");
+			$customError = "Jumlah $nama_barang tidak mencukupi.";
+			return FALSE;
+		}
 		return TRUE;
 	}
 

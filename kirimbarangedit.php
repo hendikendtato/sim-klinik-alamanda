@@ -150,12 +150,12 @@ loadjs.ready("head", function() {
 	$('div[id=r_status_kirim]').css({"display": "none"});
 
 	//tambah button draft
-	$("#btn-action").after('&nbsp;<button class="btn btn-info ew-btn" name="btn-action-draft" id="btn-action-draft" type="submit" style="height: 50px !important; width: 20% !important;">Draft</button>');
+	$("#btn-action").after('&nbsp;<button class="btn btn-info ew-btn" name="btn-action-draft" id="btn-action-draft" type="submit" style="height: 50px !important; width: 20% !important;">Draft</button>'); 
 
 	//if click button add
 	$('#btn-action').click(function() {
-		$('input[name="x_status_kirim"][value="draft"]').prop('checked', null);
 		$('input[name="x_status_kirim"][value="dikirim"]').prop('checked', true);
+		$('input[name="x_status_kirim"][value="draft"]').prop('checked', null);
 	});
 
 	//if click button draft

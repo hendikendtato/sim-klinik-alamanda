@@ -64,12 +64,12 @@ Page_Rendering();
 		if($Inputkartu == 'All') {
 			$query = "SELECT m_kartu.nama_kartu, penggunaan_kartu.id_kartu FROM penggunaan_kartu
 			JOIN m_kartu ON m_kartu.id_kartu = penggunaan_kartu.id_kartu
-			WHERE jenis != 'Voucher' AND (penggunaan_kartu.tgl BETWEEN '$dateFrom' AND '$dateTo') AND penggunaan_kartu.id_klinik = $cabang GROUP BY penggunaan_kartu.id_kartu";
+			WHERE jenis != 'Voucher' AND (penggunaan_kartu.tgl BETWEEN '$dateFrom' AND '$dateTo') AND penggunaan_kartu.id_klinik = '$cabang' GROUP BY penggunaan_kartu.id_kartu";
 			$result = ExecuteRows($query);
 		} else {
 			$query = "SELECT m_kartu.nama_kartu, penggunaan_kartu.id_kartu FROM penggunaan_kartu
 			LEFT JOIN m_kartu ON penggunaan_kartu.id_kartu = m_kartu.id_kartu
-			WHERE (penggunaan_kartu.tgl BETWEEN '$dateFrom' AND '$dateTo') AND penggunaan_kartu.id_kartu = '$Inputkartu' AND penggunaan_kartu.id_klinik = $cabang GROUP BY penggunaan_kartu.id_kartu";
+			WHERE (penggunaan_kartu.tgl BETWEEN '$dateFrom' AND '$dateTo') AND penggunaan_kartu.id_kartu = '$Inputkartu' AND penggunaan_kartu.id_klinik = '$cabang' GROUP BY penggunaan_kartu.id_kartu";
 			$result = ExecuteRows($query);
 		}
 	
@@ -97,7 +97,7 @@ Page_Rendering();
 				<select class="form-control product-select" name="Inputkartu">
 					<option value="All">All</option>
 					<?php
-					$sql = "SELECT * FROM m_kartu";
+					$sql = "SELECT * FROM m_kartu WHERE jenis <> 'Voucher'";
 					$res = ExecuteRows($sql);
 
 					foreach ($res as $rs) {
@@ -223,7 +223,7 @@ Page_Rendering();
 												$cabang = $_POST['cabang'];
 
 												$details = ExecuteRows("SELECT * FROM penggunaan_kartu	  										
-												WHERE id_kartu = ".$rs["id_kartu"]." AND id_klinik ='$cabang' AND (tgl BETWEEN '$dateFrom' AND '$dateTo') ");
+												WHERE id_kartu = '" .$rs['id_kartu']. "' AND id_klinik ='$cabang' AND (tgl BETWEEN '$dateFrom' AND '$dateTo') ");
 												$total = 0;
 												$total_charge = 0;
 												foreach ($details as $row) {

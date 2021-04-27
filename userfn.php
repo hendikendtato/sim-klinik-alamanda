@@ -284,4 +284,94 @@ $API_ACTIONS["postActionPerawatan"] = function(Request $request, Response &$resp
 	}
 	WriteJson($data);
 };
+
+//API datapenjualan
+$API_ACTIONS["dataPenjualan"] = function(Request $request, Response &$response) {
+	try {
+	$data_penjualan = ExecuteRows("SELECT * FROM penjualan");
+		if(empty($data_penjualan)){
+			$data['success'] = false;
+			$data['message'] = "Tidak Ada Data!";
+		} else {
+			$data['success'] = true;
+			$data['data']    =  $data_penjualan;
+		}
+	} catch (Exception $e) {
+		$data['success'] = false;
+		$data['message'] = $e;
+	}
+	WriteJson($data);
+};
+
+//API detailpenjualan
+$API_ACTIONS["dataDetailPenjualan"] = function(Request $request, Response &$response) {
+	try {
+	$data_penjualan = ExecuteRows("SELECT * FROM detailpenjualan");
+		if(empty($data_penjualan)){
+			$data['success'] = false;
+			$data['message'] = "Tidak Ada Data!";
+		} else {
+			$data['success'] = true;
+			$data['data']    = $data_penjualan;
+		}
+	} catch (Exception $e) {
+		$data['success'] = false;
+		$data['message'] = $e;
+	}
+	WriteJson($data);
+};
+
+//API barang
+$API_ACTIONS["dataBarang"] = function(Request $request, Response &$response) {
+	try {
+	$data_barang = ExecuteRows("SELECT * FROM m_barang");
+		if(empty($data_barang)){
+			$data['success'] = false;
+			$data['message'] = "Tidak Ada Data!";
+		} else {
+			$data['success'] = true;
+			$data['data']    = $data_barang;
+		}
+	} catch (Exception $e) {
+		$data['success'] = false;
+		$data['message'] = $e;
+	}
+	WriteJson($data);
+};
+
+//API pelanggan
+$API_ACTIONS["dataPelanggan"] = function(Request $request, Response &$response) {
+	try {
+	$data_pelanggan = ExecuteRows("SELECT * FROM m_pelanggan");
+		if(empty($data_pelanggan)){
+			$data['success'] = false;
+			$data['message'] = "Tidak Ada Data!";
+		} else {
+			$data['success'] = true;
+			$data['data']    = $data_pelanggan;
+		}
+	} catch (Exception $e) {
+		$data['success'] = false;
+		$data['message'] = $e;
+	}
+	WriteJson($data);
+};
+
+//API cabang
+$API_ACTIONS["dataKlinik"] = function(Request $request, Response &$response) {
+	try {
+	$data_cabang = ExecuteRows("SELECT * FROM m_klinik");
+		if(empty($data_cabang)){
+			$data['success'] = false;
+			$data['message'] = "Tidak Ada Data!";
+		} else {
+			$data['success'] = true;
+			$data['data']    = $data_cabang;
+		}
+	} catch (Exception $e) {
+		$data['success'] = false;
+		$data['message'] = $e;
+	}
+	WriteJson($data);
+};
 ?>

@@ -1294,7 +1294,7 @@ class mutasi_kas_add extends mutasi_kas
 		$this->id_kas->setDbValueDef($rsnew, $this->id_kas->CurrentValue, NULL, FALSE);
 
 		// tipe
-		$this->tipe->setDbValueDef($rsnew, $this->tipe->CurrentValue, NULL, FALSE);
+		$this->tipe->setDbValueDef($rsnew, $this->tipe->CurrentValue, "", FALSE);
 
 		// keterangan
 		$this->keterangan->setDbValueDef($rsnew, $this->keterangan->CurrentValue, NULL, FALSE);

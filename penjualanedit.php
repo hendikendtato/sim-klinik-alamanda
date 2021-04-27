@@ -1020,7 +1020,26 @@ if (Config("DEBUG"))
 loadjs.ready("load", function() {
 
 	// Startup script
-	$(window).on("load",function(){$("#myModal").modal(),console.log("Mulai1")}),$(document).ajaxStop(function(){$("#myModal").modal("hide"),console.log("Selesai")}),$(document).ready(function(){$("form").submit(function(){$("#myModal").modal()})});
+	// Write your table-specific startup script here
+	// console.log("page loaded");
+
+	$(window).on('load', function(){
+		$("#myModal").modal();
+		console.log("Mulai1");
+	});
+
+	/*$(document).ajaxStart(function() {
+		$("#myModal").modal({backdrop: 'static', keyboard: false});
+		console.log("Mulai");
+	});*/
+	$(document).ajaxStop(function() {
+		$('#myModal').modal('hide');
+		console.log("Selesai");
+	});
+	$(document).ready(function(){
+			$("#myModal").modal();
+		}); 
+	});	$('form').submit(function(){
 });
 </script>
 <?php include_once "footer.php"; ?>
