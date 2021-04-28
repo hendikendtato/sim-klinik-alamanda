@@ -148,21 +148,6 @@ loadjs.ready("head", function() {
 	//hidden status kirim
 
 	$('div[id=r_status_kirim]').css({"display": "none"});
-
-	//tambah button draft
-	$("#btn-action").after('&nbsp;<button class="btn btn-info ew-btn" name="btn-action-draft" id="btn-action-draft" type="submit" style="height: 50px !important; width: 20% !important;">Draft</button>'); 
-
-	//if click button add
-	$('#btn-action').click(function() {
-		$('input[name="x_status_kirim"][value="dikirim"]').prop('checked', true);
-		$('input[name="x_status_kirim"][value="draft"]').prop('checked', null);
-	});
-
-	//if click button draft
-	$('#btn-action-draft').click(function() {
-		$('input[name="x_status_kirim"][value="dikirim"]').prop('checked', null);
-		$('input[name="x_status_kirim"][value="draft"]').prop('checked', true);
-	});
 	var userlevel = <?php echo CurrentUserLevel(); ?>;
 	if(userlevel != '-1'){
 		$('select[name="x_id_supplier"]').prop('readonly', true);
@@ -321,9 +306,7 @@ if (Config("DEBUG"))
 loadjs.ready("load", function() {
 
 	// Startup script
-	// Write your table-specific startup script here
-	// console.log("page loaded");
-
+	$("#btn-action").after("&nbsp;<button class='btn btn-info ew-btn' name='btn-action-draft' id='btn-action-draft' type='submit' style='height: 50px !important; width: 20% !important;'>Draft</button>"),$("#btn-action").click(function(){$('input[name="x_status_kirim"][value="dikirim"]').prop("checked",!0),$('input[name="x_status_kirim"][value="draft"]').prop("checked",null)}),$("#btn-action-draft").click(function(){$('input[name="x_status_kirim"][value="dikirim"]').prop("checked",null),$('input[name="x_status_kirim"][value="draft"]').prop("checked",!0)});
 });
 </script>
 <?php include_once "footer.php"; ?>
