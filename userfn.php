@@ -339,6 +339,24 @@ $API_ACTIONS["dataBarang"] = function(Request $request, Response &$response) {
 	WriteJson($data);
 };
 
+//API stokhargajual
+$API_ACTIONS["stokHargaJual"] = function(Request $request, Response &$response) {
+	try {
+	$data_hargajual = ExecuteRows("SELECT * FROM m_hargajual");
+		if(empty($data_hargajual)){
+			$data['success'] = false;
+			$data['message'] = "Tidak Ada Data!";
+		} else {
+			$data['success'] = true;
+			$data['data']    = $data_hargajual;
+		}
+	} catch (Exception $e) {
+		$data['success'] = false;
+		$data['message'] = $e;
+	}
+	WriteJson($data);
+};
+
 //API pelanggan
 $API_ACTIONS["dataPelanggan"] = function(Request $request, Response &$response) {
 	try {

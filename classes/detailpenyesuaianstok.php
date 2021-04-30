@@ -1180,107 +1180,109 @@ class detailpenyesuaianstok extends DbTable
 		print_r($tanggal);
 		print_r($tanggal_sekarang);
 		if($tanggal < $tanggal_sekarang){
+			$id_kartustok_awal = ExecuteScalar("SELECT id_kartustok FROM kartustok WHERE id_klinik='$id_klinik' AND id_barang='$id_barang' AND tanggal >= '$tanggal' ORDER BY id_kartustok ASC LIMIT 1");		
+			var_dump($id_kartustok_awal);
 
-			/*$id_kartustok_awal = ExecuteScalar("SELECT id_kartustok FROM kartustok WHERE id_klinik='$id_klinik' AND id_barang='$id_barang' AND tanggal='$tanggal' ORDER BY id_kartustok ASC LIMIT 1");
-			if($id_kartustok_awal != '' OR $id_kartustok_awal != NULL){;
-				$stok_akhir_sekarang = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_kartustok = '$id_kartustok_awal'");
+			// Jika id_kartustok di (tanggal >=) tidak null
+			if($id_kartustok_awal != NULL OR $id_kartustok_awal != FALSE) {
+				$stok_awal_penyesuaian = ExecuteScalar("SELECT stok_awal FROM kartustok WHERE id_klinik='$id_klinik' AND id_barang='$id_barang' AND tanggal >= '$tanggal' ORDER BY id_kartustok ASC LIMIT 1");		
 				if($tipe == 'Masuk') {
-					$stok_akhir_update = $stok_akhir_sekarang + $selisih;
-					Execute("UPDATE kartustok SET id_penyesuaian='$id_penyesuaianstok', masuk_penyesuaian='$selisih', stok_akhir='$stok_akhir_update' WHERE id_kartustok='$id_kartustok_awal'");
-					$datakartustok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_klinik ='$id_klinik' AND id_barang='$id_barang' AND id_kartustok > $id_kartustok_awal");
-					print_r($datakartustok);
-					foreach($datakartustok AS $dk){
-						$id_kartustok = $dk['id_kartustok'];
-						$stok_awal = $dk['stok_awal'] + $selisih;
-						$stok_akhir = $dk['stok_akhir'] + $selisih;
-						$update_kartu = Execute("UPDATE kartustok SET stok_awal=$stok_awal, stok_akhir=$stok_akhir WHERE id_klinik ='$id_klinik' AND id_barang='$id_barang' AND id_kartustok = $id_kartustok");
-						print_r($stok_awal);
-						print_r($stok_akhir);
+					$stok_baru = $stok_awal_penyesuaian + $selisih;
+
+					// insert into kartu stok
+					$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penyesuaian, masuk_penyesuaian, stok_akhir)
+									   VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok_awal_penyesuaian', '$id_penyesuaianstok', '$selisih', '$stok_baru')");
+					print_r($kartu_stok);
+					$id_kartustok_setelahnya = ExecuteRows("SELECT id_kartustok FROM kartustok WHERE id_kartustok >= '$id_kartustok_awal' ORDER BY id_kartustok DESC");
+					print_r($id_kartustok_setelahnya);
+					foreach($id_kartustok_setelahnya AS $idks){
+						$id = $idks['id_kartustok'];
+						$update_id = $idks['id_kartustok'] + 1;
+						$update = Execute("UPDATE kartustok SET id_kartustok='$update_id' WHERE id_kartustok='$id'");
+						print_r($update);
 					}
+					$id_terakhir = ExecuteScalar("SELECT id_kartustok FROM kartustok ORDER BY id_kartustok DESC LIMIT 1");
+					$update2 = Execute("UPDATE kartustok SET id_kartustok='$id_kartustok_awal' WHERE id_kartustok='$id_terakhir'");
+
+					//$selisih_penyesuaian = $stok_baru - $stok_awal_penyesuaian;
+					$datakartustok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_klinik ='$id_klinik' AND id_barang='$id_barang' AND id_kartustok > '$id_kartustok_awal'");
+					print_r($datakartustok);
+					if($datakartustok != NULL OR $datakartustok != FALSE) {
+						foreach($datakartustok AS $dk){
+							$id_kartustok = $dk['id_kartustok'];
+							$stok_awal = $dk['stok_awal'] + $selisih;
+							$stok_akhir = $dk['stok_akhir'] + $selisih;
+						$update_kartu = Execute("UPDATE kartustok SET stok_awal='$stok_awal', stok_akhir='$stok_akhir' WHERE id_klinik ='$id_klinik' AND id_barang='$id_barang' AND id_kartustok = '$id_kartustok'");
+							print_r($stok_awal);
+							print_r($stok_akhir);
+						}
+					}
+					$stok_akhir_update = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' ORDER BY id_kartustok DESC LIMIT 1");
+					Execute("UPDATE m_hargajual SET stok='$stok_akhir_update' WHERE id_barang='$id_barang' AND id_klinik='$id_klinik'");
 				} else if($tipe == 'Keluar'){
-					$stok_akhir_update = $stok_akhir_sekarang - $selisih;
-					Execute("UPDATE kartustok SET id_penyesuaian='$id_penyesuaianstok', keluar_penyesuaian='$selisih', stok_akhir='$stok_akhir_update' WHERE id_kartustok='$id_kartustok_awal'");			
-					$datakartustok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_klinik ='$id_klinik' AND id_barang='$id_barang' AND id_kartustok > $id_kartustok_awal");
-					print_r($datakartustok);
-					foreach($datakartustok AS $dk){
-						$id_kartustok = $dk['id_kartustok'];
-						$stok_awal = $dk['stok_awal'] - $selisih;
-						$stok_akhir = $dk['stok_akhir'] - $selisih;
-						$update_kartu = Execute("UPDATE kartustok SET stok_awal=$stok_awal, stok_akhir=$stok_akhir WHERE id_klinik ='$id_klinik' AND id_barang='$id_barang' AND id_kartustok = $id_kartustok");
-						print_r($stok_awal);
-						print_r($stok_akhir);
+					$stok_baru = $stok_awal_penyesuaian - $selisih;
+
+					// insert into kartu stok
+					$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penyesuaian, keluar_penyesuaian, stok_akhir)
+									   VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok_lama', '$id_penyesuaianstok', '$selisih', '$stok_baru')");
+					print_r($kartu_stok);
+					$id_kartustok_setelahnya = ExecuteRows("SELECT id_kartustok FROM kartustok WHERE id_kartustok >= '$id_kartustok_awal' ORDER BY id_kartustok DESC");
+					print_r($id_kartustok_setelahnya);
+					foreach($id_kartustok_setelahnya AS $idks){
+						$id = $idks['id_kartustok'];
+						$update_id = $idks['id_kartustok'] + 1;
+						$update = Execute("UPDATE kartustok SET id_kartustok='$update_id' WHERE id_kartustok='$id'");
+						print_r($update);
 					}
-				}
-			} else { */
-					$id_kartustok_awal = ExecuteScalar("SELECT id_kartustok FROM kartustok WHERE id_klinik='$id_klinik' AND id_barang='$id_barang' AND tanggal >= '$tanggal' ORDER BY id_kartustok ASC LIMIT 1");		
-					print_r($id_kartustok_awal);
-					$stok_awal_penyesuaian = ExecuteScalar("SELECT stok_awal FROM kartustok WHERE id_klinik='$id_klinik' AND id_barang='$id_barang' AND tanggal >= '$tanggal' ORDER BY id_kartustok ASC LIMIT 1");		
-					//$stok_akhir_sekarang = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_kartustok = '$id_kartustok_awal'");
-					if($tipe == 'Masuk') {
-						$stok_baru = $stok_lama + $selisih;
-						// insert into kartu stok
-						$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penyesuaian, masuk_penyesuaian, stok_akhir)
-			        			   		VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok_lama', '$id_penyesuaianstok', '$selisih', '$stok_baru')");
-			        	print_r($kartu_stok);
-			        	$id_kartustok_setelahnya = ExecuteRows("SELECT id_kartustok FROM kartustok WHERE id_kartustok >= '$id_kartustok_awal' ORDER BY id_kartustok DESC");
-			        	print_r($id_kartustok_setelahnya);
-			        	foreach($id_kartustok_setelahnya AS $idks){
-			        		$id = $idks['id_kartustok'];
-			        		$update_id = $idks['id_kartustok'] + 1;
-			        		$update = Execute("UPDATE kartustok SET id_kartustok='$update_id' WHERE id_kartustok='$id'");
-			        		print_r($update);
-			        	}
-			        	$id_terakhir = ExecuteScalar("SELECT id_kartustok FROM kartustok ORDER BY id_kartustok DESC LIMIT 1");
-			        	$update2 = Execute("UPDATE kartustok SET id_kartustok='$id_kartustok_awal' WHERE id_kartustok='$id_terakhir'");
-			        	$selisih_penyesuaian = $stok_baru - $stok_awal_penyesuaian;
-			        	$datakartustok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_klinik ='$id_klinik' AND id_barang='$id_barang' AND id_kartustok > '$id_kartustok_awal'");
-			        	print_r($datakartustok);
-			        	foreach($datakartustok AS $dk){
+					$id_terakhir = ExecuteScalar("SELECT id_kartustok FROM kartustok ORDER BY id_kartustok DESC LIMIT 1");
+					$update2 = Execute("UPDATE kartustok SET id_kartustok='$id_kartustok_awal' WHERE id_kartustok='$id_terakhir'");
+
+					//$selisih_penyesuaian = $stok_baru - $stok_awal_penyesuaian;
+					$datakartustok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_klinik ='$id_klinik' AND id_barang='$id_barang' AND id_kartustok > '$id_kartustok_awal'");
+					print_r($datakartustok);
+					if($datakartustok != NULL OR $datakartustok != FALSE) {
+						foreach($datakartustok AS $dk){
 							$id_kartustok = $dk['id_kartustok'];
-							$stok_awal = $dk['stok_awal'] + $selisih_penyesuaian;
-							$stok_akhir = $dk['stok_akhir'] + $selisih_penyesuaian;
+							$stok_awal = $dk['stok_awal'] + $selisih;
+							$stok_akhir = $dk['stok_akhir'] + $selisih;
 						$update_kartu = Execute("UPDATE kartustok SET stok_awal='$stok_awal', stok_akhir='$stok_akhir' WHERE id_klinik ='$id_klinik' AND id_barang='$id_barang' AND id_kartustok = '$id_kartustok'");
 							print_r($stok_awal);
 							print_r($stok_akhir);
 						}
-						$stok_akhir_update = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' ORDER BY id_kartustok DESC LIMIT 1");
-						Execute("UPDATE m_hargajual SET stok='$stok_akhir_update' WHERE id_barang='$id_barang' AND id_klinik='$id_klinik'");
-					} else if($tipe == 'Keluar'){
-						$stok_baru = $stok_lama - $selisih;
-						// insert into kartu stok
-						$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penyesuaian, keluar_penyesuaian, stok_akhir)
-			        			   		VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok_lama', '$id_penyesuaianstok', '$selisih', '$stok_baru')");
-			        	print_r($kartu_stok);
-			        	$id_kartustok_setelahnya = ExecuteRows("SELECT id_kartustok FROM kartustok WHERE id_kartustok >= '$id_kartustok_awal' ORDER BY id_kartustok DESC");
-			        	print_r($id_kartustok_setelahnya);
-			        	foreach($id_kartustok_setelahnya AS $idks){
-			        		$id = $idks['id_kartustok'];
-			        		$update_id = $idks['id_kartustok'] + 1;
-			        		$update = Execute("UPDATE kartustok SET id_kartustok='$update_id' WHERE id_kartustok='$id'");
-			        		print_r($update);
-			        	}
-			        	$id_terakhir = ExecuteScalar("SELECT id_kartustok FROM kartustok ORDER BY id_kartustok DESC LIMIT 1");
-			        	$update2 = Execute("UPDATE kartustok SET id_kartustok='$id_kartustok_awal' WHERE id_kartustok='$id_terakhir'");
-			        	$selisih_penyesuaian = $stok_baru - $stok_awal_penyesuaian;
-			        	$datakartustok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_klinik ='$id_klinik' AND id_barang='$id_barang' AND id_kartustok > '$id_kartustok_awal'");
-			        	print_r($datakartustok);
-			        	foreach($datakartustok AS $dk){
-							$id_kartustok = $dk['id_kartustok'];
-							$stok_awal = $dk['stok_awal'] + $selisih_penyesuaian;
-							$stok_akhir = $dk['stok_akhir'] + $selisih_penyesuaian;
-						$update_kartu = Execute("UPDATE kartustok SET stok_awal='$stok_awal', stok_akhir='$stok_akhir' WHERE id_klinik ='$id_klinik' AND id_barang='$id_barang' AND id_kartustok = '$id_kartustok'");
-							print_r($stok_awal);
-							print_r($stok_akhir);
-						}
-						$stok_akhir_update = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' ORDER BY id_kartustok DESC LIMIT 1");
-						Execute("UPDATE m_hargajual SET stok='$stok_akhir_update' WHERE id_barang='$id_barang' AND id_klinik='$id_klinik'");		
-					}		
-			//}
+					}
+					$stok_akhir_update = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' ORDER BY id_kartustok DESC LIMIT 1");
+					Execute("UPDATE m_hargajual SET stok='$stok_akhir_update' WHERE id_barang='$id_barang' AND id_klinik='$id_klinik'");		
+				}		
+			} else { //id kartustok == null or false
+				$id_kartustok_awal_sebelumnya = ExecuteScalar("SELECT id_kartustok FROM kartustok WHERE id_klinik='$id_klinik' AND id_barang='$id_barang' AND tanggal <= '$tanggal' ORDER BY id_kartustok DESC LIMIT 1");		
+				$stok_awal_penyesuaian_sebelumnya = ExecuteScalar("SELECT stok_awal FROM kartustok WHERE id_klinik='$id_klinik' AND id_barang='$id_barang' AND tanggal <= '$tanggal' ORDER BY id_kartustok DESC LIMIT 1");		
+				if($tipe == 'Masuk') {
+					$stok_baru = $stok_lama + $selisih;
+
+					// insert into kartu stok
+					$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penyesuaian, masuk_penyesuaian, stok_akhir)
+									   VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok_lama', '$id_penyesuaianstok', '$selisih', '$stok_baru')");
+					print_r($kartu_stok);
+					$stok_akhir_update = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' ORDER BY id_kartustok DESC LIMIT 1");
+					Execute("UPDATE m_hargajual SET stok='$stok_akhir_update' WHERE id_barang='$id_barang' AND id_klinik='$id_klinik'");
+				} else if($tipe == 'Keluar'){
+					$stok_baru = $stok_lama - $selisih;
+
+					// insert into kartu stok
+					$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penyesuaian, keluar_penyesuaian, stok_akhir)
+									   VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok_lama', '$id_penyesuaianstok', '$selisih', '$stok_baru')");
+					print_r($kartu_stok);
+					$stok_akhir_update = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang='$id_barang' AND id_klinik='$id_klinik' ORDER BY id_kartustok DESC LIMIT 1");
+					Execute("UPDATE m_hargajual SET stok='$stok_akhir_update' WHERE id_barang='$id_barang' AND id_klinik='$id_klinik'");		
+				}			
+			}
 		} else {
 			if($tipe == 'Masuk') {
 				$stok_baru = $stok_lama + $selisih;
+
 				// update stok
 				$update_stok = Execute("UPDATE m_hargajual SET stok='$stok_baru' WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik'");
+
 				// insert into kartu stok
 				$kartu_stok = Execute("INSERT INTO kartustok (
 			        					id_barang,
@@ -1301,8 +1303,10 @@ class detailpenyesuaianstok extends DbTable
 			} else if($tipe == 'Keluar'){
 				$stok_baru = $stok_lama - $selisih;
 				if($stok_baru < 0) { $stok_baru = 0; }
+
 				// update stok
 				$update_stok = Execute("UPDATE m_hargajual SET stok='$stok_baru' WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik'");
+
 				// insert into kartu stok
 				$kartu_stok = Execute("INSERT INTO kartustok (
 										id_barang,
@@ -1323,73 +1327,108 @@ class detailpenyesuaianstok extends DbTable
 			}
 		}
 	}
+
 	// Row Updating event
 	function Row_Updating($rsold, &$rsnew) {
+
 		// Enter your code here
 		// To cancel, set return value to FALSE
+
 		return TRUE;
 	}
+
 	// Row Updated event
 	function Row_Updated($rsold, &$rsnew) {
+
 		//echo "Row Updated";
 	}
+
 	// Row Update Conflict event
 	function Row_UpdateConflict($rsold, &$rsnew) {
+
 		// Enter your code here
 		// To ignore conflict, set return value to FALSE
+
 		return TRUE;
 	}
+
 	// Grid Inserting event
 	function Grid_Inserting() {
+
 		// Enter your code here
 		// To reject grid insert, set return value to FALSE
+
 		return TRUE;
 	}
+
 	// Grid Inserted event
 	function Grid_Inserted($rsnew) {
+
 		//echo "Grid Inserted";
 	}
+
 	// Grid Updating event
 	function Grid_Updating($rsold) {
+
 		// Enter your code here
 		// To reject grid update, set return value to FALSE
+
 		return TRUE;
 	}
+
 	// Grid Updated event
 	function Grid_Updated($rsold, $rsnew) {
+
 		//echo "Grid Updated";
 	}
+
 	// Row Deleting event
 	function Row_Deleting(&$rs) {
+
 		// Enter your code here
 		// To cancel, set return value to False
+
 		return TRUE;
 	}
+
 	// Row Deleted event
 	function Row_Deleted(&$rs) {
+
 		//echo "Row Deleted";
 	}
+
 	// Email Sending event
 	function Email_Sending($email, &$args) {
+
 		//var_dump($email); var_dump($args); exit();
 		return TRUE;
 	}
+
 	// Lookup Selecting event
 	function Lookup_Selecting($fld, &$filter) {
+
 		//var_dump($fld->Name, $fld->Lookup, $filter); // Uncomment to view the filter
 		// Enter your code here
+
 	}
+
 	// Row Rendering event
 	function Row_Rendering() {
+
 		// Enter your code here
 	}
+
 	// Row Rendered event
 	function Row_Rendered() {
+
 		// To view properties of field class, use:
 		//var_dump($this-><FieldName>);
+
 	}
+
 	// User ID Filtering event
 	function UserID_Filtering(&$filter) {
+
 		// Enter your code here
 	}
 }
