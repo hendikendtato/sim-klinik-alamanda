@@ -785,10 +785,7 @@ class penyesuaianstok_add extends penyesuaianstok
 				if ($this->addRow($this->OldRecordset)) { // Add successful
 					if ($this->getSuccessMessage() == "")
 						$this->setSuccessMessage($Language->phrase("AddSuccess")); // Set up success message
-					if ($this->getCurrentDetailTable() != "") // Master/detail add
-						$returnUrl = $this->getDetailUrl();
-					else
-						$returnUrl = $this->getReturnUrl();
+					$returnUrl = "penyesuaianstoklist.php";
 					if (GetPageName($returnUrl) == "penyesuaianstoklist.php")
 						$returnUrl = $this->addMasterUrl($returnUrl); // List page, return to List page with correct master key if necessary
 					elseif (GetPageName($returnUrl) == "penyesuaianstokview.php")

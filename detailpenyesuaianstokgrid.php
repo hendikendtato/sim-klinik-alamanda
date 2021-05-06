@@ -391,7 +391,7 @@ loadjs.ready(["fdetailpenyesuaianstokgrid"], function() {
 <?php if ($detailpenyesuaianstok->RowType == ROWTYPE_ADD) { // Add record ?>
 <span id="el<?php echo $detailpenyesuaianstok_grid->RowCount ?>_detailpenyesuaianstok_id_barang" class="form-group">
 <?php
-$onchange = $detailpenyesuaianstok_grid->id_barang->EditAttrs->prepend("onchange", "ew.autoFill(this);");
+$onchange = $detailpenyesuaianstok_grid->id_barang->EditAttrs->prepend("onchange", "");
 $onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
 $detailpenyesuaianstok_grid->id_barang->EditAttrs["onchange"] = "";
 ?>
@@ -416,7 +416,7 @@ loadjs.ready(["fdetailpenyesuaianstokgrid"], function() {
 <?php if ($detailpenyesuaianstok->RowType == ROWTYPE_EDIT) { // Edit record ?>
 <span id="el<?php echo $detailpenyesuaianstok_grid->RowCount ?>_detailpenyesuaianstok_id_barang" class="form-group">
 <?php
-$onchange = $detailpenyesuaianstok_grid->id_barang->EditAttrs->prepend("onchange", "ew.autoFill(this);");
+$onchange = $detailpenyesuaianstok_grid->id_barang->EditAttrs->prepend("onchange", "");
 $onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
 $detailpenyesuaianstok_grid->id_barang->EditAttrs["onchange"] = "";
 ?>
@@ -638,7 +638,7 @@ loadjs.ready(["fdetailpenyesuaianstokgrid"], function() {
 <?php if (!$detailpenyesuaianstok->isConfirm()) { ?>
 <span id="el$rowindex$_detailpenyesuaianstok_id_barang" class="form-group detailpenyesuaianstok_id_barang">
 <?php
-$onchange = $detailpenyesuaianstok_grid->id_barang->EditAttrs->prepend("onchange", "ew.autoFill(this);");
+$onchange = $detailpenyesuaianstok_grid->id_barang->EditAttrs->prepend("onchange", "");
 $onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
 $detailpenyesuaianstok_grid->id_barang->EditAttrs["onchange"] = "";
 ?>

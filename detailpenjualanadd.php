@@ -186,7 +186,8 @@ loadjs.ready("head", function() {
 loadjs.ready("head", function() {
 
 	// Client script
-	$("#btn-action").after('&nbsp;<button class="btn btn-info ew-btn" name="btn-action-cetak" id="btn-action-cetak" type="submit" style="height: 50px !important; width: 20% !important;">Cetak Nota</button>');
+	// Write your client script here, no need to add script tags.
+
 });
 </script>
 <?php $detailpenjualan_add->showPageHeader(); ?>

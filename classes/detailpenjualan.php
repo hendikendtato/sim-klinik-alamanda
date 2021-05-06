@@ -2610,6 +2610,8 @@ class detailpenjualan extends DbTable
 		// To reject grid insert, set return value to FALSE
 
 		$rsnew = $this->GetGridFormValues(); // Get the form values of the new records as an array of array
+
+		//var_dump($rsnew); exit();
 		if(empty($rsnew)){
 			$this->setFailureMessage("Data barang belum masuk!");
 			return FALSE;
@@ -2647,6 +2649,8 @@ class detailpenjualan extends DbTable
 		// To reject grid update, set return value to FALSE
 
 		$rsnew = $this->GetGridFormValues(); // Get the form values of the new records as an array of array
+
+		//var_dump($rsnew); exit();
 		if(empty($rsnew)){
 			$this->setFailureMessage("Data barang belum masuk!");
 			return FALSE;

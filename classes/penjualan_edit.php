@@ -3390,6 +3390,11 @@ class penjualan_edit extends penjualan
 	function Form_CustomValidate(&$customError) {
 
 		// Return error message in CustomError
+		$detail_penjualan = $GLOBALS["detailpenjualan"]->GetGridFormValues();
+		if(empty($detail_penjualan)){
+			$customError = "Data detail belum masuk, mohon inputkan kembali.";
+			return FALSE;
+		}
 		return TRUE;
 	}
 } // End class

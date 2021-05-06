@@ -233,7 +233,7 @@ loadjs.ready(["fdetailpenyesuaianstokedit"], function() {
 		<div class="<?php echo $detailpenyesuaianstok_edit->RightColumnClass ?>"><div <?php echo $detailpenyesuaianstok_edit->id_barang->cellAttributes() ?>>
 <span id="el_detailpenyesuaianstok_id_barang">
 <?php
-$onchange = $detailpenyesuaianstok_edit->id_barang->EditAttrs->prepend("onchange", "ew.autoFill(this);");
+$onchange = $detailpenyesuaianstok_edit->id_barang->EditAttrs->prepend("onchange", "");
 $onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
 $detailpenyesuaianstok_edit->id_barang->EditAttrs["onchange"] = "";
 ?>

@@ -392,4 +392,29 @@ $API_ACTIONS["dataKlinik"] = function(Request $request, Response &$response) {
 	}
 	WriteJson($data);
 };
+
+//Get stok ketika penyesuaian stok tanggal sebelumnya
+$API_ACTIONS["getStokAkhir"] = function(Request $request, Response $response) {
+	 $id_barang = Param("id_barang"); // Get the input value from $_GET or $_POST
+	 $id_klinik = Param("id_klinik");
+	 $tanggal = Param("tanggal");
+	 $stok_sebelumnya = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal < '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");  // Output field value as string
+	 if($stok_sebelumnya != null OR $stok_sebelumnya != false) {
+	 	Write($stok_sebelumnya);
+	 } else {
+	 	$stok_setelahnya = ExecuteScalar("SELECT stok_awal FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC LIMIT 1");  // Output field value as string
+	 	if($stok_setelahnya != null OR $stok_setelahnya != false) {
+	 		Write($stok_setelahnya);	 		
+	 	} else {
+	 		Write(ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik'"));  // Output field value as string
+	 	}
+	 }
+};
+
+//Get stok ketika penyesuaian stok tanggal sekarang
+$API_ACTIONS["getStok"] = function(Request $request, Response $response) {
+	 $id_barang = Param("id_barang"); // Get the input value from $_GET or $_POST
+	 $id_klinik = Param("id_klinik");
+	 Write(ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik'"));  // Output field value as string
+};
 ?>
