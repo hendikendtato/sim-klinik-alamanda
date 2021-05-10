@@ -736,7 +736,7 @@ $kartustok_grid->id_terimabarang->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_terimabarang" data-value-separator="<?php echo $kartustok_grid->id_terimabarang->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang" id="x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang" value="<?php echo HtmlEncode($kartustok_grid->id_terimabarang->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustokgrid"], function() {
-	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang","forceSelect":false});
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_grid->id_terimabarang->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_terimabarang") ?>
@@ -756,7 +756,7 @@ $kartustok_grid->id_terimabarang->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_terimabarang" data-value-separator="<?php echo $kartustok_grid->id_terimabarang->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang" id="x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang" value="<?php echo HtmlEncode($kartustok_grid->id_terimabarang->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustokgrid"], function() {
-	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang","forceSelect":false});
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_grid->id_terimabarang->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_terimabarang") ?>
@@ -791,7 +791,7 @@ $kartustok_grid->id_terimagudang->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_terimagudang" data-value-separator="<?php echo $kartustok_grid->id_terimagudang->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang" id="x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang" value="<?php echo HtmlEncode($kartustok_grid->id_terimagudang->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustokgrid"], function() {
-	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang","forceSelect":false});
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_grid->id_terimagudang->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_terimagudang") ?>
@@ -811,7 +811,7 @@ $kartustok_grid->id_terimagudang->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_terimagudang" data-value-separator="<?php echo $kartustok_grid->id_terimagudang->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang" id="x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang" value="<?php echo HtmlEncode($kartustok_grid->id_terimagudang->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustokgrid"], function() {
-	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang","forceSelect":false});
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_grid->id_terimagudang->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_terimagudang") ?>
@@ -846,7 +846,7 @@ $kartustok_grid->id_penjualan->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_penjualan" data-value-separator="<?php echo $kartustok_grid->id_penjualan->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan" id="x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan" value="<?php echo HtmlEncode($kartustok_grid->id_penjualan->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustokgrid"], function() {
-	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan","forceSelect":false});
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_grid->id_penjualan->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_penjualan") ?>
@@ -866,7 +866,7 @@ $kartustok_grid->id_penjualan->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_penjualan" data-value-separator="<?php echo $kartustok_grid->id_penjualan->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan" id="x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan" value="<?php echo HtmlEncode($kartustok_grid->id_penjualan->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustokgrid"], function() {
-	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan","forceSelect":false});
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_grid->id_penjualan->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_penjualan") ?>
@@ -901,7 +901,7 @@ $kartustok_grid->id_kirimbarang->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_kirimbarang" data-value-separator="<?php echo $kartustok_grid->id_kirimbarang->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang" id="x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang" value="<?php echo HtmlEncode($kartustok_grid->id_kirimbarang->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustokgrid"], function() {
-	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang","forceSelect":false});
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_grid->id_kirimbarang->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_kirimbarang") ?>
@@ -921,7 +921,7 @@ $kartustok_grid->id_kirimbarang->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_kirimbarang" data-value-separator="<?php echo $kartustok_grid->id_kirimbarang->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang" id="x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang" value="<?php echo HtmlEncode($kartustok_grid->id_kirimbarang->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustokgrid"], function() {
-	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang","forceSelect":false});
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_grid->id_kirimbarang->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_kirimbarang") ?>
@@ -956,7 +956,7 @@ $kartustok_grid->id_retur->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_retur" data-value-separator="<?php echo $kartustok_grid->id_retur->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_retur" id="x<?php echo $kartustok_grid->RowIndex ?>_id_retur" value="<?php echo HtmlEncode($kartustok_grid->id_retur->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustokgrid"], function() {
-	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_retur","forceSelect":false});
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_retur","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_grid->id_retur->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_retur") ?>
@@ -976,7 +976,7 @@ $kartustok_grid->id_retur->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_retur" data-value-separator="<?php echo $kartustok_grid->id_retur->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_retur" id="x<?php echo $kartustok_grid->RowIndex ?>_id_retur" value="<?php echo HtmlEncode($kartustok_grid->id_retur->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustokgrid"], function() {
-	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_retur","forceSelect":false});
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_retur","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_grid->id_retur->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_retur") ?>
@@ -1011,7 +1011,7 @@ $kartustok_grid->id_penyesuaian->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_penyesuaian" data-value-separator="<?php echo $kartustok_grid->id_penyesuaian->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian" id="x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian" value="<?php echo HtmlEncode($kartustok_grid->id_penyesuaian->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustokgrid"], function() {
-	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian","forceSelect":false});
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_grid->id_penyesuaian->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_penyesuaian") ?>
@@ -1031,7 +1031,7 @@ $kartustok_grid->id_penyesuaian->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_penyesuaian" data-value-separator="<?php echo $kartustok_grid->id_penyesuaian->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian" id="x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian" value="<?php echo HtmlEncode($kartustok_grid->id_penyesuaian->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustokgrid"], function() {
-	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian","forceSelect":false});
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_grid->id_penyesuaian->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_penyesuaian") ?>
@@ -1437,7 +1437,7 @@ $kartustok_grid->id_terimabarang->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_terimabarang" data-value-separator="<?php echo $kartustok_grid->id_terimabarang->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang" id="x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang" value="<?php echo HtmlEncode($kartustok_grid->id_terimabarang->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustokgrid"], function() {
-	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang","forceSelect":false});
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_grid->id_terimabarang->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_terimabarang") ?>
@@ -1466,7 +1466,7 @@ $kartustok_grid->id_terimagudang->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_terimagudang" data-value-separator="<?php echo $kartustok_grid->id_terimagudang->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang" id="x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang" value="<?php echo HtmlEncode($kartustok_grid->id_terimagudang->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustokgrid"], function() {
-	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang","forceSelect":false});
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_grid->id_terimagudang->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_terimagudang") ?>
@@ -1495,7 +1495,7 @@ $kartustok_grid->id_penjualan->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_penjualan" data-value-separator="<?php echo $kartustok_grid->id_penjualan->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan" id="x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan" value="<?php echo HtmlEncode($kartustok_grid->id_penjualan->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustokgrid"], function() {
-	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan","forceSelect":false});
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_grid->id_penjualan->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_penjualan") ?>
@@ -1524,7 +1524,7 @@ $kartustok_grid->id_kirimbarang->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_kirimbarang" data-value-separator="<?php echo $kartustok_grid->id_kirimbarang->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang" id="x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang" value="<?php echo HtmlEncode($kartustok_grid->id_kirimbarang->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustokgrid"], function() {
-	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang","forceSelect":false});
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_grid->id_kirimbarang->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_kirimbarang") ?>
@@ -1553,7 +1553,7 @@ $kartustok_grid->id_retur->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_retur" data-value-separator="<?php echo $kartustok_grid->id_retur->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_retur" id="x<?php echo $kartustok_grid->RowIndex ?>_id_retur" value="<?php echo HtmlEncode($kartustok_grid->id_retur->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustokgrid"], function() {
-	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_retur","forceSelect":false});
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_retur","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_grid->id_retur->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_retur") ?>
@@ -1582,7 +1582,7 @@ $kartustok_grid->id_penyesuaian->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_penyesuaian" data-value-separator="<?php echo $kartustok_grid->id_penyesuaian->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian" id="x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian" value="<?php echo HtmlEncode($kartustok_grid->id_penyesuaian->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustokgrid"], function() {
-	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian","forceSelect":false});
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_grid->id_penyesuaian->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_penyesuaian") ?>

@@ -242,7 +242,7 @@ $kartustok_search->id_terimabarang->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_terimabarang" data-value-separator="<?php echo $kartustok_search->id_terimabarang->displayValueSeparatorAttribute() ?>" name="x_id_terimabarang" id="x_id_terimabarang" value="<?php echo HtmlEncode($kartustok_search->id_terimabarang->AdvancedSearch->SearchValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustoksearch"], function() {
-	fkartustoksearch.createAutoSuggest({"id":"x_id_terimabarang","forceSelect":false});
+	fkartustoksearch.createAutoSuggest({"id":"x_id_terimabarang","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_search->id_terimabarang->Lookup->getParamTag($kartustok_search, "p_x_id_terimabarang") ?>
@@ -271,7 +271,7 @@ $kartustok_search->id_terimagudang->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_terimagudang" data-value-separator="<?php echo $kartustok_search->id_terimagudang->displayValueSeparatorAttribute() ?>" name="x_id_terimagudang" id="x_id_terimagudang" value="<?php echo HtmlEncode($kartustok_search->id_terimagudang->AdvancedSearch->SearchValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustoksearch"], function() {
-	fkartustoksearch.createAutoSuggest({"id":"x_id_terimagudang","forceSelect":false});
+	fkartustoksearch.createAutoSuggest({"id":"x_id_terimagudang","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_search->id_terimagudang->Lookup->getParamTag($kartustok_search, "p_x_id_terimagudang") ?>
@@ -300,7 +300,7 @@ $kartustok_search->id_penjualan->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_penjualan" data-value-separator="<?php echo $kartustok_search->id_penjualan->displayValueSeparatorAttribute() ?>" name="x_id_penjualan" id="x_id_penjualan" value="<?php echo HtmlEncode($kartustok_search->id_penjualan->AdvancedSearch->SearchValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustoksearch"], function() {
-	fkartustoksearch.createAutoSuggest({"id":"x_id_penjualan","forceSelect":false});
+	fkartustoksearch.createAutoSuggest({"id":"x_id_penjualan","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_search->id_penjualan->Lookup->getParamTag($kartustok_search, "p_x_id_penjualan") ?>
@@ -329,7 +329,7 @@ $kartustok_search->id_kirimbarang->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_kirimbarang" data-value-separator="<?php echo $kartustok_search->id_kirimbarang->displayValueSeparatorAttribute() ?>" name="x_id_kirimbarang" id="x_id_kirimbarang" value="<?php echo HtmlEncode($kartustok_search->id_kirimbarang->AdvancedSearch->SearchValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustoksearch"], function() {
-	fkartustoksearch.createAutoSuggest({"id":"x_id_kirimbarang","forceSelect":false});
+	fkartustoksearch.createAutoSuggest({"id":"x_id_kirimbarang","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_search->id_kirimbarang->Lookup->getParamTag($kartustok_search, "p_x_id_kirimbarang") ?>
@@ -358,7 +358,7 @@ $kartustok_search->id_nonjual->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_nonjual" data-value-separator="<?php echo $kartustok_search->id_nonjual->displayValueSeparatorAttribute() ?>" name="x_id_nonjual" id="x_id_nonjual" value="<?php echo HtmlEncode($kartustok_search->id_nonjual->AdvancedSearch->SearchValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustoksearch"], function() {
-	fkartustoksearch.createAutoSuggest({"id":"x_id_nonjual","forceSelect":false});
+	fkartustoksearch.createAutoSuggest({"id":"x_id_nonjual","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_search->id_nonjual->Lookup->getParamTag($kartustok_search, "p_x_id_nonjual") ?>
@@ -387,7 +387,7 @@ $kartustok_search->id_retur->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_retur" data-value-separator="<?php echo $kartustok_search->id_retur->displayValueSeparatorAttribute() ?>" name="x_id_retur" id="x_id_retur" value="<?php echo HtmlEncode($kartustok_search->id_retur->AdvancedSearch->SearchValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustoksearch"], function() {
-	fkartustoksearch.createAutoSuggest({"id":"x_id_retur","forceSelect":false});
+	fkartustoksearch.createAutoSuggest({"id":"x_id_retur","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_search->id_retur->Lookup->getParamTag($kartustok_search, "p_x_id_retur") ?>
@@ -416,7 +416,7 @@ $kartustok_search->id_penyesuaian->EditAttrs["onchange"] = "";
 <input type="hidden" data-table="kartustok" data-field="x_id_penyesuaian" data-value-separator="<?php echo $kartustok_search->id_penyesuaian->displayValueSeparatorAttribute() ?>" name="x_id_penyesuaian" id="x_id_penyesuaian" value="<?php echo HtmlEncode($kartustok_search->id_penyesuaian->AdvancedSearch->SearchValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fkartustoksearch"], function() {
-	fkartustoksearch.createAutoSuggest({"id":"x_id_penyesuaian","forceSelect":false});
+	fkartustoksearch.createAutoSuggest({"id":"x_id_penyesuaian","forceSelect":true});
 });
 </script>
 <?php echo $kartustok_search->id_penyesuaian->Lookup->getParamTag($kartustok_search, "p_x_id_penyesuaian") ?>
