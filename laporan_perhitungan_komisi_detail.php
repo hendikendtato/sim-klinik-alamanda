@@ -86,7 +86,7 @@ Page_Rendering();
   }
 
   	function rupiah($angka){
-		$hasil_rupiah = number_format($angka);
+		$hasil_rupiah = "Rp" . number_format($angka);
 		return $hasil_rupiah;
 	}
 ?>
@@ -228,6 +228,7 @@ Page_Rendering();
 		  }else{
 				// $totalcabang = 0;
 				$count = 0;
+				$mso='"\@"';
 				foreach ($result as $rs) {
 					// $totalcabang += $rs['subtotal'];
 					$count += 1;
@@ -267,9 +268,9 @@ Page_Rendering();
 																<td>".$row["kode_penjualan"]."</td>
 																<td>".$row["nama_barang"]."</td>
 																<td>".$row["qty"]."</td>
-																<td>".$row["subtotal"]."</td>
-																<td>".$row["komisi"]."</td>
-																<td>".$row["total_komisi"]."</td>
+																<td style='mso-number-format:".$mso."'>".rupiah($row["subtotal"])."</td>
+																<td style='mso-number-format:".$mso."'>".rupiah($row["komisi"])."</td>
+																<td style='mso-number-format:".$mso."'>".rupiah($row["total_komisi"])."</td>
 															</tr>";
 														}
 													}

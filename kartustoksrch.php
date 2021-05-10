@@ -57,15 +57,27 @@ loadjs.ready("head", function() {
 		elm = this.getElements("x" + infix + "_tanggal");
 		if (elm && !ew.checkDateDef(elm.value))
 			return this.onError(elm, "<?php echo JsEncode($kartustok_search->tanggal->errorMessage()) ?>");
+		elm = this.getElements("x" + infix + "_id_terimabarang");
+		if (elm && !ew.checkInteger(elm.value))
+			return this.onError(elm, "<?php echo JsEncode($kartustok_search->id_terimabarang->errorMessage()) ?>");
 		elm = this.getElements("x" + infix + "_id_terimagudang");
 		if (elm && !ew.checkInteger(elm.value))
 			return this.onError(elm, "<?php echo JsEncode($kartustok_search->id_terimagudang->errorMessage()) ?>");
 		elm = this.getElements("x" + infix + "_id_penjualan");
 		if (elm && !ew.checkInteger(elm.value))
 			return this.onError(elm, "<?php echo JsEncode($kartustok_search->id_penjualan->errorMessage()) ?>");
+		elm = this.getElements("x" + infix + "_id_kirimbarang");
+		if (elm && !ew.checkInteger(elm.value))
+			return this.onError(elm, "<?php echo JsEncode($kartustok_search->id_kirimbarang->errorMessage()) ?>");
 		elm = this.getElements("x" + infix + "_id_nonjual");
 		if (elm && !ew.checkInteger(elm.value))
 			return this.onError(elm, "<?php echo JsEncode($kartustok_search->id_nonjual->errorMessage()) ?>");
+		elm = this.getElements("x" + infix + "_id_retur");
+		if (elm && !ew.checkInteger(elm.value))
+			return this.onError(elm, "<?php echo JsEncode($kartustok_search->id_retur->errorMessage()) ?>");
+		elm = this.getElements("x" + infix + "_id_penyesuaian");
+		if (elm && !ew.checkInteger(elm.value))
+			return this.onError(elm, "<?php echo JsEncode($kartustok_search->id_penyesuaian->errorMessage()) ?>");
 
 		// Call Form_CustomValidate event
 		if (!this.Form_CustomValidate(fobj))
@@ -89,6 +101,9 @@ loadjs.ready("head", function() {
 	fkartustoksearch.autoSuggests["x_id_barang"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
 	fkartustoksearch.lists["x_id_klinik"] = <?php echo $kartustok_search->id_klinik->Lookup->toClientList($kartustok_search) ?>;
 	fkartustoksearch.lists["x_id_klinik"].options = <?php echo JsonEncode($kartustok_search->id_klinik->lookupOptions()) ?>;
+	fkartustoksearch.lists["x_id_terimabarang"] = <?php echo $kartustok_search->id_terimabarang->Lookup->toClientList($kartustok_search) ?>;
+	fkartustoksearch.lists["x_id_terimabarang"].options = <?php echo JsonEncode($kartustok_search->id_terimabarang->lookupOptions()) ?>;
+	fkartustoksearch.autoSuggests["x_id_terimabarang"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
 	fkartustoksearch.lists["x_id_terimagudang"] = <?php echo $kartustok_search->id_terimagudang->Lookup->toClientList($kartustok_search) ?>;
 	fkartustoksearch.lists["x_id_terimagudang"].options = <?php echo JsonEncode($kartustok_search->id_terimagudang->lookupOptions()) ?>;
 	fkartustoksearch.autoSuggests["x_id_terimagudang"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
@@ -97,8 +112,16 @@ loadjs.ready("head", function() {
 	fkartustoksearch.autoSuggests["x_id_penjualan"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
 	fkartustoksearch.lists["x_id_kirimbarang"] = <?php echo $kartustok_search->id_kirimbarang->Lookup->toClientList($kartustok_search) ?>;
 	fkartustoksearch.lists["x_id_kirimbarang"].options = <?php echo JsonEncode($kartustok_search->id_kirimbarang->lookupOptions()) ?>;
+	fkartustoksearch.autoSuggests["x_id_kirimbarang"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
+	fkartustoksearch.lists["x_id_nonjual"] = <?php echo $kartustok_search->id_nonjual->Lookup->toClientList($kartustok_search) ?>;
+	fkartustoksearch.lists["x_id_nonjual"].options = <?php echo JsonEncode($kartustok_search->id_nonjual->lookupOptions()) ?>;
+	fkartustoksearch.autoSuggests["x_id_nonjual"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
 	fkartustoksearch.lists["x_id_retur"] = <?php echo $kartustok_search->id_retur->Lookup->toClientList($kartustok_search) ?>;
 	fkartustoksearch.lists["x_id_retur"].options = <?php echo JsonEncode($kartustok_search->id_retur->lookupOptions()) ?>;
+	fkartustoksearch.autoSuggests["x_id_retur"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
+	fkartustoksearch.lists["x_id_penyesuaian"] = <?php echo $kartustok_search->id_penyesuaian->Lookup->toClientList($kartustok_search) ?>;
+	fkartustoksearch.lists["x_id_penyesuaian"].options = <?php echo JsonEncode($kartustok_search->id_penyesuaian->lookupOptions()) ?>;
+	fkartustoksearch.autoSuggests["x_id_penyesuaian"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
 	loadjs.done("fkartustoksearch");
 });
 </script>
@@ -198,6 +221,35 @@ loadjs.ready(["fkartustoksearch", "datetimepicker"], function() {
 		</div></div>
 	</div>
 <?php } ?>
+<?php if ($kartustok_search->id_terimabarang->Visible) { // id_terimabarang ?>
+	<div id="r_id_terimabarang" class="form-group row">
+		<label class="<?php echo $kartustok_search->LeftColumnClass ?>"><span id="elh_kartustok_id_terimabarang"><?php echo $kartustok_search->id_terimabarang->caption() ?></span>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_id_terimabarang" id="z_id_terimabarang" value="=">
+</span>
+		</label>
+		<div class="<?php echo $kartustok_search->RightColumnClass ?>"><div <?php echo $kartustok_search->id_terimabarang->cellAttributes() ?>>
+			<span id="el_kartustok_id_terimabarang" class="ew-search-field">
+<?php
+$onchange = $kartustok_search->id_terimabarang->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$kartustok_search->id_terimabarang->EditAttrs["onchange"] = "";
+?>
+<span id="as_x_id_terimabarang">
+	<input type="text" class="form-control" name="sv_x_id_terimabarang" id="sv_x_id_terimabarang" value="<?php echo RemoveHtml($kartustok_search->id_terimabarang->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_search->id_terimabarang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_search->id_terimabarang->getPlaceHolder()) ?>"<?php echo $kartustok_search->id_terimabarang->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="kartustok" data-field="x_id_terimabarang" data-value-separator="<?php echo $kartustok_search->id_terimabarang->displayValueSeparatorAttribute() ?>" name="x_id_terimabarang" id="x_id_terimabarang" value="<?php echo HtmlEncode($kartustok_search->id_terimabarang->AdvancedSearch->SearchValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fkartustoksearch"], function() {
+	fkartustoksearch.createAutoSuggest({"id":"x_id_terimabarang","forceSelect":false});
+});
+</script>
+<?php echo $kartustok_search->id_terimabarang->Lookup->getParamTag($kartustok_search, "p_x_id_terimabarang") ?>
+</span>
+		</div></div>
+	</div>
+<?php } ?>
 <?php if ($kartustok_search->id_terimagudang->Visible) { // id_terimagudang ?>
 	<div id="r_id_terimagudang" class="form-group row">
 		<label class="<?php echo $kartustok_search->LeftColumnClass ?>"><span id="elh_kartustok_id_terimagudang"><?php echo $kartustok_search->id_terimagudang->caption() ?></span>
@@ -214,7 +266,7 @@ $onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
 $kartustok_search->id_terimagudang->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x_id_terimagudang">
-	<input type="text" class="form-control" name="sv_x_id_terimagudang" id="sv_x_id_terimagudang" value="<?php echo RemoveHtml($kartustok_search->id_terimagudang->EditValue) ?>" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($kartustok_search->id_terimagudang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_search->id_terimagudang->getPlaceHolder()) ?>"<?php echo $kartustok_search->id_terimagudang->editAttributes() ?>>
+	<input type="text" class="form-control" name="sv_x_id_terimagudang" id="sv_x_id_terimagudang" value="<?php echo RemoveHtml($kartustok_search->id_terimagudang->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_search->id_terimagudang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_search->id_terimagudang->getPlaceHolder()) ?>"<?php echo $kartustok_search->id_terimagudang->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="kartustok" data-field="x_id_terimagudang" data-value-separator="<?php echo $kartustok_search->id_terimagudang->displayValueSeparatorAttribute() ?>" name="x_id_terimagudang" id="x_id_terimagudang" value="<?php echo HtmlEncode($kartustok_search->id_terimagudang->AdvancedSearch->SearchValue) ?>"<?php echo $onchange ?>>
 <script>
@@ -243,7 +295,7 @@ $onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
 $kartustok_search->id_penjualan->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x_id_penjualan">
-	<input type="text" class="form-control" name="sv_x_id_penjualan" id="sv_x_id_penjualan" value="<?php echo RemoveHtml($kartustok_search->id_penjualan->EditValue) ?>" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($kartustok_search->id_penjualan->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_search->id_penjualan->getPlaceHolder()) ?>"<?php echo $kartustok_search->id_penjualan->editAttributes() ?>>
+	<input type="text" class="form-control" name="sv_x_id_penjualan" id="sv_x_id_penjualan" value="<?php echo RemoveHtml($kartustok_search->id_penjualan->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_search->id_penjualan->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_search->id_penjualan->getPlaceHolder()) ?>"<?php echo $kartustok_search->id_penjualan->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="kartustok" data-field="x_id_penjualan" data-value-separator="<?php echo $kartustok_search->id_penjualan->displayValueSeparatorAttribute() ?>" name="x_id_penjualan" id="x_id_penjualan" value="<?php echo HtmlEncode($kartustok_search->id_penjualan->AdvancedSearch->SearchValue) ?>"<?php echo $onchange ?>>
 <script>
@@ -258,7 +310,7 @@ loadjs.ready(["fkartustoksearch"], function() {
 <?php } ?>
 <?php if ($kartustok_search->id_kirimbarang->Visible) { // id_kirimbarang ?>
 	<div id="r_id_kirimbarang" class="form-group row">
-		<label for="x_id_kirimbarang" class="<?php echo $kartustok_search->LeftColumnClass ?>"><span id="elh_kartustok_id_kirimbarang"><?php echo $kartustok_search->id_kirimbarang->caption() ?></span>
+		<label class="<?php echo $kartustok_search->LeftColumnClass ?>"><span id="elh_kartustok_id_kirimbarang"><?php echo $kartustok_search->id_kirimbarang->caption() ?></span>
 		<span class="ew-search-operator">
 <?php echo $Language->phrase("=") ?>
 <input type="hidden" name="z_id_kirimbarang" id="z_id_kirimbarang" value="=">
@@ -266,11 +318,20 @@ loadjs.ready(["fkartustoksearch"], function() {
 		</label>
 		<div class="<?php echo $kartustok_search->RightColumnClass ?>"><div <?php echo $kartustok_search->id_kirimbarang->cellAttributes() ?>>
 			<span id="el_kartustok_id_kirimbarang" class="ew-search-field">
-<div class="input-group">
-	<select class="custom-select ew-custom-select" data-table="kartustok" data-field="x_id_kirimbarang" data-value-separator="<?php echo $kartustok_search->id_kirimbarang->displayValueSeparatorAttribute() ?>" id="x_id_kirimbarang" name="x_id_kirimbarang"<?php echo $kartustok_search->id_kirimbarang->editAttributes() ?>>
-			<?php echo $kartustok_search->id_kirimbarang->selectOptionListHtml("x_id_kirimbarang") ?>
-		</select>
-</div>
+<?php
+$onchange = $kartustok_search->id_kirimbarang->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$kartustok_search->id_kirimbarang->EditAttrs["onchange"] = "";
+?>
+<span id="as_x_id_kirimbarang">
+	<input type="text" class="form-control" name="sv_x_id_kirimbarang" id="sv_x_id_kirimbarang" value="<?php echo RemoveHtml($kartustok_search->id_kirimbarang->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_search->id_kirimbarang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_search->id_kirimbarang->getPlaceHolder()) ?>"<?php echo $kartustok_search->id_kirimbarang->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="kartustok" data-field="x_id_kirimbarang" data-value-separator="<?php echo $kartustok_search->id_kirimbarang->displayValueSeparatorAttribute() ?>" name="x_id_kirimbarang" id="x_id_kirimbarang" value="<?php echo HtmlEncode($kartustok_search->id_kirimbarang->AdvancedSearch->SearchValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fkartustoksearch"], function() {
+	fkartustoksearch.createAutoSuggest({"id":"x_id_kirimbarang","forceSelect":false});
+});
+</script>
 <?php echo $kartustok_search->id_kirimbarang->Lookup->getParamTag($kartustok_search, "p_x_id_kirimbarang") ?>
 </span>
 		</div></div>
@@ -278,7 +339,7 @@ loadjs.ready(["fkartustoksearch"], function() {
 <?php } ?>
 <?php if ($kartustok_search->id_nonjual->Visible) { // id_nonjual ?>
 	<div id="r_id_nonjual" class="form-group row">
-		<label for="x_id_nonjual" class="<?php echo $kartustok_search->LeftColumnClass ?>"><span id="elh_kartustok_id_nonjual"><?php echo $kartustok_search->id_nonjual->caption() ?></span>
+		<label class="<?php echo $kartustok_search->LeftColumnClass ?>"><span id="elh_kartustok_id_nonjual"><?php echo $kartustok_search->id_nonjual->caption() ?></span>
 		<span class="ew-search-operator">
 <?php echo $Language->phrase("=") ?>
 <input type="hidden" name="z_id_nonjual" id="z_id_nonjual" value="=">
@@ -286,14 +347,28 @@ loadjs.ready(["fkartustoksearch"], function() {
 		</label>
 		<div class="<?php echo $kartustok_search->RightColumnClass ?>"><div <?php echo $kartustok_search->id_nonjual->cellAttributes() ?>>
 			<span id="el_kartustok_id_nonjual" class="ew-search-field">
-<input type="text" data-table="kartustok" data-field="x_id_nonjual" name="x_id_nonjual" id="x_id_nonjual" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($kartustok_search->id_nonjual->getPlaceHolder()) ?>" value="<?php echo $kartustok_search->id_nonjual->EditValue ?>"<?php echo $kartustok_search->id_nonjual->editAttributes() ?>>
+<?php
+$onchange = $kartustok_search->id_nonjual->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$kartustok_search->id_nonjual->EditAttrs["onchange"] = "";
+?>
+<span id="as_x_id_nonjual">
+	<input type="text" class="form-control" name="sv_x_id_nonjual" id="sv_x_id_nonjual" value="<?php echo RemoveHtml($kartustok_search->id_nonjual->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_search->id_nonjual->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_search->id_nonjual->getPlaceHolder()) ?>"<?php echo $kartustok_search->id_nonjual->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="kartustok" data-field="x_id_nonjual" data-value-separator="<?php echo $kartustok_search->id_nonjual->displayValueSeparatorAttribute() ?>" name="x_id_nonjual" id="x_id_nonjual" value="<?php echo HtmlEncode($kartustok_search->id_nonjual->AdvancedSearch->SearchValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fkartustoksearch"], function() {
+	fkartustoksearch.createAutoSuggest({"id":"x_id_nonjual","forceSelect":false});
+});
+</script>
+<?php echo $kartustok_search->id_nonjual->Lookup->getParamTag($kartustok_search, "p_x_id_nonjual") ?>
 </span>
 		</div></div>
 	</div>
 <?php } ?>
 <?php if ($kartustok_search->id_retur->Visible) { // id_retur ?>
 	<div id="r_id_retur" class="form-group row">
-		<label for="x_id_retur" class="<?php echo $kartustok_search->LeftColumnClass ?>"><span id="elh_kartustok_id_retur"><?php echo $kartustok_search->id_retur->caption() ?></span>
+		<label class="<?php echo $kartustok_search->LeftColumnClass ?>"><span id="elh_kartustok_id_retur"><?php echo $kartustok_search->id_retur->caption() ?></span>
 		<span class="ew-search-operator">
 <?php echo $Language->phrase("=") ?>
 <input type="hidden" name="z_id_retur" id="z_id_retur" value="=">
@@ -301,12 +376,50 @@ loadjs.ready(["fkartustoksearch"], function() {
 		</label>
 		<div class="<?php echo $kartustok_search->RightColumnClass ?>"><div <?php echo $kartustok_search->id_retur->cellAttributes() ?>>
 			<span id="el_kartustok_id_retur" class="ew-search-field">
-<div class="input-group">
-	<select class="custom-select ew-custom-select" data-table="kartustok" data-field="x_id_retur" data-value-separator="<?php echo $kartustok_search->id_retur->displayValueSeparatorAttribute() ?>" id="x_id_retur" name="x_id_retur"<?php echo $kartustok_search->id_retur->editAttributes() ?>>
-			<?php echo $kartustok_search->id_retur->selectOptionListHtml("x_id_retur") ?>
-		</select>
-</div>
+<?php
+$onchange = $kartustok_search->id_retur->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$kartustok_search->id_retur->EditAttrs["onchange"] = "";
+?>
+<span id="as_x_id_retur">
+	<input type="text" class="form-control" name="sv_x_id_retur" id="sv_x_id_retur" value="<?php echo RemoveHtml($kartustok_search->id_retur->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_search->id_retur->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_search->id_retur->getPlaceHolder()) ?>"<?php echo $kartustok_search->id_retur->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="kartustok" data-field="x_id_retur" data-value-separator="<?php echo $kartustok_search->id_retur->displayValueSeparatorAttribute() ?>" name="x_id_retur" id="x_id_retur" value="<?php echo HtmlEncode($kartustok_search->id_retur->AdvancedSearch->SearchValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fkartustoksearch"], function() {
+	fkartustoksearch.createAutoSuggest({"id":"x_id_retur","forceSelect":false});
+});
+</script>
 <?php echo $kartustok_search->id_retur->Lookup->getParamTag($kartustok_search, "p_x_id_retur") ?>
+</span>
+		</div></div>
+	</div>
+<?php } ?>
+<?php if ($kartustok_search->id_penyesuaian->Visible) { // id_penyesuaian ?>
+	<div id="r_id_penyesuaian" class="form-group row">
+		<label class="<?php echo $kartustok_search->LeftColumnClass ?>"><span id="elh_kartustok_id_penyesuaian"><?php echo $kartustok_search->id_penyesuaian->caption() ?></span>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_id_penyesuaian" id="z_id_penyesuaian" value="=">
+</span>
+		</label>
+		<div class="<?php echo $kartustok_search->RightColumnClass ?>"><div <?php echo $kartustok_search->id_penyesuaian->cellAttributes() ?>>
+			<span id="el_kartustok_id_penyesuaian" class="ew-search-field">
+<?php
+$onchange = $kartustok_search->id_penyesuaian->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$kartustok_search->id_penyesuaian->EditAttrs["onchange"] = "";
+?>
+<span id="as_x_id_penyesuaian">
+	<input type="text" class="form-control" name="sv_x_id_penyesuaian" id="sv_x_id_penyesuaian" value="<?php echo RemoveHtml($kartustok_search->id_penyesuaian->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_search->id_penyesuaian->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_search->id_penyesuaian->getPlaceHolder()) ?>"<?php echo $kartustok_search->id_penyesuaian->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="kartustok" data-field="x_id_penyesuaian" data-value-separator="<?php echo $kartustok_search->id_penyesuaian->displayValueSeparatorAttribute() ?>" name="x_id_penyesuaian" id="x_id_penyesuaian" value="<?php echo HtmlEncode($kartustok_search->id_penyesuaian->AdvancedSearch->SearchValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fkartustoksearch"], function() {
+	fkartustoksearch.createAutoSuggest({"id":"x_id_penyesuaian","forceSelect":false});
+});
+</script>
+<?php echo $kartustok_search->id_penyesuaian->Lookup->getParamTag($kartustok_search, "p_x_id_penyesuaian") ?>
 </span>
 		</div></div>
 	</div>

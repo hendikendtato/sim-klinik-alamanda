@@ -725,6 +725,7 @@ class kartustok_add extends kartustok
 		$this->setupLookupOptions($this->id_terimagudang);
 		$this->setupLookupOptions($this->id_penjualan);
 		$this->setupLookupOptions($this->id_kirimbarang);
+		$this->setupLookupOptions($this->id_nonjual);
 		$this->setupLookupOptions($this->id_retur);
 		$this->setupLookupOptions($this->id_penyesuaian);
 
@@ -1313,6 +1314,7 @@ class kartustok_add extends kartustok
 			$this->tanggal->ViewCustomAttributes = "";
 
 			// id_terimabarang
+			$this->id_terimabarang->ViewValue = $this->id_terimabarang->CurrentValue;
 			$curVal = strval($this->id_terimabarang->CurrentValue);
 			if ($curVal != "") {
 				$this->id_terimabarang->ViewValue = $this->id_terimabarang->lookupCacheOption($curVal);
@@ -1381,6 +1383,7 @@ class kartustok_add extends kartustok
 			$this->id_penjualan->ViewCustomAttributes = "";
 
 			// id_kirimbarang
+			$this->id_kirimbarang->ViewValue = $this->id_kirimbarang->CurrentValue;
 			$curVal = strval($this->id_kirimbarang->CurrentValue);
 			if ($curVal != "") {
 				$this->id_kirimbarang->ViewValue = $this->id_kirimbarang->lookupCacheOption($curVal);
@@ -1404,10 +1407,29 @@ class kartustok_add extends kartustok
 
 			// id_nonjual
 			$this->id_nonjual->ViewValue = $this->id_nonjual->CurrentValue;
-			$this->id_nonjual->ViewValue = FormatNumber($this->id_nonjual->ViewValue, 0, -2, -2, -2);
+			$curVal = strval($this->id_nonjual->CurrentValue);
+			if ($curVal != "") {
+				$this->id_nonjual->ViewValue = $this->id_nonjual->lookupCacheOption($curVal);
+				if ($this->id_nonjual->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id_nonjual`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->id_nonjual->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->id_nonjual->ViewValue = $this->id_nonjual->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->id_nonjual->ViewValue = $this->id_nonjual->CurrentValue;
+					}
+				}
+			} else {
+				$this->id_nonjual->ViewValue = NULL;
+			}
 			$this->id_nonjual->ViewCustomAttributes = "";
 
 			// id_retur
+			$this->id_retur->ViewValue = $this->id_retur->CurrentValue;
 			$curVal = strval($this->id_retur->CurrentValue);
 			if ($curVal != "") {
 				$this->id_retur->ViewValue = $this->id_retur->lookupCacheOption($curVal);
@@ -1666,26 +1688,27 @@ class kartustok_add extends kartustok
 			// id_terimabarang
 			$this->id_terimabarang->EditAttrs["class"] = "form-control";
 			$this->id_terimabarang->EditCustomAttributes = "";
-			$curVal = trim(strval($this->id_terimabarang->CurrentValue));
-			if ($curVal != "")
-				$this->id_terimabarang->ViewValue = $this->id_terimabarang->lookupCacheOption($curVal);
-			else
-				$this->id_terimabarang->ViewValue = $this->id_terimabarang->Lookup !== NULL && is_array($this->id_terimabarang->Lookup->Options) ? $curVal : NULL;
-			if ($this->id_terimabarang->ViewValue !== NULL) { // Load from cache
-				$this->id_terimabarang->EditValue = array_values($this->id_terimabarang->Lookup->Options);
-			} else { // Lookup from database
-				if ($curVal == "") {
-					$filterWrk = "0=1";
-				} else {
-					$filterWrk = "`id`" . SearchString("=", $this->id_terimabarang->CurrentValue, DATATYPE_NUMBER, "");
+			$this->id_terimabarang->EditValue = HtmlEncode($this->id_terimabarang->CurrentValue);
+			$curVal = strval($this->id_terimabarang->CurrentValue);
+			if ($curVal != "") {
+				$this->id_terimabarang->EditValue = $this->id_terimabarang->lookupCacheOption($curVal);
+				if ($this->id_terimabarang->EditValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->id_terimabarang->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+						$this->id_terimabarang->EditValue = $this->id_terimabarang->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->id_terimabarang->EditValue = HtmlEncode($this->id_terimabarang->CurrentValue);
+					}
 				}
-				$sqlWrk = $this->id_terimabarang->Lookup->getSql(TRUE, $filterWrk, '', $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				$arwrk = $rswrk ? $rswrk->getRows() : [];
-				if ($rswrk)
-					$rswrk->close();
-				$this->id_terimabarang->EditValue = $arwrk;
+			} else {
+				$this->id_terimabarang->EditValue = NULL;
 			}
+			$this->id_terimabarang->PlaceHolder = RemoveHtml($this->id_terimabarang->caption());
 
 			// id_terimagudang
 			$this->id_terimagudang->EditAttrs["class"] = "form-control";
@@ -1740,26 +1763,27 @@ class kartustok_add extends kartustok
 			// id_kirimbarang
 			$this->id_kirimbarang->EditAttrs["class"] = "form-control";
 			$this->id_kirimbarang->EditCustomAttributes = "";
-			$curVal = trim(strval($this->id_kirimbarang->CurrentValue));
-			if ($curVal != "")
-				$this->id_kirimbarang->ViewValue = $this->id_kirimbarang->lookupCacheOption($curVal);
-			else
-				$this->id_kirimbarang->ViewValue = $this->id_kirimbarang->Lookup !== NULL && is_array($this->id_kirimbarang->Lookup->Options) ? $curVal : NULL;
-			if ($this->id_kirimbarang->ViewValue !== NULL) { // Load from cache
-				$this->id_kirimbarang->EditValue = array_values($this->id_kirimbarang->Lookup->Options);
-			} else { // Lookup from database
-				if ($curVal == "") {
-					$filterWrk = "0=1";
-				} else {
-					$filterWrk = "`id`" . SearchString("=", $this->id_kirimbarang->CurrentValue, DATATYPE_NUMBER, "");
+			$this->id_kirimbarang->EditValue = HtmlEncode($this->id_kirimbarang->CurrentValue);
+			$curVal = strval($this->id_kirimbarang->CurrentValue);
+			if ($curVal != "") {
+				$this->id_kirimbarang->EditValue = $this->id_kirimbarang->lookupCacheOption($curVal);
+				if ($this->id_kirimbarang->EditValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->id_kirimbarang->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+						$this->id_kirimbarang->EditValue = $this->id_kirimbarang->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->id_kirimbarang->EditValue = HtmlEncode($this->id_kirimbarang->CurrentValue);
+					}
 				}
-				$sqlWrk = $this->id_kirimbarang->Lookup->getSql(TRUE, $filterWrk, '', $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				$arwrk = $rswrk ? $rswrk->getRows() : [];
-				if ($rswrk)
-					$rswrk->close();
-				$this->id_kirimbarang->EditValue = $arwrk;
+			} else {
+				$this->id_kirimbarang->EditValue = NULL;
 			}
+			$this->id_kirimbarang->PlaceHolder = RemoveHtml($this->id_kirimbarang->caption());
 
 			// id_penyesuaian
 			$this->id_penyesuaian->EditAttrs["class"] = "form-control";
@@ -1982,6 +2006,9 @@ class kartustok_add extends kartustok
 				AddMessage($FormError, str_replace("%s", $this->id_terimabarang->caption(), $this->id_terimabarang->RequiredErrorMessage));
 			}
 		}
+		if (!CheckInteger($this->id_terimabarang->FormValue)) {
+			AddMessage($FormError, $this->id_terimabarang->errorMessage());
+		}
 		if ($this->id_terimagudang->Required) {
 			if (!$this->id_terimagudang->IsDetailKey && $this->id_terimagudang->FormValue != NULL && $this->id_terimagudang->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->id_terimagudang->caption(), $this->id_terimagudang->RequiredErrorMessage));
@@ -2002,6 +2029,9 @@ class kartustok_add extends kartustok
 			if (!$this->id_kirimbarang->IsDetailKey && $this->id_kirimbarang->FormValue != NULL && $this->id_kirimbarang->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->id_kirimbarang->caption(), $this->id_kirimbarang->RequiredErrorMessage));
 			}
+		}
+		if (!CheckInteger($this->id_kirimbarang->FormValue)) {
+			AddMessage($FormError, $this->id_kirimbarang->errorMessage());
 		}
 		if ($this->id_penyesuaian->Required) {
 			if (!$this->id_penyesuaian->IsDetailKey && $this->id_penyesuaian->FormValue != NULL && $this->id_penyesuaian->FormValue == "") {
@@ -2302,6 +2332,8 @@ class kartustok_add extends kartustok
 					break;
 				case "x_id_kirimbarang":
 					break;
+				case "x_id_nonjual":
+					break;
 				case "x_id_retur":
 					break;
 				case "x_id_penyesuaian":
@@ -2337,6 +2369,8 @@ class kartustok_add extends kartustok
 						case "x_id_penjualan":
 							break;
 						case "x_id_kirimbarang":
+							break;
+						case "x_id_nonjual":
 							break;
 						case "x_id_retur":
 							break;

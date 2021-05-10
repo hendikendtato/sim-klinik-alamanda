@@ -76,13 +76,13 @@ Page_Rendering();
 			JOIN m_klinik ON m_klinik.id_klinik = penjualan.id_klinik
 			JOIN m_pelanggan ON m_pelanggan.id_pelanggan = penjualan.id_pelanggan
 			WHERE (penjualan.waktu BETWEEN '$dateFrom' AND '$dateTo') AND ($multi_cabang) AND
-			penjualan.id_pelanggan IN (SELECT idpelanggan FROM m_member WHERE jenis_member='$jenis_member') GROUP BY penjualan.id_pelanggan";
+			penjualan.id_pelanggan IN (SELECT id_pelanggan FROM m_member WHERE jenis_member='$jenis_member') GROUP BY penjualan.id_pelanggan";
 			$result = ExecuteRows($query);
 		}
 	}
 
   	function rupiah($angka){
-		$hasil_rupiah = number_format($angka);
+		$hasil_rupiah = "Rp" . number_format($angka);
 		return $hasil_rupiah;
 	}
 ?>
@@ -104,7 +104,7 @@ Page_Rendering();
 								$res = ExecuteRows($sql);
 
 								foreach ($res as $rs) {
-									echo "<option value=" . $rs["id"] . ">" . $rs["nama_member"] . "</option>";
+									echo "<option value=" . $rs["id_jenis_member"] . ">" . $rs["nama_member"] . "</option>";
 								}
 							?>
 						</select>
@@ -215,9 +215,9 @@ Page_Rendering();
 							</td>
 						</tr>
 						<tr id='".$rs["id_pelanggan"]."_detil' class='collapse'>
-							<td class='ew-table-last-col' colspan=8>
+							<td class='ew-table-last-col' colspan=2>
 								<div>
-									<table>
+									<table class='table table-bordered'>
 										<thead>
 											<tr>
 												<th>Kode Penjualan</th>
@@ -227,19 +227,20 @@ Page_Rendering();
 										</thead>
 										<tbody>";
 										$subtotal = 0;
+										$mso='"\@"';
 										$details = ExecuteRows("SELECT * FROM penjualan WHERE id_pelanggan = '".$rs["id_pelanggan"]."'");
 											foreach ($details as $row) {
 												echo "<tr>
 													<td>".$row["kode_penjualan"]."</td>
 													<td>".$row["waktu"]."</td>
-													<td>".rupiah($row["total"])."</td>
+													<td style='mso-number-format:".$mso."'>".rupiah($row["total"])."</td>
 												</tr>";
 											$subtotal += $row["total"];
 										}
 
 										echo "<tr>
 											<td colspan='2' align='right'>Subtotal</td>
-											<td>
+											<td style='mso-number-format:".$mso."'>
 												<b>";
 													if(isset($subtotal)) {
 														echo rupiah($subtotal);

@@ -639,6 +639,7 @@ class kartustok_preview extends kartustok
 		$this->setupLookupOptions($this->id_terimagudang);
 		$this->setupLookupOptions($this->id_penjualan);
 		$this->setupLookupOptions($this->id_kirimbarang);
+		$this->setupLookupOptions($this->id_nonjual);
 		$this->setupLookupOptions($this->id_retur);
 		$this->setupLookupOptions($this->id_penyesuaian);
 
@@ -929,6 +930,8 @@ class kartustok_preview extends kartustok
 					break;
 				case "x_id_kirimbarang":
 					break;
+				case "x_id_nonjual":
+					break;
 				case "x_id_retur":
 					break;
 				case "x_id_penyesuaian":
@@ -964,6 +967,8 @@ class kartustok_preview extends kartustok
 						case "x_id_penjualan":
 							break;
 						case "x_id_kirimbarang":
+							break;
+						case "x_id_nonjual":
 							break;
 						case "x_id_retur":
 							break;

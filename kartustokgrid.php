@@ -74,6 +74,9 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $kartustok_grid->id_terimabarang->caption(), $kartustok_grid->id_terimabarang->RequiredErrorMessage)) ?>");
 			<?php } ?>
+				elm = this.getElements("x" + infix + "_id_terimabarang");
+				if (elm && !ew.checkInteger(elm.value))
+					return this.onError(elm, "<?php echo JsEncode($kartustok_grid->id_terimabarang->errorMessage()) ?>");
 			<?php if ($kartustok_grid->id_terimagudang->Required) { ?>
 				elm = this.getElements("x" + infix + "_id_terimagudang");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
@@ -95,11 +98,17 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $kartustok_grid->id_kirimbarang->caption(), $kartustok_grid->id_kirimbarang->RequiredErrorMessage)) ?>");
 			<?php } ?>
+				elm = this.getElements("x" + infix + "_id_kirimbarang");
+				if (elm && !ew.checkInteger(elm.value))
+					return this.onError(elm, "<?php echo JsEncode($kartustok_grid->id_kirimbarang->errorMessage()) ?>");
 			<?php if ($kartustok_grid->id_retur->Required) { ?>
 				elm = this.getElements("x" + infix + "_id_retur");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $kartustok_grid->id_retur->caption(), $kartustok_grid->id_retur->RequiredErrorMessage)) ?>");
 			<?php } ?>
+				elm = this.getElements("x" + infix + "_id_retur");
+				if (elm && !ew.checkInteger(elm.value))
+					return this.onError(elm, "<?php echo JsEncode($kartustok_grid->id_retur->errorMessage()) ?>");
 			<?php if ($kartustok_grid->id_penyesuaian->Required) { ?>
 				elm = this.getElements("x" + infix + "_id_penyesuaian");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
@@ -231,6 +240,7 @@ loadjs.ready("head", function() {
 	fkartustokgrid.lists["x_id_klinik"].options = <?php echo JsonEncode($kartustok_grid->id_klinik->lookupOptions()) ?>;
 	fkartustokgrid.lists["x_id_terimabarang"] = <?php echo $kartustok_grid->id_terimabarang->Lookup->toClientList($kartustok_grid) ?>;
 	fkartustokgrid.lists["x_id_terimabarang"].options = <?php echo JsonEncode($kartustok_grid->id_terimabarang->lookupOptions()) ?>;
+	fkartustokgrid.autoSuggests["x_id_terimabarang"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
 	fkartustokgrid.lists["x_id_terimagudang"] = <?php echo $kartustok_grid->id_terimagudang->Lookup->toClientList($kartustok_grid) ?>;
 	fkartustokgrid.lists["x_id_terimagudang"].options = <?php echo JsonEncode($kartustok_grid->id_terimagudang->lookupOptions()) ?>;
 	fkartustokgrid.autoSuggests["x_id_terimagudang"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
@@ -239,8 +249,10 @@ loadjs.ready("head", function() {
 	fkartustokgrid.autoSuggests["x_id_penjualan"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
 	fkartustokgrid.lists["x_id_kirimbarang"] = <?php echo $kartustok_grid->id_kirimbarang->Lookup->toClientList($kartustok_grid) ?>;
 	fkartustokgrid.lists["x_id_kirimbarang"].options = <?php echo JsonEncode($kartustok_grid->id_kirimbarang->lookupOptions()) ?>;
+	fkartustokgrid.autoSuggests["x_id_kirimbarang"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
 	fkartustokgrid.lists["x_id_retur"] = <?php echo $kartustok_grid->id_retur->Lookup->toClientList($kartustok_grid) ?>;
 	fkartustokgrid.lists["x_id_retur"].options = <?php echo JsonEncode($kartustok_grid->id_retur->lookupOptions()) ?>;
+	fkartustokgrid.autoSuggests["x_id_retur"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
 	fkartustokgrid.lists["x_id_penyesuaian"] = <?php echo $kartustok_grid->id_penyesuaian->Lookup->toClientList($kartustok_grid) ?>;
 	fkartustokgrid.lists["x_id_penyesuaian"].options = <?php echo JsonEncode($kartustok_grid->id_penyesuaian->lookupOptions()) ?>;
 	fkartustokgrid.autoSuggests["x_id_penyesuaian"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
@@ -713,22 +725,40 @@ loadjs.ready(["fkartustokgrid", "datetimepicker"], function() {
 		<td data-name="id_terimabarang" <?php echo $kartustok_grid->id_terimabarang->cellAttributes() ?>>
 <?php if ($kartustok->RowType == ROWTYPE_ADD) { // Add record ?>
 <span id="el<?php echo $kartustok_grid->RowCount ?>_kartustok_id_terimabarang" class="form-group">
-<div class="input-group">
-	<select class="custom-select ew-custom-select" data-table="kartustok" data-field="x_id_terimabarang" data-value-separator="<?php echo $kartustok_grid->id_terimabarang->displayValueSeparatorAttribute() ?>" id="x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang" name="x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang"<?php echo $kartustok_grid->id_terimabarang->editAttributes() ?>>
-			<?php echo $kartustok_grid->id_terimabarang->selectOptionListHtml("x{$kartustok_grid->RowIndex}_id_terimabarang") ?>
-		</select>
-</div>
+<?php
+$onchange = $kartustok_grid->id_terimabarang->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$kartustok_grid->id_terimabarang->EditAttrs["onchange"] = "";
+?>
+<span id="as_x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang">
+	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang" value="<?php echo RemoveHtml($kartustok_grid->id_terimabarang->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_grid->id_terimabarang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_terimabarang->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_terimabarang->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="kartustok" data-field="x_id_terimabarang" data-value-separator="<?php echo $kartustok_grid->id_terimabarang->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang" id="x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang" value="<?php echo HtmlEncode($kartustok_grid->id_terimabarang->CurrentValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fkartustokgrid"], function() {
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang","forceSelect":false});
+});
+</script>
 <?php echo $kartustok_grid->id_terimabarang->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_terimabarang") ?>
 </span>
 <input type="hidden" data-table="kartustok" data-field="x_id_terimabarang" name="o<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang" id="o<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang" value="<?php echo HtmlEncode($kartustok_grid->id_terimabarang->OldValue) ?>">
 <?php } ?>
 <?php if ($kartustok->RowType == ROWTYPE_EDIT) { // Edit record ?>
 <span id="el<?php echo $kartustok_grid->RowCount ?>_kartustok_id_terimabarang" class="form-group">
-<div class="input-group">
-	<select class="custom-select ew-custom-select" data-table="kartustok" data-field="x_id_terimabarang" data-value-separator="<?php echo $kartustok_grid->id_terimabarang->displayValueSeparatorAttribute() ?>" id="x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang" name="x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang"<?php echo $kartustok_grid->id_terimabarang->editAttributes() ?>>
-			<?php echo $kartustok_grid->id_terimabarang->selectOptionListHtml("x{$kartustok_grid->RowIndex}_id_terimabarang") ?>
-		</select>
-</div>
+<?php
+$onchange = $kartustok_grid->id_terimabarang->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$kartustok_grid->id_terimabarang->EditAttrs["onchange"] = "";
+?>
+<span id="as_x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang">
+	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang" value="<?php echo RemoveHtml($kartustok_grid->id_terimabarang->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_grid->id_terimabarang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_terimabarang->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_terimabarang->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="kartustok" data-field="x_id_terimabarang" data-value-separator="<?php echo $kartustok_grid->id_terimabarang->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang" id="x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang" value="<?php echo HtmlEncode($kartustok_grid->id_terimabarang->CurrentValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fkartustokgrid"], function() {
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang","forceSelect":false});
+});
+</script>
 <?php echo $kartustok_grid->id_terimabarang->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_terimabarang") ?>
 </span>
 <?php } ?>
@@ -756,7 +786,7 @@ $onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
 $kartustok_grid->id_terimagudang->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang">
-	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang" value="<?php echo RemoveHtml($kartustok_grid->id_terimagudang->EditValue) ?>" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($kartustok_grid->id_terimagudang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_terimagudang->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_terimagudang->editAttributes() ?>>
+	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang" value="<?php echo RemoveHtml($kartustok_grid->id_terimagudang->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_grid->id_terimagudang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_terimagudang->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_terimagudang->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="kartustok" data-field="x_id_terimagudang" data-value-separator="<?php echo $kartustok_grid->id_terimagudang->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang" id="x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang" value="<?php echo HtmlEncode($kartustok_grid->id_terimagudang->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
@@ -776,7 +806,7 @@ $onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
 $kartustok_grid->id_terimagudang->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang">
-	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang" value="<?php echo RemoveHtml($kartustok_grid->id_terimagudang->EditValue) ?>" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($kartustok_grid->id_terimagudang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_terimagudang->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_terimagudang->editAttributes() ?>>
+	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang" value="<?php echo RemoveHtml($kartustok_grid->id_terimagudang->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_grid->id_terimagudang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_terimagudang->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_terimagudang->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="kartustok" data-field="x_id_terimagudang" data-value-separator="<?php echo $kartustok_grid->id_terimagudang->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang" id="x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang" value="<?php echo HtmlEncode($kartustok_grid->id_terimagudang->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
@@ -811,7 +841,7 @@ $onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
 $kartustok_grid->id_penjualan->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan">
-	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan" value="<?php echo RemoveHtml($kartustok_grid->id_penjualan->EditValue) ?>" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($kartustok_grid->id_penjualan->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_penjualan->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_penjualan->editAttributes() ?>>
+	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan" value="<?php echo RemoveHtml($kartustok_grid->id_penjualan->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_grid->id_penjualan->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_penjualan->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_penjualan->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="kartustok" data-field="x_id_penjualan" data-value-separator="<?php echo $kartustok_grid->id_penjualan->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan" id="x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan" value="<?php echo HtmlEncode($kartustok_grid->id_penjualan->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
@@ -831,7 +861,7 @@ $onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
 $kartustok_grid->id_penjualan->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan">
-	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan" value="<?php echo RemoveHtml($kartustok_grid->id_penjualan->EditValue) ?>" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($kartustok_grid->id_penjualan->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_penjualan->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_penjualan->editAttributes() ?>>
+	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan" value="<?php echo RemoveHtml($kartustok_grid->id_penjualan->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_grid->id_penjualan->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_penjualan->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_penjualan->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="kartustok" data-field="x_id_penjualan" data-value-separator="<?php echo $kartustok_grid->id_penjualan->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan" id="x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan" value="<?php echo HtmlEncode($kartustok_grid->id_penjualan->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
@@ -860,22 +890,40 @@ loadjs.ready(["fkartustokgrid"], function() {
 		<td data-name="id_kirimbarang" <?php echo $kartustok_grid->id_kirimbarang->cellAttributes() ?>>
 <?php if ($kartustok->RowType == ROWTYPE_ADD) { // Add record ?>
 <span id="el<?php echo $kartustok_grid->RowCount ?>_kartustok_id_kirimbarang" class="form-group">
-<div class="input-group">
-	<select class="custom-select ew-custom-select" data-table="kartustok" data-field="x_id_kirimbarang" data-value-separator="<?php echo $kartustok_grid->id_kirimbarang->displayValueSeparatorAttribute() ?>" id="x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang" name="x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang"<?php echo $kartustok_grid->id_kirimbarang->editAttributes() ?>>
-			<?php echo $kartustok_grid->id_kirimbarang->selectOptionListHtml("x{$kartustok_grid->RowIndex}_id_kirimbarang") ?>
-		</select>
-</div>
+<?php
+$onchange = $kartustok_grid->id_kirimbarang->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$kartustok_grid->id_kirimbarang->EditAttrs["onchange"] = "";
+?>
+<span id="as_x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang">
+	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang" value="<?php echo RemoveHtml($kartustok_grid->id_kirimbarang->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_grid->id_kirimbarang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_kirimbarang->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_kirimbarang->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="kartustok" data-field="x_id_kirimbarang" data-value-separator="<?php echo $kartustok_grid->id_kirimbarang->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang" id="x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang" value="<?php echo HtmlEncode($kartustok_grid->id_kirimbarang->CurrentValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fkartustokgrid"], function() {
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang","forceSelect":false});
+});
+</script>
 <?php echo $kartustok_grid->id_kirimbarang->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_kirimbarang") ?>
 </span>
 <input type="hidden" data-table="kartustok" data-field="x_id_kirimbarang" name="o<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang" id="o<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang" value="<?php echo HtmlEncode($kartustok_grid->id_kirimbarang->OldValue) ?>">
 <?php } ?>
 <?php if ($kartustok->RowType == ROWTYPE_EDIT) { // Edit record ?>
 <span id="el<?php echo $kartustok_grid->RowCount ?>_kartustok_id_kirimbarang" class="form-group">
-<div class="input-group">
-	<select class="custom-select ew-custom-select" data-table="kartustok" data-field="x_id_kirimbarang" data-value-separator="<?php echo $kartustok_grid->id_kirimbarang->displayValueSeparatorAttribute() ?>" id="x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang" name="x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang"<?php echo $kartustok_grid->id_kirimbarang->editAttributes() ?>>
-			<?php echo $kartustok_grid->id_kirimbarang->selectOptionListHtml("x{$kartustok_grid->RowIndex}_id_kirimbarang") ?>
-		</select>
-</div>
+<?php
+$onchange = $kartustok_grid->id_kirimbarang->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$kartustok_grid->id_kirimbarang->EditAttrs["onchange"] = "";
+?>
+<span id="as_x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang">
+	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang" value="<?php echo RemoveHtml($kartustok_grid->id_kirimbarang->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_grid->id_kirimbarang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_kirimbarang->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_kirimbarang->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="kartustok" data-field="x_id_kirimbarang" data-value-separator="<?php echo $kartustok_grid->id_kirimbarang->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang" id="x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang" value="<?php echo HtmlEncode($kartustok_grid->id_kirimbarang->CurrentValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fkartustokgrid"], function() {
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang","forceSelect":false});
+});
+</script>
 <?php echo $kartustok_grid->id_kirimbarang->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_kirimbarang") ?>
 </span>
 <?php } ?>
@@ -897,22 +945,40 @@ loadjs.ready(["fkartustokgrid"], function() {
 		<td data-name="id_retur" <?php echo $kartustok_grid->id_retur->cellAttributes() ?>>
 <?php if ($kartustok->RowType == ROWTYPE_ADD) { // Add record ?>
 <span id="el<?php echo $kartustok_grid->RowCount ?>_kartustok_id_retur" class="form-group">
-<div class="input-group">
-	<select class="custom-select ew-custom-select" data-table="kartustok" data-field="x_id_retur" data-value-separator="<?php echo $kartustok_grid->id_retur->displayValueSeparatorAttribute() ?>" id="x<?php echo $kartustok_grid->RowIndex ?>_id_retur" name="x<?php echo $kartustok_grid->RowIndex ?>_id_retur"<?php echo $kartustok_grid->id_retur->editAttributes() ?>>
-			<?php echo $kartustok_grid->id_retur->selectOptionListHtml("x{$kartustok_grid->RowIndex}_id_retur") ?>
-		</select>
-</div>
+<?php
+$onchange = $kartustok_grid->id_retur->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$kartustok_grid->id_retur->EditAttrs["onchange"] = "";
+?>
+<span id="as_x<?php echo $kartustok_grid->RowIndex ?>_id_retur">
+	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_retur" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_retur" value="<?php echo RemoveHtml($kartustok_grid->id_retur->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_grid->id_retur->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_retur->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_retur->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="kartustok" data-field="x_id_retur" data-value-separator="<?php echo $kartustok_grid->id_retur->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_retur" id="x<?php echo $kartustok_grid->RowIndex ?>_id_retur" value="<?php echo HtmlEncode($kartustok_grid->id_retur->CurrentValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fkartustokgrid"], function() {
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_retur","forceSelect":false});
+});
+</script>
 <?php echo $kartustok_grid->id_retur->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_retur") ?>
 </span>
 <input type="hidden" data-table="kartustok" data-field="x_id_retur" name="o<?php echo $kartustok_grid->RowIndex ?>_id_retur" id="o<?php echo $kartustok_grid->RowIndex ?>_id_retur" value="<?php echo HtmlEncode($kartustok_grid->id_retur->OldValue) ?>">
 <?php } ?>
 <?php if ($kartustok->RowType == ROWTYPE_EDIT) { // Edit record ?>
 <span id="el<?php echo $kartustok_grid->RowCount ?>_kartustok_id_retur" class="form-group">
-<div class="input-group">
-	<select class="custom-select ew-custom-select" data-table="kartustok" data-field="x_id_retur" data-value-separator="<?php echo $kartustok_grid->id_retur->displayValueSeparatorAttribute() ?>" id="x<?php echo $kartustok_grid->RowIndex ?>_id_retur" name="x<?php echo $kartustok_grid->RowIndex ?>_id_retur"<?php echo $kartustok_grid->id_retur->editAttributes() ?>>
-			<?php echo $kartustok_grid->id_retur->selectOptionListHtml("x{$kartustok_grid->RowIndex}_id_retur") ?>
-		</select>
-</div>
+<?php
+$onchange = $kartustok_grid->id_retur->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$kartustok_grid->id_retur->EditAttrs["onchange"] = "";
+?>
+<span id="as_x<?php echo $kartustok_grid->RowIndex ?>_id_retur">
+	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_retur" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_retur" value="<?php echo RemoveHtml($kartustok_grid->id_retur->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_grid->id_retur->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_retur->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_retur->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="kartustok" data-field="x_id_retur" data-value-separator="<?php echo $kartustok_grid->id_retur->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_retur" id="x<?php echo $kartustok_grid->RowIndex ?>_id_retur" value="<?php echo HtmlEncode($kartustok_grid->id_retur->CurrentValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fkartustokgrid"], function() {
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_retur","forceSelect":false});
+});
+</script>
 <?php echo $kartustok_grid->id_retur->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_retur") ?>
 </span>
 <?php } ?>
@@ -940,7 +1006,7 @@ $onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
 $kartustok_grid->id_penyesuaian->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian">
-	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian" value="<?php echo RemoveHtml($kartustok_grid->id_penyesuaian->EditValue) ?>" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($kartustok_grid->id_penyesuaian->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_penyesuaian->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_penyesuaian->editAttributes() ?>>
+	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian" value="<?php echo RemoveHtml($kartustok_grid->id_penyesuaian->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_grid->id_penyesuaian->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_penyesuaian->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_penyesuaian->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="kartustok" data-field="x_id_penyesuaian" data-value-separator="<?php echo $kartustok_grid->id_penyesuaian->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian" id="x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian" value="<?php echo HtmlEncode($kartustok_grid->id_penyesuaian->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
@@ -960,7 +1026,7 @@ $onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
 $kartustok_grid->id_penyesuaian->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian">
-	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian" value="<?php echo RemoveHtml($kartustok_grid->id_penyesuaian->EditValue) ?>" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($kartustok_grid->id_penyesuaian->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_penyesuaian->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_penyesuaian->editAttributes() ?>>
+	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian" value="<?php echo RemoveHtml($kartustok_grid->id_penyesuaian->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_grid->id_penyesuaian->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_penyesuaian->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_penyesuaian->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="kartustok" data-field="x_id_penyesuaian" data-value-separator="<?php echo $kartustok_grid->id_penyesuaian->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian" id="x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian" value="<?php echo HtmlEncode($kartustok_grid->id_penyesuaian->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
@@ -1360,11 +1426,20 @@ loadjs.ready(["fkartustokgrid", "datetimepicker"], function() {
 		<td data-name="id_terimabarang">
 <?php if (!$kartustok->isConfirm()) { ?>
 <span id="el$rowindex$_kartustok_id_terimabarang" class="form-group kartustok_id_terimabarang">
-<div class="input-group">
-	<select class="custom-select ew-custom-select" data-table="kartustok" data-field="x_id_terimabarang" data-value-separator="<?php echo $kartustok_grid->id_terimabarang->displayValueSeparatorAttribute() ?>" id="x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang" name="x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang"<?php echo $kartustok_grid->id_terimabarang->editAttributes() ?>>
-			<?php echo $kartustok_grid->id_terimabarang->selectOptionListHtml("x{$kartustok_grid->RowIndex}_id_terimabarang") ?>
-		</select>
-</div>
+<?php
+$onchange = $kartustok_grid->id_terimabarang->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$kartustok_grid->id_terimabarang->EditAttrs["onchange"] = "";
+?>
+<span id="as_x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang">
+	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang" value="<?php echo RemoveHtml($kartustok_grid->id_terimabarang->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_grid->id_terimabarang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_terimabarang->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_terimabarang->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="kartustok" data-field="x_id_terimabarang" data-value-separator="<?php echo $kartustok_grid->id_terimabarang->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang" id="x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang" value="<?php echo HtmlEncode($kartustok_grid->id_terimabarang->CurrentValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fkartustokgrid"], function() {
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_terimabarang","forceSelect":false});
+});
+</script>
 <?php echo $kartustok_grid->id_terimabarang->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_terimabarang") ?>
 </span>
 <?php } else { ?>
@@ -1386,7 +1461,7 @@ $onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
 $kartustok_grid->id_terimagudang->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang">
-	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang" value="<?php echo RemoveHtml($kartustok_grid->id_terimagudang->EditValue) ?>" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($kartustok_grid->id_terimagudang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_terimagudang->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_terimagudang->editAttributes() ?>>
+	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang" value="<?php echo RemoveHtml($kartustok_grid->id_terimagudang->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_grid->id_terimagudang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_terimagudang->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_terimagudang->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="kartustok" data-field="x_id_terimagudang" data-value-separator="<?php echo $kartustok_grid->id_terimagudang->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang" id="x<?php echo $kartustok_grid->RowIndex ?>_id_terimagudang" value="<?php echo HtmlEncode($kartustok_grid->id_terimagudang->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
@@ -1415,7 +1490,7 @@ $onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
 $kartustok_grid->id_penjualan->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan">
-	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan" value="<?php echo RemoveHtml($kartustok_grid->id_penjualan->EditValue) ?>" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($kartustok_grid->id_penjualan->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_penjualan->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_penjualan->editAttributes() ?>>
+	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan" value="<?php echo RemoveHtml($kartustok_grid->id_penjualan->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_grid->id_penjualan->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_penjualan->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_penjualan->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="kartustok" data-field="x_id_penjualan" data-value-separator="<?php echo $kartustok_grid->id_penjualan->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan" id="x<?php echo $kartustok_grid->RowIndex ?>_id_penjualan" value="<?php echo HtmlEncode($kartustok_grid->id_penjualan->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
@@ -1438,11 +1513,20 @@ loadjs.ready(["fkartustokgrid"], function() {
 		<td data-name="id_kirimbarang">
 <?php if (!$kartustok->isConfirm()) { ?>
 <span id="el$rowindex$_kartustok_id_kirimbarang" class="form-group kartustok_id_kirimbarang">
-<div class="input-group">
-	<select class="custom-select ew-custom-select" data-table="kartustok" data-field="x_id_kirimbarang" data-value-separator="<?php echo $kartustok_grid->id_kirimbarang->displayValueSeparatorAttribute() ?>" id="x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang" name="x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang"<?php echo $kartustok_grid->id_kirimbarang->editAttributes() ?>>
-			<?php echo $kartustok_grid->id_kirimbarang->selectOptionListHtml("x{$kartustok_grid->RowIndex}_id_kirimbarang") ?>
-		</select>
-</div>
+<?php
+$onchange = $kartustok_grid->id_kirimbarang->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$kartustok_grid->id_kirimbarang->EditAttrs["onchange"] = "";
+?>
+<span id="as_x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang">
+	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang" value="<?php echo RemoveHtml($kartustok_grid->id_kirimbarang->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_grid->id_kirimbarang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_kirimbarang->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_kirimbarang->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="kartustok" data-field="x_id_kirimbarang" data-value-separator="<?php echo $kartustok_grid->id_kirimbarang->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang" id="x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang" value="<?php echo HtmlEncode($kartustok_grid->id_kirimbarang->CurrentValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fkartustokgrid"], function() {
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_kirimbarang","forceSelect":false});
+});
+</script>
 <?php echo $kartustok_grid->id_kirimbarang->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_kirimbarang") ?>
 </span>
 <?php } else { ?>
@@ -1458,11 +1542,20 @@ loadjs.ready(["fkartustokgrid"], function() {
 		<td data-name="id_retur">
 <?php if (!$kartustok->isConfirm()) { ?>
 <span id="el$rowindex$_kartustok_id_retur" class="form-group kartustok_id_retur">
-<div class="input-group">
-	<select class="custom-select ew-custom-select" data-table="kartustok" data-field="x_id_retur" data-value-separator="<?php echo $kartustok_grid->id_retur->displayValueSeparatorAttribute() ?>" id="x<?php echo $kartustok_grid->RowIndex ?>_id_retur" name="x<?php echo $kartustok_grid->RowIndex ?>_id_retur"<?php echo $kartustok_grid->id_retur->editAttributes() ?>>
-			<?php echo $kartustok_grid->id_retur->selectOptionListHtml("x{$kartustok_grid->RowIndex}_id_retur") ?>
-		</select>
-</div>
+<?php
+$onchange = $kartustok_grid->id_retur->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$kartustok_grid->id_retur->EditAttrs["onchange"] = "";
+?>
+<span id="as_x<?php echo $kartustok_grid->RowIndex ?>_id_retur">
+	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_retur" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_retur" value="<?php echo RemoveHtml($kartustok_grid->id_retur->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_grid->id_retur->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_retur->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_retur->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="kartustok" data-field="x_id_retur" data-value-separator="<?php echo $kartustok_grid->id_retur->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_retur" id="x<?php echo $kartustok_grid->RowIndex ?>_id_retur" value="<?php echo HtmlEncode($kartustok_grid->id_retur->CurrentValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fkartustokgrid"], function() {
+	fkartustokgrid.createAutoSuggest({"id":"x<?php echo $kartustok_grid->RowIndex ?>_id_retur","forceSelect":false});
+});
+</script>
 <?php echo $kartustok_grid->id_retur->Lookup->getParamTag($kartustok_grid, "p_x" . $kartustok_grid->RowIndex . "_id_retur") ?>
 </span>
 <?php } else { ?>
@@ -1484,7 +1577,7 @@ $onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
 $kartustok_grid->id_penyesuaian->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian">
-	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian" value="<?php echo RemoveHtml($kartustok_grid->id_penyesuaian->EditValue) ?>" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($kartustok_grid->id_penyesuaian->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_penyesuaian->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_penyesuaian->editAttributes() ?>>
+	<input type="text" class="form-control" name="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian" id="sv_x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian" value="<?php echo RemoveHtml($kartustok_grid->id_penyesuaian->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($kartustok_grid->id_penyesuaian->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($kartustok_grid->id_penyesuaian->getPlaceHolder()) ?>"<?php echo $kartustok_grid->id_penyesuaian->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="kartustok" data-field="x_id_penyesuaian" data-value-separator="<?php echo $kartustok_grid->id_penyesuaian->displayValueSeparatorAttribute() ?>" name="x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian" id="x<?php echo $kartustok_grid->RowIndex ?>_id_penyesuaian" value="<?php echo HtmlEncode($kartustok_grid->id_penyesuaian->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>

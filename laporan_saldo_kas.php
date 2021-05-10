@@ -186,6 +186,7 @@ Page_Rendering();
 			$jumlah_details = ExecuteRows("SELECT * FROM laporan_kas	  										
 			WHERE laporan_kas.tanggal = '$tgl' AND laporan_kas.id_klinik=".$rs["id_klinik"]."");
 
+			$mso='"\@"';
 			$total_jumlah_masuk = 0;
 			$total_jumlah_keluar = 0;
 			$total_saldo_awal = ExecuteScalar("SELECT saldo_awal FROM laporan_kas WHERE tanggal = '$tgl' AND id_klinik = ".$rs["id_klinik"]." ORDER BY id ASC LIMIT 1");
@@ -207,10 +208,10 @@ Page_Rendering();
 			 			<td>" . $rs["nama"] . "</td>
 			 			<td>" . $rs["nama_klinik"] . "</td>			 			
 			 			<td>" . tgl_indo($rs["tanggal"]) . "</td>
-			 			<td align='right'>" . rupiah($total_saldo_awal) . "</td>			 			
-			 			<td align='right'>" . rupiah($total_jumlah_masuk) . "</td> 			 			
-			 			<td align='right'>" . rupiah($total_jumlah_keluar) . "</td> 			 			
-			 			<td align='right'>" . rupiah($total_sisa_saldo) . "</td> 			 			
+			 			<td align='right' style='mso-number-format:".$mso."'>" . rupiah($total_saldo_awal) . "</td>			 			
+			 			<td align='right' style='mso-number-format:".$mso."'>" . rupiah($total_jumlah_masuk) . "</td> 			 			
+			 			<td align='right' style='mso-number-format:".$mso."'>" . rupiah($total_jumlah_keluar) . "</td> 			 			
+			 			<td align='right' style='mso-number-format:".$mso."'>" . rupiah($total_sisa_saldo) . "</td> 			 			
 						<td align='center'>
 							<button class='btn btn-link' onclick='showDetails(".$rs["id"].");'>
 				  				Detail
@@ -251,8 +252,8 @@ Page_Rendering();
 											<td>".tgl_indo($row["tanggal"])."</td>
 											<td>".$nama_pelanggan."</td>
 											<td>".$diskon_persen."</td>
-											<td>".$diskon_rupiah."</td>
-											<td>".rupiah($row["jumlah"])."</td>
+											<td style='mso-number-format:".$mso."'>".rupiah($diskon_rupiah)."</td>
+											<td style='mso-number-format:".$mso."'>".rupiah($row["jumlah"])."</td>
 										</tr>";
 									}
 						echo "</tbody>
@@ -267,7 +268,7 @@ Page_Rendering();
 		?>
 				<tr>
 				<td colspan="7" align="right"><b>Total Saldo Kas</b></td>
-				<td align="right">
+				<td align="right" style="mso-number-format:'\@'">
 				<b>
 					<?php if(isset($totalcabang)) {
 							echo rupiah($totalcabang);							

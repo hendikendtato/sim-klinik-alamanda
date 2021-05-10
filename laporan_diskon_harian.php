@@ -80,7 +80,7 @@ Page_Rendering();
 	}
 
   	function rupiah($angka){
-		$hasil_rupiah = number_format($angka);
+		$hasil_rupiah = "Rp" . number_format($angka);
 		return $hasil_rupiah;
 	}
 ?>
@@ -210,6 +210,7 @@ Page_Rendering();
 											<tbody>";
 											$cabang = $_POST['cabang'];
 											$multi_cabang = "";
+											$mso='"\@"';
 
 											foreach($cabang AS $in_cabang) {
 												$multi_cabang .= "penjualan.id_klinik = '" .$in_cabang. "' OR ";
@@ -239,10 +240,10 @@ Page_Rendering();
 														<td>".$row["kode_penjualan"]."</td>
 														<td>".$row["nama_barang"]."</td>
 														<td>".$row["nama_pelanggan"]."</td>
-														<td align='right'>".rupiah($hargajual)."</td>
-														<td align='right'>".rupiah($row["disc_rp"])."</td>
+														<td align='right' style='mso-number-format:".$mso."'>".rupiah($hargajual)."</td>
+														<td align='right' style='mso-number-format:".$mso."'>".rupiah($row["disc_rp"])."</td>
 														<td align='right'>".$row["disc_pr"]."</td>
-														<td align='right'>".rupiah($row["subtotal"])."</td>
+														<td align='right' style='mso-number-format:".$mso."'>".rupiah($row["subtotal"])."</td>
 													</tr>";
 													$jumlahHargaJual += $hargajual;
 													$jumlahDiscRp += $row["disc_rp"];
@@ -251,21 +252,21 @@ Page_Rendering();
 
 												echo "<tr>
 													<td colspan=3 align='right'><b>Total per Tanggal :</b></td>
-													<td align='right'>";
+													<td align='right' style='mso-number-format:".$mso."'>";
 														if(isset($jumlahHargaJual)) {
 															echo rupiah($jumlahHargaJual);
 													  	}
 														$jumlahHargaJual = isset($jumlahHargaJual) ? $jumlahHargaJual : '0';
 														
 													echo "</td>
-													<td align='right'>";
+													<td align='right' style='mso-number-format:".$mso."'>";
 														if(isset($jumlahDiscRp)) {
 															echo rupiah($jumlahDiscRp);
 													  	}
 														$jumlahDiscRp = isset($jumlahDiscRp) ? $jumlahDiscRp : '0';
 																												  
 													echo "</td>
-													<td colspan=2 align='right'>";
+													<td colspan=2 align='right' style='mso-number-format:".$mso."'>";
 														if(isset($jumlahSubtotal)) {
 															echo rupiah($jumlahSubtotal);
 													  	}

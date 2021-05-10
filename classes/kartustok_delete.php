@@ -627,6 +627,7 @@ class kartustok_delete extends kartustok
 		$this->setupLookupOptions($this->id_terimagudang);
 		$this->setupLookupOptions($this->id_penjualan);
 		$this->setupLookupOptions($this->id_kirimbarang);
+		$this->setupLookupOptions($this->id_nonjual);
 		$this->setupLookupOptions($this->id_retur);
 		$this->setupLookupOptions($this->id_penyesuaian);
 
@@ -930,6 +931,7 @@ class kartustok_delete extends kartustok
 			$this->tanggal->ViewCustomAttributes = "";
 
 			// id_terimabarang
+			$this->id_terimabarang->ViewValue = $this->id_terimabarang->CurrentValue;
 			$curVal = strval($this->id_terimabarang->CurrentValue);
 			if ($curVal != "") {
 				$this->id_terimabarang->ViewValue = $this->id_terimabarang->lookupCacheOption($curVal);
@@ -998,6 +1000,7 @@ class kartustok_delete extends kartustok
 			$this->id_penjualan->ViewCustomAttributes = "";
 
 			// id_kirimbarang
+			$this->id_kirimbarang->ViewValue = $this->id_kirimbarang->CurrentValue;
 			$curVal = strval($this->id_kirimbarang->CurrentValue);
 			if ($curVal != "") {
 				$this->id_kirimbarang->ViewValue = $this->id_kirimbarang->lookupCacheOption($curVal);
@@ -1021,10 +1024,29 @@ class kartustok_delete extends kartustok
 
 			// id_nonjual
 			$this->id_nonjual->ViewValue = $this->id_nonjual->CurrentValue;
-			$this->id_nonjual->ViewValue = FormatNumber($this->id_nonjual->ViewValue, 0, -2, -2, -2);
+			$curVal = strval($this->id_nonjual->CurrentValue);
+			if ($curVal != "") {
+				$this->id_nonjual->ViewValue = $this->id_nonjual->lookupCacheOption($curVal);
+				if ($this->id_nonjual->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id_nonjual`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->id_nonjual->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->id_nonjual->ViewValue = $this->id_nonjual->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->id_nonjual->ViewValue = $this->id_nonjual->CurrentValue;
+					}
+				}
+			} else {
+				$this->id_nonjual->ViewValue = NULL;
+			}
 			$this->id_nonjual->ViewCustomAttributes = "";
 
 			// id_retur
+			$this->id_retur->ViewValue = $this->id_retur->CurrentValue;
 			$curVal = strval($this->id_retur->CurrentValue);
 			if ($curVal != "") {
 				$this->id_retur->ViewValue = $this->id_retur->lookupCacheOption($curVal);
@@ -1403,6 +1425,8 @@ class kartustok_delete extends kartustok
 					break;
 				case "x_id_kirimbarang":
 					break;
+				case "x_id_nonjual":
+					break;
 				case "x_id_retur":
 					break;
 				case "x_id_penyesuaian":
@@ -1438,6 +1462,8 @@ class kartustok_delete extends kartustok
 						case "x_id_penjualan":
 							break;
 						case "x_id_kirimbarang":
+							break;
+						case "x_id_nonjual":
 							break;
 						case "x_id_retur":
 							break;

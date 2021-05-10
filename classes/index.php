@@ -533,6 +533,8 @@ class index
 			$this->terminate("view_memberlist.php");
 		if ($Security->allowList(CurrentProjectID() . 'laporan_stokhargajual.php'))
 			$this->terminate("laporan_stokhargajual.php");
+		if ($Security->allowList(CurrentProjectID() . 'Dasbor.php'))
+			$this->terminate("Dasbor.php");
 		if ($Security->allowList(CurrentProjectID() . 'detailterimagudang'))
 			$this->terminate("detailterimagudanglist.php");
 		if ($Security->allowList(CurrentProjectID() . 'terimagudang'))

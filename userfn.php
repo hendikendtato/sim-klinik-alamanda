@@ -34,9 +34,9 @@ function Database_Connecting(&$info) {
 
 	if ($_SERVER['SERVER_NAME'] != "localhost") {
 		$info["host"] = "localhost";
-		$info["user"] = "regiadi";
-		$info["pass"] = "mysql-regiadi";
-		$info["port"] = "3306";
+		$info["user"] = "root";
+		$info["pass"] = "alamanda";
+		$info["port"] = "14044";
 		$info["db"] = "si_klinik_alamanda";
 	}
 }

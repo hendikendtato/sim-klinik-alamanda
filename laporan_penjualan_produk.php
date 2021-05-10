@@ -58,7 +58,29 @@ Page_Rendering();
 		$cabang = $_POST['cabang'];
 		$dateFrom = $_POST['dateFrom'];
 		$dateTo = $_POST['dateTo'];
+		$Inputkategori = $_POST['Inputkategori'];
+		$Inputsubkategori = $_POST['Inputsubkategori'];
 		$multi_cabang = "";
+		$and_kategori="";
+		$and_subkategori="";
+
+		if ($_POST['Inputkategori'] != null) {
+			if($_POST['Inputkategori'] == 'All'){
+				$and_kategori .= "";
+			} else {
+				$kategori = $_POST['Inputkategori'];
+				$and_kategori .= "AND m_barang.kategori = '$kategori'";
+			}
+		}
+
+		if ($_POST['Inputsubkategori'] != null) {
+			if($_POST['Inputsubkategori'] == 'All'){
+				$and_subkategori .= "";
+			} else {
+				$subkategori = $_POST['Inputsubkategori'];
+				$and_subkategori .= "AND m_barang.subkategori = '$subkategori'";
+			}
+		}		
 		
 		foreach($cabang AS $in_cabang) {
 			$multi_cabang .= "m_klinik.id_klinik = '" .$in_cabang. "' OR ";
@@ -82,7 +104,7 @@ Page_Rendering();
 					penjualan ON penjualan.id = detailpenjualan.id_penjualan) JOIN
 					m_barang ON detailpenjualan.id_barang = m_barang.id) JOIN
 					m_klinik ON m_klinik.id_klinik = penjualan.id_klinik
-				WHERE ($multi_cabang) AND (penjualan.waktu BETWEEN '$dateFrom' AND '$dateTo') AND m_barang.tipe <> 'Perawatan'
+				WHERE ($multi_cabang) AND (penjualan.waktu BETWEEN '$dateFrom' AND '$dateTo') AND m_barang.tipe <> 'Perawatan' $and_kategori $and_subkategori
 				GROUP BY detailpenjualan.id_barang
 				ORDER BY m_barang.nama_barang";
 				$result = ExecuteRows($query);
@@ -90,7 +112,7 @@ Page_Rendering();
   }
 
   function rupiah($angka){
-	$hasil_rupiah = number_format($angka);
+	$hasil_rupiah = "Rp" . number_format($angka);
 	return $hasil_rupiah;
 	}
 ?>
@@ -105,6 +127,7 @@ Page_Rendering();
 	  <div class="col-md-12">
 		<ul class="list-unstyled">
 		  <li class="d-inline-block">
+		  	<!-- Cabang -->
 			<label class="d-block">Cabang</label>
 			<select class="selectpicker" name="cabang[]" multiple>
 				<?php
@@ -123,6 +146,36 @@ Page_Rendering();
 				?>
 			</select>
 		  </li>
+		<!-- Input Kategori -->
+		<li class="d-inline-block">
+			<label class="d-block">Input Kategori</label>
+			<select class="form-control product-select" name="Inputkategori">
+				<option value="All">All</option>
+				<?php
+					$sql = "SELECT * FROM kategoribarang";
+					$res = ExecuteRows($sql);
+					foreach ($res as $rs) {
+						echo "<option value=" . $rs["id"] . ">" . $rs["nama"] . "</option>";
+					}
+				?>
+			</select>
+		</li>
+
+			<!-- Input Subkategori -->
+			<li class="d-inline-block">
+				<label class="d-block">Input Subkategori</label>
+				<select class="form-control product-select" name="Inputsubkategori">
+					<option value="All">All</option>
+					<?php
+						$sql = "SELECT * FROM subkategoribarang";
+						$res = ExecuteRows($sql);
+						foreach ($res as $rs) {
+							echo "<option value=" . $rs["id"] . ">" . $rs["nama"] . "</option>";
+						}
+					?>
+				</select>
+			</li>		  
+		  <!-- Date Range -->
 		  <li class="d-inline-block">
 			<label class="d-block">Date Range</label>
 			<input type="date" class="form-control input-md" name="dateFrom">
@@ -185,19 +238,20 @@ Page_Rendering();
 				// print("<pre>".print_r($result,true)."</pre>");						
 		  }else{
 				$totalcabang = 0;
+				$mso='"\@"';
 				foreach ($result as $rs) {
 					$totalcabang += $rs['subtotal'];
 					echo "<tr>
 						<td>".$rs['nama_barang']."</td>
-						<td style='text-align: right;'>".rupiah($rs['qty'])."</td>
-						<td style='text-align: right;'>".rupiah($rs['subtotal'])."</td>
+						<td style='text-align: right;'>".$rs['qty']."</td>
+						<td style='text-align: right; mso-number-format:".$mso."'>".rupiah($rs['subtotal'])."</td>
 					</tr>";
 				}
 			}			
 		?>
 		  <tr>
 		  		<td colspan="2" align="right"><b>Total per Cabang</b></td>
-				<td align="right">
+				<td align="right" style="mso-number-format:'\@'">
 				<b>
 					<?php if(isset($totalcabang)) {
 							echo rupiah($totalcabang);

@@ -4,7 +4,7 @@ namespace PHPMaker2020\sim_klinik_alamanda;
 /**
  * Page class
  */
-class kartustok_search extends kartustok
+class m_pegawai_search extends m_pegawai
 {
 
 	// Page ID
@@ -14,10 +14,10 @@ class kartustok_search extends kartustok
 	public $ProjectID = "{8546B030-7993-4749-BFDB-17AFAAF4065D}";
 
 	// Table name
-	public $TableName = 'kartustok';
+	public $TableName = 'm_pegawai';
 
 	// Page object name
-	public $PageObjName = "kartustok_search";
+	public $PageObjName = "m_pegawai_search";
 
 	// Page headings
 	public $Heading = "";
@@ -341,19 +341,15 @@ class kartustok_search extends kartustok
 		// Parent constuctor
 		parent::__construct();
 
-		// Table object (kartustok)
-		if (!isset($GLOBALS["kartustok"]) || get_class($GLOBALS["kartustok"]) == PROJECT_NAMESPACE . "kartustok") {
-			$GLOBALS["kartustok"] = &$this;
-			$GLOBALS["Table"] = &$GLOBALS["kartustok"];
+		// Table object (m_pegawai)
+		if (!isset($GLOBALS["m_pegawai"]) || get_class($GLOBALS["m_pegawai"]) == PROJECT_NAMESPACE . "m_pegawai") {
+			$GLOBALS["m_pegawai"] = &$this;
+			$GLOBALS["Table"] = &$GLOBALS["m_pegawai"];
 		}
 
 		// Table object (users)
 		if (!isset($GLOBALS['users']))
 			$GLOBALS['users'] = new users();
-
-		// Table object (V_kartustok)
-		if (!isset($GLOBALS['V_kartustok']))
-			$GLOBALS['V_kartustok'] = new V_kartustok();
 
 		// Page ID (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "PAGE_ID"))
@@ -361,7 +357,7 @@ class kartustok_search extends kartustok
 
 		// Table name (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "TABLE_NAME"))
-			define(PROJECT_NAMESPACE . "TABLE_NAME", 'kartustok');
+			define(PROJECT_NAMESPACE . "TABLE_NAME", 'm_pegawai');
 
 		// Start timer
 		if (!isset($GLOBALS["DebugTimer"]))
@@ -390,14 +386,14 @@ class kartustok_search extends kartustok
 		Page_Unloaded();
 
 		// Export
-		global $kartustok;
+		global $m_pegawai;
 		if ($this->CustomExport && $this->CustomExport == $this->Export && array_key_exists($this->CustomExport, Config("EXPORT_CLASSES"))) {
 				$content = ob_get_contents();
 			if ($ExportFileName == "")
 				$ExportFileName = $this->TableVar;
 			$class = PROJECT_NAMESPACE . Config("EXPORT_CLASSES." . $this->CustomExport);
 			if (class_exists($class)) {
-				$doc = new $class($kartustok);
+				$doc = new $class($m_pegawai);
 				$doc->Text = @$content;
 				if ($this->isExport("email"))
 					echo $this->exportEmail($doc->Text);
@@ -432,7 +428,7 @@ class kartustok_search extends kartustok
 				$pageName = GetPageName($url);
 				if ($pageName != $this->getListUrl()) { // Not List page
 					$row["caption"] = $this->getModalCaption($pageName);
-					if ($pageName == "kartustokview.php")
+					if ($pageName == "m_pegawaiview.php")
 						$row["view"] = "1";
 				} else { // List page should not be shown as modal => error
 					$row["error"] = $this->getFailureMessage();
@@ -523,7 +519,7 @@ class kartustok_search extends kartustok
 	{
 		$key = "";
 		if (is_array($ar)) {
-			$key .= @$ar['id_kartustok'];
+			$key .= @$ar['id_pegawai'];
 		}
 		return $key;
 	}
@@ -536,7 +532,7 @@ class kartustok_search extends kartustok
 	protected function hideFieldsForAddEdit()
 	{
 		if ($this->isAdd() || $this->isCopy() || $this->isGridAdd())
-			$this->id_kartustok->Visible = FALSE;
+			$this->id_pegawai->Visible = FALSE;
 	}
 
 	// Lookup data
@@ -658,7 +654,7 @@ class kartustok_search extends kartustok
 				$Security->saveLastUrl();
 				$this->setFailureMessage(DeniedMessage()); // Set no permission
 				if ($Security->canList())
-					$this->terminate(GetUrl("kartustoklist.php"));
+					$this->terminate(GetUrl("m_pegawailist.php"));
 				else
 					$this->terminate(GetUrl("login.php"));
 				return;
@@ -668,26 +664,24 @@ class kartustok_search extends kartustok
 		// Create form object
 		$CurrentForm = new HttpForm();
 		$this->CurrentAction = Param("action"); // Set up current action
-		$this->id_kartustok->Visible = FALSE;
-		$this->id_barang->setVisibility();
+		$this->id_pegawai->setVisibility();
+		$this->nama_pegawai->setVisibility();
+		$this->nama_lengkap->setVisibility();
+		$this->jenis_pegawai->setVisibility();
+		$this->nik_pegawai->setVisibility();
+		$this->agama_pegawai->setVisibility();
+		$this->tgllahir_pegawai->setVisibility();
+		$this->alamat_pegawai->setVisibility();
+		$this->hp_pegawai->setVisibility();
+		$this->pendidikan_pegawai->setVisibility();
+		$this->jurusan_pegawai->setVisibility();
+		$this->spesialis_pegawai->setVisibility();
+		$this->jabatan_pegawai->setVisibility();
+		$this->status_pegawai->setVisibility();
+		$this->tarif_pegawai->setVisibility();
 		$this->id_klinik->setVisibility();
-		$this->tanggal->setVisibility();
-		$this->id_terimabarang->setVisibility();
-		$this->id_terimagudang->setVisibility();
-		$this->id_penjualan->setVisibility();
-		$this->id_kirimbarang->setVisibility();
-		$this->id_nonjual->setVisibility();
-		$this->id_retur->setVisibility();
-		$this->id_penyesuaian->setVisibility();
-		$this->stok_awal->Visible = FALSE;
-		$this->masuk->Visible = FALSE;
-		$this->masuk_penyesuaian->Visible = FALSE;
-		$this->keluar->Visible = FALSE;
-		$this->keluar_nonjual->Visible = FALSE;
-		$this->keluar_penyesuaian->Visible = FALSE;
-		$this->keluar_kirim->Visible = FALSE;
-		$this->retur->Visible = FALSE;
-		$this->stok_akhir->Visible = FALSE;
+		$this->target->setVisibility();
+		$this->nilai_komisi->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -709,15 +703,9 @@ class kartustok_search extends kartustok
 		$this->createToken();
 
 		// Set up lookup cache
-		$this->setupLookupOptions($this->id_barang);
+		$this->setupLookupOptions($this->agama_pegawai);
+		$this->setupLookupOptions($this->jabatan_pegawai);
 		$this->setupLookupOptions($this->id_klinik);
-		$this->setupLookupOptions($this->id_terimabarang);
-		$this->setupLookupOptions($this->id_terimagudang);
-		$this->setupLookupOptions($this->id_penjualan);
-		$this->setupLookupOptions($this->id_kirimbarang);
-		$this->setupLookupOptions($this->id_nonjual);
-		$this->setupLookupOptions($this->id_retur);
-		$this->setupLookupOptions($this->id_penyesuaian);
 
 		// Set up Breadcrumb
 		$this->setupBreadcrumb();
@@ -742,7 +730,7 @@ class kartustok_search extends kartustok
 				}
 				if ($srchStr != "") {
 					$srchStr = $this->getUrlParm($srchStr);
-					$srchStr = "kartustoklist.php" . "?" . $srchStr;
+					$srchStr = "m_pegawailist.php" . "?" . $srchStr;
 					$this->terminate($srchStr); // Go to list page
 				}
 			}
@@ -762,16 +750,24 @@ class kartustok_search extends kartustok
 	protected function buildAdvancedSearch()
 	{
 		$srchUrl = "";
-		$this->buildSearchUrl($srchUrl, $this->id_barang); // id_barang
+		$this->buildSearchUrl($srchUrl, $this->id_pegawai); // id_pegawai
+		$this->buildSearchUrl($srchUrl, $this->nama_pegawai); // nama_pegawai
+		$this->buildSearchUrl($srchUrl, $this->nama_lengkap); // nama_lengkap
+		$this->buildSearchUrl($srchUrl, $this->jenis_pegawai); // jenis_pegawai
+		$this->buildSearchUrl($srchUrl, $this->nik_pegawai); // nik_pegawai
+		$this->buildSearchUrl($srchUrl, $this->agama_pegawai); // agama_pegawai
+		$this->buildSearchUrl($srchUrl, $this->tgllahir_pegawai); // tgllahir_pegawai
+		$this->buildSearchUrl($srchUrl, $this->alamat_pegawai); // alamat_pegawai
+		$this->buildSearchUrl($srchUrl, $this->hp_pegawai); // hp_pegawai
+		$this->buildSearchUrl($srchUrl, $this->pendidikan_pegawai); // pendidikan_pegawai
+		$this->buildSearchUrl($srchUrl, $this->jurusan_pegawai); // jurusan_pegawai
+		$this->buildSearchUrl($srchUrl, $this->spesialis_pegawai); // spesialis_pegawai
+		$this->buildSearchUrl($srchUrl, $this->jabatan_pegawai); // jabatan_pegawai
+		$this->buildSearchUrl($srchUrl, $this->status_pegawai); // status_pegawai
+		$this->buildSearchUrl($srchUrl, $this->tarif_pegawai); // tarif_pegawai
 		$this->buildSearchUrl($srchUrl, $this->id_klinik); // id_klinik
-		$this->buildSearchUrl($srchUrl, $this->tanggal); // tanggal
-		$this->buildSearchUrl($srchUrl, $this->id_terimabarang); // id_terimabarang
-		$this->buildSearchUrl($srchUrl, $this->id_terimagudang); // id_terimagudang
-		$this->buildSearchUrl($srchUrl, $this->id_penjualan); // id_penjualan
-		$this->buildSearchUrl($srchUrl, $this->id_kirimbarang); // id_kirimbarang
-		$this->buildSearchUrl($srchUrl, $this->id_nonjual); // id_nonjual
-		$this->buildSearchUrl($srchUrl, $this->id_retur); // id_retur
-		$this->buildSearchUrl($srchUrl, $this->id_penyesuaian); // id_penyesuaian
+		$this->buildSearchUrl($srchUrl, $this->target); // target
+		$this->buildSearchUrl($srchUrl, $this->nilai_komisi); // nilai_komisi
 		if ($srchUrl != "")
 			$srchUrl .= "&";
 		$srchUrl .= "cmd=search";
@@ -844,25 +840,41 @@ class kartustok_search extends kartustok
 
 		// Load search values
 		$got = FALSE;
-		if ($this->id_barang->AdvancedSearch->post())
+		if ($this->id_pegawai->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->nama_pegawai->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->nama_lengkap->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->jenis_pegawai->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->nik_pegawai->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->agama_pegawai->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->tgllahir_pegawai->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->alamat_pegawai->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->hp_pegawai->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->pendidikan_pegawai->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->jurusan_pegawai->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->spesialis_pegawai->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->jabatan_pegawai->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->status_pegawai->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->tarif_pegawai->AdvancedSearch->post())
 			$got = TRUE;
 		if ($this->id_klinik->AdvancedSearch->post())
 			$got = TRUE;
-		if ($this->tanggal->AdvancedSearch->post())
+		if ($this->target->AdvancedSearch->post())
 			$got = TRUE;
-		if ($this->id_terimabarang->AdvancedSearch->post())
-			$got = TRUE;
-		if ($this->id_terimagudang->AdvancedSearch->post())
-			$got = TRUE;
-		if ($this->id_penjualan->AdvancedSearch->post())
-			$got = TRUE;
-		if ($this->id_kirimbarang->AdvancedSearch->post())
-			$got = TRUE;
-		if ($this->id_nonjual->AdvancedSearch->post())
-			$got = TRUE;
-		if ($this->id_retur->AdvancedSearch->post())
-			$got = TRUE;
-		if ($this->id_penyesuaian->AdvancedSearch->post())
+		if ($this->nilai_komisi->AdvancedSearch->post())
 			$got = TRUE;
 		return $got;
 	}
@@ -878,55 +890,132 @@ class kartustok_search extends kartustok
 		$this->Row_Rendering();
 
 		// Common render codes for all row types
-		// id_kartustok
-		// id_barang
+		// id_pegawai
+		// nama_pegawai
+		// nama_lengkap
+		// jenis_pegawai
+		// nik_pegawai
+		// agama_pegawai
+		// tgllahir_pegawai
+		// alamat_pegawai
+		// hp_pegawai
+		// pendidikan_pegawai
+		// jurusan_pegawai
+		// spesialis_pegawai
+		// jabatan_pegawai
+		// status_pegawai
+		// tarif_pegawai
 		// id_klinik
-		// tanggal
-		// id_terimabarang
-		// id_terimagudang
-		// id_penjualan
-		// id_kirimbarang
-		// id_nonjual
-		// id_retur
-		// id_penyesuaian
-		// stok_awal
-		// masuk
-		// masuk_penyesuaian
-		// keluar
-		// keluar_nonjual
-		// keluar_penyesuaian
-		// keluar_kirim
-		// retur
-		// stok_akhir
+		// target
+		// nilai_komisi
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
-			// id_kartustok
-			$this->id_kartustok->ViewValue = $this->id_kartustok->CurrentValue;
-			$this->id_kartustok->ViewCustomAttributes = "";
+			// id_pegawai
+			$this->id_pegawai->ViewValue = $this->id_pegawai->CurrentValue;
+			$this->id_pegawai->ViewCustomAttributes = "";
 
-			// id_barang
-			$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
-			$curVal = strval($this->id_barang->CurrentValue);
+			// nama_pegawai
+			$this->nama_pegawai->ViewValue = $this->nama_pegawai->CurrentValue;
+			$this->nama_pegawai->ViewCustomAttributes = "";
+
+			// nama_lengkap
+			$this->nama_lengkap->ViewValue = $this->nama_lengkap->CurrentValue;
+			$this->nama_lengkap->ViewCustomAttributes = "";
+
+			// jenis_pegawai
+			if (strval($this->jenis_pegawai->CurrentValue) != "") {
+				$this->jenis_pegawai->ViewValue = $this->jenis_pegawai->optionCaption($this->jenis_pegawai->CurrentValue);
+			} else {
+				$this->jenis_pegawai->ViewValue = NULL;
+			}
+			$this->jenis_pegawai->ViewCustomAttributes = "";
+
+			// nik_pegawai
+			$this->nik_pegawai->ViewValue = $this->nik_pegawai->CurrentValue;
+			$this->nik_pegawai->ViewCustomAttributes = "";
+
+			// agama_pegawai
+			$curVal = strval($this->agama_pegawai->CurrentValue);
 			if ($curVal != "") {
-				$this->id_barang->ViewValue = $this->id_barang->lookupCacheOption($curVal);
-				if ($this->id_barang->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->id_barang->Lookup->getSql(FALSE, $filterWrk, '', $this);
+				$this->agama_pegawai->ViewValue = $this->agama_pegawai->lookupCacheOption($curVal);
+				if ($this->agama_pegawai->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id_agama`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->agama_pegawai->Lookup->getSql(FALSE, $filterWrk, '', $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
 						$arwrk[1] = $rswrk->fields('df');
-						$this->id_barang->ViewValue = $this->id_barang->displayValue($arwrk);
+						$this->agama_pegawai->ViewValue = $this->agama_pegawai->displayValue($arwrk);
 						$rswrk->Close();
 					} else {
-						$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
+						$this->agama_pegawai->ViewValue = $this->agama_pegawai->CurrentValue;
 					}
 				}
 			} else {
-				$this->id_barang->ViewValue = NULL;
+				$this->agama_pegawai->ViewValue = NULL;
 			}
-			$this->id_barang->ViewCustomAttributes = "";
+			$this->agama_pegawai->ViewCustomAttributes = "";
+
+			// tgllahir_pegawai
+			$this->tgllahir_pegawai->ViewValue = $this->tgllahir_pegawai->CurrentValue;
+			$this->tgllahir_pegawai->ViewValue = FormatDateTime($this->tgllahir_pegawai->ViewValue, 0);
+			$this->tgllahir_pegawai->ViewCustomAttributes = "";
+
+			// alamat_pegawai
+			$this->alamat_pegawai->ViewValue = $this->alamat_pegawai->CurrentValue;
+			$this->alamat_pegawai->ViewCustomAttributes = "";
+
+			// hp_pegawai
+			$this->hp_pegawai->ViewValue = $this->hp_pegawai->CurrentValue;
+			$this->hp_pegawai->ViewCustomAttributes = "";
+
+			// pendidikan_pegawai
+			$this->pendidikan_pegawai->ViewValue = $this->pendidikan_pegawai->CurrentValue;
+			$this->pendidikan_pegawai->ViewCustomAttributes = "";
+
+			// jurusan_pegawai
+			$this->jurusan_pegawai->ViewValue = $this->jurusan_pegawai->CurrentValue;
+			$this->jurusan_pegawai->ViewCustomAttributes = "";
+
+			// spesialis_pegawai
+			$this->spesialis_pegawai->ViewValue = $this->spesialis_pegawai->CurrentValue;
+			$this->spesialis_pegawai->ViewCustomAttributes = "";
+
+			// jabatan_pegawai
+			$curVal = strval($this->jabatan_pegawai->CurrentValue);
+			if ($curVal != "") {
+				$this->jabatan_pegawai->ViewValue = $this->jabatan_pegawai->lookupCacheOption($curVal);
+				if ($this->jabatan_pegawai->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->jabatan_pegawai->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->jabatan_pegawai->ViewValue = $this->jabatan_pegawai->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->jabatan_pegawai->ViewValue = $this->jabatan_pegawai->CurrentValue;
+					}
+				}
+			} else {
+				$this->jabatan_pegawai->ViewValue = NULL;
+			}
+			$this->jabatan_pegawai->ViewCustomAttributes = "";
+
+			// status_pegawai
+			if (strval($this->status_pegawai->CurrentValue) != "") {
+				$this->status_pegawai->ViewValue = $this->status_pegawai->optionCaption($this->status_pegawai->CurrentValue);
+			} else {
+				$this->status_pegawai->ViewValue = NULL;
+			}
+			$this->status_pegawai->ViewCustomAttributes = "";
+
+			// tarif_pegawai
+			$this->tarif_pegawai->ViewValue = $this->tarif_pegawai->CurrentValue;
+			$this->tarif_pegawai->ViewValue = FormatNumber($this->tarif_pegawai->ViewValue, 0, -2, -2, -2);
+			$this->tarif_pegawai->ViewCustomAttributes = "";
 
 			// id_klinik
 			$curVal = strval($this->id_klinik->CurrentValue);
@@ -950,292 +1039,244 @@ class kartustok_search extends kartustok
 			}
 			$this->id_klinik->ViewCustomAttributes = "";
 
-			// tanggal
-			$this->tanggal->ViewValue = $this->tanggal->CurrentValue;
-			$this->tanggal->ViewValue = FormatDateTime($this->tanggal->ViewValue, 0);
-			$this->tanggal->ViewCustomAttributes = "";
+			// target
+			$this->target->ViewValue = $this->target->CurrentValue;
+			$this->target->ViewValue = FormatNumber($this->target->ViewValue, 0, -2, -2, -2);
+			$this->target->ViewCustomAttributes = "";
 
-			// id_terimabarang
-			$this->id_terimabarang->ViewValue = $this->id_terimabarang->CurrentValue;
-			$curVal = strval($this->id_terimabarang->CurrentValue);
-			if ($curVal != "") {
-				$this->id_terimabarang->ViewValue = $this->id_terimabarang->lookupCacheOption($curVal);
-				if ($this->id_terimabarang->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->id_terimabarang->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->id_terimabarang->ViewValue = $this->id_terimabarang->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->id_terimabarang->ViewValue = $this->id_terimabarang->CurrentValue;
-					}
-				}
-			} else {
-				$this->id_terimabarang->ViewValue = NULL;
-			}
-			$this->id_terimabarang->ViewCustomAttributes = "";
+			// nilai_komisi
+			$this->nilai_komisi->ViewValue = $this->nilai_komisi->CurrentValue;
+			$this->nilai_komisi->ViewValue = FormatNumber($this->nilai_komisi->ViewValue, 0, -2, -2, -2);
+			$this->nilai_komisi->ViewCustomAttributes = "";
 
-			// id_terimagudang
-			$this->id_terimagudang->ViewValue = $this->id_terimagudang->CurrentValue;
-			$curVal = strval($this->id_terimagudang->CurrentValue);
-			if ($curVal != "") {
-				$this->id_terimagudang->ViewValue = $this->id_terimagudang->lookupCacheOption($curVal);
-				if ($this->id_terimagudang->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id_terimagudang`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->id_terimagudang->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->id_terimagudang->ViewValue = $this->id_terimagudang->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->id_terimagudang->ViewValue = $this->id_terimagudang->CurrentValue;
-					}
-				}
-			} else {
-				$this->id_terimagudang->ViewValue = NULL;
-			}
-			$this->id_terimagudang->ViewCustomAttributes = "";
+			// id_pegawai
+			$this->id_pegawai->LinkCustomAttributes = "";
+			$this->id_pegawai->HrefValue = "";
+			$this->id_pegawai->TooltipValue = "";
 
-			// id_penjualan
-			$this->id_penjualan->ViewValue = $this->id_penjualan->CurrentValue;
-			$curVal = strval($this->id_penjualan->CurrentValue);
-			if ($curVal != "") {
-				$this->id_penjualan->ViewValue = $this->id_penjualan->lookupCacheOption($curVal);
-				if ($this->id_penjualan->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->id_penjualan->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->id_penjualan->ViewValue = $this->id_penjualan->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->id_penjualan->ViewValue = $this->id_penjualan->CurrentValue;
-					}
-				}
-			} else {
-				$this->id_penjualan->ViewValue = NULL;
-			}
-			$this->id_penjualan->ViewCustomAttributes = "";
+			// nama_pegawai
+			$this->nama_pegawai->LinkCustomAttributes = "";
+			$this->nama_pegawai->HrefValue = "";
+			$this->nama_pegawai->TooltipValue = "";
 
-			// id_kirimbarang
-			$this->id_kirimbarang->ViewValue = $this->id_kirimbarang->CurrentValue;
-			$curVal = strval($this->id_kirimbarang->CurrentValue);
-			if ($curVal != "") {
-				$this->id_kirimbarang->ViewValue = $this->id_kirimbarang->lookupCacheOption($curVal);
-				if ($this->id_kirimbarang->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->id_kirimbarang->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->id_kirimbarang->ViewValue = $this->id_kirimbarang->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->id_kirimbarang->ViewValue = $this->id_kirimbarang->CurrentValue;
-					}
-				}
-			} else {
-				$this->id_kirimbarang->ViewValue = NULL;
-			}
-			$this->id_kirimbarang->ViewCustomAttributes = "";
+			// nama_lengkap
+			$this->nama_lengkap->LinkCustomAttributes = "";
+			$this->nama_lengkap->HrefValue = "";
+			$this->nama_lengkap->TooltipValue = "";
 
-			// id_nonjual
-			$this->id_nonjual->ViewValue = $this->id_nonjual->CurrentValue;
-			$curVal = strval($this->id_nonjual->CurrentValue);
-			if ($curVal != "") {
-				$this->id_nonjual->ViewValue = $this->id_nonjual->lookupCacheOption($curVal);
-				if ($this->id_nonjual->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id_nonjual`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->id_nonjual->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->id_nonjual->ViewValue = $this->id_nonjual->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->id_nonjual->ViewValue = $this->id_nonjual->CurrentValue;
-					}
-				}
-			} else {
-				$this->id_nonjual->ViewValue = NULL;
-			}
-			$this->id_nonjual->ViewCustomAttributes = "";
+			// jenis_pegawai
+			$this->jenis_pegawai->LinkCustomAttributes = "";
+			$this->jenis_pegawai->HrefValue = "";
+			$this->jenis_pegawai->TooltipValue = "";
 
-			// id_retur
-			$this->id_retur->ViewValue = $this->id_retur->CurrentValue;
-			$curVal = strval($this->id_retur->CurrentValue);
-			if ($curVal != "") {
-				$this->id_retur->ViewValue = $this->id_retur->lookupCacheOption($curVal);
-				if ($this->id_retur->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id_retur`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->id_retur->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->id_retur->ViewValue = $this->id_retur->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->id_retur->ViewValue = $this->id_retur->CurrentValue;
-					}
-				}
-			} else {
-				$this->id_retur->ViewValue = NULL;
-			}
-			$this->id_retur->ViewCustomAttributes = "";
+			// nik_pegawai
+			$this->nik_pegawai->LinkCustomAttributes = "";
+			$this->nik_pegawai->HrefValue = "";
+			$this->nik_pegawai->TooltipValue = "";
 
-			// id_penyesuaian
-			$this->id_penyesuaian->ViewValue = $this->id_penyesuaian->CurrentValue;
-			$curVal = strval($this->id_penyesuaian->CurrentValue);
-			if ($curVal != "") {
-				$this->id_penyesuaian->ViewValue = $this->id_penyesuaian->lookupCacheOption($curVal);
-				if ($this->id_penyesuaian->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id_penyesuaianstok`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->id_penyesuaian->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->id_penyesuaian->ViewValue = $this->id_penyesuaian->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->id_penyesuaian->ViewValue = $this->id_penyesuaian->CurrentValue;
-					}
-				}
-			} else {
-				$this->id_penyesuaian->ViewValue = NULL;
-			}
-			$this->id_penyesuaian->ViewCustomAttributes = "";
+			// agama_pegawai
+			$this->agama_pegawai->LinkCustomAttributes = "";
+			$this->agama_pegawai->HrefValue = "";
+			$this->agama_pegawai->TooltipValue = "";
 
-			// stok_awal
-			$this->stok_awal->ViewValue = $this->stok_awal->CurrentValue;
-			$this->stok_awal->ViewValue = FormatNumber($this->stok_awal->ViewValue, 2, -2, -2, -2);
-			$this->stok_awal->ViewCustomAttributes = "";
+			// tgllahir_pegawai
+			$this->tgllahir_pegawai->LinkCustomAttributes = "";
+			$this->tgllahir_pegawai->HrefValue = "";
+			$this->tgllahir_pegawai->TooltipValue = "";
 
-			// masuk
-			$this->masuk->ViewValue = $this->masuk->CurrentValue;
-			$this->masuk->ViewValue = FormatNumber($this->masuk->ViewValue, 2, -2, -2, -2);
-			$this->masuk->ViewCustomAttributes = "";
+			// alamat_pegawai
+			$this->alamat_pegawai->LinkCustomAttributes = "";
+			$this->alamat_pegawai->HrefValue = "";
+			$this->alamat_pegawai->TooltipValue = "";
 
-			// masuk_penyesuaian
-			$this->masuk_penyesuaian->ViewValue = $this->masuk_penyesuaian->CurrentValue;
-			$this->masuk_penyesuaian->ViewValue = FormatNumber($this->masuk_penyesuaian->ViewValue, 2, -2, -2, -2);
-			$this->masuk_penyesuaian->ViewCustomAttributes = "";
+			// hp_pegawai
+			$this->hp_pegawai->LinkCustomAttributes = "";
+			$this->hp_pegawai->HrefValue = "";
+			$this->hp_pegawai->TooltipValue = "";
 
-			// keluar
-			$this->keluar->ViewValue = $this->keluar->CurrentValue;
-			$this->keluar->ViewValue = FormatNumber($this->keluar->ViewValue, 2, -2, -2, -2);
-			$this->keluar->ViewCustomAttributes = "";
+			// pendidikan_pegawai
+			$this->pendidikan_pegawai->LinkCustomAttributes = "";
+			$this->pendidikan_pegawai->HrefValue = "";
+			$this->pendidikan_pegawai->TooltipValue = "";
 
-			// keluar_nonjual
-			$this->keluar_nonjual->ViewValue = $this->keluar_nonjual->CurrentValue;
-			$this->keluar_nonjual->ViewValue = FormatNumber($this->keluar_nonjual->ViewValue, 2, -2, -2, -2);
-			$this->keluar_nonjual->ViewCustomAttributes = "";
+			// jurusan_pegawai
+			$this->jurusan_pegawai->LinkCustomAttributes = "";
+			$this->jurusan_pegawai->HrefValue = "";
+			$this->jurusan_pegawai->TooltipValue = "";
 
-			// keluar_penyesuaian
-			$this->keluar_penyesuaian->ViewValue = $this->keluar_penyesuaian->CurrentValue;
-			$this->keluar_penyesuaian->ViewValue = FormatNumber($this->keluar_penyesuaian->ViewValue, 2, -2, -2, -2);
-			$this->keluar_penyesuaian->ViewCustomAttributes = "";
+			// spesialis_pegawai
+			$this->spesialis_pegawai->LinkCustomAttributes = "";
+			$this->spesialis_pegawai->HrefValue = "";
+			$this->spesialis_pegawai->TooltipValue = "";
 
-			// keluar_kirim
-			$this->keluar_kirim->ViewValue = $this->keluar_kirim->CurrentValue;
-			$this->keluar_kirim->ViewValue = FormatNumber($this->keluar_kirim->ViewValue, 2, -2, -2, -2);
-			$this->keluar_kirim->ViewCustomAttributes = "";
+			// jabatan_pegawai
+			$this->jabatan_pegawai->LinkCustomAttributes = "";
+			$this->jabatan_pegawai->HrefValue = "";
+			$this->jabatan_pegawai->TooltipValue = "";
 
-			// retur
-			$this->retur->ViewValue = $this->retur->CurrentValue;
-			$this->retur->ViewValue = FormatNumber($this->retur->ViewValue, 2, -2, -2, -2);
-			$this->retur->ViewCustomAttributes = "";
+			// status_pegawai
+			$this->status_pegawai->LinkCustomAttributes = "";
+			$this->status_pegawai->HrefValue = "";
+			$this->status_pegawai->TooltipValue = "";
 
-			// stok_akhir
-			$this->stok_akhir->ViewValue = $this->stok_akhir->CurrentValue;
-			$this->stok_akhir->ViewValue = FormatNumber($this->stok_akhir->ViewValue, 2, -2, -2, -2);
-			$this->stok_akhir->ViewCustomAttributes = "";
-
-			// id_barang
-			$this->id_barang->LinkCustomAttributes = "";
-			$this->id_barang->HrefValue = "";
-			$this->id_barang->TooltipValue = "";
+			// tarif_pegawai
+			$this->tarif_pegawai->LinkCustomAttributes = "";
+			$this->tarif_pegawai->HrefValue = "";
+			$this->tarif_pegawai->TooltipValue = "";
 
 			// id_klinik
 			$this->id_klinik->LinkCustomAttributes = "";
 			$this->id_klinik->HrefValue = "";
 			$this->id_klinik->TooltipValue = "";
 
-			// tanggal
-			$this->tanggal->LinkCustomAttributes = "";
-			$this->tanggal->HrefValue = "";
-			$this->tanggal->TooltipValue = "";
+			// target
+			$this->target->LinkCustomAttributes = "";
+			$this->target->HrefValue = "";
+			$this->target->TooltipValue = "";
 
-			// id_terimabarang
-			$this->id_terimabarang->LinkCustomAttributes = "";
-			$this->id_terimabarang->HrefValue = "";
-			$this->id_terimabarang->TooltipValue = "";
-
-			// id_terimagudang
-			$this->id_terimagudang->LinkCustomAttributes = "";
-			$this->id_terimagudang->HrefValue = "";
-			$this->id_terimagudang->TooltipValue = "";
-
-			// id_penjualan
-			$this->id_penjualan->LinkCustomAttributes = "";
-			$this->id_penjualan->HrefValue = "";
-			$this->id_penjualan->TooltipValue = "";
-
-			// id_kirimbarang
-			$this->id_kirimbarang->LinkCustomAttributes = "";
-			$this->id_kirimbarang->HrefValue = "";
-			$this->id_kirimbarang->TooltipValue = "";
-
-			// id_nonjual
-			$this->id_nonjual->LinkCustomAttributes = "";
-			$this->id_nonjual->HrefValue = "";
-			$this->id_nonjual->TooltipValue = "";
-
-			// id_retur
-			$this->id_retur->LinkCustomAttributes = "";
-			$this->id_retur->HrefValue = "";
-			$this->id_retur->TooltipValue = "";
-
-			// id_penyesuaian
-			$this->id_penyesuaian->LinkCustomAttributes = "";
-			$this->id_penyesuaian->HrefValue = "";
-			$this->id_penyesuaian->TooltipValue = "";
+			// nilai_komisi
+			$this->nilai_komisi->LinkCustomAttributes = "";
+			$this->nilai_komisi->HrefValue = "";
+			$this->nilai_komisi->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_SEARCH) { // Search row
 
-			// id_barang
-			$this->id_barang->EditAttrs["class"] = "form-control";
-			$this->id_barang->EditCustomAttributes = "";
-			$this->id_barang->EditValue = HtmlEncode($this->id_barang->AdvancedSearch->SearchValue);
-			$curVal = strval($this->id_barang->AdvancedSearch->SearchValue);
-			if ($curVal != "") {
-				$this->id_barang->EditValue = $this->id_barang->lookupCacheOption($curVal);
-				if ($this->id_barang->EditValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->id_barang->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-						$this->id_barang->EditValue = $this->id_barang->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->id_barang->EditValue = HtmlEncode($this->id_barang->AdvancedSearch->SearchValue);
-					}
+			// id_pegawai
+			$this->id_pegawai->EditAttrs["class"] = "form-control";
+			$this->id_pegawai->EditCustomAttributes = "";
+			$this->id_pegawai->EditValue = HtmlEncode($this->id_pegawai->AdvancedSearch->SearchValue);
+			$this->id_pegawai->PlaceHolder = RemoveHtml($this->id_pegawai->caption());
+
+			// nama_pegawai
+			$this->nama_pegawai->EditAttrs["class"] = "form-control";
+			$this->nama_pegawai->EditCustomAttributes = "";
+			if (!$this->nama_pegawai->Raw)
+				$this->nama_pegawai->AdvancedSearch->SearchValue = HtmlDecode($this->nama_pegawai->AdvancedSearch->SearchValue);
+			$this->nama_pegawai->EditValue = HtmlEncode($this->nama_pegawai->AdvancedSearch->SearchValue);
+			$this->nama_pegawai->PlaceHolder = RemoveHtml($this->nama_pegawai->caption());
+
+			// nama_lengkap
+			$this->nama_lengkap->EditAttrs["class"] = "form-control";
+			$this->nama_lengkap->EditCustomAttributes = "";
+			if (!$this->nama_lengkap->Raw)
+				$this->nama_lengkap->AdvancedSearch->SearchValue = HtmlDecode($this->nama_lengkap->AdvancedSearch->SearchValue);
+			$this->nama_lengkap->EditValue = HtmlEncode($this->nama_lengkap->AdvancedSearch->SearchValue);
+			$this->nama_lengkap->PlaceHolder = RemoveHtml($this->nama_lengkap->caption());
+
+			// jenis_pegawai
+			$this->jenis_pegawai->EditCustomAttributes = "";
+			$this->jenis_pegawai->EditValue = $this->jenis_pegawai->options(FALSE);
+
+			// nik_pegawai
+			$this->nik_pegawai->EditAttrs["class"] = "form-control";
+			$this->nik_pegawai->EditCustomAttributes = "";
+			if (!$this->nik_pegawai->Raw)
+				$this->nik_pegawai->AdvancedSearch->SearchValue = HtmlDecode($this->nik_pegawai->AdvancedSearch->SearchValue);
+			$this->nik_pegawai->EditValue = HtmlEncode($this->nik_pegawai->AdvancedSearch->SearchValue);
+			$this->nik_pegawai->PlaceHolder = RemoveHtml($this->nik_pegawai->caption());
+
+			// agama_pegawai
+			$this->agama_pegawai->EditAttrs["class"] = "form-control";
+			$this->agama_pegawai->EditCustomAttributes = "";
+			$curVal = trim(strval($this->agama_pegawai->AdvancedSearch->SearchValue));
+			if ($curVal != "")
+				$this->agama_pegawai->AdvancedSearch->ViewValue = $this->agama_pegawai->lookupCacheOption($curVal);
+			else
+				$this->agama_pegawai->AdvancedSearch->ViewValue = $this->agama_pegawai->Lookup !== NULL && is_array($this->agama_pegawai->Lookup->Options) ? $curVal : NULL;
+			if ($this->agama_pegawai->AdvancedSearch->ViewValue !== NULL) { // Load from cache
+				$this->agama_pegawai->EditValue = array_values($this->agama_pegawai->Lookup->Options);
+			} else { // Lookup from database
+				if ($curVal == "") {
+					$filterWrk = "0=1";
+				} else {
+					$filterWrk = "`id_agama`" . SearchString("=", $this->agama_pegawai->AdvancedSearch->SearchValue, DATATYPE_NUMBER, "");
 				}
-			} else {
-				$this->id_barang->EditValue = NULL;
+				$sqlWrk = $this->agama_pegawai->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				$arwrk = $rswrk ? $rswrk->getRows() : [];
+				if ($rswrk)
+					$rswrk->close();
+				$this->agama_pegawai->EditValue = $arwrk;
 			}
-			$this->id_barang->PlaceHolder = RemoveHtml($this->id_barang->caption());
+
+			// tgllahir_pegawai
+			$this->tgllahir_pegawai->EditAttrs["class"] = "form-control";
+			$this->tgllahir_pegawai->EditCustomAttributes = "";
+			$this->tgllahir_pegawai->EditValue = HtmlEncode(FormatDateTime(UnFormatDateTime($this->tgllahir_pegawai->AdvancedSearch->SearchValue, 0), 8));
+			$this->tgllahir_pegawai->PlaceHolder = RemoveHtml($this->tgllahir_pegawai->caption());
+
+			// alamat_pegawai
+			$this->alamat_pegawai->EditAttrs["class"] = "form-control";
+			$this->alamat_pegawai->EditCustomAttributes = "";
+			if (!$this->alamat_pegawai->Raw)
+				$this->alamat_pegawai->AdvancedSearch->SearchValue = HtmlDecode($this->alamat_pegawai->AdvancedSearch->SearchValue);
+			$this->alamat_pegawai->EditValue = HtmlEncode($this->alamat_pegawai->AdvancedSearch->SearchValue);
+			$this->alamat_pegawai->PlaceHolder = RemoveHtml($this->alamat_pegawai->caption());
+
+			// hp_pegawai
+			$this->hp_pegawai->EditAttrs["class"] = "form-control";
+			$this->hp_pegawai->EditCustomAttributes = "";
+			if (!$this->hp_pegawai->Raw)
+				$this->hp_pegawai->AdvancedSearch->SearchValue = HtmlDecode($this->hp_pegawai->AdvancedSearch->SearchValue);
+			$this->hp_pegawai->EditValue = HtmlEncode($this->hp_pegawai->AdvancedSearch->SearchValue);
+			$this->hp_pegawai->PlaceHolder = RemoveHtml($this->hp_pegawai->caption());
+
+			// pendidikan_pegawai
+			$this->pendidikan_pegawai->EditAttrs["class"] = "form-control";
+			$this->pendidikan_pegawai->EditCustomAttributes = "";
+			if (!$this->pendidikan_pegawai->Raw)
+				$this->pendidikan_pegawai->AdvancedSearch->SearchValue = HtmlDecode($this->pendidikan_pegawai->AdvancedSearch->SearchValue);
+			$this->pendidikan_pegawai->EditValue = HtmlEncode($this->pendidikan_pegawai->AdvancedSearch->SearchValue);
+			$this->pendidikan_pegawai->PlaceHolder = RemoveHtml($this->pendidikan_pegawai->caption());
+
+			// jurusan_pegawai
+			$this->jurusan_pegawai->EditAttrs["class"] = "form-control";
+			$this->jurusan_pegawai->EditCustomAttributes = "";
+			if (!$this->jurusan_pegawai->Raw)
+				$this->jurusan_pegawai->AdvancedSearch->SearchValue = HtmlDecode($this->jurusan_pegawai->AdvancedSearch->SearchValue);
+			$this->jurusan_pegawai->EditValue = HtmlEncode($this->jurusan_pegawai->AdvancedSearch->SearchValue);
+			$this->jurusan_pegawai->PlaceHolder = RemoveHtml($this->jurusan_pegawai->caption());
+
+			// spesialis_pegawai
+			$this->spesialis_pegawai->EditAttrs["class"] = "form-control";
+			$this->spesialis_pegawai->EditCustomAttributes = "";
+			if (!$this->spesialis_pegawai->Raw)
+				$this->spesialis_pegawai->AdvancedSearch->SearchValue = HtmlDecode($this->spesialis_pegawai->AdvancedSearch->SearchValue);
+			$this->spesialis_pegawai->EditValue = HtmlEncode($this->spesialis_pegawai->AdvancedSearch->SearchValue);
+			$this->spesialis_pegawai->PlaceHolder = RemoveHtml($this->spesialis_pegawai->caption());
+
+			// jabatan_pegawai
+			$this->jabatan_pegawai->EditAttrs["class"] = "form-control";
+			$this->jabatan_pegawai->EditCustomAttributes = "";
+			$curVal = trim(strval($this->jabatan_pegawai->AdvancedSearch->SearchValue));
+			if ($curVal != "")
+				$this->jabatan_pegawai->AdvancedSearch->ViewValue = $this->jabatan_pegawai->lookupCacheOption($curVal);
+			else
+				$this->jabatan_pegawai->AdvancedSearch->ViewValue = $this->jabatan_pegawai->Lookup !== NULL && is_array($this->jabatan_pegawai->Lookup->Options) ? $curVal : NULL;
+			if ($this->jabatan_pegawai->AdvancedSearch->ViewValue !== NULL) { // Load from cache
+				$this->jabatan_pegawai->EditValue = array_values($this->jabatan_pegawai->Lookup->Options);
+			} else { // Lookup from database
+				if ($curVal == "") {
+					$filterWrk = "0=1";
+				} else {
+					$filterWrk = "`id`" . SearchString("=", $this->jabatan_pegawai->AdvancedSearch->SearchValue, DATATYPE_NUMBER, "");
+				}
+				$sqlWrk = $this->jabatan_pegawai->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				$arwrk = $rswrk ? $rswrk->getRows() : [];
+				if ($rswrk)
+					$rswrk->close();
+				$this->jabatan_pegawai->EditValue = $arwrk;
+			}
+
+			// status_pegawai
+			$this->status_pegawai->EditCustomAttributes = "";
+			$this->status_pegawai->EditValue = $this->status_pegawai->options(FALSE);
+
+			// tarif_pegawai
+			$this->tarif_pegawai->EditAttrs["class"] = "form-control";
+			$this->tarif_pegawai->EditCustomAttributes = "";
+			$this->tarif_pegawai->EditValue = HtmlEncode($this->tarif_pegawai->AdvancedSearch->SearchValue);
+			$this->tarif_pegawai->PlaceHolder = RemoveHtml($this->tarif_pegawai->caption());
 
 			// id_klinik
 			$this->id_klinik->EditAttrs["class"] = "form-control";
@@ -1261,186 +1302,17 @@ class kartustok_search extends kartustok
 				$this->id_klinik->EditValue = $arwrk;
 			}
 
-			// tanggal
-			$this->tanggal->EditAttrs["class"] = "form-control";
-			$this->tanggal->EditCustomAttributes = "";
-			$this->tanggal->EditValue = HtmlEncode(FormatDateTime(UnFormatDateTime($this->tanggal->AdvancedSearch->SearchValue, 0), 8));
-			$this->tanggal->PlaceHolder = RemoveHtml($this->tanggal->caption());
+			// target
+			$this->target->EditAttrs["class"] = "form-control";
+			$this->target->EditCustomAttributes = "";
+			$this->target->EditValue = HtmlEncode($this->target->AdvancedSearch->SearchValue);
+			$this->target->PlaceHolder = RemoveHtml($this->target->caption());
 
-			// id_terimabarang
-			$this->id_terimabarang->EditAttrs["class"] = "form-control";
-			$this->id_terimabarang->EditCustomAttributes = "";
-			$this->id_terimabarang->EditValue = HtmlEncode($this->id_terimabarang->AdvancedSearch->SearchValue);
-			$curVal = strval($this->id_terimabarang->AdvancedSearch->SearchValue);
-			if ($curVal != "") {
-				$this->id_terimabarang->EditValue = $this->id_terimabarang->lookupCacheOption($curVal);
-				if ($this->id_terimabarang->EditValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->id_terimabarang->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-						$this->id_terimabarang->EditValue = $this->id_terimabarang->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->id_terimabarang->EditValue = HtmlEncode($this->id_terimabarang->AdvancedSearch->SearchValue);
-					}
-				}
-			} else {
-				$this->id_terimabarang->EditValue = NULL;
-			}
-			$this->id_terimabarang->PlaceHolder = RemoveHtml($this->id_terimabarang->caption());
-
-			// id_terimagudang
-			$this->id_terimagudang->EditAttrs["class"] = "form-control";
-			$this->id_terimagudang->EditCustomAttributes = "";
-			$this->id_terimagudang->EditValue = HtmlEncode($this->id_terimagudang->AdvancedSearch->SearchValue);
-			$curVal = strval($this->id_terimagudang->AdvancedSearch->SearchValue);
-			if ($curVal != "") {
-				$this->id_terimagudang->EditValue = $this->id_terimagudang->lookupCacheOption($curVal);
-				if ($this->id_terimagudang->EditValue === NULL) { // Lookup from database
-					$filterWrk = "`id_terimagudang`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->id_terimagudang->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-						$this->id_terimagudang->EditValue = $this->id_terimagudang->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->id_terimagudang->EditValue = HtmlEncode($this->id_terimagudang->AdvancedSearch->SearchValue);
-					}
-				}
-			} else {
-				$this->id_terimagudang->EditValue = NULL;
-			}
-			$this->id_terimagudang->PlaceHolder = RemoveHtml($this->id_terimagudang->caption());
-
-			// id_penjualan
-			$this->id_penjualan->EditAttrs["class"] = "form-control";
-			$this->id_penjualan->EditCustomAttributes = "";
-			$this->id_penjualan->EditValue = HtmlEncode($this->id_penjualan->AdvancedSearch->SearchValue);
-			$curVal = strval($this->id_penjualan->AdvancedSearch->SearchValue);
-			if ($curVal != "") {
-				$this->id_penjualan->EditValue = $this->id_penjualan->lookupCacheOption($curVal);
-				if ($this->id_penjualan->EditValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->id_penjualan->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-						$this->id_penjualan->EditValue = $this->id_penjualan->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->id_penjualan->EditValue = HtmlEncode($this->id_penjualan->AdvancedSearch->SearchValue);
-					}
-				}
-			} else {
-				$this->id_penjualan->EditValue = NULL;
-			}
-			$this->id_penjualan->PlaceHolder = RemoveHtml($this->id_penjualan->caption());
-
-			// id_kirimbarang
-			$this->id_kirimbarang->EditAttrs["class"] = "form-control";
-			$this->id_kirimbarang->EditCustomAttributes = "";
-			$this->id_kirimbarang->EditValue = HtmlEncode($this->id_kirimbarang->AdvancedSearch->SearchValue);
-			$curVal = strval($this->id_kirimbarang->AdvancedSearch->SearchValue);
-			if ($curVal != "") {
-				$this->id_kirimbarang->EditValue = $this->id_kirimbarang->lookupCacheOption($curVal);
-				if ($this->id_kirimbarang->EditValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->id_kirimbarang->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-						$this->id_kirimbarang->EditValue = $this->id_kirimbarang->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->id_kirimbarang->EditValue = HtmlEncode($this->id_kirimbarang->AdvancedSearch->SearchValue);
-					}
-				}
-			} else {
-				$this->id_kirimbarang->EditValue = NULL;
-			}
-			$this->id_kirimbarang->PlaceHolder = RemoveHtml($this->id_kirimbarang->caption());
-
-			// id_nonjual
-			$this->id_nonjual->EditAttrs["class"] = "form-control";
-			$this->id_nonjual->EditCustomAttributes = "";
-			$this->id_nonjual->EditValue = HtmlEncode($this->id_nonjual->AdvancedSearch->SearchValue);
-			$curVal = strval($this->id_nonjual->AdvancedSearch->SearchValue);
-			if ($curVal != "") {
-				$this->id_nonjual->EditValue = $this->id_nonjual->lookupCacheOption($curVal);
-				if ($this->id_nonjual->EditValue === NULL) { // Lookup from database
-					$filterWrk = "`id_nonjual`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->id_nonjual->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-						$this->id_nonjual->EditValue = $this->id_nonjual->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->id_nonjual->EditValue = HtmlEncode($this->id_nonjual->AdvancedSearch->SearchValue);
-					}
-				}
-			} else {
-				$this->id_nonjual->EditValue = NULL;
-			}
-			$this->id_nonjual->PlaceHolder = RemoveHtml($this->id_nonjual->caption());
-
-			// id_retur
-			$this->id_retur->EditAttrs["class"] = "form-control";
-			$this->id_retur->EditCustomAttributes = "";
-			$this->id_retur->EditValue = HtmlEncode($this->id_retur->AdvancedSearch->SearchValue);
-			$curVal = strval($this->id_retur->AdvancedSearch->SearchValue);
-			if ($curVal != "") {
-				$this->id_retur->EditValue = $this->id_retur->lookupCacheOption($curVal);
-				if ($this->id_retur->EditValue === NULL) { // Lookup from database
-					$filterWrk = "`id_retur`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->id_retur->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-						$this->id_retur->EditValue = $this->id_retur->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->id_retur->EditValue = HtmlEncode($this->id_retur->AdvancedSearch->SearchValue);
-					}
-				}
-			} else {
-				$this->id_retur->EditValue = NULL;
-			}
-			$this->id_retur->PlaceHolder = RemoveHtml($this->id_retur->caption());
-
-			// id_penyesuaian
-			$this->id_penyesuaian->EditAttrs["class"] = "form-control";
-			$this->id_penyesuaian->EditCustomAttributes = "";
-			$this->id_penyesuaian->EditValue = HtmlEncode($this->id_penyesuaian->AdvancedSearch->SearchValue);
-			$curVal = strval($this->id_penyesuaian->AdvancedSearch->SearchValue);
-			if ($curVal != "") {
-				$this->id_penyesuaian->EditValue = $this->id_penyesuaian->lookupCacheOption($curVal);
-				if ($this->id_penyesuaian->EditValue === NULL) { // Lookup from database
-					$filterWrk = "`id_penyesuaianstok`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->id_penyesuaian->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-						$this->id_penyesuaian->EditValue = $this->id_penyesuaian->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->id_penyesuaian->EditValue = HtmlEncode($this->id_penyesuaian->AdvancedSearch->SearchValue);
-					}
-				}
-			} else {
-				$this->id_penyesuaian->EditValue = NULL;
-			}
-			$this->id_penyesuaian->PlaceHolder = RemoveHtml($this->id_penyesuaian->caption());
+			// nilai_komisi
+			$this->nilai_komisi->EditAttrs["class"] = "form-control";
+			$this->nilai_komisi->EditCustomAttributes = "";
+			$this->nilai_komisi->EditValue = HtmlEncode($this->nilai_komisi->AdvancedSearch->SearchValue);
+			$this->nilai_komisi->PlaceHolder = RemoveHtml($this->nilai_komisi->caption());
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -1461,32 +1333,20 @@ class kartustok_search extends kartustok
 		// Check if validation required
 		if (!Config("SERVER_VALIDATE"))
 			return TRUE;
-		if (!CheckInteger($this->id_barang->AdvancedSearch->SearchValue)) {
-			AddMessage($SearchError, $this->id_barang->errorMessage());
+		if (!CheckInteger($this->id_pegawai->AdvancedSearch->SearchValue)) {
+			AddMessage($SearchError, $this->id_pegawai->errorMessage());
 		}
-		if (!CheckDate($this->tanggal->AdvancedSearch->SearchValue)) {
-			AddMessage($SearchError, $this->tanggal->errorMessage());
+		if (!CheckDate($this->tgllahir_pegawai->AdvancedSearch->SearchValue)) {
+			AddMessage($SearchError, $this->tgllahir_pegawai->errorMessage());
 		}
-		if (!CheckInteger($this->id_terimabarang->AdvancedSearch->SearchValue)) {
-			AddMessage($SearchError, $this->id_terimabarang->errorMessage());
+		if (!CheckInteger($this->tarif_pegawai->AdvancedSearch->SearchValue)) {
+			AddMessage($SearchError, $this->tarif_pegawai->errorMessage());
 		}
-		if (!CheckInteger($this->id_terimagudang->AdvancedSearch->SearchValue)) {
-			AddMessage($SearchError, $this->id_terimagudang->errorMessage());
+		if (!CheckInteger($this->target->AdvancedSearch->SearchValue)) {
+			AddMessage($SearchError, $this->target->errorMessage());
 		}
-		if (!CheckInteger($this->id_penjualan->AdvancedSearch->SearchValue)) {
-			AddMessage($SearchError, $this->id_penjualan->errorMessage());
-		}
-		if (!CheckInteger($this->id_kirimbarang->AdvancedSearch->SearchValue)) {
-			AddMessage($SearchError, $this->id_kirimbarang->errorMessage());
-		}
-		if (!CheckInteger($this->id_nonjual->AdvancedSearch->SearchValue)) {
-			AddMessage($SearchError, $this->id_nonjual->errorMessage());
-		}
-		if (!CheckInteger($this->id_retur->AdvancedSearch->SearchValue)) {
-			AddMessage($SearchError, $this->id_retur->errorMessage());
-		}
-		if (!CheckInteger($this->id_penyesuaian->AdvancedSearch->SearchValue)) {
-			AddMessage($SearchError, $this->id_penyesuaian->errorMessage());
+		if (!CheckInteger($this->nilai_komisi->AdvancedSearch->SearchValue)) {
+			AddMessage($SearchError, $this->nilai_komisi->errorMessage());
 		}
 
 		// Return validate result
@@ -1504,16 +1364,24 @@ class kartustok_search extends kartustok
 	// Load advanced search
 	public function loadAdvancedSearch()
 	{
-		$this->id_barang->AdvancedSearch->load();
+		$this->id_pegawai->AdvancedSearch->load();
+		$this->nama_pegawai->AdvancedSearch->load();
+		$this->nama_lengkap->AdvancedSearch->load();
+		$this->jenis_pegawai->AdvancedSearch->load();
+		$this->nik_pegawai->AdvancedSearch->load();
+		$this->agama_pegawai->AdvancedSearch->load();
+		$this->tgllahir_pegawai->AdvancedSearch->load();
+		$this->alamat_pegawai->AdvancedSearch->load();
+		$this->hp_pegawai->AdvancedSearch->load();
+		$this->pendidikan_pegawai->AdvancedSearch->load();
+		$this->jurusan_pegawai->AdvancedSearch->load();
+		$this->spesialis_pegawai->AdvancedSearch->load();
+		$this->jabatan_pegawai->AdvancedSearch->load();
+		$this->status_pegawai->AdvancedSearch->load();
+		$this->tarif_pegawai->AdvancedSearch->load();
 		$this->id_klinik->AdvancedSearch->load();
-		$this->tanggal->AdvancedSearch->load();
-		$this->id_terimabarang->AdvancedSearch->load();
-		$this->id_terimagudang->AdvancedSearch->load();
-		$this->id_penjualan->AdvancedSearch->load();
-		$this->id_kirimbarang->AdvancedSearch->load();
-		$this->id_nonjual->AdvancedSearch->load();
-		$this->id_retur->AdvancedSearch->load();
-		$this->id_penyesuaian->AdvancedSearch->load();
+		$this->target->AdvancedSearch->load();
+		$this->nilai_komisi->AdvancedSearch->load();
 	}
 
 	// Set up Breadcrumb
@@ -1522,7 +1390,7 @@ class kartustok_search extends kartustok
 		global $Breadcrumb, $Language;
 		$Breadcrumb = new Breadcrumb();
 		$url = substr(CurrentUrl(), strrpos(CurrentUrl(), "/")+1);
-		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("kartustoklist.php"), "", $this->TableVar, TRUE);
+		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("m_pegawailist.php"), "", $this->TableVar, TRUE);
 		$pageId = "search";
 		$Breadcrumb->add("search", $pageId, $url);
 	}
@@ -1541,23 +1409,15 @@ class kartustok_search extends kartustok
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
-				case "x_id_barang":
+				case "x_jenis_pegawai":
+					break;
+				case "x_agama_pegawai":
+					break;
+				case "x_jabatan_pegawai":
+					break;
+				case "x_status_pegawai":
 					break;
 				case "x_id_klinik":
-					break;
-				case "x_id_terimabarang":
-					break;
-				case "x_id_terimagudang":
-					break;
-				case "x_id_penjualan":
-					break;
-				case "x_id_kirimbarang":
-					break;
-				case "x_id_nonjual":
-					break;
-				case "x_id_retur":
-					break;
-				case "x_id_penyesuaian":
 					break;
 				default:
 					$lookupFilter = "";
@@ -1579,23 +1439,11 @@ class kartustok_search extends kartustok
 
 					// Format the field values
 					switch ($fld->FieldVar) {
-						case "x_id_barang":
+						case "x_agama_pegawai":
+							break;
+						case "x_jabatan_pegawai":
 							break;
 						case "x_id_klinik":
-							break;
-						case "x_id_terimabarang":
-							break;
-						case "x_id_terimagudang":
-							break;
-						case "x_id_penjualan":
-							break;
-						case "x_id_kirimbarang":
-							break;
-						case "x_id_nonjual":
-							break;
-						case "x_id_retur":
-							break;
-						case "x_id_penyesuaian":
 							break;
 					}
 					$ar[strval($row[0])] = $row;

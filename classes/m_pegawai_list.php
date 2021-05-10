@@ -917,13 +917,19 @@ class m_pegawai_list extends m_pegawai
 
 			// Get default search criteria
 			AddFilter($this->DefaultSearchWhere, $this->basicSearchWhere(TRUE));
+			AddFilter($this->DefaultSearchWhere, $this->advancedSearchWhere(TRUE));
 
 			// Get basic search values
 			$this->loadBasicSearchValues();
 
+			// Get and validate search values for advanced search
+			$this->loadSearchValues(); // Get search values
+
 			// Process filter list
 			if ($this->processFilterList())
 				$this->terminate();
+			if (!$this->validateSearch())
+				$this->setFailureMessage($SearchError);
 
 			// Restore search parms from Session if not searching / reset / export
 			if (($this->isExport() || $this->Command != "search" && $this->Command != "reset" && $this->Command != "resetall") && $this->Command != "json" && $this->checkSearchParms())
@@ -938,6 +944,10 @@ class m_pegawai_list extends m_pegawai
 			// Get basic search criteria
 			if ($SearchError == "")
 				$srchBasic = $this->basicSearchWhere();
+
+			// Get search criteria for advanced search
+			if ($SearchError == "")
+				$srchAdvanced = $this->advancedSearchWhere();
 		}
 
 		// Restore display records
@@ -959,7 +969,16 @@ class m_pegawai_list extends m_pegawai
 			$this->BasicSearch->loadDefault();
 			if ($this->BasicSearch->Keyword != "")
 				$srchBasic = $this->basicSearchWhere();
+
+			// Load advanced search from default
+			if ($this->loadAdvancedSearchDefault()) {
+				$srchAdvanced = $this->advancedSearchWhere();
+			}
 		}
+
+		// Restore search settings from Session
+		if ($SearchError == "")
+			$this->loadAdvancedSearch();
 
 		// Build search criteria
 		AddFilter($this->SearchWhere, $srchAdvanced);
@@ -1324,6 +1343,111 @@ class m_pegawai_list extends m_pegawai
 		$this->BasicSearch->setType(@$filter[Config("TABLE_BASIC_SEARCH_TYPE")]);
 	}
 
+	// Advanced search WHERE clause based on QueryString
+	protected function advancedSearchWhere($default = FALSE)
+	{
+		global $Security;
+		$where = "";
+		if (!$Security->canSearch())
+			return "";
+		$this->buildSearchSql($where, $this->id_pegawai, $default, FALSE); // id_pegawai
+		$this->buildSearchSql($where, $this->nama_pegawai, $default, FALSE); // nama_pegawai
+		$this->buildSearchSql($where, $this->nama_lengkap, $default, FALSE); // nama_lengkap
+		$this->buildSearchSql($where, $this->jenis_pegawai, $default, FALSE); // jenis_pegawai
+		$this->buildSearchSql($where, $this->nik_pegawai, $default, FALSE); // nik_pegawai
+		$this->buildSearchSql($where, $this->agama_pegawai, $default, FALSE); // agama_pegawai
+		$this->buildSearchSql($where, $this->tgllahir_pegawai, $default, FALSE); // tgllahir_pegawai
+		$this->buildSearchSql($where, $this->alamat_pegawai, $default, FALSE); // alamat_pegawai
+		$this->buildSearchSql($where, $this->hp_pegawai, $default, FALSE); // hp_pegawai
+		$this->buildSearchSql($where, $this->pendidikan_pegawai, $default, FALSE); // pendidikan_pegawai
+		$this->buildSearchSql($where, $this->jurusan_pegawai, $default, FALSE); // jurusan_pegawai
+		$this->buildSearchSql($where, $this->spesialis_pegawai, $default, FALSE); // spesialis_pegawai
+		$this->buildSearchSql($where, $this->jabatan_pegawai, $default, FALSE); // jabatan_pegawai
+		$this->buildSearchSql($where, $this->status_pegawai, $default, FALSE); // status_pegawai
+		$this->buildSearchSql($where, $this->tarif_pegawai, $default, FALSE); // tarif_pegawai
+		$this->buildSearchSql($where, $this->id_klinik, $default, FALSE); // id_klinik
+		$this->buildSearchSql($where, $this->target, $default, FALSE); // target
+		$this->buildSearchSql($where, $this->nilai_komisi, $default, FALSE); // nilai_komisi
+
+		// Set up search parm
+		if (!$default && $where != "" && in_array($this->Command, ["", "reset", "resetall"])) {
+			$this->Command = "search";
+		}
+		if (!$default && $this->Command == "search") {
+			$this->id_pegawai->AdvancedSearch->save(); // id_pegawai
+			$this->nama_pegawai->AdvancedSearch->save(); // nama_pegawai
+			$this->nama_lengkap->AdvancedSearch->save(); // nama_lengkap
+			$this->jenis_pegawai->AdvancedSearch->save(); // jenis_pegawai
+			$this->nik_pegawai->AdvancedSearch->save(); // nik_pegawai
+			$this->agama_pegawai->AdvancedSearch->save(); // agama_pegawai
+			$this->tgllahir_pegawai->AdvancedSearch->save(); // tgllahir_pegawai
+			$this->alamat_pegawai->AdvancedSearch->save(); // alamat_pegawai
+			$this->hp_pegawai->AdvancedSearch->save(); // hp_pegawai
+			$this->pendidikan_pegawai->AdvancedSearch->save(); // pendidikan_pegawai
+			$this->jurusan_pegawai->AdvancedSearch->save(); // jurusan_pegawai
+			$this->spesialis_pegawai->AdvancedSearch->save(); // spesialis_pegawai
+			$this->jabatan_pegawai->AdvancedSearch->save(); // jabatan_pegawai
+			$this->status_pegawai->AdvancedSearch->save(); // status_pegawai
+			$this->tarif_pegawai->AdvancedSearch->save(); // tarif_pegawai
+			$this->id_klinik->AdvancedSearch->save(); // id_klinik
+			$this->target->AdvancedSearch->save(); // target
+			$this->nilai_komisi->AdvancedSearch->save(); // nilai_komisi
+		}
+		return $where;
+	}
+
+	// Build search SQL
+	protected function buildSearchSql(&$where, &$fld, $default, $multiValue)
+	{
+		$fldParm = $fld->Param;
+		$fldVal = ($default) ? $fld->AdvancedSearch->SearchValueDefault : $fld->AdvancedSearch->SearchValue;
+		$fldOpr = ($default) ? $fld->AdvancedSearch->SearchOperatorDefault : $fld->AdvancedSearch->SearchOperator;
+		$fldCond = ($default) ? $fld->AdvancedSearch->SearchConditionDefault : $fld->AdvancedSearch->SearchCondition;
+		$fldVal2 = ($default) ? $fld->AdvancedSearch->SearchValue2Default : $fld->AdvancedSearch->SearchValue2;
+		$fldOpr2 = ($default) ? $fld->AdvancedSearch->SearchOperator2Default : $fld->AdvancedSearch->SearchOperator2;
+		$wrk = "";
+		if (is_array($fldVal))
+			$fldVal = implode(Config("MULTIPLE_OPTION_SEPARATOR"), $fldVal);
+		if (is_array($fldVal2))
+			$fldVal2 = implode(Config("MULTIPLE_OPTION_SEPARATOR"), $fldVal2);
+		$fldOpr = strtoupper(trim($fldOpr));
+		if ($fldOpr == "")
+			$fldOpr = "=";
+		$fldOpr2 = strtoupper(trim($fldOpr2));
+		if ($fldOpr2 == "")
+			$fldOpr2 = "=";
+		if (Config("SEARCH_MULTI_VALUE_OPTION") == 1 || !IsMultiSearchOperator($fldOpr))
+			$multiValue = FALSE;
+		if ($multiValue) {
+			$wrk1 = ($fldVal != "") ? GetMultiSearchSql($fld, $fldOpr, $fldVal, $this->Dbid) : ""; // Field value 1
+			$wrk2 = ($fldVal2 != "") ? GetMultiSearchSql($fld, $fldOpr2, $fldVal2, $this->Dbid) : ""; // Field value 2
+			$wrk = $wrk1; // Build final SQL
+			if ($wrk2 != "")
+				$wrk = ($wrk != "") ? "($wrk) $fldCond ($wrk2)" : $wrk2;
+		} else {
+			$fldVal = $this->convertSearchValue($fld, $fldVal);
+			$fldVal2 = $this->convertSearchValue($fld, $fldVal2);
+			$wrk = GetSearchSql($fld, $fldVal, $fldOpr, $fldCond, $fldVal2, $fldOpr2, $this->Dbid);
+		}
+		AddFilter($where, $wrk);
+	}
+
+	// Convert search value
+	protected function convertSearchValue(&$fld, $fldVal)
+	{
+		if ($fldVal == Config("NULL_VALUE") || $fldVal == Config("NOT_NULL_VALUE"))
+			return $fldVal;
+		$value = $fldVal;
+		if ($fld->isBoolean()) {
+			if ($fldVal != "")
+				$value = (SameText($fldVal, "1") || SameText($fldVal, "y") || SameText($fldVal, "t")) ? $fld->TrueValue : $fld->FalseValue;
+		} elseif ($fld->DataType == DATATYPE_DATE || $fld->DataType == DATATYPE_TIME) {
+			if ($fldVal != "")
+				$value = UnFormatDateTime($fldVal, $fld->DateTimeFormat);
+		}
+		return $value;
+	}
+
 	// Return basic search SQL
 	protected function basicSearchSql($arKeywords, $type)
 	{
@@ -1450,6 +1574,42 @@ class m_pegawai_list extends m_pegawai
 		// Check basic search
 		if ($this->BasicSearch->issetSession())
 			return TRUE;
+		if ($this->id_pegawai->AdvancedSearch->issetSession())
+			return TRUE;
+		if ($this->nama_pegawai->AdvancedSearch->issetSession())
+			return TRUE;
+		if ($this->nama_lengkap->AdvancedSearch->issetSession())
+			return TRUE;
+		if ($this->jenis_pegawai->AdvancedSearch->issetSession())
+			return TRUE;
+		if ($this->nik_pegawai->AdvancedSearch->issetSession())
+			return TRUE;
+		if ($this->agama_pegawai->AdvancedSearch->issetSession())
+			return TRUE;
+		if ($this->tgllahir_pegawai->AdvancedSearch->issetSession())
+			return TRUE;
+		if ($this->alamat_pegawai->AdvancedSearch->issetSession())
+			return TRUE;
+		if ($this->hp_pegawai->AdvancedSearch->issetSession())
+			return TRUE;
+		if ($this->pendidikan_pegawai->AdvancedSearch->issetSession())
+			return TRUE;
+		if ($this->jurusan_pegawai->AdvancedSearch->issetSession())
+			return TRUE;
+		if ($this->spesialis_pegawai->AdvancedSearch->issetSession())
+			return TRUE;
+		if ($this->jabatan_pegawai->AdvancedSearch->issetSession())
+			return TRUE;
+		if ($this->status_pegawai->AdvancedSearch->issetSession())
+			return TRUE;
+		if ($this->tarif_pegawai->AdvancedSearch->issetSession())
+			return TRUE;
+		if ($this->id_klinik->AdvancedSearch->issetSession())
+			return TRUE;
+		if ($this->target->AdvancedSearch->issetSession())
+			return TRUE;
+		if ($this->nilai_komisi->AdvancedSearch->issetSession())
+			return TRUE;
 		return FALSE;
 	}
 
@@ -1463,6 +1623,9 @@ class m_pegawai_list extends m_pegawai
 
 		// Clear basic search parameters
 		$this->resetBasicSearchParms();
+
+		// Clear advanced search parameters
+		$this->resetAdvancedSearchParms();
 	}
 
 	// Load advanced search default values
@@ -1477,6 +1640,29 @@ class m_pegawai_list extends m_pegawai
 		$this->BasicSearch->unsetSession();
 	}
 
+	// Clear all advanced search parameters
+	protected function resetAdvancedSearchParms()
+	{
+		$this->id_pegawai->AdvancedSearch->unsetSession();
+		$this->nama_pegawai->AdvancedSearch->unsetSession();
+		$this->nama_lengkap->AdvancedSearch->unsetSession();
+		$this->jenis_pegawai->AdvancedSearch->unsetSession();
+		$this->nik_pegawai->AdvancedSearch->unsetSession();
+		$this->agama_pegawai->AdvancedSearch->unsetSession();
+		$this->tgllahir_pegawai->AdvancedSearch->unsetSession();
+		$this->alamat_pegawai->AdvancedSearch->unsetSession();
+		$this->hp_pegawai->AdvancedSearch->unsetSession();
+		$this->pendidikan_pegawai->AdvancedSearch->unsetSession();
+		$this->jurusan_pegawai->AdvancedSearch->unsetSession();
+		$this->spesialis_pegawai->AdvancedSearch->unsetSession();
+		$this->jabatan_pegawai->AdvancedSearch->unsetSession();
+		$this->status_pegawai->AdvancedSearch->unsetSession();
+		$this->tarif_pegawai->AdvancedSearch->unsetSession();
+		$this->id_klinik->AdvancedSearch->unsetSession();
+		$this->target->AdvancedSearch->unsetSession();
+		$this->nilai_komisi->AdvancedSearch->unsetSession();
+	}
+
 	// Restore all search parameters
 	protected function restoreSearchParms()
 	{
@@ -1484,6 +1670,26 @@ class m_pegawai_list extends m_pegawai
 
 		// Restore basic search values
 		$this->BasicSearch->load();
+
+		// Restore advanced search values
+		$this->id_pegawai->AdvancedSearch->load();
+		$this->nama_pegawai->AdvancedSearch->load();
+		$this->nama_lengkap->AdvancedSearch->load();
+		$this->jenis_pegawai->AdvancedSearch->load();
+		$this->nik_pegawai->AdvancedSearch->load();
+		$this->agama_pegawai->AdvancedSearch->load();
+		$this->tgllahir_pegawai->AdvancedSearch->load();
+		$this->alamat_pegawai->AdvancedSearch->load();
+		$this->hp_pegawai->AdvancedSearch->load();
+		$this->pendidikan_pegawai->AdvancedSearch->load();
+		$this->jurusan_pegawai->AdvancedSearch->load();
+		$this->spesialis_pegawai->AdvancedSearch->load();
+		$this->jabatan_pegawai->AdvancedSearch->load();
+		$this->status_pegawai->AdvancedSearch->load();
+		$this->tarif_pegawai->AdvancedSearch->load();
+		$this->id_klinik->AdvancedSearch->load();
+		$this->target->AdvancedSearch->load();
+		$this->nilai_komisi->AdvancedSearch->load();
 	}
 
 	// Set up sort parameters
@@ -1883,6 +2089,141 @@ class m_pegawai_list extends m_pegawai
 		$this->BasicSearch->setType(Get(Config("TABLE_BASIC_SEARCH_TYPE"), ""), FALSE);
 	}
 
+	// Load search values for validation
+	protected function loadSearchValues()
+	{
+
+		// Load search values
+		$got = FALSE;
+
+		// id_pegawai
+		if (!$this->isAddOrEdit() && $this->id_pegawai->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->id_pegawai->AdvancedSearch->SearchValue != "" || $this->id_pegawai->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
+		// nama_pegawai
+		if (!$this->isAddOrEdit() && $this->nama_pegawai->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->nama_pegawai->AdvancedSearch->SearchValue != "" || $this->nama_pegawai->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
+		// nama_lengkap
+		if (!$this->isAddOrEdit() && $this->nama_lengkap->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->nama_lengkap->AdvancedSearch->SearchValue != "" || $this->nama_lengkap->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
+		// jenis_pegawai
+		if (!$this->isAddOrEdit() && $this->jenis_pegawai->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->jenis_pegawai->AdvancedSearch->SearchValue != "" || $this->jenis_pegawai->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
+		// nik_pegawai
+		if (!$this->isAddOrEdit() && $this->nik_pegawai->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->nik_pegawai->AdvancedSearch->SearchValue != "" || $this->nik_pegawai->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
+		// agama_pegawai
+		if (!$this->isAddOrEdit() && $this->agama_pegawai->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->agama_pegawai->AdvancedSearch->SearchValue != "" || $this->agama_pegawai->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
+		// tgllahir_pegawai
+		if (!$this->isAddOrEdit() && $this->tgllahir_pegawai->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->tgllahir_pegawai->AdvancedSearch->SearchValue != "" || $this->tgllahir_pegawai->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
+		// alamat_pegawai
+		if (!$this->isAddOrEdit() && $this->alamat_pegawai->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->alamat_pegawai->AdvancedSearch->SearchValue != "" || $this->alamat_pegawai->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
+		// hp_pegawai
+		if (!$this->isAddOrEdit() && $this->hp_pegawai->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->hp_pegawai->AdvancedSearch->SearchValue != "" || $this->hp_pegawai->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
+		// pendidikan_pegawai
+		if (!$this->isAddOrEdit() && $this->pendidikan_pegawai->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->pendidikan_pegawai->AdvancedSearch->SearchValue != "" || $this->pendidikan_pegawai->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
+		// jurusan_pegawai
+		if (!$this->isAddOrEdit() && $this->jurusan_pegawai->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->jurusan_pegawai->AdvancedSearch->SearchValue != "" || $this->jurusan_pegawai->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
+		// spesialis_pegawai
+		if (!$this->isAddOrEdit() && $this->spesialis_pegawai->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->spesialis_pegawai->AdvancedSearch->SearchValue != "" || $this->spesialis_pegawai->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
+		// jabatan_pegawai
+		if (!$this->isAddOrEdit() && $this->jabatan_pegawai->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->jabatan_pegawai->AdvancedSearch->SearchValue != "" || $this->jabatan_pegawai->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
+		// status_pegawai
+		if (!$this->isAddOrEdit() && $this->status_pegawai->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->status_pegawai->AdvancedSearch->SearchValue != "" || $this->status_pegawai->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
+		// tarif_pegawai
+		if (!$this->isAddOrEdit() && $this->tarif_pegawai->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->tarif_pegawai->AdvancedSearch->SearchValue != "" || $this->tarif_pegawai->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
+		// id_klinik
+		if (!$this->isAddOrEdit() && $this->id_klinik->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->id_klinik->AdvancedSearch->SearchValue != "" || $this->id_klinik->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
+		// target
+		if (!$this->isAddOrEdit() && $this->target->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->target->AdvancedSearch->SearchValue != "" || $this->target->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
+		// nilai_komisi
+		if (!$this->isAddOrEdit() && $this->nilai_komisi->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->nilai_komisi->AdvancedSearch->SearchValue != "" || $this->nilai_komisi->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+		return $got;
+	}
+
 	// Load recordset
 	public function loadRecordset($offset = -1, $rowcnt = -1)
 	{
@@ -2245,6 +2586,53 @@ class m_pegawai_list extends m_pegawai
 			$this->Row_Rendered();
 	}
 
+	// Validate search
+	protected function validateSearch()
+	{
+		global $SearchError;
+
+		// Initialize
+		$SearchError = "";
+
+		// Check if validation required
+		if (!Config("SERVER_VALIDATE"))
+			return TRUE;
+
+		// Return validate result
+		$validateSearch = ($SearchError == "");
+
+		// Call Form_CustomValidate event
+		$formCustomError = "";
+		$validateSearch = $validateSearch && $this->Form_CustomValidate($formCustomError);
+		if ($formCustomError != "") {
+			AddMessage($SearchError, $formCustomError);
+		}
+		return $validateSearch;
+	}
+
+	// Load advanced search
+	public function loadAdvancedSearch()
+	{
+		$this->id_pegawai->AdvancedSearch->load();
+		$this->nama_pegawai->AdvancedSearch->load();
+		$this->nama_lengkap->AdvancedSearch->load();
+		$this->jenis_pegawai->AdvancedSearch->load();
+		$this->nik_pegawai->AdvancedSearch->load();
+		$this->agama_pegawai->AdvancedSearch->load();
+		$this->tgllahir_pegawai->AdvancedSearch->load();
+		$this->alamat_pegawai->AdvancedSearch->load();
+		$this->hp_pegawai->AdvancedSearch->load();
+		$this->pendidikan_pegawai->AdvancedSearch->load();
+		$this->jurusan_pegawai->AdvancedSearch->load();
+		$this->spesialis_pegawai->AdvancedSearch->load();
+		$this->jabatan_pegawai->AdvancedSearch->load();
+		$this->status_pegawai->AdvancedSearch->load();
+		$this->tarif_pegawai->AdvancedSearch->load();
+		$this->id_klinik->AdvancedSearch->load();
+		$this->target->AdvancedSearch->load();
+		$this->nilai_komisi->AdvancedSearch->load();
+	}
+
 	// Get export HTML tag
 	protected function getExportTag($type, $custom = FALSE)
 	{
@@ -2353,6 +2741,14 @@ class m_pegawai_list extends m_pegawai
 		$item = &$this->SearchOptions->add("showall");
 		$item->Body = "<a class=\"btn btn-default ew-show-all\" title=\"" . $Language->phrase("ShowAll") . "\" data-caption=\"" . $Language->phrase("ShowAll") . "\" href=\"" . $this->pageUrl() . "cmd=reset\">" . $Language->phrase("ShowAllBtn") . "</a>";
 		$item->Visible = ($this->SearchWhere != $this->DefaultSearchWhere && $this->SearchWhere != "0=101");
+
+		// Advanced search button
+		$item = &$this->SearchOptions->add("advancedsearch");
+		if (IsMobile())
+			$item->Body = "<a class=\"btn btn-default ew-advanced-search\" title=\"" . $Language->phrase("AdvancedSearch") . "\" data-caption=\"" . $Language->phrase("AdvancedSearch") . "\" href=\"m_pegawaisrch.php\">" . $Language->phrase("AdvancedSearchBtn") . "</a>";
+		else
+			$item->Body = "<a class=\"btn btn-default ew-advanced-search\" title=\"" . $Language->phrase("AdvancedSearch") . "\" data-table=\"m_pegawai\" data-caption=\"" . $Language->phrase("AdvancedSearch") . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'SearchBtn',url:'m_pegawaisrch.php'});\">" . $Language->phrase("AdvancedSearchBtn") . "</a>";
+		$item->Visible = TRUE;
 
 		// Button group for search
 		$this->SearchOptions->UseDropDownButton = FALSE;

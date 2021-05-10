@@ -67,10 +67,10 @@ Page_Rendering();
 	  $result = ExecuteRows($query);
 }
 
-  function rupiah($angka){
-	$hasil_rupiah = number_format($angka);
-	return $hasil_rupiah;
-	}
+		function rupiah($angka){
+			 $hasil_rupiah = "Rp" . number_format($angka);
+			 return $hasil_rupiah;
+		}
 ?>
 
 <div class="container-fluid">	
@@ -170,6 +170,7 @@ Page_Rendering();
 		  }else{
 			$totalcabang = 0;
 			$totalbruto = 0;
+			$mso='"\@"';
 			foreach ($result as $rs) {
 			
 			$subtotal = ExecuteScalar("SELECT SUM(subtotal) FROM detailpenjualan WHERE id_penjualan = ".$rs['id_penjualan']." ORDER BY id");
@@ -196,7 +197,7 @@ Page_Rendering();
 					  echo $rs["nama_pelanggan"];
 					}echo
 				  "</td>
-				  <td align='right'>" . $subtotal . "</td>
+				  <td align='right' style='mso-number-format:".$mso."'>" . rupiah($subtotal) . "</td>
 				  <td align='center'>"; 
 					if($rs["diskon_persen"] == '0'){
 					  echo "-";
@@ -204,11 +205,11 @@ Page_Rendering();
 					  echo $rs["diskon_persen"];
 					}echo
 				  "</td>
-				  <td align='center'>"; 
+				  <td align='center' style='mso-number-format:".$mso."'>"; 
 					if($rs["diskon_rupiah"] == '0'){
 					  echo "-";
 					}else{
-					  echo $rs["diskon_rupiah"];
+					  echo rupiah($rs["diskon_rupiah"]);
 					}echo
 				  "</td>
 				  <td align='center'>"; 
@@ -218,8 +219,8 @@ Page_Rendering();
 					  echo $rs["ppn"];
 					}echo
 				  "</td>
-				  <td align='right'>"; 
-					echo $rs["total"];
+				  <td align='right' style='mso-number-format:".$mso."'>"; 
+					echo rupiah($rs["total"]);
 					echo "</td>
 					<td align='center'>
 						<button class='btn btn-link' onclick='showDetails(".$rs["id_penjualan"].");'>
@@ -248,11 +249,11 @@ Page_Rendering();
 								foreach ($details as $row) {
 									echo "<tr>
 										<td>".$row["nama_barang"]."</td>
-										<td>".$row["harga_jual"]."</td>
+										<td style='mso-number-format:".$mso."'>".rupiah($row["harga_jual"])."</td>
 										<td>".$row["qty"]."</td>
 										<td>".$row["disc_pr"]."</td>
-										<td>".$row["disc_rp"]."</td>
-										<td>".$row["subtotal"]."</td>
+										<td style='mso-number-format:".$mso."'>".rupiah($row["disc_rp"])."</td>
+										<td style='mso-number-format:".$mso."'>".rupiah($row["subtotal"])."</td>
 									</tr>";
 								}
 					echo "</tbody>
@@ -268,10 +269,10 @@ Page_Rendering();
 		?>
 		  <tr>
 				<td colspan="3" align="right"><b>Total Bruto</b></td>
-				<td align="right">
+				<td align="right" style="mso-number-format:'\@'">
 				<b>
 					<?php if(isset($totalbruto)) {
-							echo $totalbruto;
+							echo rupiah($totalbruto);
 						  }
 						  $totalbruto = isset($totalbruto) ? $totalbruto : '0';
 					?>
@@ -279,10 +280,10 @@ Page_Rendering();
 				</td>
 				
 				<td colspan="3" align="right"><b>Total per Cabang</b></td>
-				<td align="right">
+				<td align="right" style="mso-number-format:'\@'">
 				<b>
 					<?php if(isset($totalcabang)) {
-							echo $totalcabang;
+							echo rupiah($totalcabang);
 						  }
 						  $totalcabang = isset($totalcabang) ? $totalcabang : '0';
 					?>

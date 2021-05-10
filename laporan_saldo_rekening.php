@@ -200,6 +200,7 @@ Page_Rendering();
 					echo '<tr><td  colspan="7" align="center">Kosong</td></tr>';							
 				}else{
 					$totalcabang = 0;
+					$mso='"\@"';
 			foreach ($result as $rs) {
 			
 			$subtotal = ExecuteScalar("SELECT SUM(detailpenjualan.subtotal) FROM detailpenjualan JOIN penjualan ON penjualan.id_penjualan = detailpenjualan.id_penjualan WHERE penjualan.kode_penjualan = ".$rs['kode_penjualan']." ORDER BY id");
@@ -209,7 +210,7 @@ Page_Rendering();
 			 			<td>" . $rs["nama_rekening"] . "</td>
 			 			<td>" . $rs["nama_klinik"] . "</td>			 			
 			 			<td>" . $rs["tanggal"] . "</td>
-			 			<td>" . rupiah($rs["jumlah"]) . "</td>			 			
+			 			<td style='mso-number-format:".$mso."'>" . rupiah($rs["jumlah"]) . "</td>			 			
 						<td align='center'>
 							<button class='btn btn-link' onclick='showDetails(".$rs["id"].");'>
 				  				Detail
@@ -237,7 +238,6 @@ Page_Rendering();
 									$details = ExecuteRows("SELECT * FROM penjualan	  										
 	  										JOIN m_pelanggan ON penjualan.id_pelanggan = m_pelanggan.id_pelanggan
 	  										WHERE penjualan.kode_penjualan = '$kode_penjualan'");
-									// dd($details);
 
 									foreach ($details as $row) {
 										echo "<tr>
@@ -246,9 +246,9 @@ Page_Rendering();
 											<td>".$row["nama_pelanggan"]."</td>
 											<td>".$row["diskon_persen"]."</td>
 											<td>".$row["diskon_rupiah"]."</td>
-											<td>".rupiah($row["bayar_non_tunai"])."</td>
+											<td style='mso-number-format:".$mso."'>".rupiah($row["bayar_non_tunai"])."</td>
 											<td>".$row["charge"]."</td>
-											<td>".rupiah($rs["jumlah"])."</td>
+											<td style='mso-number-format:".$mso."'>".rupiah($rs["jumlah"])."</td>
 										</tr>";
 									}
 						echo "</tbody>

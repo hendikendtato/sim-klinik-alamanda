@@ -82,7 +82,7 @@ Page_Rendering();
 	}
 
   	function rupiah($angka){
-		$hasil_rupiah = number_format($angka);
+		$hasil_rupiah = "Rp" . number_format($angka);
 		return $hasil_rupiah;
 	}
 ?>
@@ -181,6 +181,7 @@ Page_Rendering();
 				if (is_null($result) OR $result == false) {
 					echo '<tr><td  colspan="12" align="center">Kosong</td></tr>';							
 				}else{
+					$mso='"\@"';	
 					foreach ($result as $rs) {
 
 					$jumlah_total = ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE id_pelanggan = ".$rs['id_pelanggan']." ORDER BY id_pelanggan");
@@ -193,7 +194,7 @@ Page_Rendering();
 							echo $rs["nama_pelanggan"];
 							}echo
 						"</td>
-						<td>"; 
+						<td style='mso-number-format:".$mso."'>"; 
 							if(is_null($jumlah_total)){
 							echo "Tidak Ada Nilai";
 							}else{
@@ -223,7 +224,7 @@ Page_Rendering();
 											echo "<tr>
 												<td>".$row["kode_penjualan"]."</td>
 												<td>".$row["waktu"]."</td>
-												<td>".rupiah($row["total"])."</td>
+												<td style='mso-number-format:".$mso."'>".rupiah($row["total"])."</td>
 											</tr>";
 										}
 										echo "</tbody>

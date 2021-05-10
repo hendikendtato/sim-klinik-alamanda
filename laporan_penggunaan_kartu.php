@@ -221,6 +221,7 @@ Page_Rendering();
 												$dateFrom = $_POST['dateFrom'];
 												$dateTo = $_POST['dateTo'];
 												$cabang = $_POST['cabang'];
+												$mso='"\@"';
 
 												$details = ExecuteRows("SELECT * FROM penggunaan_kartu	  										
 												WHERE id_kartu = '" .$rs['id_kartu']. "' AND id_klinik ='$cabang' AND (tgl BETWEEN '$dateFrom' AND '$dateTo') ");
@@ -230,17 +231,17 @@ Page_Rendering();
 													echo "<tr>
 														<td>".tgl_indo($row["tgl"])."</td>
 														<td>".$row["kode_penjualan"]."</td>
-														<td align='right'>".rupiah($row["total"])."</td>
+														<td align='right' style='mso-number-format:".$mso."'>".rupiah($row["total"])."</td>
 														<td align='right'>".$row["charge"]."</td>
-														<td align='right'>".rupiah($row["total_charge"])."</td>
+														<td align='right' style='mso-number-format:".$mso."'>".rupiah($row["total_charge"])."</td>
 													</tr>";
 													$total += $row["total"];
 													$total_charge += $row["total_charge"];
 												}
 												echo "<tr>
 													<td colspan='2' align='right'><b>Total per Kartu ".$rs["nama_kartu"]."</b></td>
-													<td align='right'>".rupiah($total)."</td>
-													<td colspan='2' align='right'>".rupiah($total_charge)."</td>
+													<td align='right' style='mso-number-format:".$mso."'>".rupiah($total)."</td>
+													<td colspan='2' align='right' style='mso-number-format:".$mso."'>".rupiah($total_charge)."</td>
 												</tr>";
 									echo "</tbody>
 								</table>
@@ -266,7 +267,7 @@ Page_Rendering();
 								?>
 						</b>
 					</td>
-					<td align="right">
+					<td align="right" style="mso-number-format:'\@'">
 						<b>
 							<?php if(isset($totalcabang_total)) {
 									echo rupiah($totalcabang_total);							
@@ -275,7 +276,7 @@ Page_Rendering();
 							?>
 						</b>
 					</td>
-					<td colspan='2' align="right">
+					<td colspan='2' align="right" style="mso-number-format:'\@'">
 						<b>
 							<?php if(isset($totalcabang_total_charge)) {
 									echo rupiah($totalcabang_total_charge);							
@@ -291,7 +292,7 @@ Page_Rendering();
 					<td colspan='2' align="right">
 						<b>Grand Total</b>
 					</td>
-					<td align="right">
+					<td align="right" style="mso-number-format:'\@'">
 						<b>
 							<?php if(isset($totalcabang_total)) {
 									echo rupiah($totalcabang_total);							
@@ -300,7 +301,7 @@ Page_Rendering();
 							?>
 						</b>
 					</td>
-					<td colspan='2' align="right">
+					<td colspan='2' align="right" style="mso-number-format:'\@'">
 						<b>
 							<?php if(isset($totalcabang_total_charge)) {
 									echo rupiah($totalcabang_total_charge);							

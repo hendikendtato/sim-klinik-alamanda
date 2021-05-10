@@ -87,7 +87,7 @@ Page_Rendering();
   }
 
   	function rupiah($angka){
-		$hasil_rupiah = number_format($angka);
+		$hasil_rupiah = "Rp" . number_format($angka);
 		return $hasil_rupiah;
 	}
 ?>
@@ -204,6 +204,7 @@ Page_Rendering();
 		  }else{
 				// $totalcabang = 0;
 				$count = 0;
+				$mso='"\@"';
 				foreach ($result as $rs) {
 					// $totalcabang += $rs['subtotal'];
 					$sum_jumlah = ExecuteScalar("SELECT SUM(jumlah) FROM detailmutasibank WHERE pid = ".$rs['id']."");
@@ -215,7 +216,7 @@ Page_Rendering();
 							<td>".$rs['nama']."</td>
 							<td>".$rs['nama_klinik']."</td>
 							<td>".$rs['tipe']."</td>
-							<td style='text-align: right;'>".rupiah($sum_jumlah)."</td>
+							<td style='text-align: right; mso-number-format:".$mso."'>".rupiah($sum_jumlah)."</td>
 							<td>".$rs['keterangan']."</td>
 							<td align='center'>
 								<button class='btn btn-link' onclick='showDetails(".$rs["id"].");'>
@@ -249,7 +250,7 @@ Page_Rendering();
 														echo $row["akun"];
 													}echo
 												"</td>
-												<td>".rupiah($row["jumlah"])."</td>
+												<td style='mso-number-format:".$mso."'>".rupiah($row["jumlah"])."</td>
 												<td>".$row["keterangan"]."</td>
 											</tr>";
 										}

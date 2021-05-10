@@ -111,10 +111,8 @@ class kartustok extends DbTable
 		$this->fields['tanggal'] = &$this->tanggal;
 
 		// id_terimabarang
-		$this->id_terimabarang = new DbField('kartustok', 'kartustok', 'x_id_terimabarang', 'id_terimabarang', '`id_terimabarang`', '`id_terimabarang`', 3, 11, -1, FALSE, '`id_terimabarang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->id_terimabarang = new DbField('kartustok', 'kartustok', 'x_id_terimabarang', 'id_terimabarang', '`id_terimabarang`', '`id_terimabarang`', 3, 11, -1, FALSE, '`id_terimabarang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->id_terimabarang->Sortable = TRUE; // Allow sort
-		$this->id_terimabarang->UsePleaseSelect = TRUE; // Use PleaseSelect by default
-		$this->id_terimabarang->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
 		$this->id_terimabarang->Lookup = new Lookup('id_terimabarang', 'terimabarang', FALSE, 'id', ["no_terima","","",""], [], [], [], [], [], [], '', '');
 		$this->id_terimabarang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id_terimabarang'] = &$this->id_terimabarang;
@@ -134,10 +132,8 @@ class kartustok extends DbTable
 		$this->fields['id_penjualan'] = &$this->id_penjualan;
 
 		// id_kirimbarang
-		$this->id_kirimbarang = new DbField('kartustok', 'kartustok', 'x_id_kirimbarang', 'id_kirimbarang', '`id_kirimbarang`', '`id_kirimbarang`', 3, 11, -1, FALSE, '`id_kirimbarang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->id_kirimbarang = new DbField('kartustok', 'kartustok', 'x_id_kirimbarang', 'id_kirimbarang', '`id_kirimbarang`', '`id_kirimbarang`', 3, 11, -1, FALSE, '`id_kirimbarang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->id_kirimbarang->Sortable = TRUE; // Allow sort
-		$this->id_kirimbarang->UsePleaseSelect = TRUE; // Use PleaseSelect by default
-		$this->id_kirimbarang->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
 		$this->id_kirimbarang->Lookup = new Lookup('id_kirimbarang', 'kirimbarang', FALSE, 'id', ["no_kirimbarang","","",""], [], [], [], [], [], [], '', '');
 		$this->id_kirimbarang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id_kirimbarang'] = &$this->id_kirimbarang;
@@ -145,14 +141,13 @@ class kartustok extends DbTable
 		// id_nonjual
 		$this->id_nonjual = new DbField('kartustok', 'kartustok', 'x_id_nonjual', 'id_nonjual', '`id_nonjual`', '`id_nonjual`', 3, 11, -1, FALSE, '`id_nonjual`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->id_nonjual->Sortable = TRUE; // Allow sort
+		$this->id_nonjual->Lookup = new Lookup('id_nonjual', 'nonjual', FALSE, 'id_nonjual', ["id_nonjual","","",""], [], [], [], [], [], [], '', '');
 		$this->id_nonjual->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id_nonjual'] = &$this->id_nonjual;
 
 		// id_retur
-		$this->id_retur = new DbField('kartustok', 'kartustok', 'x_id_retur', 'id_retur', '`id_retur`', '`id_retur`', 3, 11, -1, FALSE, '`id_retur`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->id_retur = new DbField('kartustok', 'kartustok', 'x_id_retur', 'id_retur', '`id_retur`', '`id_retur`', 3, 11, -1, FALSE, '`id_retur`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->id_retur->Sortable = TRUE; // Allow sort
-		$this->id_retur->UsePleaseSelect = TRUE; // Use PleaseSelect by default
-		$this->id_retur->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
 		$this->id_retur->Lookup = new Lookup('id_retur', 'returbarang', FALSE, 'id_retur', ["kode","","",""], [], [], [], [], [], [], '', '');
 		$this->id_retur->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id_retur'] = &$this->id_retur;
@@ -985,6 +980,7 @@ class kartustok extends DbTable
 		$this->tanggal->ViewCustomAttributes = "";
 
 		// id_terimabarang
+		$this->id_terimabarang->ViewValue = $this->id_terimabarang->CurrentValue;
 		$curVal = strval($this->id_terimabarang->CurrentValue);
 		if ($curVal != "") {
 			$this->id_terimabarang->ViewValue = $this->id_terimabarang->lookupCacheOption($curVal);
@@ -1053,6 +1049,7 @@ class kartustok extends DbTable
 		$this->id_penjualan->ViewCustomAttributes = "";
 
 		// id_kirimbarang
+		$this->id_kirimbarang->ViewValue = $this->id_kirimbarang->CurrentValue;
 		$curVal = strval($this->id_kirimbarang->CurrentValue);
 		if ($curVal != "") {
 			$this->id_kirimbarang->ViewValue = $this->id_kirimbarang->lookupCacheOption($curVal);
@@ -1076,10 +1073,29 @@ class kartustok extends DbTable
 
 		// id_nonjual
 		$this->id_nonjual->ViewValue = $this->id_nonjual->CurrentValue;
-		$this->id_nonjual->ViewValue = FormatNumber($this->id_nonjual->ViewValue, 0, -2, -2, -2);
+		$curVal = strval($this->id_nonjual->CurrentValue);
+		if ($curVal != "") {
+			$this->id_nonjual->ViewValue = $this->id_nonjual->lookupCacheOption($curVal);
+			if ($this->id_nonjual->ViewValue === NULL) { // Lookup from database
+				$filterWrk = "`id_nonjual`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+				$sqlWrk = $this->id_nonjual->Lookup->getSql(FALSE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = $rswrk->fields('df');
+					$this->id_nonjual->ViewValue = $this->id_nonjual->displayValue($arwrk);
+					$rswrk->Close();
+				} else {
+					$this->id_nonjual->ViewValue = $this->id_nonjual->CurrentValue;
+				}
+			}
+		} else {
+			$this->id_nonjual->ViewValue = NULL;
+		}
 		$this->id_nonjual->ViewCustomAttributes = "";
 
 		// id_retur
+		$this->id_retur->ViewValue = $this->id_retur->CurrentValue;
 		$curVal = strval($this->id_retur->CurrentValue);
 		if ($curVal != "") {
 			$this->id_retur->ViewValue = $this->id_retur->lookupCacheOption($curVal);
@@ -1334,6 +1350,8 @@ class kartustok extends DbTable
 		// id_terimabarang
 		$this->id_terimabarang->EditAttrs["class"] = "form-control";
 		$this->id_terimabarang->EditCustomAttributes = "";
+		$this->id_terimabarang->EditValue = $this->id_terimabarang->CurrentValue;
+		$this->id_terimabarang->PlaceHolder = RemoveHtml($this->id_terimabarang->caption());
 
 		// id_terimagudang
 		$this->id_terimagudang->EditAttrs["class"] = "form-control";
@@ -1350,6 +1368,8 @@ class kartustok extends DbTable
 		// id_kirimbarang
 		$this->id_kirimbarang->EditAttrs["class"] = "form-control";
 		$this->id_kirimbarang->EditCustomAttributes = "";
+		$this->id_kirimbarang->EditValue = $this->id_kirimbarang->CurrentValue;
+		$this->id_kirimbarang->PlaceHolder = RemoveHtml($this->id_kirimbarang->caption());
 
 		// id_nonjual
 		$this->id_nonjual->EditAttrs["class"] = "form-control";
@@ -1360,6 +1380,8 @@ class kartustok extends DbTable
 		// id_retur
 		$this->id_retur->EditAttrs["class"] = "form-control";
 		$this->id_retur->EditCustomAttributes = "";
+		$this->id_retur->EditValue = $this->id_retur->CurrentValue;
+		$this->id_retur->PlaceHolder = RemoveHtml($this->id_retur->caption());
 
 		// id_penyesuaian
 		$this->id_penyesuaian->EditAttrs["class"] = "form-control";

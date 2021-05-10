@@ -86,7 +86,7 @@ Page_Rendering();
   }
 
   	function rupiah($angka){
-		$hasil_rupiah = number_format($angka);
+		$hasil_rupiah = "Rp" . number_format($angka);
 		return $hasil_rupiah;
 	}
 ?>
@@ -228,6 +228,7 @@ Page_Rendering();
 		  }else{
 				// $totalcabang = 0;
 				$count = 0;
+				$mso='"\@"';
 				foreach ($result as $rs) {
 					// $totalcabang += $rs['subtotal'];
 					$total_komisi = ExecuteScalar("SELECT SUM(total_komisi) FROM transaksi_komisi WHERE (tgl BETWEEN '$dateFrom' AND '$dateTo') AND id_pegawai=".$rs['id_pegawai']."");
@@ -251,22 +252,22 @@ Page_Rendering();
 											<tr>
 												<td>Total Komisi Recall</td>
 												<td>:</td>
-												<td>";
+												<td style='mso-number-format:".$mso."'>";
 													if($total_komisi_recall == '' OR $total_komisi_recall == FALSE) {
 														echo '0' ;
 													} else {
-														echo $total_komisi_recall;
+														echo rupiah($total_komisi_recall);
 													} echo
 												"</td>		
 											</tr>
 											<tr>
 												<td>Total Komisi Kinerja</td>
 												<td>:</td>
-												<td>";
+												<td style='mso-number-format:".$mso."'>";
 													if($total_komisi_kinerja == '' OR $total_komisi_kinerja == FALSE) {
 														echo '0' ;
 													} else {
-														echo $total_komisi_kinerja;
+														echo rupiah($total_komisi_kinerja);
 													} echo
 												"</td>			
 											</tr>

@@ -123,6 +123,11 @@ Page_Rendering();
 		}
 
 	}
+
+	function rupiah($angka){
+		$hasil_rupiah = "Rp" . number_format($angka);
+		return $hasil_rupiah;
+	}
 ?>
 	
 	<div class="container-fluid">
@@ -283,6 +288,7 @@ Page_Rendering();
 						<tbody>
 							<?php
 								$no=1;
+								$mso='"\@"';
 								if (is_null($result) OR $result == false) {
 									echo '<tr><td  colspan="11" align="center">Kosong</td></tr>';							
 								}else{
@@ -291,16 +297,16 @@ Page_Rendering();
 										echo "<tr>
 												<td align='center'>" . $no . ".</td>
 												<td align='center'>" . $rs["nama_barang"] . "</td>
-												<td align='center'>" . $rs["totalhargajual"] . "</td>
+												<td align='center' style='mso-number-format:".$mso."'>" . rupiah($rs["totalhargajual"]) . "</td>
 												<td align='center'>" ; 	if(is_null($rs["disc_pr"])){
 																			echo "0.00";
 																		}else{
 																			echo $rs["disc_pr"];
 																		}echo  "</td>
-												<td align='center'>" ; 	if(is_null($rs["disc_rp"])){
+												<td align='center' style='mso-number-format:".$mso."'>" ; 	if(is_null($rs["disc_rp"])){
 																			echo "0.00";
 																		}else{
-																			echo $rs["disc_rp"];
+																			echo rupiah($rs["disc_rp"]);
 																		}echo  "</td>
 												<td align='center'>" . $rs["nama_klinik"] . "</td>
 												<td align='center'>" . $rs["stok"] . "</td>
