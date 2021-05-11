@@ -65,6 +65,7 @@ class penjualan extends DbTable
 	public $_action;
 	public $status;
 	public $status_void;
+	public $jumlah_voucher;
 
 	// Constructor
 	public function __construct()
@@ -356,6 +357,12 @@ class penjualan extends DbTable
 		$this->status_void = new DbField('penjualan', 'penjualan', 'x_status_void', 'status_void', '`status_void`', '`status_void`', 200, 50, -1, FALSE, '`status_void`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->status_void->Sortable = TRUE; // Allow sort
 		$this->fields['status_void'] = &$this->status_void;
+
+		// jumlah_voucher
+		$this->jumlah_voucher = new DbField('penjualan', 'penjualan', 'x_jumlah_voucher', 'jumlah_voucher', '`jumlah_voucher`', '`jumlah_voucher`', 3, 11, -1, FALSE, '`jumlah_voucher`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->jumlah_voucher->Sortable = TRUE; // Allow sort
+		$this->jumlah_voucher->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->fields['jumlah_voucher'] = &$this->jumlah_voucher;
 	}
 
 	// Field Visibility
@@ -861,6 +868,7 @@ class penjualan extends DbTable
 		$this->_action->DbValue = $row['action'];
 		$this->status->DbValue = $row['status'];
 		$this->status_void->DbValue = $row['status_void'];
+		$this->jumlah_voucher->DbValue = $row['jumlah_voucher'];
 	}
 
 	// Delete uploaded files
@@ -1129,6 +1137,7 @@ class penjualan extends DbTable
 		$this->_action->setDbValue($rs->fields('action'));
 		$this->status->setDbValue($rs->fields('status'));
 		$this->status_void->setDbValue($rs->fields('status_void'));
+		$this->jumlah_voucher->setDbValue($rs->fields('jumlah_voucher'));
 	}
 
 	// Render list row values
@@ -1175,6 +1184,7 @@ class penjualan extends DbTable
 		// action
 		// status
 		// status_void
+		// jumlah_voucher
 		// id
 
 		$this->id->ViewValue = $this->id->CurrentValue;
@@ -1387,7 +1397,11 @@ class penjualan extends DbTable
 			$this->sales->ViewValue = $this->sales->lookupCacheOption($curVal);
 			if ($this->sales->ViewValue === NULL) { // Lookup from database
 				$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-				$sqlWrk = $this->sales->Lookup->getSql(FALSE, $filterWrk, '', $this);
+				$lookupFilter = function() {
+					return "`status` <> 'Non Aktif'";
+				};
+				$lookupFilter = $lookupFilter->bindTo($this);
+				$sqlWrk = $this->sales->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
 				$rswrk = Conn()->execute($sqlWrk);
 				if ($rswrk && !$rswrk->EOF) { // Lookup values found
 					$arwrk = [];
@@ -1411,7 +1425,7 @@ class penjualan extends DbTable
 			if ($this->dok_be_wajah->ViewValue === NULL) { // Lookup from database
 				$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
 				$lookupFilter = function() {
-					return "`jabatan_pegawai` = 2";
+					return "`jabatan_pegawai` = 2 AND `status` <> 'Non Aktif'";
 				};
 				$lookupFilter = $lookupFilter->bindTo($this);
 				$sqlWrk = $this->dok_be_wajah->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
@@ -1438,7 +1452,7 @@ class penjualan extends DbTable
 			if ($this->be_body->ViewValue === NULL) { // Lookup from database
 				$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
 				$lookupFilter = function() {
-					return "`jabatan_pegawai` = 3";
+					return "`jabatan_pegawai` = 3 AND `status` <> 'Non Aktif'";
 				};
 				$lookupFilter = $lookupFilter->bindTo($this);
 				$sqlWrk = $this->be_body->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
@@ -1465,7 +1479,7 @@ class penjualan extends DbTable
 			if ($this->medis->ViewValue === NULL) { // Lookup from database
 				$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
 				$lookupFilter = function() {
-					return "`jabatan_pegawai` = 4";
+					return "`jabatan_pegawai` = 4 AND `status` <> 'Non Aktif'";
 				};
 				$lookupFilter = $lookupFilter->bindTo($this);
 				$sqlWrk = $this->medis->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
@@ -1492,7 +1506,7 @@ class penjualan extends DbTable
 			if ($this->dokter->ViewValue === NULL) { // Lookup from database
 				$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
 				$lookupFilter = function() {
-					return "`jabatan_pegawai` = 1";
+					return "`jabatan_pegawai` = 1 AND `status` <> 'Non Aktif'";
 				};
 				$lookupFilter = $lookupFilter->bindTo($this);
 				$sqlWrk = $this->dokter->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
@@ -1595,6 +1609,11 @@ class penjualan extends DbTable
 		// status_void
 		$this->status_void->ViewValue = $this->status_void->CurrentValue;
 		$this->status_void->ViewCustomAttributes = "";
+
+		// jumlah_voucher
+		$this->jumlah_voucher->ViewValue = $this->jumlah_voucher->CurrentValue;
+		$this->jumlah_voucher->ViewValue = FormatNumber($this->jumlah_voucher->ViewValue, 0, -2, -2, -2);
+		$this->jumlah_voucher->ViewCustomAttributes = "";
 
 		// id
 		$this->id->LinkCustomAttributes = "";
@@ -1755,6 +1774,11 @@ class penjualan extends DbTable
 		$this->status_void->LinkCustomAttributes = "";
 		$this->status_void->HrefValue = "";
 		$this->status_void->TooltipValue = "";
+
+		// jumlah_voucher
+		$this->jumlah_voucher->LinkCustomAttributes = "";
+		$this->jumlah_voucher->HrefValue = "";
+		$this->jumlah_voucher->TooltipValue = "";
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -1977,6 +2001,12 @@ class penjualan extends DbTable
 		$this->status_void->EditValue = $this->status_void->CurrentValue;
 		$this->status_void->PlaceHolder = RemoveHtml($this->status_void->caption());
 
+		// jumlah_voucher
+		$this->jumlah_voucher->EditAttrs["class"] = "form-control";
+		$this->jumlah_voucher->EditCustomAttributes = "";
+		$this->jumlah_voucher->EditValue = $this->jumlah_voucher->CurrentValue;
+		$this->jumlah_voucher->PlaceHolder = RemoveHtml($this->jumlah_voucher->caption());
+
 		// Call Row Rendered event
 		$this->Row_Rendered();
 	}
@@ -2037,6 +2067,7 @@ class penjualan extends DbTable
 					$doc->exportCaption($this->_action);
 					$doc->exportCaption($this->status);
 					$doc->exportCaption($this->status_void);
+					$doc->exportCaption($this->jumlah_voucher);
 				} else {
 					$doc->exportCaption($this->id);
 					$doc->exportCaption($this->kode_penjualan);
@@ -2070,6 +2101,7 @@ class penjualan extends DbTable
 					$doc->exportCaption($this->_action);
 					$doc->exportCaption($this->status);
 					$doc->exportCaption($this->status_void);
+					$doc->exportCaption($this->jumlah_voucher);
 				}
 				$doc->endExportRow();
 			}
@@ -2132,6 +2164,7 @@ class penjualan extends DbTable
 						$doc->exportField($this->_action);
 						$doc->exportField($this->status);
 						$doc->exportField($this->status_void);
+						$doc->exportField($this->jumlah_voucher);
 					} else {
 						$doc->exportField($this->id);
 						$doc->exportField($this->kode_penjualan);
@@ -2165,6 +2198,7 @@ class penjualan extends DbTable
 						$doc->exportField($this->_action);
 						$doc->exportField($this->status);
 						$doc->exportField($this->status_void);
+						$doc->exportField($this->jumlah_voucher);
 					}
 					$doc->endExportRow($rowCnt);
 				}
@@ -2499,6 +2533,8 @@ class penjualan extends DbTable
 				$jenis_kartu_voucher = ExecuteScalar("SELECT jenis FROM m_kartu WHERE id_kartu = '$kartu'");
 				$charge_price_voucher = ExecuteScalar("SELECT charge_price FROM m_kartu WHERE id_kartu = '$kartu'");
 				$pembayaran = $total + $charge_price_voucher;
+
+				//$jumlah_voucher = $rsnew['jumlah_voucher'];
 				Execute("INSERT INTO penggunaan_kartu (id_kartu, jenis_kartu, id_klinik, kode_penjualan, tgl, total, charge, total_charge) VALUES ('".$kartu."', '".$jenis_kartu_voucher."', '".$id_klinik."', '".$kode_penjualan."', '".$tanggal."', '".$pembayaran."', '".$charge_price_voucher."', '".$total."')");
 			}
 
@@ -3417,6 +3453,8 @@ class penjualan extends DbTable
 				$jenis_kartu_voucher = ExecuteScalar("SELECT jenis FROM m_kartu WHERE id_kartu = '$kartu'");
 				$charge_price_voucher = ExecuteScalar("SELECT charge_price FROM m_kartu WHERE id_kartu = '$kartu'");	
 				$pembayaran = $total + $charge_price_voucher;
+
+				//$jumlah_voucher = $rsnew['jumlah_voucher'];
 				Execute("INSERT INTO penggunaan_kartu (id_kartu, jenis_kartu, id_klinik, kode_penjualan, tgl, total, charge, total_charge) VALUES ('".$kartu."', '".$jenis_kartu_voucher."', '".$id_klinik."', '".$kode_penjualan."', '".$tanggal."', '".$pembayaran."', '".$charge_price_voucher."', '".$total."')");
 			}
 

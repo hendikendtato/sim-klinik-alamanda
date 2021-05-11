@@ -1083,7 +1083,11 @@ class returbarang_add extends returbarang
 				$this->id_pegawai->ViewValue = $this->id_pegawai->lookupCacheOption($curVal);
 				if ($this->id_pegawai->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->id_pegawai->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$lookupFilter = function() {
+						return "`status` <> 'Non Aktif'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
+					$sqlWrk = $this->id_pegawai->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
@@ -1206,7 +1210,11 @@ class returbarang_add extends returbarang
 				} else {
 					$filterWrk = "`id_pegawai`" . SearchString("=", $this->id_pegawai->CurrentValue, DATATYPE_NUMBER, "");
 				}
-				$sqlWrk = $this->id_pegawai->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$lookupFilter = function() {
+					return "`status` <> 'Non Aktif'";
+				};
+				$lookupFilter = $lookupFilter->bindTo($this);
+				$sqlWrk = $this->id_pegawai->Lookup->getSql(TRUE, $filterWrk, $lookupFilter, $this);
 				$rswrk = Conn()->execute($sqlWrk);
 				$arwrk = $rswrk ? $rswrk->getRows() : [];
 				if ($rswrk)
@@ -1476,6 +1484,10 @@ class returbarang_add extends returbarang
 				case "x_id_supplier":
 					break;
 				case "x_id_pegawai":
+					$lookupFilter = function() {
+						return "`status` <> 'Non Aktif'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
 					break;
 				case "x_status":
 					break;

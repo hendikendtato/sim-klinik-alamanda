@@ -60,6 +60,9 @@ loadjs.ready("head", function() {
 		elm = this.getElements("x" + infix + "_total_charge");
 		if (elm && !ew.checkNumber(elm.value))
 			return this.onError(elm, "<?php echo JsEncode($penggunaan_kartu_search->total_charge->errorMessage()) ?>");
+		elm = this.getElements("x" + infix + "_jumlah_pemakaian");
+		if (elm && !ew.checkInteger(elm.value))
+			return this.onError(elm, "<?php echo JsEncode($penggunaan_kartu_search->jumlah_pemakaian->errorMessage()) ?>");
 
 		// Call Form_CustomValidate event
 		if (!this.Form_CustomValidate(fobj))
@@ -212,6 +215,21 @@ loadjs.ready(["fpenggunaan_kartusearch", "datetimepicker"], function() {
 		<div class="<?php echo $penggunaan_kartu_search->RightColumnClass ?>"><div <?php echo $penggunaan_kartu_search->total_charge->cellAttributes() ?>>
 			<span id="el_penggunaan_kartu_total_charge" class="ew-search-field">
 <input type="text" data-table="penggunaan_kartu" data-field="x_total_charge" name="x_total_charge" id="x_total_charge" size="30" maxlength="22" placeholder="<?php echo HtmlEncode($penggunaan_kartu_search->total_charge->getPlaceHolder()) ?>" value="<?php echo $penggunaan_kartu_search->total_charge->EditValue ?>"<?php echo $penggunaan_kartu_search->total_charge->editAttributes() ?>>
+</span>
+		</div></div>
+	</div>
+<?php } ?>
+<?php if ($penggunaan_kartu_search->jumlah_pemakaian->Visible) { // jumlah_pemakaian ?>
+	<div id="r_jumlah_pemakaian" class="form-group row">
+		<label for="x_jumlah_pemakaian" class="<?php echo $penggunaan_kartu_search->LeftColumnClass ?>"><span id="elh_penggunaan_kartu_jumlah_pemakaian"><?php echo $penggunaan_kartu_search->jumlah_pemakaian->caption() ?></span>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_jumlah_pemakaian" id="z_jumlah_pemakaian" value="=">
+</span>
+		</label>
+		<div class="<?php echo $penggunaan_kartu_search->RightColumnClass ?>"><div <?php echo $penggunaan_kartu_search->jumlah_pemakaian->cellAttributes() ?>>
+			<span id="el_penggunaan_kartu_jumlah_pemakaian" class="ew-search-field">
+<input type="text" data-table="penggunaan_kartu" data-field="x_jumlah_pemakaian" name="x_jumlah_pemakaian" id="x_jumlah_pemakaian" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($penggunaan_kartu_search->jumlah_pemakaian->getPlaceHolder()) ?>" value="<?php echo $penggunaan_kartu_search->jumlah_pemakaian->EditValue ?>"<?php echo $penggunaan_kartu_search->jumlah_pemakaian->editAttributes() ?>>
 </span>
 		</div></div>
 	</div>

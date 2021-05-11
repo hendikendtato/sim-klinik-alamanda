@@ -41,6 +41,7 @@ class m_pegawai extends DbTable
 	public $status_pegawai;
 	public $tarif_pegawai;
 	public $id_klinik;
+	public $status;
 	public $target;
 	public $nilai_komisi;
 
@@ -177,6 +178,13 @@ class m_pegawai extends DbTable
 		$this->id_klinik->Lookup = new Lookup('id_klinik', 'm_klinik', FALSE, 'id_klinik', ["nama_klinik","","",""], [], [], [], [], [], [], '', '');
 		$this->id_klinik->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id_klinik'] = &$this->id_klinik;
+
+		// status
+		$this->status = new DbField('m_pegawai', 'm_pegawai', 'x_status', 'status', '`status`', '`status`', 202, 9, -1, FALSE, '`status`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'RADIO');
+		$this->status->Sortable = TRUE; // Allow sort
+		$this->status->Lookup = new Lookup('status', 'm_pegawai', FALSE, '', ["","","",""], [], [], [], [], [], [], '', '');
+		$this->status->OptionCount = 2;
+		$this->fields['status'] = &$this->status;
 
 		// target
 		$this->target = new DbField('m_pegawai', 'm_pegawai', 'x_target', 'target', '`target`', '`target`', 3, 11, -1, FALSE, '`target`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
@@ -560,6 +568,7 @@ class m_pegawai extends DbTable
 		$this->status_pegawai->DbValue = $row['status_pegawai'];
 		$this->tarif_pegawai->DbValue = $row['tarif_pegawai'];
 		$this->id_klinik->DbValue = $row['id_klinik'];
+		$this->status->DbValue = $row['status'];
 		$this->target->DbValue = $row['target'];
 		$this->nilai_komisi->DbValue = $row['nilai_komisi'];
 	}
@@ -808,6 +817,7 @@ class m_pegawai extends DbTable
 		$this->status_pegawai->setDbValue($rs->fields('status_pegawai'));
 		$this->tarif_pegawai->setDbValue($rs->fields('tarif_pegawai'));
 		$this->id_klinik->setDbValue($rs->fields('id_klinik'));
+		$this->status->setDbValue($rs->fields('status'));
 		$this->target->setDbValue($rs->fields('target'));
 		$this->nilai_komisi->setDbValue($rs->fields('nilai_komisi'));
 	}
@@ -837,6 +847,7 @@ class m_pegawai extends DbTable
 		// status_pegawai
 		// tarif_pegawai
 		// id_klinik
+		// status
 		// target
 		// nilai_komisi
 		// id_pegawai
@@ -968,6 +979,14 @@ class m_pegawai extends DbTable
 		}
 		$this->id_klinik->ViewCustomAttributes = "";
 
+		// status
+		if (strval($this->status->CurrentValue) != "") {
+			$this->status->ViewValue = $this->status->optionCaption($this->status->CurrentValue);
+		} else {
+			$this->status->ViewValue = NULL;
+		}
+		$this->status->ViewCustomAttributes = "";
+
 		// target
 		$this->target->ViewValue = $this->target->CurrentValue;
 		$this->target->ViewValue = FormatNumber($this->target->ViewValue, 0, -2, -2, -2);
@@ -1057,6 +1076,11 @@ class m_pegawai extends DbTable
 		$this->id_klinik->LinkCustomAttributes = "";
 		$this->id_klinik->HrefValue = "";
 		$this->id_klinik->TooltipValue = "";
+
+		// status
+		$this->status->LinkCustomAttributes = "";
+		$this->status->HrefValue = "";
+		$this->status->TooltipValue = "";
 
 		// target
 		$this->target->LinkCustomAttributes = "";
@@ -1185,6 +1209,10 @@ class m_pegawai extends DbTable
 		$this->id_klinik->EditAttrs["class"] = "form-control";
 		$this->id_klinik->EditCustomAttributes = "";
 
+		// status
+		$this->status->EditCustomAttributes = "";
+		$this->status->EditValue = $this->status->options(FALSE);
+
 		// target
 		$this->target->EditAttrs["class"] = "form-control";
 		$this->target->EditCustomAttributes = "";
@@ -1242,6 +1270,7 @@ class m_pegawai extends DbTable
 					$doc->exportCaption($this->status_pegawai);
 					$doc->exportCaption($this->tarif_pegawai);
 					$doc->exportCaption($this->id_klinik);
+					$doc->exportCaption($this->status);
 					$doc->exportCaption($this->nilai_komisi);
 				} else {
 					$doc->exportCaption($this->id_pegawai);
@@ -1260,6 +1289,7 @@ class m_pegawai extends DbTable
 					$doc->exportCaption($this->status_pegawai);
 					$doc->exportCaption($this->tarif_pegawai);
 					$doc->exportCaption($this->id_klinik);
+					$doc->exportCaption($this->status);
 					$doc->exportCaption($this->target);
 					$doc->exportCaption($this->nilai_komisi);
 				}
@@ -1309,6 +1339,7 @@ class m_pegawai extends DbTable
 						$doc->exportField($this->status_pegawai);
 						$doc->exportField($this->tarif_pegawai);
 						$doc->exportField($this->id_klinik);
+						$doc->exportField($this->status);
 						$doc->exportField($this->nilai_komisi);
 					} else {
 						$doc->exportField($this->id_pegawai);
@@ -1327,6 +1358,7 @@ class m_pegawai extends DbTable
 						$doc->exportField($this->status_pegawai);
 						$doc->exportField($this->tarif_pegawai);
 						$doc->exportField($this->id_klinik);
+						$doc->exportField($this->status);
 						$doc->exportField($this->target);
 						$doc->exportField($this->nilai_komisi);
 					}

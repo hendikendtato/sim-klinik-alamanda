@@ -789,6 +789,7 @@ class m_pegawai_view extends m_pegawai
 		$this->status_pegawai->setVisibility();
 		$this->tarif_pegawai->setVisibility();
 		$this->id_klinik->setVisibility();
+		$this->status->setVisibility();
 		$this->target->setVisibility();
 		$this->nilai_komisi->setVisibility();
 		$this->hideFieldsForAddEdit();
@@ -1032,6 +1033,7 @@ class m_pegawai_view extends m_pegawai
 		$this->status_pegawai->setDbValue($row['status_pegawai']);
 		$this->tarif_pegawai->setDbValue($row['tarif_pegawai']);
 		$this->id_klinik->setDbValue($row['id_klinik']);
+		$this->status->setDbValue($row['status']);
 		$this->target->setDbValue($row['target']);
 		$this->nilai_komisi->setDbValue($row['nilai_komisi']);
 	}
@@ -1056,6 +1058,7 @@ class m_pegawai_view extends m_pegawai
 		$row['status_pegawai'] = NULL;
 		$row['tarif_pegawai'] = NULL;
 		$row['id_klinik'] = NULL;
+		$row['status'] = NULL;
 		$row['target'] = NULL;
 		$row['nilai_komisi'] = NULL;
 		return $row;
@@ -1094,6 +1097,7 @@ class m_pegawai_view extends m_pegawai
 		// status_pegawai
 		// tarif_pegawai
 		// id_klinik
+		// status
 		// target
 		// nilai_komisi
 
@@ -1227,6 +1231,14 @@ class m_pegawai_view extends m_pegawai
 			}
 			$this->id_klinik->ViewCustomAttributes = "";
 
+			// status
+			if (strval($this->status->CurrentValue) != "") {
+				$this->status->ViewValue = $this->status->optionCaption($this->status->CurrentValue);
+			} else {
+				$this->status->ViewValue = NULL;
+			}
+			$this->status->ViewCustomAttributes = "";
+
 			// target
 			$this->target->ViewValue = $this->target->CurrentValue;
 			$this->target->ViewValue = FormatNumber($this->target->ViewValue, 0, -2, -2, -2);
@@ -1316,6 +1328,11 @@ class m_pegawai_view extends m_pegawai
 			$this->id_klinik->LinkCustomAttributes = "";
 			$this->id_klinik->HrefValue = "";
 			$this->id_klinik->TooltipValue = "";
+
+			// status
+			$this->status->LinkCustomAttributes = "";
+			$this->status->HrefValue = "";
+			$this->status->TooltipValue = "";
 
 			// nilai_komisi
 			$this->nilai_komisi->LinkCustomAttributes = "";
@@ -1550,6 +1567,8 @@ class m_pegawai_view extends m_pegawai
 				case "x_status_pegawai":
 					break;
 				case "x_id_klinik":
+					break;
+				case "x_status":
 					break;
 				default:
 					$lookupFilter = "";

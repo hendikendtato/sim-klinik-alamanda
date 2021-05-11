@@ -1047,7 +1047,11 @@ class detailpenjualan extends DbTable
 			$this->komisi_recall->ViewValue = $this->komisi_recall->lookupCacheOption($curVal);
 			if ($this->komisi_recall->ViewValue === NULL) { // Lookup from database
 				$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-				$sqlWrk = $this->komisi_recall->Lookup->getSql(FALSE, $filterWrk, '', $this);
+				$lookupFilter = function() {
+					return "`status` <> 'Non Aktif'";
+				};
+				$lookupFilter = $lookupFilter->bindTo($this);
+				$sqlWrk = $this->komisi_recall->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
 				$rswrk = Conn()->execute($sqlWrk);
 				if ($rswrk && !$rswrk->EOF) { // Lookup values found
 					$arwrk = [];
@@ -1603,17 +1607,16 @@ class detailpenjualan extends DbTable
 	}
 
 	function Row_Inserted($rsold, &$rsnew) {
-				$pid_penjualan[] = $rsnew['id_penjualan'];
-				foreach($pid_penjualan AS $pid_penjualan) {
-					$qty = $rsnew['qty'];
-					$id_barang = $rsnew['id_barang'];
-					$tanggal = ExecuteScalar("SELECT waktu FROM penjualan WHERE id= '$pid_penjualan'");
-					$id_klinik = ExecuteScalar("SELECT id_klinik FROM penjualan WHERE id= '$pid_penjualan'");
-					$komposisi = ExecuteScalar("SELECT komposisi FROM m_barang WHERE id='$id_barang'");
-					$status_barang = ExecuteScalar("SELECT status_barang FROM m_status_barang WHERE id_status = (SELECT status FROM m_barang WHERE id='$id_barang')");
-					$id_rmd = ExecuteScalar("SELECT id_rmd FROM penjualan WHERE id='$pid_penjualan'");
-					$sekarang = date('Y-m-d');
-					$status = ExecuteScalar("SELECT status FROM penjualan WHERE id='$pid_penjualan'");
+				$pid_penjualan = $rsnew['id_penjualan'];
+				$qty = $rsnew['qty'];
+				$id_barang = $rsnew['id_barang'];
+				$tanggal = ExecuteScalar("SELECT waktu FROM penjualan WHERE id= '$pid_penjualan'");
+				$id_klinik = ExecuteScalar("SELECT id_klinik FROM penjualan WHERE id= '$pid_penjualan'");
+				$komposisi = ExecuteScalar("SELECT komposisi FROM m_barang WHERE id='$id_barang'");
+				$status_barang = ExecuteScalar("SELECT status_barang FROM m_status_barang WHERE id_status = (SELECT status FROM m_barang WHERE id='$id_barang')");
+				$id_rmd = ExecuteScalar("SELECT id_rmd FROM penjualan WHERE id='$pid_penjualan'");
+				$sekarang = date('Y-m-d');
+				$status = ExecuteScalar("SELECT status FROM penjualan WHERE id='$pid_penjualan'");
 					if($status == 'Printed') { //SAVE IF PRINTED
 
 						// if tanggal input < tanggal sekarang
@@ -2124,7 +2127,6 @@ class detailpenjualan extends DbTable
 							$insert_barang = Execute("INSERT INTO detailrekmedpenjualan (id_rekmeddok, id_barang, jumlah) VALUES ('$id_rmd', '$id_barang', '$qty')");
 						}	
 					} //END IF PRINTED
-				};
 	}
 
 	// Row Updating event
@@ -2138,8 +2140,7 @@ class detailpenjualan extends DbTable
 
 	// Row Updated event
 	function Row_Updated($rsold, &$rsnew) {
-		$pid_penjualan[] = $rsnew['id_penjualan'];
-		foreach($pid_penjualan AS $pid_penjualan) {
+		$pid_penjualan = $rsnew['id_penjualan'];
 		$qty = $rsnew['qty'];
 		$id_barang = $rsnew['id_barang'];
 		$tanggal = ExecuteScalar("SELECT waktu FROM penjualan WHERE id='$pid_penjualan'");
@@ -2591,7 +2592,6 @@ class detailpenjualan extends DbTable
 					$insert_barang = Execute("INSERT INTO detailrekmedpenjualan (id_rekmeddok, id_barang, jumlah) VALUES ('$id_rmd', '$id_barang', '$qty')");
 				}	
 			} //END IF PRINTED
-		};
 	}
 
 	// Row Update Conflict event

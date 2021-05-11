@@ -2078,7 +2078,11 @@ class detailpenjualan_grid extends detailpenjualan
 				$this->komisi_recall->ViewValue = $this->komisi_recall->lookupCacheOption($curVal);
 				if ($this->komisi_recall->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->komisi_recall->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$lookupFilter = function() {
+						return "`status` <> 'Non Aktif'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
+					$sqlWrk = $this->komisi_recall->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
@@ -2364,7 +2368,11 @@ class detailpenjualan_grid extends detailpenjualan
 				} else {
 					$filterWrk = "`id_pegawai`" . SearchString("=", $this->komisi_recall->CurrentValue, DATATYPE_NUMBER, "");
 				}
-				$sqlWrk = $this->komisi_recall->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$lookupFilter = function() {
+					return "`status` <> 'Non Aktif'";
+				};
+				$lookupFilter = $lookupFilter->bindTo($this);
+				$sqlWrk = $this->komisi_recall->Lookup->getSql(TRUE, $filterWrk, $lookupFilter, $this);
 				$rswrk = Conn()->execute($sqlWrk);
 				$arwrk = $rswrk ? $rswrk->getRows() : [];
 				if ($rswrk)
@@ -2630,7 +2638,11 @@ class detailpenjualan_grid extends detailpenjualan
 				} else {
 					$filterWrk = "`id_pegawai`" . SearchString("=", $this->komisi_recall->CurrentValue, DATATYPE_NUMBER, "");
 				}
-				$sqlWrk = $this->komisi_recall->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$lookupFilter = function() {
+					return "`status` <> 'Non Aktif'";
+				};
+				$lookupFilter = $lookupFilter->bindTo($this);
+				$sqlWrk = $this->komisi_recall->Lookup->getSql(TRUE, $filterWrk, $lookupFilter, $this);
 				$rswrk = Conn()->execute($sqlWrk);
 				$arwrk = $rswrk ? $rswrk->getRows() : [];
 				if ($rswrk)
@@ -3136,6 +3148,10 @@ class detailpenjualan_grid extends detailpenjualan
 					$lookupFilter = $lookupFilter->bindTo($this);
 					break;
 				case "x_komisi_recall":
+					$lookupFilter = function() {
+						return "`status` <> 'Non Aktif'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
 					break;
 				default:
 					$lookupFilter = "";

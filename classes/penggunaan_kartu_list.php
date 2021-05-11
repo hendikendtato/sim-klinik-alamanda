@@ -825,6 +825,7 @@ class penggunaan_kartu_list extends penggunaan_kartu
 		$this->total->setVisibility();
 		$this->charge->setVisibility();
 		$this->total_charge->setVisibility();
+		$this->jumlah_pemakaian->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Global Page Loading event (in userfn*.php)
@@ -1125,6 +1126,7 @@ class penggunaan_kartu_list extends penggunaan_kartu
 		$filterList = Concat($filterList, $this->total->AdvancedSearch->toJson(), ","); // Field total
 		$filterList = Concat($filterList, $this->charge->AdvancedSearch->toJson(), ","); // Field charge
 		$filterList = Concat($filterList, $this->total_charge->AdvancedSearch->toJson(), ","); // Field total_charge
+		$filterList = Concat($filterList, $this->jumlah_pemakaian->AdvancedSearch->toJson(), ","); // Field jumlah_pemakaian
 
 		// Return filter list in JSON
 		if ($filterList != "")
@@ -1206,6 +1208,14 @@ class penggunaan_kartu_list extends penggunaan_kartu
 		$this->total_charge->AdvancedSearch->SearchValue2 = @$filter["y_total_charge"];
 		$this->total_charge->AdvancedSearch->SearchOperator2 = @$filter["w_total_charge"];
 		$this->total_charge->AdvancedSearch->save();
+
+		// Field jumlah_pemakaian
+		$this->jumlah_pemakaian->AdvancedSearch->SearchValue = @$filter["x_jumlah_pemakaian"];
+		$this->jumlah_pemakaian->AdvancedSearch->SearchOperator = @$filter["z_jumlah_pemakaian"];
+		$this->jumlah_pemakaian->AdvancedSearch->SearchCondition = @$filter["v_jumlah_pemakaian"];
+		$this->jumlah_pemakaian->AdvancedSearch->SearchValue2 = @$filter["y_jumlah_pemakaian"];
+		$this->jumlah_pemakaian->AdvancedSearch->SearchOperator2 = @$filter["w_jumlah_pemakaian"];
+		$this->jumlah_pemakaian->AdvancedSearch->save();
 	}
 
 	// Advanced search WHERE clause based on QueryString
@@ -1221,6 +1231,7 @@ class penggunaan_kartu_list extends penggunaan_kartu
 		$this->buildSearchSql($where, $this->total, $default, FALSE); // total
 		$this->buildSearchSql($where, $this->charge, $default, FALSE); // charge
 		$this->buildSearchSql($where, $this->total_charge, $default, FALSE); // total_charge
+		$this->buildSearchSql($where, $this->jumlah_pemakaian, $default, FALSE); // jumlah_pemakaian
 
 		// Set up search parm
 		if (!$default && $where != "" && in_array($this->Command, ["", "reset", "resetall"])) {
@@ -1233,6 +1244,7 @@ class penggunaan_kartu_list extends penggunaan_kartu
 			$this->total->AdvancedSearch->save(); // total
 			$this->charge->AdvancedSearch->save(); // charge
 			$this->total_charge->AdvancedSearch->save(); // total_charge
+			$this->jumlah_pemakaian->AdvancedSearch->save(); // jumlah_pemakaian
 		}
 		return $where;
 	}
@@ -1304,6 +1316,8 @@ class penggunaan_kartu_list extends penggunaan_kartu
 			return TRUE;
 		if ($this->total_charge->AdvancedSearch->issetSession())
 			return TRUE;
+		if ($this->jumlah_pemakaian->AdvancedSearch->issetSession())
+			return TRUE;
 		return FALSE;
 	}
 
@@ -1334,6 +1348,7 @@ class penggunaan_kartu_list extends penggunaan_kartu
 		$this->total->AdvancedSearch->unsetSession();
 		$this->charge->AdvancedSearch->unsetSession();
 		$this->total_charge->AdvancedSearch->unsetSession();
+		$this->jumlah_pemakaian->AdvancedSearch->unsetSession();
 	}
 
 	// Restore all search parameters
@@ -1348,6 +1363,7 @@ class penggunaan_kartu_list extends penggunaan_kartu
 		$this->total->AdvancedSearch->load();
 		$this->charge->AdvancedSearch->load();
 		$this->total_charge->AdvancedSearch->load();
+		$this->jumlah_pemakaian->AdvancedSearch->load();
 	}
 
 	// Set up sort parameters
@@ -1365,6 +1381,7 @@ class penggunaan_kartu_list extends penggunaan_kartu
 			$this->updateSort($this->total); // total
 			$this->updateSort($this->charge); // charge
 			$this->updateSort($this->total_charge); // total_charge
+			$this->updateSort($this->jumlah_pemakaian); // jumlah_pemakaian
 			$this->setStartRecordNumber(1); // Reset start position
 		}
 	}
@@ -1407,6 +1424,7 @@ class penggunaan_kartu_list extends penggunaan_kartu
 				$this->total->setSort("");
 				$this->charge->setSort("");
 				$this->total_charge->setSort("");
+				$this->jumlah_pemakaian->setSort("");
 			}
 
 			// Reset start position
@@ -1715,6 +1733,13 @@ class penggunaan_kartu_list extends penggunaan_kartu
 			if (($this->total_charge->AdvancedSearch->SearchValue != "" || $this->total_charge->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
 				$this->Command = "search";
 		}
+
+		// jumlah_pemakaian
+		if (!$this->isAddOrEdit() && $this->jumlah_pemakaian->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->jumlah_pemakaian->AdvancedSearch->SearchValue != "" || $this->jumlah_pemakaian->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
 		return $got;
 	}
 
@@ -1790,6 +1815,7 @@ class penggunaan_kartu_list extends penggunaan_kartu
 		$this->total->setDbValue($row['total']);
 		$this->charge->setDbValue($row['charge']);
 		$this->total_charge->setDbValue($row['total_charge']);
+		$this->jumlah_pemakaian->setDbValue($row['jumlah_pemakaian']);
 	}
 
 	// Return a row with default values
@@ -1806,6 +1832,7 @@ class penggunaan_kartu_list extends penggunaan_kartu
 		$row['total'] = NULL;
 		$row['charge'] = NULL;
 		$row['total_charge'] = NULL;
+		$row['jumlah_pemakaian'] = NULL;
 		return $row;
 	}
 
@@ -1870,6 +1897,7 @@ class penggunaan_kartu_list extends penggunaan_kartu
 		// total
 		// charge
 		// total_charge
+		// jumlah_pemakaian
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -1959,6 +1987,11 @@ class penggunaan_kartu_list extends penggunaan_kartu
 			$this->total_charge->ViewValue = FormatNumber($this->total_charge->ViewValue, 2, -2, -2, -2);
 			$this->total_charge->ViewCustomAttributes = "";
 
+			// jumlah_pemakaian
+			$this->jumlah_pemakaian->ViewValue = $this->jumlah_pemakaian->CurrentValue;
+			$this->jumlah_pemakaian->ViewValue = FormatNumber($this->jumlah_pemakaian->ViewValue, 0, -2, -2, -2);
+			$this->jumlah_pemakaian->ViewCustomAttributes = "";
+
 			// kode_penjualan
 			$this->kode_penjualan->LinkCustomAttributes = "";
 			$this->kode_penjualan->HrefValue = "";
@@ -1993,6 +2026,11 @@ class penggunaan_kartu_list extends penggunaan_kartu
 			$this->total_charge->LinkCustomAttributes = "";
 			$this->total_charge->HrefValue = "";
 			$this->total_charge->TooltipValue = "";
+
+			// jumlah_pemakaian
+			$this->jumlah_pemakaian->LinkCustomAttributes = "";
+			$this->jumlah_pemakaian->HrefValue = "";
+			$this->jumlah_pemakaian->TooltipValue = "";
 		}
 
 		// Call Row Rendered event
@@ -2033,6 +2071,7 @@ class penggunaan_kartu_list extends penggunaan_kartu
 		$this->total->AdvancedSearch->load();
 		$this->charge->AdvancedSearch->load();
 		$this->total_charge->AdvancedSearch->load();
+		$this->jumlah_pemakaian->AdvancedSearch->load();
 	}
 
 	// Get export HTML tag

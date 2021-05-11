@@ -1807,7 +1807,11 @@ class detailpenjualan_list extends detailpenjualan
 				$this->komisi_recall->ViewValue = $this->komisi_recall->lookupCacheOption($curVal);
 				if ($this->komisi_recall->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->komisi_recall->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$lookupFilter = function() {
+						return "`status` <> 'Non Aktif'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
+					$sqlWrk = $this->komisi_recall->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
@@ -2248,6 +2252,10 @@ class detailpenjualan_list extends detailpenjualan
 					$lookupFilter = $lookupFilter->bindTo($this);
 					break;
 				case "x_komisi_recall":
+					$lookupFilter = function() {
+						return "`status` <> 'Non Aktif'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
 					break;
 				default:
 					$lookupFilter = "";

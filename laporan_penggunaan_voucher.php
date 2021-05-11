@@ -214,6 +214,7 @@ Page_Rendering();
 													<th>Kode Penjualan</th>
 													<th align='right'>Pembayaran</th>
 													<th>Potongan Voucher</th>
+													<th>Jumlah Pemakaian</th>
 													<th>Total</th>										
 												</tr>
 											</thead>
@@ -234,6 +235,13 @@ Page_Rendering();
 																<td>".$row["kode_penjualan"]."</td>
 																<td align='right' style='mso-number-format:".$mso."'>".rupiah($row["total"])."</td>
 																<td align='right' style='mso-number-format:".$mso."'>".rupiah($row["charge"])."</td>
+																<td align='right'>";
+																	if($row["jumlah_pemakaian"] != NULL OR $row["jumlah_pemakaian"] != FALSE){
+																		echo $row["jumlah_pemakaian"];
+																	} else {
+																		echo '1';
+																	} echo
+																"</td>
 																<td align='right' id='total_charge' style='mso-number-format:".$mso."'>".rupiah($row["total_charge"])."</td>
 															</tr>";
 															$total += $row["total"];
@@ -243,7 +251,7 @@ Page_Rendering();
 														echo "<tr>
 															<td colspan='2' align='right'><b>Total per Kartu ".$rs["nama_kartu"]."</b></td>
 															<td align='right' style='mso-number-format:".$mso."'>".rupiah($total)."</td>
-															<td colspan='2' align='right' style='mso-number-format:".$mso."'>".rupiah($total_charge)."</td>
+															<td colspan='3' align='right' style='mso-number-format:".$mso."'>".rupiah($total_charge)."</td>
 														</tr>";
 											echo "</tbody>
 										</table>
@@ -258,7 +266,7 @@ Page_Rendering();
 				}						
 				?>
 					<tr>
-						<td colspan='1' align="right" width="37%">
+						<td colspan='1' align="right" width="26%">
 							<b>Total Cabang Alamanda 								
 									<?php
 										$resKlinik=ExecuteRows("SELECT * FROM m_klinik WHERE id_klinik=$cabang");
@@ -270,7 +278,7 @@ Page_Rendering();
 									?>
 							</b>
 						</td>
-						<td align="right" width="16%" style="mso-number-format:'\@'">
+						<td align="right" width="12%" style="mso-number-format:'\@'">
 							<b>
 								<?php if(isset($totalcabang_total)) {
 										echo rupiah($totalcabang_total);							
@@ -280,7 +288,7 @@ Page_Rendering();
 							</b>
 						</td>
 
-						<td align="right" width="22%" style="mso-number-format:'\@'">
+						<td align="right" width="17%" style="mso-number-format:'\@'">
 							<b>
 								<?php if(isset($totalcabang_potongan)) {
 										echo rupiah($totalcabang_potongan);							
@@ -290,7 +298,7 @@ Page_Rendering();
 							</b>
 						</td>
 
-						<td colspan='2' align="right" style="mso-number-format:'\@'">
+						<td colspan='2' align="right" width="26%" style="mso-number-format:'\@'">
 							<b>
 								<?php if(isset($totalcabang_total_charge)) {
 										echo rupiah($totalcabang_total_charge);							
@@ -304,10 +312,10 @@ Page_Rendering();
 					
 					<!-- Grandtotal -->
 					<tr>
-						<td colspan='1' align="right" width="37%">
+						<td colspan='1' align="right" width="26%">
 							<b>Grand Total</b>
 						</td>
-						<td align="right" width="16%" style="mso-number-format:'\@'">
+						<td align="right" width="12%" style="mso-number-format:'\@'">
 							<b>
 								<?php if(isset($totalcabang_total)) {
 										echo rupiah($totalcabang_total);							
@@ -316,7 +324,7 @@ Page_Rendering();
 								?>
 							</b>
 						</td>
-						<td align="right" width="22%" style="mso-number-format:'\@'">
+						<td align="right" width="17%" style="mso-number-format:'\@'">
 							<b>
 								<?php if(isset($totalcabang_potongan)) {
 										echo rupiah($totalcabang_potongan);							

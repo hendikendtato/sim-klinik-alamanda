@@ -259,6 +259,15 @@ $m_pegawai_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
+<?php if ($m_pegawai_list->status->Visible) { // status ?>
+	<?php if ($m_pegawai_list->SortUrl($m_pegawai_list->status) == "") { ?>
+		<th data-name="status" class="<?php echo $m_pegawai_list->status->headerCellClass() ?>"><div id="elh_m_pegawai_status" class="m_pegawai_status"><div class="ew-table-header-caption"><?php echo $m_pegawai_list->status->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="status" class="<?php echo $m_pegawai_list->status->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $m_pegawai_list->SortUrl($m_pegawai_list->status) ?>', 1);"><div id="elh_m_pegawai_status" class="m_pegawai_status">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $m_pegawai_list->status->caption() ?></span><span class="ew-table-header-sort"><?php if ($m_pegawai_list->status->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($m_pegawai_list->status->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
 <?php if ($m_pegawai_list->nilai_komisi->Visible) { // nilai_komisi ?>
 	<?php if ($m_pegawai_list->SortUrl($m_pegawai_list->nilai_komisi) == "") { ?>
 		<th data-name="nilai_komisi" class="<?php echo $m_pegawai_list->nilai_komisi->headerCellClass() ?>"><div id="elh_m_pegawai_nilai_komisi" class="m_pegawai_nilai_komisi"><div class="ew-table-header-caption"><?php echo $m_pegawai_list->nilai_komisi->caption() ?></div></div></th>
@@ -393,6 +402,13 @@ $m_pegawai_list->ListOptions->render("body", "left", $m_pegawai_list->RowCount);
 		<td data-name="id_klinik" <?php echo $m_pegawai_list->id_klinik->cellAttributes() ?>>
 <span id="el<?php echo $m_pegawai_list->RowCount ?>_m_pegawai_id_klinik">
 <span<?php echo $m_pegawai_list->id_klinik->viewAttributes() ?>><?php echo $m_pegawai_list->id_klinik->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
+	<?php if ($m_pegawai_list->status->Visible) { // status ?>
+		<td data-name="status" <?php echo $m_pegawai_list->status->cellAttributes() ?>>
+<span id="el<?php echo $m_pegawai_list->RowCount ?>_m_pegawai_status">
+<span<?php echo $m_pegawai_list->status->viewAttributes() ?>><?php echo $m_pegawai_list->status->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>

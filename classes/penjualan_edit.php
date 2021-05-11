@@ -718,6 +718,7 @@ class penjualan_edit extends penjualan
 		$this->_action->setVisibility();
 		$this->status->setVisibility();
 		$this->status_void->Visible = FALSE;
+		$this->jumlah_voucher->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -1185,6 +1186,15 @@ class penjualan_edit extends penjualan
 				$this->status->setFormValue($val);
 		}
 
+		// Check field name 'jumlah_voucher' first before field var 'x_jumlah_voucher'
+		$val = $CurrentForm->hasValue("jumlah_voucher") ? $CurrentForm->getValue("jumlah_voucher") : $CurrentForm->getValue("x_jumlah_voucher");
+		if (!$this->jumlah_voucher->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->jumlah_voucher->Visible = FALSE; // Disable update for API request
+			else
+				$this->jumlah_voucher->setFormValue($val);
+		}
+
 		// Check field name 'id' first before field var 'x_id'
 		$val = $CurrentForm->hasValue("id") ? $CurrentForm->getValue("id") : $CurrentForm->getValue("x_id");
 		if (!$this->id->IsDetailKey)
@@ -1227,6 +1237,7 @@ class penjualan_edit extends penjualan
 		$this->ongkir->CurrentValue = $this->ongkir->FormValue;
 		$this->_action->CurrentValue = $this->_action->FormValue;
 		$this->status->CurrentValue = $this->status->FormValue;
+		$this->jumlah_voucher->CurrentValue = $this->jumlah_voucher->FormValue;
 	}
 
 	// Load row based on key values
@@ -1301,6 +1312,7 @@ class penjualan_edit extends penjualan
 		$this->_action->setDbValue($row['action']);
 		$this->status->setDbValue($row['status']);
 		$this->status_void->setDbValue($row['status_void']);
+		$this->jumlah_voucher->setDbValue($row['jumlah_voucher']);
 	}
 
 	// Return a row with default values
@@ -1339,6 +1351,7 @@ class penjualan_edit extends penjualan
 		$row['action'] = NULL;
 		$row['status'] = NULL;
 		$row['status_void'] = NULL;
+		$row['jumlah_voucher'] = NULL;
 		return $row;
 	}
 
@@ -1448,6 +1461,7 @@ class penjualan_edit extends penjualan
 		// action
 		// status
 		// status_void
+		// jumlah_voucher
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -1662,7 +1676,11 @@ class penjualan_edit extends penjualan
 				$this->sales->ViewValue = $this->sales->lookupCacheOption($curVal);
 				if ($this->sales->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->sales->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$lookupFilter = function() {
+						return "`status` <> 'Non Aktif'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
+					$sqlWrk = $this->sales->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
@@ -1686,7 +1704,7 @@ class penjualan_edit extends penjualan
 				if ($this->dok_be_wajah->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
 					$lookupFilter = function() {
-						return "`jabatan_pegawai` = 2";
+						return "`jabatan_pegawai` = 2 AND `status` <> 'Non Aktif'";
 					};
 					$lookupFilter = $lookupFilter->bindTo($this);
 					$sqlWrk = $this->dok_be_wajah->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
@@ -1713,7 +1731,7 @@ class penjualan_edit extends penjualan
 				if ($this->be_body->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
 					$lookupFilter = function() {
-						return "`jabatan_pegawai` = 3";
+						return "`jabatan_pegawai` = 3 AND `status` <> 'Non Aktif'";
 					};
 					$lookupFilter = $lookupFilter->bindTo($this);
 					$sqlWrk = $this->be_body->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
@@ -1740,7 +1758,7 @@ class penjualan_edit extends penjualan
 				if ($this->medis->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
 					$lookupFilter = function() {
-						return "`jabatan_pegawai` = 4";
+						return "`jabatan_pegawai` = 4 AND `status` <> 'Non Aktif'";
 					};
 					$lookupFilter = $lookupFilter->bindTo($this);
 					$sqlWrk = $this->medis->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
@@ -1767,7 +1785,7 @@ class penjualan_edit extends penjualan
 				if ($this->dokter->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
 					$lookupFilter = function() {
-						return "`jabatan_pegawai` = 1";
+						return "`jabatan_pegawai` = 1 AND `status` <> 'Non Aktif'";
 					};
 					$lookupFilter = $lookupFilter->bindTo($this);
 					$sqlWrk = $this->dokter->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
@@ -1870,6 +1888,11 @@ class penjualan_edit extends penjualan
 			// status_void
 			$this->status_void->ViewValue = $this->status_void->CurrentValue;
 			$this->status_void->ViewCustomAttributes = "";
+
+			// jumlah_voucher
+			$this->jumlah_voucher->ViewValue = $this->jumlah_voucher->CurrentValue;
+			$this->jumlah_voucher->ViewValue = FormatNumber($this->jumlah_voucher->ViewValue, 0, -2, -2, -2);
+			$this->jumlah_voucher->ViewCustomAttributes = "";
 
 			// kode_penjualan
 			$this->kode_penjualan->LinkCustomAttributes = "";
@@ -2020,6 +2043,11 @@ class penjualan_edit extends penjualan
 			$this->status->LinkCustomAttributes = "";
 			$this->status->HrefValue = "";
 			$this->status->TooltipValue = "";
+
+			// jumlah_voucher
+			$this->jumlah_voucher->LinkCustomAttributes = "";
+			$this->jumlah_voucher->HrefValue = "";
+			$this->jumlah_voucher->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_EDIT) { // Edit row
 
 			// kode_penjualan
@@ -2289,7 +2317,11 @@ class penjualan_edit extends penjualan
 				} else {
 					$filterWrk = "`id_pegawai`" . SearchString("=", $this->sales->CurrentValue, DATATYPE_NUMBER, "");
 				}
-				$sqlWrk = $this->sales->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$lookupFilter = function() {
+					return "`status` <> 'Non Aktif'";
+				};
+				$lookupFilter = $lookupFilter->bindTo($this);
+				$sqlWrk = $this->sales->Lookup->getSql(TRUE, $filterWrk, $lookupFilter, $this);
 				$rswrk = Conn()->execute($sqlWrk);
 				$arwrk = $rswrk ? $rswrk->getRows() : [];
 				if ($rswrk)
@@ -2318,7 +2350,7 @@ class penjualan_edit extends penjualan
 					$filterWrk = "`id_pegawai`" . SearchString("=", $this->dok_be_wajah->CurrentValue, DATATYPE_NUMBER, "");
 				}
 				$lookupFilter = function() {
-					return "`jabatan_pegawai` = 2";
+					return "`jabatan_pegawai` = 2 AND `status` <> 'Non Aktif'";
 				};
 				$lookupFilter = $lookupFilter->bindTo($this);
 				$sqlWrk = $this->dok_be_wajah->Lookup->getSql(TRUE, $filterWrk, $lookupFilter, $this);
@@ -2350,7 +2382,7 @@ class penjualan_edit extends penjualan
 					$filterWrk = "`id_pegawai`" . SearchString("=", $this->be_body->CurrentValue, DATATYPE_NUMBER, "");
 				}
 				$lookupFilter = function() {
-					return "`jabatan_pegawai` = 3";
+					return "`jabatan_pegawai` = 3 AND `status` <> 'Non Aktif'";
 				};
 				$lookupFilter = $lookupFilter->bindTo($this);
 				$sqlWrk = $this->be_body->Lookup->getSql(TRUE, $filterWrk, $lookupFilter, $this);
@@ -2382,7 +2414,7 @@ class penjualan_edit extends penjualan
 					$filterWrk = "`id_pegawai`" . SearchString("=", $this->medis->CurrentValue, DATATYPE_NUMBER, "");
 				}
 				$lookupFilter = function() {
-					return "`jabatan_pegawai` = 4";
+					return "`jabatan_pegawai` = 4 AND `status` <> 'Non Aktif'";
 				};
 				$lookupFilter = $lookupFilter->bindTo($this);
 				$sqlWrk = $this->medis->Lookup->getSql(TRUE, $filterWrk, $lookupFilter, $this);
@@ -2414,7 +2446,7 @@ class penjualan_edit extends penjualan
 					$filterWrk = "`id_pegawai`" . SearchString("=", $this->dokter->CurrentValue, DATATYPE_NUMBER, "");
 				}
 				$lookupFilter = function() {
-					return "`jabatan_pegawai` = 1";
+					return "`jabatan_pegawai` = 1 AND `status` <> 'Non Aktif'";
 				};
 				$lookupFilter = $lookupFilter->bindTo($this);
 				$sqlWrk = $this->dokter->Lookup->getSql(TRUE, $filterWrk, $lookupFilter, $this);
@@ -2528,6 +2560,12 @@ class penjualan_edit extends penjualan
 			// status
 			$this->status->EditCustomAttributes = "";
 			$this->status->EditValue = $this->status->options(FALSE);
+
+			// jumlah_voucher
+			$this->jumlah_voucher->EditAttrs["class"] = "form-control";
+			$this->jumlah_voucher->EditCustomAttributes = "";
+			$this->jumlah_voucher->EditValue = HtmlEncode($this->jumlah_voucher->CurrentValue);
+			$this->jumlah_voucher->PlaceHolder = RemoveHtml($this->jumlah_voucher->caption());
 
 			// Edit refer script
 			// kode_penjualan
@@ -2650,6 +2688,10 @@ class penjualan_edit extends penjualan
 			// status
 			$this->status->LinkCustomAttributes = "";
 			$this->status->HrefValue = "";
+
+			// jumlah_voucher
+			$this->jumlah_voucher->LinkCustomAttributes = "";
+			$this->jumlah_voucher->HrefValue = "";
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -2863,6 +2905,14 @@ class penjualan_edit extends penjualan
 				AddMessage($FormError, str_replace("%s", $this->status->caption(), $this->status->RequiredErrorMessage));
 			}
 		}
+		if ($this->jumlah_voucher->Required) {
+			if (!$this->jumlah_voucher->IsDetailKey && $this->jumlah_voucher->FormValue != NULL && $this->jumlah_voucher->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->jumlah_voucher->caption(), $this->jumlah_voucher->RequiredErrorMessage));
+			}
+		}
+		if (!CheckInteger($this->jumlah_voucher->FormValue)) {
+			AddMessage($FormError, $this->jumlah_voucher->errorMessage());
+		}
 
 		// Validate detail grid
 		$detailTblVar = explode(",", $this->getCurrentDetailTable());
@@ -3001,6 +3051,9 @@ class penjualan_edit extends penjualan
 
 			// status
 			$this->status->setDbValueDef($rsnew, $this->status->CurrentValue, "", $this->status->ReadOnly);
+
+			// jumlah_voucher
+			$this->jumlah_voucher->setDbValueDef($rsnew, $this->jumlah_voucher->CurrentValue, NULL, $this->jumlah_voucher->ReadOnly);
 
 			// Call Row Updating event
 			$updateRow = $this->Row_Updating($rsold, $rsnew);
@@ -3154,28 +3207,32 @@ class penjualan_edit extends penjualan
 					$lookupFilter = $lookupFilter->bindTo($this);
 					break;
 				case "x_sales":
+					$lookupFilter = function() {
+						return "`status` <> 'Non Aktif'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
 					break;
 				case "x_dok_be_wajah":
 					$lookupFilter = function() {
-						return "`jabatan_pegawai` = 2";
+						return "`jabatan_pegawai` = 2 AND `status` <> 'Non Aktif'";
 					};
 					$lookupFilter = $lookupFilter->bindTo($this);
 					break;
 				case "x_be_body":
 					$lookupFilter = function() {
-						return "`jabatan_pegawai` = 3";
+						return "`jabatan_pegawai` = 3 AND `status` <> 'Non Aktif'";
 					};
 					$lookupFilter = $lookupFilter->bindTo($this);
 					break;
 				case "x_medis":
 					$lookupFilter = function() {
-						return "`jabatan_pegawai` = 4";
+						return "`jabatan_pegawai` = 4 AND `status` <> 'Non Aktif'";
 					};
 					$lookupFilter = $lookupFilter->bindTo($this);
 					break;
 				case "x_dokter":
 					$lookupFilter = function() {
-						return "`jabatan_pegawai` = 1";
+						return "`jabatan_pegawai` = 1 AND `status` <> 'Non Aktif'";
 					};
 					$lookupFilter = $lookupFilter->bindTo($this);
 					break;

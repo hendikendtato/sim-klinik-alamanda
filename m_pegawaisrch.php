@@ -51,21 +51,12 @@ loadjs.ready("head", function() {
 			return true; // Ignore validation
 		fobj = fobj || this._form;
 		var infix = "";
-		elm = this.getElements("x" + infix + "_id_pegawai");
-		if (elm && !ew.checkInteger(elm.value))
-			return this.onError(elm, "<?php echo JsEncode($m_pegawai_search->id_pegawai->errorMessage()) ?>");
 		elm = this.getElements("x" + infix + "_tgllahir_pegawai");
 		if (elm && !ew.checkDateDef(elm.value))
 			return this.onError(elm, "<?php echo JsEncode($m_pegawai_search->tgllahir_pegawai->errorMessage()) ?>");
 		elm = this.getElements("x" + infix + "_tarif_pegawai");
 		if (elm && !ew.checkInteger(elm.value))
 			return this.onError(elm, "<?php echo JsEncode($m_pegawai_search->tarif_pegawai->errorMessage()) ?>");
-		elm = this.getElements("x" + infix + "_target");
-		if (elm && !ew.checkInteger(elm.value))
-			return this.onError(elm, "<?php echo JsEncode($m_pegawai_search->target->errorMessage()) ?>");
-		elm = this.getElements("x" + infix + "_nilai_komisi");
-		if (elm && !ew.checkInteger(elm.value))
-			return this.onError(elm, "<?php echo JsEncode($m_pegawai_search->nilai_komisi->errorMessage()) ?>");
 
 		// Call Form_CustomValidate event
 		if (!this.Form_CustomValidate(fobj))
@@ -94,6 +85,8 @@ loadjs.ready("head", function() {
 	fm_pegawaisearch.lists["x_status_pegawai"].options = <?php echo JsonEncode($m_pegawai_search->status_pegawai->options(FALSE, TRUE)) ?>;
 	fm_pegawaisearch.lists["x_id_klinik"] = <?php echo $m_pegawai_search->id_klinik->Lookup->toClientList($m_pegawai_search) ?>;
 	fm_pegawaisearch.lists["x_id_klinik"].options = <?php echo JsonEncode($m_pegawai_search->id_klinik->lookupOptions()) ?>;
+	fm_pegawaisearch.lists["x_status"] = <?php echo $m_pegawai_search->status->Lookup->toClientList($m_pegawai_search) ?>;
+	fm_pegawaisearch.lists["x_status"].options = <?php echo JsonEncode($m_pegawai_search->status->options(FALSE, TRUE)) ?>;
 	loadjs.done("fm_pegawaisearch");
 });
 </script>
@@ -117,21 +110,6 @@ $m_pegawai_search->showMessage();
 <input type="hidden" name="action" id="action" value="search">
 <input type="hidden" name="modal" value="<?php echo (int)$m_pegawai_search->IsModal ?>">
 <div class="ew-search-div"><!-- page* -->
-<?php if ($m_pegawai_search->id_pegawai->Visible) { // id_pegawai ?>
-	<div id="r_id_pegawai" class="form-group row">
-		<label for="x_id_pegawai" class="<?php echo $m_pegawai_search->LeftColumnClass ?>"><span id="elh_m_pegawai_id_pegawai"><?php echo $m_pegawai_search->id_pegawai->caption() ?></span>
-		<span class="ew-search-operator">
-<?php echo $Language->phrase("=") ?>
-<input type="hidden" name="z_id_pegawai" id="z_id_pegawai" value="=">
-</span>
-		</label>
-		<div class="<?php echo $m_pegawai_search->RightColumnClass ?>"><div <?php echo $m_pegawai_search->id_pegawai->cellAttributes() ?>>
-			<span id="el_m_pegawai_id_pegawai" class="ew-search-field">
-<input type="text" data-table="m_pegawai" data-field="x_id_pegawai" name="x_id_pegawai" id="x_id_pegawai" maxlength="11" placeholder="<?php echo HtmlEncode($m_pegawai_search->id_pegawai->getPlaceHolder()) ?>" value="<?php echo $m_pegawai_search->id_pegawai->EditValue ?>"<?php echo $m_pegawai_search->id_pegawai->editAttributes() ?>>
-</span>
-		</div></div>
-	</div>
-<?php } ?>
 <?php if ($m_pegawai_search->nama_pegawai->Visible) { // nama_pegawai ?>
 	<div id="r_nama_pegawai" class="form-group row">
 		<label for="x_nama_pegawai" class="<?php echo $m_pegawai_search->LeftColumnClass ?>"><span id="elh_m_pegawai_nama_pegawai"><?php echo $m_pegawai_search->nama_pegawai->caption() ?></span>
@@ -385,32 +363,20 @@ loadjs.ready(["fm_pegawaisearch", "datetimepicker"], function() {
 		</div></div>
 	</div>
 <?php } ?>
-<?php if ($m_pegawai_search->target->Visible) { // target ?>
-	<div id="r_target" class="form-group row">
-		<label for="x_target" class="<?php echo $m_pegawai_search->LeftColumnClass ?>"><span id="elh_m_pegawai_target"><?php echo $m_pegawai_search->target->caption() ?></span>
+<?php if ($m_pegawai_search->status->Visible) { // status ?>
+	<div id="r_status" class="form-group row">
+		<label class="<?php echo $m_pegawai_search->LeftColumnClass ?>"><span id="elh_m_pegawai_status"><?php echo $m_pegawai_search->status->caption() ?></span>
 		<span class="ew-search-operator">
 <?php echo $Language->phrase("=") ?>
-<input type="hidden" name="z_target" id="z_target" value="=">
+<input type="hidden" name="z_status" id="z_status" value="=">
 </span>
 		</label>
-		<div class="<?php echo $m_pegawai_search->RightColumnClass ?>"><div <?php echo $m_pegawai_search->target->cellAttributes() ?>>
-			<span id="el_m_pegawai_target" class="ew-search-field">
-<input type="text" data-table="m_pegawai" data-field="x_target" name="x_target" id="x_target" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($m_pegawai_search->target->getPlaceHolder()) ?>" value="<?php echo $m_pegawai_search->target->EditValue ?>"<?php echo $m_pegawai_search->target->editAttributes() ?>>
-</span>
-		</div></div>
-	</div>
-<?php } ?>
-<?php if ($m_pegawai_search->nilai_komisi->Visible) { // nilai_komisi ?>
-	<div id="r_nilai_komisi" class="form-group row">
-		<label for="x_nilai_komisi" class="<?php echo $m_pegawai_search->LeftColumnClass ?>"><span id="elh_m_pegawai_nilai_komisi"><?php echo $m_pegawai_search->nilai_komisi->caption() ?></span>
-		<span class="ew-search-operator">
-<?php echo $Language->phrase("=") ?>
-<input type="hidden" name="z_nilai_komisi" id="z_nilai_komisi" value="=">
-</span>
-		</label>
-		<div class="<?php echo $m_pegawai_search->RightColumnClass ?>"><div <?php echo $m_pegawai_search->nilai_komisi->cellAttributes() ?>>
-			<span id="el_m_pegawai_nilai_komisi" class="ew-search-field">
-<input type="text" data-table="m_pegawai" data-field="x_nilai_komisi" name="x_nilai_komisi" id="x_nilai_komisi" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($m_pegawai_search->nilai_komisi->getPlaceHolder()) ?>" value="<?php echo $m_pegawai_search->nilai_komisi->EditValue ?>"<?php echo $m_pegawai_search->nilai_komisi->editAttributes() ?>>
+		<div class="<?php echo $m_pegawai_search->RightColumnClass ?>"><div <?php echo $m_pegawai_search->status->cellAttributes() ?>>
+			<span id="el_m_pegawai_status" class="ew-search-field">
+<div id="tp_x_status" class="ew-template"><input type="radio" class="custom-control-input" data-table="m_pegawai" data-field="x_status" data-value-separator="<?php echo $m_pegawai_search->status->displayValueSeparatorAttribute() ?>" name="x_status" id="x_status" value="{value}"<?php echo $m_pegawai_search->status->editAttributes() ?>></div>
+<div id="dsl_x_status" data-repeatcolumn="5" class="ew-item-list d-none"><div>
+<?php echo $m_pegawai_search->status->radioButtonListHtml(FALSE, "x_status") ?>
+</div></div>
 </span>
 		</div></div>
 	</div>

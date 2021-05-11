@@ -231,6 +231,16 @@ $m_pegawai_view->showMessage();
 </td>
 	</tr>
 <?php } ?>
+<?php if ($m_pegawai_view->status->Visible) { // status ?>
+	<tr id="r_status">
+		<td class="<?php echo $m_pegawai_view->TableLeftColumnClass ?>"><span id="elh_m_pegawai_status"><?php echo $m_pegawai_view->status->caption() ?></span></td>
+		<td data-name="status" <?php echo $m_pegawai_view->status->cellAttributes() ?>>
+<span id="el_m_pegawai_status">
+<span<?php echo $m_pegawai_view->status->viewAttributes() ?>><?php echo $m_pegawai_view->status->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
 <?php if ($m_pegawai_view->nilai_komisi->Visible) { // nilai_komisi ?>
 	<tr id="r_nilai_komisi">
 		<td class="<?php echo $m_pegawai_view->TableLeftColumnClass ?>"><span id="elh_m_pegawai_nilai_komisi"><?php echo $m_pegawai_view->nilai_komisi->caption() ?></span></td>

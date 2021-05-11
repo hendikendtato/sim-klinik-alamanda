@@ -97,6 +97,9 @@ $m_pegawai_delete->showMessage();
 <?php if ($m_pegawai_delete->id_klinik->Visible) { // id_klinik ?>
 		<th class="<?php echo $m_pegawai_delete->id_klinik->headerCellClass() ?>"><span id="elh_m_pegawai_id_klinik" class="m_pegawai_id_klinik"><?php echo $m_pegawai_delete->id_klinik->caption() ?></span></th>
 <?php } ?>
+<?php if ($m_pegawai_delete->status->Visible) { // status ?>
+		<th class="<?php echo $m_pegawai_delete->status->headerCellClass() ?>"><span id="elh_m_pegawai_status" class="m_pegawai_status"><?php echo $m_pegawai_delete->status->caption() ?></span></th>
+<?php } ?>
 <?php if ($m_pegawai_delete->nilai_komisi->Visible) { // nilai_komisi ?>
 		<th class="<?php echo $m_pegawai_delete->nilai_komisi->headerCellClass() ?>"><span id="elh_m_pegawai_nilai_komisi" class="m_pegawai_nilai_komisi"><?php echo $m_pegawai_delete->nilai_komisi->caption() ?></span></th>
 <?php } ?>
@@ -181,6 +184,13 @@ while (!$m_pegawai_delete->Recordset->EOF) {
 		<td <?php echo $m_pegawai_delete->id_klinik->cellAttributes() ?>>
 <span id="el<?php echo $m_pegawai_delete->RowCount ?>_m_pegawai_id_klinik" class="m_pegawai_id_klinik">
 <span<?php echo $m_pegawai_delete->id_klinik->viewAttributes() ?>><?php echo $m_pegawai_delete->id_klinik->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($m_pegawai_delete->status->Visible) { // status ?>
+		<td <?php echo $m_pegawai_delete->status->cellAttributes() ?>>
+<span id="el<?php echo $m_pegawai_delete->RowCount ?>_m_pegawai_status" class="m_pegawai_status">
+<span<?php echo $m_pegawai_delete->status->viewAttributes() ?>><?php echo $m_pegawai_delete->status->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<ew-language date="2021/5/10" version="16.0.1" id="id" name="Indonesian" desc="Indonesian" author="e.World Technology Ltd.">
+<ew-language date="2021/5/11" version="16.0.1" id="id" name="Indonesian" desc="Indonesian" author="e.World Technology Ltd.">
   <!--
 	*** Important Notes:
 	1. Language ID should follow: https://developers.google.com/recaptcha/docs/language,
@@ -2240,17 +2240,24 @@
         <phrase id="fldcaption" value="Jabatan" />
       </field>
       <field id="status_pegawai">
-        <phrase id="fldcaption" value="Status" />
+        <phrase id="fldcaption" value="Status Kepegawaian" />
         <phrase id="fldtagvalue1" value="contract" />
-        <phrase id="fldtagcaption1" value="contract" />
+        <phrase id="fldtagcaption1" value="Contract" />
         <phrase id="fldtagvalue2" value="permanent" />
-        <phrase id="fldtagcaption2" value="permanent" />
+        <phrase id="fldtagcaption2" value="Permanent" />
       </field>
       <field id="tarif_pegawai">
         <phrase id="fldcaption" value="Tarif Pegawai" />
       </field>
       <field id="id_klinik">
         <phrase id="fldcaption" value="Klinik" />
+      </field>
+      <field id="status">
+        <phrase id="fldcaption" value="Status" />
+        <phrase id="fldtagvalue1" value="Aktif" />
+        <phrase id="fldtagcaption1" value="Aktif" />
+        <phrase id="fldtagvalue2" value="Non Aktif" />
+        <phrase id="fldtagcaption2" value="Non Aktif" />
       </field>
       <field id="target">
         <phrase id="fldcaption" value="Target" />
@@ -2488,6 +2495,9 @@
       <field id="total_charge">
         <phrase id="fldcaption" value="GrandTotal" />
       </field>
+      <field id="jumlah_pemakaian">
+        <phrase id="fldcaption" value="jumlah pemakaian" />
+      </field>
     </table>
     <table id="penjualan">
       <phrase id="tblcaption" value="Penjualan" />
@@ -2613,6 +2623,9 @@
       </field>
       <field id="status_void">
         <phrase id="fldcaption" value="status void" />
+      </field>
+      <field id="jumlah_voucher">
+        <phrase id="fldcaption" value="Jumlah Voucher" />
       </field>
     </table>
     <table id="penyesuaianstok">

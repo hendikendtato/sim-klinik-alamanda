@@ -690,6 +690,7 @@ class m_pegawai_add extends m_pegawai
 		$this->status_pegawai->setVisibility();
 		$this->tarif_pegawai->setVisibility();
 		$this->id_klinik->setVisibility();
+		$this->status->setVisibility();
 		$this->target->Visible = FALSE;
 		$this->nilai_komisi->Visible = FALSE;
 		$this->hideFieldsForAddEdit();
@@ -865,6 +866,8 @@ class m_pegawai_add extends m_pegawai
 		$this->tarif_pegawai->OldValue = $this->tarif_pegawai->CurrentValue;
 		$this->id_klinik->CurrentValue = NULL;
 		$this->id_klinik->OldValue = $this->id_klinik->CurrentValue;
+		$this->status->CurrentValue = NULL;
+		$this->status->OldValue = $this->status->CurrentValue;
 		$this->target->CurrentValue = NULL;
 		$this->target->OldValue = $this->target->CurrentValue;
 		$this->nilai_komisi->CurrentValue = NULL;
@@ -1014,6 +1017,15 @@ class m_pegawai_add extends m_pegawai
 				$this->id_klinik->setFormValue($val);
 		}
 
+		// Check field name 'status' first before field var 'x_status'
+		$val = $CurrentForm->hasValue("status") ? $CurrentForm->getValue("status") : $CurrentForm->getValue("x_status");
+		if (!$this->status->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->status->Visible = FALSE; // Disable update for API request
+			else
+				$this->status->setFormValue($val);
+		}
+
 		// Check field name 'id_pegawai' first before field var 'x_id_pegawai'
 		$val = $CurrentForm->hasValue("id_pegawai") ? $CurrentForm->getValue("id_pegawai") : $CurrentForm->getValue("x_id_pegawai");
 	}
@@ -1038,6 +1050,7 @@ class m_pegawai_add extends m_pegawai
 		$this->status_pegawai->CurrentValue = $this->status_pegawai->FormValue;
 		$this->tarif_pegawai->CurrentValue = $this->tarif_pegawai->FormValue;
 		$this->id_klinik->CurrentValue = $this->id_klinik->FormValue;
+		$this->status->CurrentValue = $this->status->FormValue;
 	}
 
 	// Load row based on key values
@@ -1091,6 +1104,7 @@ class m_pegawai_add extends m_pegawai
 		$this->status_pegawai->setDbValue($row['status_pegawai']);
 		$this->tarif_pegawai->setDbValue($row['tarif_pegawai']);
 		$this->id_klinik->setDbValue($row['id_klinik']);
+		$this->status->setDbValue($row['status']);
 		$this->target->setDbValue($row['target']);
 		$this->nilai_komisi->setDbValue($row['nilai_komisi']);
 	}
@@ -1116,6 +1130,7 @@ class m_pegawai_add extends m_pegawai
 		$row['status_pegawai'] = $this->status_pegawai->CurrentValue;
 		$row['tarif_pegawai'] = $this->tarif_pegawai->CurrentValue;
 		$row['id_klinik'] = $this->id_klinik->CurrentValue;
+		$row['status'] = $this->status->CurrentValue;
 		$row['target'] = $this->target->CurrentValue;
 		$row['nilai_komisi'] = $this->nilai_komisi->CurrentValue;
 		return $row;
@@ -1171,6 +1186,7 @@ class m_pegawai_add extends m_pegawai
 		// status_pegawai
 		// tarif_pegawai
 		// id_klinik
+		// status
 		// target
 		// nilai_komisi
 
@@ -1304,6 +1320,14 @@ class m_pegawai_add extends m_pegawai
 			}
 			$this->id_klinik->ViewCustomAttributes = "";
 
+			// status
+			if (strval($this->status->CurrentValue) != "") {
+				$this->status->ViewValue = $this->status->optionCaption($this->status->CurrentValue);
+			} else {
+				$this->status->ViewValue = NULL;
+			}
+			$this->status->ViewCustomAttributes = "";
+
 			// target
 			$this->target->ViewValue = $this->target->CurrentValue;
 			$this->target->ViewValue = FormatNumber($this->target->ViewValue, 0, -2, -2, -2);
@@ -1388,6 +1412,11 @@ class m_pegawai_add extends m_pegawai
 			$this->id_klinik->LinkCustomAttributes = "";
 			$this->id_klinik->HrefValue = "";
 			$this->id_klinik->TooltipValue = "";
+
+			// status
+			$this->status->LinkCustomAttributes = "";
+			$this->status->HrefValue = "";
+			$this->status->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_ADD) { // Add row
 
 			// nama_pegawai
@@ -1546,6 +1575,10 @@ class m_pegawai_add extends m_pegawai
 				$this->id_klinik->EditValue = $arwrk;
 			}
 
+			// status
+			$this->status->EditCustomAttributes = "";
+			$this->status->EditValue = $this->status->options(FALSE);
+
 			// Add refer script
 			// nama_pegawai
 
@@ -1607,6 +1640,10 @@ class m_pegawai_add extends m_pegawai
 			// id_klinik
 			$this->id_klinik->LinkCustomAttributes = "";
 			$this->id_klinik->HrefValue = "";
+
+			// status
+			$this->status->LinkCustomAttributes = "";
+			$this->status->HrefValue = "";
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -1708,6 +1745,11 @@ class m_pegawai_add extends m_pegawai
 				AddMessage($FormError, str_replace("%s", $this->id_klinik->caption(), $this->id_klinik->RequiredErrorMessage));
 			}
 		}
+		if ($this->status->Required) {
+			if ($this->status->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->status->caption(), $this->status->RequiredErrorMessage));
+			}
+		}
 
 		// Return validate result
 		$validateForm = ($FormError == "");
@@ -1777,6 +1819,9 @@ class m_pegawai_add extends m_pegawai
 
 		// id_klinik
 		$this->id_klinik->setDbValueDef($rsnew, $this->id_klinik->CurrentValue, NULL, FALSE);
+
+		// status
+		$this->status->setDbValueDef($rsnew, $this->status->CurrentValue, NULL, FALSE);
 
 		// Call Row Inserting event
 		$rs = ($rsold) ? $rsold->fields : NULL;
@@ -1852,6 +1897,8 @@ class m_pegawai_add extends m_pegawai
 				case "x_status_pegawai":
 					break;
 				case "x_id_klinik":
+					break;
+				case "x_status":
 					break;
 				default:
 					$lookupFilter = "";

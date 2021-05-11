@@ -137,6 +137,11 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $m_pegawai_add->id_klinik->caption(), $m_pegawai_add->id_klinik->RequiredErrorMessage)) ?>");
 			<?php } ?>
+			<?php if ($m_pegawai_add->status->Required) { ?>
+				elm = this.getElements("x" + infix + "_status");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $m_pegawai_add->status->caption(), $m_pegawai_add->status->RequiredErrorMessage)) ?>");
+			<?php } ?>
 
 				// Call Form_CustomValidate event
 				if (!this.Form_CustomValidate(fobj))
@@ -175,6 +180,8 @@ loadjs.ready("head", function() {
 	fm_pegawaiadd.lists["x_status_pegawai"].options = <?php echo JsonEncode($m_pegawai_add->status_pegawai->options(FALSE, TRUE)) ?>;
 	fm_pegawaiadd.lists["x_id_klinik"] = <?php echo $m_pegawai_add->id_klinik->Lookup->toClientList($m_pegawai_add) ?>;
 	fm_pegawaiadd.lists["x_id_klinik"].options = <?php echo JsonEncode($m_pegawai_add->id_klinik->lookupOptions()) ?>;
+	fm_pegawaiadd.lists["x_status"] = <?php echo $m_pegawai_add->status->Lookup->toClientList($m_pegawai_add) ?>;
+	fm_pegawaiadd.lists["x_status"].options = <?php echo JsonEncode($m_pegawai_add->status->options(FALSE, TRUE)) ?>;
 	loadjs.done("fm_pegawaiadd");
 });
 </script>
@@ -374,6 +381,19 @@ loadjs.ready(["fm_pegawaiadd", "datetimepicker"], function() {
 <?php echo $m_pegawai_add->id_klinik->Lookup->getParamTag($m_pegawai_add, "p_x_id_klinik") ?>
 </span>
 <?php echo $m_pegawai_add->id_klinik->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
+<?php if ($m_pegawai_add->status->Visible) { // status ?>
+	<div id="r_status" class="form-group row">
+		<label id="elh_m_pegawai_status" class="<?php echo $m_pegawai_add->LeftColumnClass ?>"><?php echo $m_pegawai_add->status->caption() ?><?php echo $m_pegawai_add->status->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $m_pegawai_add->RightColumnClass ?>"><div <?php echo $m_pegawai_add->status->cellAttributes() ?>>
+<span id="el_m_pegawai_status">
+<div id="tp_x_status" class="ew-template"><input type="radio" class="custom-control-input" data-table="m_pegawai" data-field="x_status" data-value-separator="<?php echo $m_pegawai_add->status->displayValueSeparatorAttribute() ?>" name="x_status" id="x_status" value="{value}"<?php echo $m_pegawai_add->status->editAttributes() ?>></div>
+<div id="dsl_x_status" data-repeatcolumn="5" class="ew-item-list d-none"><div>
+<?php echo $m_pegawai_add->status->radioButtonListHtml(FALSE, "x_status") ?>
+</div></div>
+</span>
+<?php echo $m_pegawai_add->status->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 </div><!-- /page* -->

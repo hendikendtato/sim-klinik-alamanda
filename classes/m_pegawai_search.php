@@ -664,7 +664,7 @@ class m_pegawai_search extends m_pegawai
 		// Create form object
 		$CurrentForm = new HttpForm();
 		$this->CurrentAction = Param("action"); // Set up current action
-		$this->id_pegawai->setVisibility();
+		$this->id_pegawai->Visible = FALSE;
 		$this->nama_pegawai->setVisibility();
 		$this->nama_lengkap->setVisibility();
 		$this->jenis_pegawai->setVisibility();
@@ -680,8 +680,9 @@ class m_pegawai_search extends m_pegawai
 		$this->status_pegawai->setVisibility();
 		$this->tarif_pegawai->setVisibility();
 		$this->id_klinik->setVisibility();
-		$this->target->setVisibility();
-		$this->nilai_komisi->setVisibility();
+		$this->status->setVisibility();
+		$this->target->Visible = FALSE;
+		$this->nilai_komisi->Visible = FALSE;
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -750,7 +751,6 @@ class m_pegawai_search extends m_pegawai
 	protected function buildAdvancedSearch()
 	{
 		$srchUrl = "";
-		$this->buildSearchUrl($srchUrl, $this->id_pegawai); // id_pegawai
 		$this->buildSearchUrl($srchUrl, $this->nama_pegawai); // nama_pegawai
 		$this->buildSearchUrl($srchUrl, $this->nama_lengkap); // nama_lengkap
 		$this->buildSearchUrl($srchUrl, $this->jenis_pegawai); // jenis_pegawai
@@ -766,8 +766,7 @@ class m_pegawai_search extends m_pegawai
 		$this->buildSearchUrl($srchUrl, $this->status_pegawai); // status_pegawai
 		$this->buildSearchUrl($srchUrl, $this->tarif_pegawai); // tarif_pegawai
 		$this->buildSearchUrl($srchUrl, $this->id_klinik); // id_klinik
-		$this->buildSearchUrl($srchUrl, $this->target); // target
-		$this->buildSearchUrl($srchUrl, $this->nilai_komisi); // nilai_komisi
+		$this->buildSearchUrl($srchUrl, $this->status); // status
 		if ($srchUrl != "")
 			$srchUrl .= "&";
 		$srchUrl .= "cmd=search";
@@ -840,8 +839,6 @@ class m_pegawai_search extends m_pegawai
 
 		// Load search values
 		$got = FALSE;
-		if ($this->id_pegawai->AdvancedSearch->post())
-			$got = TRUE;
 		if ($this->nama_pegawai->AdvancedSearch->post())
 			$got = TRUE;
 		if ($this->nama_lengkap->AdvancedSearch->post())
@@ -872,9 +869,7 @@ class m_pegawai_search extends m_pegawai
 			$got = TRUE;
 		if ($this->id_klinik->AdvancedSearch->post())
 			$got = TRUE;
-		if ($this->target->AdvancedSearch->post())
-			$got = TRUE;
-		if ($this->nilai_komisi->AdvancedSearch->post())
+		if ($this->status->AdvancedSearch->post())
 			$got = TRUE;
 		return $got;
 	}
@@ -906,6 +901,7 @@ class m_pegawai_search extends m_pegawai
 		// status_pegawai
 		// tarif_pegawai
 		// id_klinik
+		// status
 		// target
 		// nilai_komisi
 
@@ -1039,6 +1035,14 @@ class m_pegawai_search extends m_pegawai
 			}
 			$this->id_klinik->ViewCustomAttributes = "";
 
+			// status
+			if (strval($this->status->CurrentValue) != "") {
+				$this->status->ViewValue = $this->status->optionCaption($this->status->CurrentValue);
+			} else {
+				$this->status->ViewValue = NULL;
+			}
+			$this->status->ViewCustomAttributes = "";
+
 			// target
 			$this->target->ViewValue = $this->target->CurrentValue;
 			$this->target->ViewValue = FormatNumber($this->target->ViewValue, 0, -2, -2, -2);
@@ -1048,11 +1052,6 @@ class m_pegawai_search extends m_pegawai
 			$this->nilai_komisi->ViewValue = $this->nilai_komisi->CurrentValue;
 			$this->nilai_komisi->ViewValue = FormatNumber($this->nilai_komisi->ViewValue, 0, -2, -2, -2);
 			$this->nilai_komisi->ViewCustomAttributes = "";
-
-			// id_pegawai
-			$this->id_pegawai->LinkCustomAttributes = "";
-			$this->id_pegawai->HrefValue = "";
-			$this->id_pegawai->TooltipValue = "";
 
 			// nama_pegawai
 			$this->nama_pegawai->LinkCustomAttributes = "";
@@ -1129,22 +1128,11 @@ class m_pegawai_search extends m_pegawai
 			$this->id_klinik->HrefValue = "";
 			$this->id_klinik->TooltipValue = "";
 
-			// target
-			$this->target->LinkCustomAttributes = "";
-			$this->target->HrefValue = "";
-			$this->target->TooltipValue = "";
-
-			// nilai_komisi
-			$this->nilai_komisi->LinkCustomAttributes = "";
-			$this->nilai_komisi->HrefValue = "";
-			$this->nilai_komisi->TooltipValue = "";
+			// status
+			$this->status->LinkCustomAttributes = "";
+			$this->status->HrefValue = "";
+			$this->status->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_SEARCH) { // Search row
-
-			// id_pegawai
-			$this->id_pegawai->EditAttrs["class"] = "form-control";
-			$this->id_pegawai->EditCustomAttributes = "";
-			$this->id_pegawai->EditValue = HtmlEncode($this->id_pegawai->AdvancedSearch->SearchValue);
-			$this->id_pegawai->PlaceHolder = RemoveHtml($this->id_pegawai->caption());
 
 			// nama_pegawai
 			$this->nama_pegawai->EditAttrs["class"] = "form-control";
@@ -1302,17 +1290,9 @@ class m_pegawai_search extends m_pegawai
 				$this->id_klinik->EditValue = $arwrk;
 			}
 
-			// target
-			$this->target->EditAttrs["class"] = "form-control";
-			$this->target->EditCustomAttributes = "";
-			$this->target->EditValue = HtmlEncode($this->target->AdvancedSearch->SearchValue);
-			$this->target->PlaceHolder = RemoveHtml($this->target->caption());
-
-			// nilai_komisi
-			$this->nilai_komisi->EditAttrs["class"] = "form-control";
-			$this->nilai_komisi->EditCustomAttributes = "";
-			$this->nilai_komisi->EditValue = HtmlEncode($this->nilai_komisi->AdvancedSearch->SearchValue);
-			$this->nilai_komisi->PlaceHolder = RemoveHtml($this->nilai_komisi->caption());
+			// status
+			$this->status->EditCustomAttributes = "";
+			$this->status->EditValue = $this->status->options(FALSE);
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -1333,20 +1313,11 @@ class m_pegawai_search extends m_pegawai
 		// Check if validation required
 		if (!Config("SERVER_VALIDATE"))
 			return TRUE;
-		if (!CheckInteger($this->id_pegawai->AdvancedSearch->SearchValue)) {
-			AddMessage($SearchError, $this->id_pegawai->errorMessage());
-		}
 		if (!CheckDate($this->tgllahir_pegawai->AdvancedSearch->SearchValue)) {
 			AddMessage($SearchError, $this->tgllahir_pegawai->errorMessage());
 		}
 		if (!CheckInteger($this->tarif_pegawai->AdvancedSearch->SearchValue)) {
 			AddMessage($SearchError, $this->tarif_pegawai->errorMessage());
-		}
-		if (!CheckInteger($this->target->AdvancedSearch->SearchValue)) {
-			AddMessage($SearchError, $this->target->errorMessage());
-		}
-		if (!CheckInteger($this->nilai_komisi->AdvancedSearch->SearchValue)) {
-			AddMessage($SearchError, $this->nilai_komisi->errorMessage());
 		}
 
 		// Return validate result
@@ -1364,7 +1335,6 @@ class m_pegawai_search extends m_pegawai
 	// Load advanced search
 	public function loadAdvancedSearch()
 	{
-		$this->id_pegawai->AdvancedSearch->load();
 		$this->nama_pegawai->AdvancedSearch->load();
 		$this->nama_lengkap->AdvancedSearch->load();
 		$this->jenis_pegawai->AdvancedSearch->load();
@@ -1380,8 +1350,7 @@ class m_pegawai_search extends m_pegawai
 		$this->status_pegawai->AdvancedSearch->load();
 		$this->tarif_pegawai->AdvancedSearch->load();
 		$this->id_klinik->AdvancedSearch->load();
-		$this->target->AdvancedSearch->load();
-		$this->nilai_komisi->AdvancedSearch->load();
+		$this->status->AdvancedSearch->load();
 	}
 
 	// Set up Breadcrumb
@@ -1418,6 +1387,8 @@ class m_pegawai_search extends m_pegawai
 				case "x_status_pegawai":
 					break;
 				case "x_id_klinik":
+					break;
+				case "x_status":
 					break;
 				default:
 					$lookupFilter = "";

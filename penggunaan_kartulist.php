@@ -213,6 +213,15 @@ $penggunaan_kartu_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
+<?php if ($penggunaan_kartu_list->jumlah_pemakaian->Visible) { // jumlah_pemakaian ?>
+	<?php if ($penggunaan_kartu_list->SortUrl($penggunaan_kartu_list->jumlah_pemakaian) == "") { ?>
+		<th data-name="jumlah_pemakaian" class="<?php echo $penggunaan_kartu_list->jumlah_pemakaian->headerCellClass() ?>"><div id="elh_penggunaan_kartu_jumlah_pemakaian" class="penggunaan_kartu_jumlah_pemakaian"><div class="ew-table-header-caption"><?php echo $penggunaan_kartu_list->jumlah_pemakaian->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="jumlah_pemakaian" class="<?php echo $penggunaan_kartu_list->jumlah_pemakaian->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $penggunaan_kartu_list->SortUrl($penggunaan_kartu_list->jumlah_pemakaian) ?>', 1);"><div id="elh_penggunaan_kartu_jumlah_pemakaian" class="penggunaan_kartu_jumlah_pemakaian">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $penggunaan_kartu_list->jumlah_pemakaian->caption() ?></span><span class="ew-table-header-sort"><?php if ($penggunaan_kartu_list->jumlah_pemakaian->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($penggunaan_kartu_list->jumlah_pemakaian->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
 <?php
 
 // Render list options (header, right)
@@ -324,6 +333,13 @@ $penggunaan_kartu_list->ListOptions->render("body", "left", $penggunaan_kartu_li
 		<td data-name="total_charge" <?php echo $penggunaan_kartu_list->total_charge->cellAttributes() ?>>
 <span id="el<?php echo $penggunaan_kartu_list->RowCount ?>_penggunaan_kartu_total_charge">
 <span<?php echo $penggunaan_kartu_list->total_charge->viewAttributes() ?>><?php echo $penggunaan_kartu_list->total_charge->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
+	<?php if ($penggunaan_kartu_list->jumlah_pemakaian->Visible) { // jumlah_pemakaian ?>
+		<td data-name="jumlah_pemakaian" <?php echo $penggunaan_kartu_list->jumlah_pemakaian->cellAttributes() ?>>
+<span id="el<?php echo $penggunaan_kartu_list->RowCount ?>_penggunaan_kartu_jumlah_pemakaian">
+<span<?php echo $penggunaan_kartu_list->jumlah_pemakaian->viewAttributes() ?>><?php echo $penggunaan_kartu_list->jumlah_pemakaian->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>

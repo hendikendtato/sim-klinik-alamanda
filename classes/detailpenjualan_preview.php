@@ -914,6 +914,10 @@ class detailpenjualan_preview extends detailpenjualan
 					$lookupFilter = $lookupFilter->bindTo($this);
 					break;
 				case "x_komisi_recall":
+					$lookupFilter = function() {
+						return "`status` <> 'Non Aktif'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
 					break;
 				default:
 					$lookupFilter = "";

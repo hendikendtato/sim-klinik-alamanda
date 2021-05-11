@@ -1076,7 +1076,11 @@ class purchaseorder_edit extends purchaseorder
 				$this->idstaff_po->ViewValue = $this->idstaff_po->lookupCacheOption($curVal);
 				if ($this->idstaff_po->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->idstaff_po->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$lookupFilter = function() {
+						return "`status` <> 'Non Aktif'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
+					$sqlWrk = $this->idstaff_po->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
@@ -1214,7 +1218,11 @@ class purchaseorder_edit extends purchaseorder
 				} else {
 					$filterWrk = "`id_pegawai`" . SearchString("=", $this->idstaff_po->CurrentValue, DATATYPE_NUMBER, "");
 				}
-				$sqlWrk = $this->idstaff_po->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$lookupFilter = function() {
+					return "`status` <> 'Non Aktif'";
+				};
+				$lookupFilter = $lookupFilter->bindTo($this);
+				$sqlWrk = $this->idstaff_po->Lookup->getSql(TRUE, $filterWrk, $lookupFilter, $this);
 				$rswrk = Conn()->execute($sqlWrk);
 				$arwrk = $rswrk ? $rswrk->getRows() : [];
 				if ($rswrk)
@@ -1571,6 +1579,10 @@ class purchaseorder_edit extends purchaseorder
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
 				case "x_idstaff_po":
+					$lookupFilter = function() {
+						return "`status` <> 'Non Aktif'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
 					break;
 				case "x_idklinik":
 					break;

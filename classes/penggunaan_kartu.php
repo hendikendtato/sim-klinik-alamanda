@@ -35,6 +35,7 @@ class penggunaan_kartu extends DbTable
 	public $total;
 	public $charge;
 	public $total_charge;
+	public $jumlah_pemakaian;
 
 	// Constructor
 	public function __construct()
@@ -133,6 +134,12 @@ class penggunaan_kartu extends DbTable
 		$this->total_charge->Sortable = TRUE; // Allow sort
 		$this->total_charge->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
 		$this->fields['total_charge'] = &$this->total_charge;
+
+		// jumlah_pemakaian
+		$this->jumlah_pemakaian = new DbField('penggunaan_kartu', 'penggunaan_kartu', 'x_jumlah_pemakaian', 'jumlah_pemakaian', '`jumlah_pemakaian`', '`jumlah_pemakaian`', 3, 11, -1, FALSE, '`jumlah_pemakaian`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->jumlah_pemakaian->Sortable = TRUE; // Allow sort
+		$this->jumlah_pemakaian->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->fields['jumlah_pemakaian'] = &$this->jumlah_pemakaian;
 	}
 
 	// Field Visibility
@@ -498,6 +505,7 @@ class penggunaan_kartu extends DbTable
 		$this->total->DbValue = $row['total'];
 		$this->charge->DbValue = $row['charge'];
 		$this->total_charge->DbValue = $row['total_charge'];
+		$this->jumlah_pemakaian->DbValue = $row['jumlah_pemakaian'];
 	}
 
 	// Delete uploaded files
@@ -738,6 +746,7 @@ class penggunaan_kartu extends DbTable
 		$this->total->setDbValue($rs->fields('total'));
 		$this->charge->setDbValue($rs->fields('charge'));
 		$this->total_charge->setDbValue($rs->fields('total_charge'));
+		$this->jumlah_pemakaian->setDbValue($rs->fields('jumlah_pemakaian'));
 	}
 
 	// Render list row values
@@ -762,6 +771,7 @@ class penggunaan_kartu extends DbTable
 		// total
 		// charge
 		// total_charge
+		// jumlah_pemakaian
 		// id
 
 		$this->id->ViewValue = $this->id->CurrentValue;
@@ -861,6 +871,11 @@ class penggunaan_kartu extends DbTable
 		$this->total_charge->ViewValue = FormatNumber($this->total_charge->ViewValue, 2, -2, -2, -2);
 		$this->total_charge->ViewCustomAttributes = "";
 
+		// jumlah_pemakaian
+		$this->jumlah_pemakaian->ViewValue = $this->jumlah_pemakaian->CurrentValue;
+		$this->jumlah_pemakaian->ViewValue = FormatNumber($this->jumlah_pemakaian->ViewValue, 0, -2, -2, -2);
+		$this->jumlah_pemakaian->ViewCustomAttributes = "";
+
 		// id
 		$this->id->LinkCustomAttributes = "";
 		$this->id->HrefValue = "";
@@ -910,6 +925,11 @@ class penggunaan_kartu extends DbTable
 		$this->total_charge->LinkCustomAttributes = "";
 		$this->total_charge->HrefValue = "";
 		$this->total_charge->TooltipValue = "";
+
+		// jumlah_pemakaian
+		$this->jumlah_pemakaian->LinkCustomAttributes = "";
+		$this->jumlah_pemakaian->HrefValue = "";
+		$this->jumlah_pemakaian->TooltipValue = "";
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -996,6 +1016,12 @@ class penggunaan_kartu extends DbTable
 			$this->total_charge->EditValue = FormatNumber($this->total_charge->EditValue, -2, -2, -2, -2);
 		
 
+		// jumlah_pemakaian
+		$this->jumlah_pemakaian->EditAttrs["class"] = "form-control";
+		$this->jumlah_pemakaian->EditCustomAttributes = "";
+		$this->jumlah_pemakaian->EditValue = $this->jumlah_pemakaian->CurrentValue;
+		$this->jumlah_pemakaian->PlaceHolder = RemoveHtml($this->jumlah_pemakaian->caption());
+
 		// Call Row Rendered event
 		$this->Row_Rendered();
 	}
@@ -1032,6 +1058,7 @@ class penggunaan_kartu extends DbTable
 					$doc->exportCaption($this->total);
 					$doc->exportCaption($this->charge);
 					$doc->exportCaption($this->total_charge);
+					$doc->exportCaption($this->jumlah_pemakaian);
 				} else {
 					$doc->exportCaption($this->kode_penjualan);
 					$doc->exportCaption($this->tgl);
@@ -1040,6 +1067,7 @@ class penggunaan_kartu extends DbTable
 					$doc->exportCaption($this->total);
 					$doc->exportCaption($this->charge);
 					$doc->exportCaption($this->total_charge);
+					$doc->exportCaption($this->jumlah_pemakaian);
 				}
 				$doc->endExportRow();
 			}
@@ -1078,6 +1106,7 @@ class penggunaan_kartu extends DbTable
 						$doc->exportField($this->total);
 						$doc->exportField($this->charge);
 						$doc->exportField($this->total_charge);
+						$doc->exportField($this->jumlah_pemakaian);
 					} else {
 						$doc->exportField($this->kode_penjualan);
 						$doc->exportField($this->tgl);
@@ -1086,6 +1115,7 @@ class penggunaan_kartu extends DbTable
 						$doc->exportField($this->total);
 						$doc->exportField($this->charge);
 						$doc->exportField($this->total_charge);
+						$doc->exportField($this->jumlah_pemakaian);
 					}
 					$doc->endExportRow($rowCnt);
 				}

@@ -674,6 +674,7 @@ class penggunaan_kartu_search extends penggunaan_kartu
 		$this->total->setVisibility();
 		$this->charge->setVisibility();
 		$this->total_charge->setVisibility();
+		$this->jumlah_pemakaian->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -748,6 +749,7 @@ class penggunaan_kartu_search extends penggunaan_kartu
 		$this->buildSearchUrl($srchUrl, $this->total); // total
 		$this->buildSearchUrl($srchUrl, $this->charge); // charge
 		$this->buildSearchUrl($srchUrl, $this->total_charge); // total_charge
+		$this->buildSearchUrl($srchUrl, $this->jumlah_pemakaian); // jumlah_pemakaian
 		if ($srchUrl != "")
 			$srchUrl .= "&";
 		$srchUrl .= "cmd=search";
@@ -832,6 +834,8 @@ class penggunaan_kartu_search extends penggunaan_kartu
 			$got = TRUE;
 		if ($this->total_charge->AdvancedSearch->post())
 			$got = TRUE;
+		if ($this->jumlah_pemakaian->AdvancedSearch->post())
+			$got = TRUE;
 		return $got;
 	}
 
@@ -864,6 +868,7 @@ class penggunaan_kartu_search extends penggunaan_kartu
 		// total
 		// charge
 		// total_charge
+		// jumlah_pemakaian
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -957,6 +962,11 @@ class penggunaan_kartu_search extends penggunaan_kartu
 			$this->total_charge->ViewValue = FormatNumber($this->total_charge->ViewValue, 2, -2, -2, -2);
 			$this->total_charge->ViewCustomAttributes = "";
 
+			// jumlah_pemakaian
+			$this->jumlah_pemakaian->ViewValue = $this->jumlah_pemakaian->CurrentValue;
+			$this->jumlah_pemakaian->ViewValue = FormatNumber($this->jumlah_pemakaian->ViewValue, 0, -2, -2, -2);
+			$this->jumlah_pemakaian->ViewCustomAttributes = "";
+
 			// tgl
 			$this->tgl->LinkCustomAttributes = "";
 			$this->tgl->HrefValue = "";
@@ -986,6 +996,11 @@ class penggunaan_kartu_search extends penggunaan_kartu
 			$this->total_charge->LinkCustomAttributes = "";
 			$this->total_charge->HrefValue = "";
 			$this->total_charge->TooltipValue = "";
+
+			// jumlah_pemakaian
+			$this->jumlah_pemakaian->LinkCustomAttributes = "";
+			$this->jumlah_pemakaian->HrefValue = "";
+			$this->jumlah_pemakaian->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_SEARCH) { // Search row
 
 			// tgl
@@ -1049,6 +1064,12 @@ class penggunaan_kartu_search extends penggunaan_kartu
 			$this->total_charge->EditCustomAttributes = "";
 			$this->total_charge->EditValue = HtmlEncode($this->total_charge->AdvancedSearch->SearchValue);
 			$this->total_charge->PlaceHolder = RemoveHtml($this->total_charge->caption());
+
+			// jumlah_pemakaian
+			$this->jumlah_pemakaian->EditAttrs["class"] = "form-control";
+			$this->jumlah_pemakaian->EditCustomAttributes = "";
+			$this->jumlah_pemakaian->EditValue = HtmlEncode($this->jumlah_pemakaian->AdvancedSearch->SearchValue);
+			$this->jumlah_pemakaian->PlaceHolder = RemoveHtml($this->jumlah_pemakaian->caption());
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -1081,6 +1102,9 @@ class penggunaan_kartu_search extends penggunaan_kartu
 		if (!CheckNumber($this->total_charge->AdvancedSearch->SearchValue)) {
 			AddMessage($SearchError, $this->total_charge->errorMessage());
 		}
+		if (!CheckInteger($this->jumlah_pemakaian->AdvancedSearch->SearchValue)) {
+			AddMessage($SearchError, $this->jumlah_pemakaian->errorMessage());
+		}
 
 		// Return validate result
 		$validateSearch = ($SearchError == "");
@@ -1103,6 +1127,7 @@ class penggunaan_kartu_search extends penggunaan_kartu
 		$this->total->AdvancedSearch->load();
 		$this->charge->AdvancedSearch->load();
 		$this->total_charge->AdvancedSearch->load();
+		$this->jumlah_pemakaian->AdvancedSearch->load();
 	}
 
 	// Set up Breadcrumb

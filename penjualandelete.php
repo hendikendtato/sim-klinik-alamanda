@@ -108,6 +108,9 @@ $penjualan_delete->showMessage();
 <?php if ($penjualan_delete->status->Visible) { // status ?>
 		<th class="<?php echo $penjualan_delete->status->headerCellClass() ?>"><span id="elh_penjualan_status" class="penjualan_status"><?php echo $penjualan_delete->status->caption() ?></span></th>
 <?php } ?>
+<?php if ($penjualan_delete->jumlah_voucher->Visible) { // jumlah_voucher ?>
+		<th class="<?php echo $penjualan_delete->jumlah_voucher->headerCellClass() ?>"><span id="elh_penjualan_jumlah_voucher" class="penjualan_jumlah_voucher"><?php echo $penjualan_delete->jumlah_voucher->caption() ?></span></th>
+<?php } ?>
 	</tr>
 	</thead>
 	<tbody>
@@ -217,6 +220,13 @@ while (!$penjualan_delete->Recordset->EOF) {
 		<td <?php echo $penjualan_delete->status->cellAttributes() ?>>
 <span id="el<?php echo $penjualan_delete->RowCount ?>_penjualan_status" class="penjualan_status">
 <span<?php echo $penjualan_delete->status->viewAttributes() ?>><?php echo $penjualan_delete->status->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($penjualan_delete->jumlah_voucher->Visible) { // jumlah_voucher ?>
+		<td <?php echo $penjualan_delete->jumlah_voucher->cellAttributes() ?>>
+<span id="el<?php echo $penjualan_delete->RowCount ?>_penjualan_jumlah_voucher" class="penjualan_jumlah_voucher">
+<span<?php echo $penjualan_delete->jumlah_voucher->viewAttributes() ?>><?php echo $penjualan_delete->jumlah_voucher->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>
