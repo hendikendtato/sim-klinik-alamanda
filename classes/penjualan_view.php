@@ -1740,11 +1740,6 @@ class penjualan_view extends penjualan
 			$this->status_void->ViewValue = $this->status_void->CurrentValue;
 			$this->status_void->ViewCustomAttributes = "";
 
-			// jumlah_voucher
-			$this->jumlah_voucher->ViewValue = $this->jumlah_voucher->CurrentValue;
-			$this->jumlah_voucher->ViewValue = FormatNumber($this->jumlah_voucher->ViewValue, 0, -2, -2, -2);
-			$this->jumlah_voucher->ViewCustomAttributes = "";
-
 			// kode_penjualan
 			$this->kode_penjualan->LinkCustomAttributes = "";
 			$this->kode_penjualan->HrefValue = "";
@@ -1899,11 +1894,6 @@ class penjualan_view extends penjualan
 			$this->status_void->LinkCustomAttributes = "";
 			$this->status_void->HrefValue = "";
 			$this->status_void->TooltipValue = "";
-
-			// jumlah_voucher
-			$this->jumlah_voucher->LinkCustomAttributes = "";
-			$this->jumlah_voucher->HrefValue = "";
-			$this->jumlah_voucher->TooltipValue = "";
 		}
 
 		// Call Row Rendered event

@@ -294,15 +294,6 @@ $penjualan_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
-<?php if ($penjualan_list->jumlah_voucher->Visible) { // jumlah_voucher ?>
-	<?php if ($penjualan_list->SortUrl($penjualan_list->jumlah_voucher) == "") { ?>
-		<th data-name="jumlah_voucher" class="<?php echo $penjualan_list->jumlah_voucher->headerCellClass() ?>"><div id="elh_penjualan_jumlah_voucher" class="penjualan_jumlah_voucher"><div class="ew-table-header-caption"><?php echo $penjualan_list->jumlah_voucher->caption() ?></div></div></th>
-	<?php } else { ?>
-		<th data-name="jumlah_voucher" class="<?php echo $penjualan_list->jumlah_voucher->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $penjualan_list->SortUrl($penjualan_list->jumlah_voucher) ?>', 1);"><div id="elh_penjualan_jumlah_voucher" class="penjualan_jumlah_voucher">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $penjualan_list->jumlah_voucher->caption() ?></span><span class="ew-table-header-sort"><?php if ($penjualan_list->jumlah_voucher->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($penjualan_list->jumlah_voucher->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-		</div></div></th>
-	<?php } ?>
-<?php } ?>
 <?php
 
 // Render list options (header, right)
@@ -456,13 +447,6 @@ $penjualan_list->ListOptions->render("body", "left", $penjualan_list->RowCount);
 		<td data-name="status" <?php echo $penjualan_list->status->cellAttributes() ?>>
 <span id="el<?php echo $penjualan_list->RowCount ?>_penjualan_status">
 <span<?php echo $penjualan_list->status->viewAttributes() ?>><?php echo $penjualan_list->status->getViewValue() ?></span>
-</span>
-</td>
-	<?php } ?>
-	<?php if ($penjualan_list->jumlah_voucher->Visible) { // jumlah_voucher ?>
-		<td data-name="jumlah_voucher" <?php echo $penjualan_list->jumlah_voucher->cellAttributes() ?>>
-<span id="el<?php echo $penjualan_list->RowCount ?>_penjualan_jumlah_voucher">
-<span<?php echo $penjualan_list->jumlah_voucher->viewAttributes() ?>><?php echo $penjualan_list->jumlah_voucher->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>

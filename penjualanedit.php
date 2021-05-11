@@ -245,14 +245,6 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $penjualan_edit->status->caption(), $penjualan_edit->status->RequiredErrorMessage)) ?>");
 			<?php } ?>
-			<?php if ($penjualan_edit->jumlah_voucher->Required) { ?>
-				elm = this.getElements("x" + infix + "_jumlah_voucher");
-				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $penjualan_edit->jumlah_voucher->caption(), $penjualan_edit->jumlah_voucher->RequiredErrorMessage)) ?>");
-			<?php } ?>
-				elm = this.getElements("x" + infix + "_jumlah_voucher");
-				if (elm && !ew.checkInteger(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($penjualan_edit->jumlah_voucher->errorMessage()) ?>");
 
 				// Call Form_CustomValidate event
 				if (!this.Form_CustomValidate(fobj))
@@ -752,16 +744,6 @@ loadjs.ready(["fpenjualanedit"], function() {
 </div></div>
 </span></script>
 <?php echo $penjualan_edit->status->CustomMsg ?></div></div>
-	</div>
-<?php } ?>
-<?php if ($penjualan_edit->jumlah_voucher->Visible) { // jumlah_voucher ?>
-	<div id="r_jumlah_voucher" class="form-group row">
-		<label id="elh_penjualan_jumlah_voucher" for="x_jumlah_voucher" class="<?php echo $penjualan_edit->LeftColumnClass ?>"><script id="tpc_penjualan_jumlah_voucher" type="text/html"><?php echo $penjualan_edit->jumlah_voucher->caption() ?><?php echo $penjualan_edit->jumlah_voucher->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></script></label>
-		<div class="<?php echo $penjualan_edit->RightColumnClass ?>"><div <?php echo $penjualan_edit->jumlah_voucher->cellAttributes() ?>>
-<script id="tpx_penjualan_jumlah_voucher" type="text/html"><span id="el_penjualan_jumlah_voucher">
-<input type="text" data-table="penjualan" data-field="x_jumlah_voucher" name="x_jumlah_voucher" id="x_jumlah_voucher" size="4" maxlength="11" placeholder="<?php echo HtmlEncode($penjualan_edit->jumlah_voucher->getPlaceHolder()) ?>" value="<?php echo $penjualan_edit->jumlah_voucher->EditValue ?>"<?php echo $penjualan_edit->jumlah_voucher->editAttributes() ?>>
-</span></script>
-<?php echo $penjualan_edit->jumlah_voucher->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 </div><!-- /page* -->

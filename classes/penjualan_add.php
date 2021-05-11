@@ -722,7 +722,7 @@ class penjualan_add extends penjualan
 		$this->_action->setVisibility();
 		$this->status->setVisibility();
 		$this->status_void->Visible = FALSE;
-		$this->jumlah_voucher->setVisibility();
+		$this->jumlah_voucher->Visible = FALSE;
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -1215,15 +1215,6 @@ class penjualan_add extends penjualan
 				$this->status->setFormValue($val);
 		}
 
-		// Check field name 'jumlah_voucher' first before field var 'x_jumlah_voucher'
-		$val = $CurrentForm->hasValue("jumlah_voucher") ? $CurrentForm->getValue("jumlah_voucher") : $CurrentForm->getValue("x_jumlah_voucher");
-		if (!$this->jumlah_voucher->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->jumlah_voucher->Visible = FALSE; // Disable update for API request
-			else
-				$this->jumlah_voucher->setFormValue($val);
-		}
-
 		// Check field name 'id' first before field var 'x_id'
 		$val = $CurrentForm->hasValue("id") ? $CurrentForm->getValue("id") : $CurrentForm->getValue("x_id");
 	}
@@ -1262,7 +1253,6 @@ class penjualan_add extends penjualan
 		$this->ongkir->CurrentValue = $this->ongkir->FormValue;
 		$this->_action->CurrentValue = $this->_action->FormValue;
 		$this->status->CurrentValue = $this->status->FormValue;
-		$this->jumlah_voucher->CurrentValue = $this->jumlah_voucher->FormValue;
 	}
 
 	// Load row based on key values
@@ -1915,11 +1905,6 @@ class penjualan_add extends penjualan
 			$this->status_void->ViewValue = $this->status_void->CurrentValue;
 			$this->status_void->ViewCustomAttributes = "";
 
-			// jumlah_voucher
-			$this->jumlah_voucher->ViewValue = $this->jumlah_voucher->CurrentValue;
-			$this->jumlah_voucher->ViewValue = FormatNumber($this->jumlah_voucher->ViewValue, 0, -2, -2, -2);
-			$this->jumlah_voucher->ViewCustomAttributes = "";
-
 			// id_pelanggan
 			$this->id_pelanggan->LinkCustomAttributes = "";
 			$this->id_pelanggan->HrefValue = "";
@@ -2064,11 +2049,6 @@ class penjualan_add extends penjualan
 			$this->status->LinkCustomAttributes = "";
 			$this->status->HrefValue = "";
 			$this->status->TooltipValue = "";
-
-			// jumlah_voucher
-			$this->jumlah_voucher->LinkCustomAttributes = "";
-			$this->jumlah_voucher->HrefValue = "";
-			$this->jumlah_voucher->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_ADD) { // Add row
 
 			// id_pelanggan
@@ -2574,12 +2554,6 @@ class penjualan_add extends penjualan
 			$this->status->EditCustomAttributes = "";
 			$this->status->EditValue = $this->status->options(FALSE);
 
-			// jumlah_voucher
-			$this->jumlah_voucher->EditAttrs["class"] = "form-control";
-			$this->jumlah_voucher->EditCustomAttributes = "";
-			$this->jumlah_voucher->EditValue = HtmlEncode($this->jumlah_voucher->CurrentValue);
-			$this->jumlah_voucher->PlaceHolder = RemoveHtml($this->jumlah_voucher->caption());
-
 			// Add refer script
 			// id_pelanggan
 
@@ -2697,10 +2671,6 @@ class penjualan_add extends penjualan
 			// status
 			$this->status->LinkCustomAttributes = "";
 			$this->status->HrefValue = "";
-
-			// jumlah_voucher
-			$this->jumlah_voucher->LinkCustomAttributes = "";
-			$this->jumlah_voucher->HrefValue = "";
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -2909,14 +2879,6 @@ class penjualan_add extends penjualan
 				AddMessage($FormError, str_replace("%s", $this->status->caption(), $this->status->RequiredErrorMessage));
 			}
 		}
-		if ($this->jumlah_voucher->Required) {
-			if (!$this->jumlah_voucher->IsDetailKey && $this->jumlah_voucher->FormValue != NULL && $this->jumlah_voucher->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->jumlah_voucher->caption(), $this->jumlah_voucher->RequiredErrorMessage));
-			}
-		}
-		if (!CheckInteger($this->jumlah_voucher->FormValue)) {
-			AddMessage($FormError, $this->jumlah_voucher->errorMessage());
-		}
 
 		// Validate detail grid
 		$detailTblVar = explode(",", $this->getCurrentDetailTable());
@@ -3040,9 +3002,6 @@ class penjualan_add extends penjualan
 
 		// status
 		$this->status->setDbValueDef($rsnew, $this->status->CurrentValue, "", FALSE);
-
-		// jumlah_voucher
-		$this->jumlah_voucher->setDbValueDef($rsnew, $this->jumlah_voucher->CurrentValue, NULL, FALSE);
 
 		// Call Row Inserting event
 		$rs = ($rsold) ? $rsold->fields : NULL;

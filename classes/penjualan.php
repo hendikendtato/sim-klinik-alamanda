@@ -360,7 +360,7 @@ class penjualan extends DbTable
 
 		// jumlah_voucher
 		$this->jumlah_voucher = new DbField('penjualan', 'penjualan', 'x_jumlah_voucher', 'jumlah_voucher', '`jumlah_voucher`', '`jumlah_voucher`', 3, 11, -1, FALSE, '`jumlah_voucher`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->jumlah_voucher->Sortable = TRUE; // Allow sort
+		$this->jumlah_voucher->Sortable = FALSE; // Allow sort
 		$this->jumlah_voucher->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['jumlah_voucher'] = &$this->jumlah_voucher;
 	}
@@ -1185,8 +1185,10 @@ class penjualan extends DbTable
 		// status
 		// status_void
 		// jumlah_voucher
-		// id
 
+		$this->jumlah_voucher->CellCssStyle = "white-space: nowrap;";
+
+		// id
 		$this->id->ViewValue = $this->id->CurrentValue;
 		$this->id->ViewCustomAttributes = "";
 
@@ -2067,7 +2069,6 @@ class penjualan extends DbTable
 					$doc->exportCaption($this->_action);
 					$doc->exportCaption($this->status);
 					$doc->exportCaption($this->status_void);
-					$doc->exportCaption($this->jumlah_voucher);
 				} else {
 					$doc->exportCaption($this->id);
 					$doc->exportCaption($this->kode_penjualan);
@@ -2101,7 +2102,6 @@ class penjualan extends DbTable
 					$doc->exportCaption($this->_action);
 					$doc->exportCaption($this->status);
 					$doc->exportCaption($this->status_void);
-					$doc->exportCaption($this->jumlah_voucher);
 				}
 				$doc->endExportRow();
 			}
@@ -2164,7 +2164,6 @@ class penjualan extends DbTable
 						$doc->exportField($this->_action);
 						$doc->exportField($this->status);
 						$doc->exportField($this->status_void);
-						$doc->exportField($this->jumlah_voucher);
 					} else {
 						$doc->exportField($this->id);
 						$doc->exportField($this->kode_penjualan);
@@ -2198,7 +2197,6 @@ class penjualan extends DbTable
 						$doc->exportField($this->_action);
 						$doc->exportField($this->status);
 						$doc->exportField($this->status_void);
-						$doc->exportField($this->jumlah_voucher);
 					}
 					$doc->endExportRow($rowCnt);
 				}

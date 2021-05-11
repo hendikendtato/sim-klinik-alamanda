@@ -704,7 +704,7 @@ class penjualan_search extends penjualan
 		$this->_action->setVisibility();
 		$this->status->setVisibility();
 		$this->status_void->setVisibility();
-		$this->jumlah_voucher->setVisibility();
+		$this->jumlah_voucher->Visible = FALSE;
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -815,7 +815,6 @@ class penjualan_search extends penjualan
 		$this->buildSearchUrl($srchUrl, $this->_action); // action
 		$this->buildSearchUrl($srchUrl, $this->status); // status
 		$this->buildSearchUrl($srchUrl, $this->status_void); // status_void
-		$this->buildSearchUrl($srchUrl, $this->jumlah_voucher); // jumlah_voucher
 		if ($srchUrl != "")
 			$srchUrl .= "&";
 		$srchUrl .= "cmd=search";
@@ -951,8 +950,6 @@ class penjualan_search extends penjualan
 		if ($this->status->AdvancedSearch->post())
 			$got = TRUE;
 		if ($this->status_void->AdvancedSearch->post())
-			$got = TRUE;
-		if ($this->jumlah_voucher->AdvancedSearch->post())
 			$got = TRUE;
 		return $got;
 	}
@@ -1468,11 +1465,6 @@ class penjualan_search extends penjualan
 			$this->status_void->ViewValue = $this->status_void->CurrentValue;
 			$this->status_void->ViewCustomAttributes = "";
 
-			// jumlah_voucher
-			$this->jumlah_voucher->ViewValue = $this->jumlah_voucher->CurrentValue;
-			$this->jumlah_voucher->ViewValue = FormatNumber($this->jumlah_voucher->ViewValue, 0, -2, -2, -2);
-			$this->jumlah_voucher->ViewCustomAttributes = "";
-
 			// id
 			$this->id->LinkCustomAttributes = "";
 			$this->id->HrefValue = "";
@@ -1632,11 +1624,6 @@ class penjualan_search extends penjualan
 			$this->status_void->LinkCustomAttributes = "";
 			$this->status_void->HrefValue = "";
 			$this->status_void->TooltipValue = "";
-
-			// jumlah_voucher
-			$this->jumlah_voucher->LinkCustomAttributes = "";
-			$this->jumlah_voucher->HrefValue = "";
-			$this->jumlah_voucher->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_SEARCH) { // Search row
 
 			// id
@@ -2113,12 +2100,6 @@ class penjualan_search extends penjualan
 				$this->status_void->AdvancedSearch->SearchValue = HtmlDecode($this->status_void->AdvancedSearch->SearchValue);
 			$this->status_void->EditValue = HtmlEncode($this->status_void->AdvancedSearch->SearchValue);
 			$this->status_void->PlaceHolder = RemoveHtml($this->status_void->caption());
-
-			// jumlah_voucher
-			$this->jumlah_voucher->EditAttrs["class"] = "form-control";
-			$this->jumlah_voucher->EditCustomAttributes = "";
-			$this->jumlah_voucher->EditValue = HtmlEncode($this->jumlah_voucher->AdvancedSearch->SearchValue);
-			$this->jumlah_voucher->PlaceHolder = RemoveHtml($this->jumlah_voucher->caption());
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -2181,9 +2162,6 @@ class penjualan_search extends penjualan
 		if (!CheckNumber($this->ongkir->AdvancedSearch->SearchValue)) {
 			AddMessage($SearchError, $this->ongkir->errorMessage());
 		}
-		if (!CheckInteger($this->jumlah_voucher->AdvancedSearch->SearchValue)) {
-			AddMessage($SearchError, $this->jumlah_voucher->errorMessage());
-		}
 
 		// Return validate result
 		$validateSearch = ($SearchError == "");
@@ -2232,7 +2210,6 @@ class penjualan_search extends penjualan
 		$this->_action->AdvancedSearch->load();
 		$this->status->AdvancedSearch->load();
 		$this->status_void->AdvancedSearch->load();
-		$this->jumlah_voucher->AdvancedSearch->load();
 	}
 
 	// Set up Breadcrumb
