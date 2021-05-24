@@ -93,6 +93,9 @@ loadjs.ready("head", function() {
 		elm = this.getElements("x" + infix + "_ongkir");
 		if (elm && !ew.checkNumber(elm.value))
 			return this.onError(elm, "<?php echo JsEncode($penjualan_search->ongkir->errorMessage()) ?>");
+		elm = this.getElements("x" + infix + "_jumlah_voucher");
+		if (elm && !ew.checkInteger(elm.value))
+			return this.onError(elm, "<?php echo JsEncode($penjualan_search->jumlah_voucher->errorMessage()) ?>");
 
 		// Call Form_CustomValidate event
 		if (!this.Form_CustomValidate(fobj))
@@ -761,6 +764,21 @@ loadjs.ready(["fpenjualansearch"], function() {
 		<div class="<?php echo $penjualan_search->RightColumnClass ?>"><div <?php echo $penjualan_search->status_void->cellAttributes() ?>>
 			<span id="el_penjualan_status_void" class="ew-search-field">
 <input type="text" data-table="penjualan" data-field="x_status_void" name="x_status_void" id="x_status_void" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($penjualan_search->status_void->getPlaceHolder()) ?>" value="<?php echo $penjualan_search->status_void->EditValue ?>"<?php echo $penjualan_search->status_void->editAttributes() ?>>
+</span>
+		</div></div>
+	</div>
+<?php } ?>
+<?php if ($penjualan_search->jumlah_voucher->Visible) { // jumlah_voucher ?>
+	<div id="r_jumlah_voucher" class="form-group row">
+		<label for="x_jumlah_voucher" class="<?php echo $penjualan_search->LeftColumnClass ?>"><span id="elh_penjualan_jumlah_voucher"><?php echo $penjualan_search->jumlah_voucher->caption() ?></span>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_jumlah_voucher" id="z_jumlah_voucher" value="=">
+</span>
+		</label>
+		<div class="<?php echo $penjualan_search->RightColumnClass ?>"><div <?php echo $penjualan_search->jumlah_voucher->cellAttributes() ?>>
+			<span id="el_penjualan_jumlah_voucher" class="ew-search-field">
+<input type="text" data-table="penjualan" data-field="x_jumlah_voucher" name="x_jumlah_voucher" id="x_jumlah_voucher" size="4" maxlength="11" placeholder="<?php echo HtmlEncode($penjualan_search->jumlah_voucher->getPlaceHolder()) ?>" value="<?php echo $penjualan_search->jumlah_voucher->EditValue ?>"<?php echo $penjualan_search->jumlah_voucher->editAttributes() ?>>
 </span>
 		</div></div>
 	</div>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<ew-language date="2021/5/11" version="16.0.1" id="id" name="Indonesian" desc="Indonesian" author="e.World Technology Ltd.">
+<ew-language date="2021/5/24" version="16.0.1" id="id" name="Indonesian" desc="Indonesian" author="e.World Technology Ltd.">
   <!--
 	*** Important Notes:
 	1. Language ID should follow: https://developers.google.com/recaptcha/docs/language,
@@ -2571,6 +2571,8 @@
         <phrase id="fldtagcaption5" value="Tunai - Kartu Kredit" />
         <phrase id="fldtagvalue6" value="Tunai-Debit" />
         <phrase id="fldtagcaption6" value="Tunai - Kartu Debit" />
+        <phrase id="fldtagvalue7" value="E-Wallet" />
+        <phrase id="fldtagcaption7" value="E-Wallet" />
       </field>
       <field id="id_bank">
         <phrase id="fldcaption" value="Rekening" />

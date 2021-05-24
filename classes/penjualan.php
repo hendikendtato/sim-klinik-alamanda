@@ -225,7 +225,7 @@ class penjualan extends DbTable
 		$this->metode_pembayaran->UsePleaseSelect = TRUE; // Use PleaseSelect by default
 		$this->metode_pembayaran->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
 		$this->metode_pembayaran->Lookup = new Lookup('metode_pembayaran', 'penjualan', FALSE, '', ["","","",""], [], [], [], [], [], [], '', '');
-		$this->metode_pembayaran->OptionCount = 6;
+		$this->metode_pembayaran->OptionCount = 7;
 		$this->fields['metode_pembayaran'] = &$this->metode_pembayaran;
 
 		// id_bank
@@ -360,7 +360,7 @@ class penjualan extends DbTable
 
 		// jumlah_voucher
 		$this->jumlah_voucher = new DbField('penjualan', 'penjualan', 'x_jumlah_voucher', 'jumlah_voucher', '`jumlah_voucher`', '`jumlah_voucher`', 3, 11, -1, FALSE, '`jumlah_voucher`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->jumlah_voucher->Sortable = FALSE; // Allow sort
+		$this->jumlah_voucher->Sortable = TRUE; // Allow sort
 		$this->jumlah_voucher->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['jumlah_voucher'] = &$this->jumlah_voucher;
 	}
@@ -1185,10 +1185,8 @@ class penjualan extends DbTable
 		// status
 		// status_void
 		// jumlah_voucher
-
-		$this->jumlah_voucher->CellCssStyle = "white-space: nowrap;";
-
 		// id
+
 		$this->id->ViewValue = $this->id->CurrentValue;
 		$this->id->ViewCustomAttributes = "";
 
@@ -2069,6 +2067,7 @@ class penjualan extends DbTable
 					$doc->exportCaption($this->_action);
 					$doc->exportCaption($this->status);
 					$doc->exportCaption($this->status_void);
+					$doc->exportCaption($this->jumlah_voucher);
 				} else {
 					$doc->exportCaption($this->id);
 					$doc->exportCaption($this->kode_penjualan);
@@ -2102,6 +2101,7 @@ class penjualan extends DbTable
 					$doc->exportCaption($this->_action);
 					$doc->exportCaption($this->status);
 					$doc->exportCaption($this->status_void);
+					$doc->exportCaption($this->jumlah_voucher);
 				}
 				$doc->endExportRow();
 			}
@@ -2164,6 +2164,7 @@ class penjualan extends DbTable
 						$doc->exportField($this->_action);
 						$doc->exportField($this->status);
 						$doc->exportField($this->status_void);
+						$doc->exportField($this->jumlah_voucher);
 					} else {
 						$doc->exportField($this->id);
 						$doc->exportField($this->kode_penjualan);
@@ -2197,6 +2198,7 @@ class penjualan extends DbTable
 						$doc->exportField($this->_action);
 						$doc->exportField($this->status);
 						$doc->exportField($this->status_void);
+						$doc->exportField($this->jumlah_voucher);
 					}
 					$doc->endExportRow($rowCnt);
 				}
@@ -2528,12 +2530,11 @@ class penjualan extends DbTable
 
 			//INSERTING VOUCHER INTO PENGGUNAAN KARTU
 			if($kartu != '' OR $kartu != NULL){
+				$jumlah_voucher = $rsnew['jumlah_voucher'];
 				$jenis_kartu_voucher = ExecuteScalar("SELECT jenis FROM m_kartu WHERE id_kartu = '$kartu'");
 				$charge_price_voucher = ExecuteScalar("SELECT charge_price FROM m_kartu WHERE id_kartu = '$kartu'");
-				$pembayaran = $total + $charge_price_voucher;
-
-				//$jumlah_voucher = $rsnew['jumlah_voucher'];
-				Execute("INSERT INTO penggunaan_kartu (id_kartu, jenis_kartu, id_klinik, kode_penjualan, tgl, total, charge, total_charge) VALUES ('".$kartu."', '".$jenis_kartu_voucher."', '".$id_klinik."', '".$kode_penjualan."', '".$tanggal."', '".$pembayaran."', '".$charge_price_voucher."', '".$total."')");
+				$pembayaran = $total + ($charge_price_voucher * $jumlah_voucher);
+				Execute("INSERT INTO penggunaan_kartu (id_kartu, jenis_kartu, id_klinik, kode_penjualan, tgl, total, charge, total_charge, jumlah_pemakaian) VALUES ('".$kartu."', '".$jenis_kartu_voucher."', '".$id_klinik."', '".$kode_penjualan."', '".$tanggal."', '".$pembayaran."', '".$charge_price_voucher."', '".$total."', '".$jumlah_voucher."')");
 			}
 
 			//ADDING POIN MEMBER
@@ -3448,12 +3449,11 @@ class penjualan extends DbTable
 
 			//INSERTING VOUCHER INTO PENGGUNAAN KARTU
 			if($kartu != '' OR $kartu != NULL){
+				$jumlah_voucher = $rsnew['jumlah_voucher'];		
 				$jenis_kartu_voucher = ExecuteScalar("SELECT jenis FROM m_kartu WHERE id_kartu = '$kartu'");
 				$charge_price_voucher = ExecuteScalar("SELECT charge_price FROM m_kartu WHERE id_kartu = '$kartu'");	
-				$pembayaran = $total + $charge_price_voucher;
-
-				//$jumlah_voucher = $rsnew['jumlah_voucher'];
-				Execute("INSERT INTO penggunaan_kartu (id_kartu, jenis_kartu, id_klinik, kode_penjualan, tgl, total, charge, total_charge) VALUES ('".$kartu."', '".$jenis_kartu_voucher."', '".$id_klinik."', '".$kode_penjualan."', '".$tanggal."', '".$pembayaran."', '".$charge_price_voucher."', '".$total."')");
+				$pembayaran = $total + ($charge_price_voucher * $jumlah_voucher);
+				Execute("INSERT INTO penggunaan_kartu (id_kartu, jenis_kartu, id_klinik, kode_penjualan, tgl, total, charge, total_charge, jumlah_pemakaian) VALUES ('".$kartu."', '".$jenis_kartu_voucher."', '".$id_klinik."', '".$kode_penjualan."', '".$tanggal."', '".$pembayaran."', '".$charge_price_voucher."', '".$total."', '".$jumlah_voucher."')");
 			}
 
 			//ADDING POIN MEMBER

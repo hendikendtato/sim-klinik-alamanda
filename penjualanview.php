@@ -381,6 +381,16 @@ $penjualan_view->showMessage();
 </td>
 	</tr>
 <?php } ?>
+<?php if ($penjualan_view->jumlah_voucher->Visible) { // jumlah_voucher ?>
+	<tr id="r_jumlah_voucher">
+		<td class="<?php echo $penjualan_view->TableLeftColumnClass ?>"><span id="elh_penjualan_jumlah_voucher"><?php echo $penjualan_view->jumlah_voucher->caption() ?></span></td>
+		<td data-name="jumlah_voucher" <?php echo $penjualan_view->jumlah_voucher->cellAttributes() ?>>
+<span id="el_penjualan_jumlah_voucher">
+<span<?php echo $penjualan_view->jumlah_voucher->viewAttributes() ?>><?php echo $penjualan_view->jumlah_voucher->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
 </table>
 <?php
 	if (in_array("detailpenjualan", explode(",", $penjualan->getCurrentDetailTable())) && $detailpenjualan->DetailView) {
