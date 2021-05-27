@@ -293,8 +293,7 @@ $API_ACTIONS["dataPenjualan"] = function(Request $request, Response &$response) 
 			$data['success'] = false;
 			$data['message'] = "Tidak Ada Data!";
 		} else {
-			$data['success'] = true;
-			$data['data']    =  $data_penjualan;
+			$data['data'] = $data_penjualan;
 		}
 	} catch (Exception $e) {
 		$data['success'] = false;
@@ -377,13 +376,16 @@ $API_ACTIONS["dataPelanggan"] = function(Request $request, Response &$response) 
 
 //API cabang
 $API_ACTIONS["dataKlinik"] = function(Request $request, Response &$response) {
+
+	/*$data_cabang = ExecuteRows("SELECT * FROM m_klinik");
+	$data_cabang->fetchAll();
+	return $response->withJson(["status" => "success", "data" => $result], 200);*/
 	try {
 	$data_cabang = ExecuteRows("SELECT * FROM m_klinik");
 		if(empty($data_cabang)){
 			$data['success'] = false;
 			$data['message'] = "Tidak Ada Data!";
 		} else {
-			$data['success'] = true;
 			$data['data']    = $data_cabang;
 		}
 	} catch (Exception $e) {
@@ -392,7 +394,6 @@ $API_ACTIONS["dataKlinik"] = function(Request $request, Response &$response) {
 	}
 	WriteJson($data);
 };
-
 //Get stok ketika penyesuaian stok tanggal sebelumnya
 $API_ACTIONS["getStokAkhir"] = function(Request $request, Response $response) {
 	 $id_barang = Param("id_barang"); // Get the input value from $_GET or $_POST
@@ -410,7 +411,6 @@ $API_ACTIONS["getStokAkhir"] = function(Request $request, Response $response) {
 	 	}
 	 }
 };
-
 //Get stok ketika penyesuaian stok tanggal sekarang
 $API_ACTIONS["getStok"] = function(Request $request, Response $response) {
 	 $id_barang = Param("id_barang"); // Get the input value from $_GET or $_POST

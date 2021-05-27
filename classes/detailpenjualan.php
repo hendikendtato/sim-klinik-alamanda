@@ -1636,13 +1636,13 @@ class detailpenjualan extends DbTable
 										$jumlah_barang_komposisi = $jumlah * $qty;
 
 										//Get stok tanggal = $tanggal 
-										$stok_lama_barang_komposisi = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal = '$tanggal' ORDER BY id_kartustok DESC LIMIT 1");
+										$stok_lama_barang_komposisi = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal = '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
 
 										//jika stok tanggal = $tanggal itu tidak ada
 										if($stok_lama_barang_komposisi == NULL OR $stok_lama_barang_komposisi == FALSE){
 
 											//get data tanggal sebelumnya
-											$stok_sebelumnya_barang_komposisi = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal < '$tanggal' ORDER BY id_kartustok DESC LIMIT 1");
+											$stok_sebelumnya_barang_komposisi = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal < '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
 
 											//jika stok tanggal sebelumnya tidak ada
 											if($stok_sebelumnya_barang_komposisi == NULL OR $stok_sebelumnya_barang_komposisi == FALSE){
@@ -1665,7 +1665,7 @@ class detailpenjualan extends DbTable
 														//insert into kartustok
 														$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_komposisi', '$id_klinik', '$tanggal', '$data_stok_hargajual', '$pid_penjualan', '$jumlah_barang_komposisi', '$stok_baru_komposisi')");
 													}
-													$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
+													$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC");
 													foreach($data_stok AS $ds){
 														$id = $ds['id_kartustok'];
 														$stok_awal = 0;
@@ -1693,7 +1693,7 @@ class detailpenjualan extends DbTable
 														//insert into kartustok
 														$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_komposisi', '$id_klinik', '$tanggal', '$stok_data', '$pid_penjualan', '$jumlah_barang_komposisi', '$stok_baru_komposisi')");
 													}
-													$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
+													$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC");
 													foreach($data_stok AS $ds){
 														$id = $ds['id_kartustok'];
 														$stok_awal = 0;
@@ -1722,7 +1722,7 @@ class detailpenjualan extends DbTable
 													//insert into kartustok
 													$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_komposisi', '$id_klinik', '$tanggal', '$stok_sebelumnya_barang_komposisi', '$pid_penjualan', '$jumlah_barang_komposisi', '$stok_baru_komposisi')");
 												}
-												$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
+												$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC");
 												foreach($data_stok AS $ds){
 													$id = $ds['id_kartustok'];
 													$stok_awal = 0;
@@ -1784,13 +1784,13 @@ class detailpenjualan extends DbTable
 										$jumlah_barang_promo = $jumlah * $qty;
 
 										//get data stok where tanggal = $tanggal
-										$stok_lama_barang_promo = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal = '$tanggal' ORDER BY id_kartustok DESC LIMIT 1");
+										$stok_lama_barang_promo = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal = '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
 
 										//if data stok tanggal = $tanggal NULL
 										if($stok_lama_barang_promo == NULL OR $stok_lama_barang_promo == FALSE) {
 
 											//get data stok tanggal sebelumnya
-											$stok_lama_barang_promo = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal < '$tanggal' ORDER BY id_kartustok DESC LIMIT 1");
+											$stok_lama_barang_promo = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal < '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
 
 											//if data stok tanggal sebelumnya = NULL
 											if($stok_lama_barang_promo == NULL OR $stok_lama_barang_promo == FALSE){
@@ -1811,7 +1811,7 @@ class detailpenjualan extends DbTable
 														//insert into kartustok
 														$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_promo', '$id_klinik', '$tanggal', '$get_stok', '$pid_penjualan', '$jumlah_barang_promo', '$stok_barang_promo')");
 													}
-													$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = $id_barang_promo AND id_klinik = $id_klinik AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
+													$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = $id_barang_promo AND id_klinik = $id_klinik AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC");
 													foreach($data_stok AS $ds){
 														$id = $ds['id_kartustok'];
 														$stok_awal = 0;
@@ -1837,7 +1837,7 @@ class detailpenjualan extends DbTable
 														//insert into kartustok
 														$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_promo', '$id_klinik', '$tanggal', '$data_stok_awal', '$pid_penjualan', '$jumlah_barang_promo', '$stok_baru_barang_promo')");
 													}
-													$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
+													$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC");
 													foreach($data_stok AS $ds){
 														$id = $ds['id_kartustok'];
 														$stok_awal = 0;
@@ -1881,7 +1881,7 @@ class detailpenjualan extends DbTable
 												Execute("UPDATE m_hargajual SET stok='$stok_akhir_kartustok' WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik'");						
 											}
 										} else {
-											$stok_barang = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal < '$tanggal' ORDER BY id_kartustok DESC LIMIT 1");
+											$stok_barang = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal < '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
 											$stok_barang_update = $stok_barang - $jumlah_barang_promo;
 											$stok_baru_barang_promo = $stok_lama_barang_promo - $jumlah_barang_promo;
 											if($stok_baru_barang_promo <= 0) {
@@ -1891,7 +1891,7 @@ class detailpenjualan extends DbTable
 												$update_stok = Execute("UPDATE m_hargajual SET stok='$stok_barang_update' WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik'");
 												$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_promo', '$id_klinik', '$tanggal', '$stok_lama_barang_promo', '$pid_penjualan', '$jumlah_barang_promo', '$stok_baru_barang_promo')");
 											}
-											$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
+											$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC");
 											foreach($data_stok AS $ds){
 												$id = $ds['id_kartustok'];
 												$stok_awal = 0;
@@ -1917,7 +1917,7 @@ class detailpenjualan extends DbTable
 							} else {
 
 								//Get stok tanggal = $tanggal
-								$stok_tanggal = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal = '$tanggal' ORDER BY id_kartustok DESC LIMIT 1");
+								$stok_tanggal = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal = '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
 
 								//jika tidak ada transaksi stok di tanggal itu
 								if($stok_tanggal == NULL OR $stok_tanggal == FALSE) {
@@ -1925,7 +1925,7 @@ class detailpenjualan extends DbTable
 									$stok_update = $stok_saldo - $qty;
 
 									//get stok tanggal < $tanggal
-									$stok_tgl_sebelumnya = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal < '$tanggal' ORDER BY id_kartustok DESC LIMIT 1");
+									$stok_tgl_sebelumnya = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal < '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
 
 									//jika tidak ada transaksi stok di tanggal < $tanggal
 									if($stok_tgl_sebelumnya == NULL OR $stok_tgl_sebelumnya == FALSE){
@@ -1971,7 +1971,7 @@ class detailpenjualan extends DbTable
 
 												//print_r($kartu_stok);
 											}
-											$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
+											$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC");
 											foreach($data_stok AS $ds){
 												$id = $ds['id_kartustok'];
 												$stok_awal = 0;
@@ -2002,7 +2002,7 @@ class detailpenjualan extends DbTable
 
 											//print_r($kartu_stok);
 										}
-										$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
+										$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC");
 										foreach($data_stok AS $ds){
 											$id = $ds['id_kartustok'];
 											$stok_awal = 0;
@@ -2035,7 +2035,7 @@ class detailpenjualan extends DbTable
 
 										//print_r($kartu_stok);
 									}
-									$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
+									$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC");
 									foreach($data_stok AS $ds){
 										$id = $ds['id_kartustok'];
 										$stok_awal = 0;
@@ -2168,13 +2168,13 @@ class detailpenjualan extends DbTable
 								$jumlah_barang_komposisi = $jumlah * $qty;
 
 								//Get stok tanggal = $tanggal 
-								$stok_lama_barang_komposisi = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal = '$tanggal' ORDER BY id_kartustok DESC LIMIT 1");
+								$stok_lama_barang_komposisi = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal = '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
 
 								//jika stok tanggal = $tanggal itu tidak ada
 								if($stok_lama_barang_komposisi == NULL OR $stok_lama_barang_komposisi == FALSE){
 
 									//get data tanggal sebelumnya
-									$stok_sebelumnya_barang_komposisi = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal < '$tanggal' ORDER BY id_kartustok DESC LIMIT 1");
+									$stok_sebelumnya_barang_komposisi = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal < '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
 
 									//jika stok tanggal sebelumnya tidak ada
 									if($stok_sebelumnya_barang_komposisi == NULL OR $stok_sebelumnya_barang_komposisi == FALSE){
@@ -2197,7 +2197,7 @@ class detailpenjualan extends DbTable
 												//insert into kartustok
 												$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_komposisi', '$id_klinik', '$tanggal', '$data_stok_hargajual', '$pid_penjualan', '$jumlah_barang_komposisi', '$stok_baru_komposisi')");
 											}
-											$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
+											$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC");
 											foreach($data_stok AS $ds){
 												$id = $ds['id_kartustok'];
 												$stok_awal = $ds['stok_awal'] - $jumlah_barang_komposisi;
@@ -2219,7 +2219,7 @@ class detailpenjualan extends DbTable
 												//insert into kartustok
 												$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_komposisi', '$id_klinik', '$tanggal', '$stok_data', '$pid_penjualan', '$jumlah_barang_komposisi', '$stok_baru_komposisi')");
 											}
-											$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
+											$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC");
 											foreach($data_stok AS $ds){
 												$id = $ds['id_kartustok'];
 												$stok_awal = $ds['stok_awal'] - $jumlah_barang_komposisi;
@@ -2242,7 +2242,7 @@ class detailpenjualan extends DbTable
 											//insert into kartustok
 											$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_komposisi', '$id_klinik', '$tanggal', '$stok_sebelumnya_barang_komposisi', '$pid_penjualan', '$jumlah_barang_komposisi', '$stok_baru_komposisi')");
 										}
-										$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
+										$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC");
 										foreach($data_stok AS $ds){
 											$id = $ds['id_kartustok'];
 											$stok_awal = $ds['stok_awal'] - $jumlah_barang_komposisi;
@@ -2265,7 +2265,7 @@ class detailpenjualan extends DbTable
 										//insert data ke kartustok
 										$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_komposisi', '$id_klinik', '$tanggal', '$stok_lama_barang_komposisi', '$pid_penjualan', '$jumlah_barang_komposisi', '$stok_baru_komposisi')");
 									}
-									$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
+									$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC");
 									foreach($data_stok AS $ds){
 										$id = $ds['id_kartustok'];
 										$stok_awal = $ds['stok_awal'] - $jumlah_barang_komposisi;
@@ -2292,13 +2292,13 @@ class detailpenjualan extends DbTable
 								$jumlah_barang_promo = $jumlah * $qty;
 
 								//get data stok where tanggal = $tanggal
-								$stok_lama_barang_promo = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal = '$tanggal' ORDER BY id_kartustok DESC LIMIT 1");
+								$stok_lama_barang_promo = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal = '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
 
 								//if data stok tanggal = $tanggal NULL
 								if($stok_lama_barang_promo == NULL OR $stok_lama_barang_promo == FALSE) {
 
 									//get data stok tanggal sebelumnya
-									$stok_lama_barang_promo = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal < '$tanggal' ORDER BY id_kartustok DESC LIMIT 1");
+									$stok_lama_barang_promo = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal < '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
 
 									//if data stok tanggal sebelumnya = NULL
 									if($stok_lama_barang_promo == NULL OR $stok_lama_barang_promo == FALSE){
@@ -2319,7 +2319,7 @@ class detailpenjualan extends DbTable
 												//insert into kartustok
 												$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_promo', '$id_klinik', '$tanggal', '$get_stok', '$pid_penjualan', '$jumlah_barang_promo', '$stok_barang_promo')");
 											}
-											$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = $id_barang_promo AND id_klinik = $id_klinik AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
+											$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = $id_barang_promo AND id_klinik = $id_klinik AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC");
 											foreach($data_stok AS $ds){
 												$id = $ds['id_kartustok'];
 												$stok_awal = $ds['stok_awal'] - $jumlah_barang_promo;
@@ -2339,7 +2339,7 @@ class detailpenjualan extends DbTable
 												//insert into kartustok
 												$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_promo', '$id_klinik', '$tanggal', '$data_stok_awal', '$pid_penjualan', '$jumlah_barang_promo', '$stok_baru_barang_promo')");
 											}
-											$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
+											$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC");
 											foreach($data_stok AS $ds){
 												$id = $ds['id_kartustok'];
 												$stok_awal = $ds['stok_awal'] - $jumlah_barang_promo;
@@ -2360,7 +2360,7 @@ class detailpenjualan extends DbTable
 											//insert into kartustok
 											$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_promo', '$id_klinik', '$tanggal', '$stok_lama_barang_promo', '$pid_penjualan', '$jumlah_barang_promo', '$stok_baru_barang_promo')");
 										}
-										$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
+										$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC");
 										foreach($data_stok AS $ds){
 											$id = $ds['id_kartustok'];
 											$stok_awal = $ds['stok_awal'] - $jumlah_barang_promo;
@@ -2371,7 +2371,7 @@ class detailpenjualan extends DbTable
 										Execute("UPDATE m_hargajual SET stok='$stok_akhir_kartustok' WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik'");						
 									}
 								} else {
-									$stok_barang = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal < '$tanggal' ORDER BY id_kartustok DESC LIMIT 1");
+									$stok_barang = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal < '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
 									$stok_barang_update = $stok_barang - $jumlah_barang_promo;
 									$stok_baru_barang_promo = $stok_lama_barang_promo - $jumlah_barang_promo;
 									if($stok_baru_barang_promo <= 0) {
@@ -2381,7 +2381,7 @@ class detailpenjualan extends DbTable
 										$update_stok = Execute("UPDATE m_hargajual SET stok='$stok_barang_update' WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik'");
 										$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_promo', '$id_klinik', '$tanggal', '$stok_lama_barang_promo', '$pid_penjualan', '$jumlah_barang_promo', '$stok_baru_barang_promo')");
 									}
-									$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
+									$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC");
 									foreach($data_stok AS $ds){
 										$id = $ds['id_kartustok'];
 										$stok_awal = $ds['stok_awal'] - $jumlah_barang_promo;
@@ -2400,7 +2400,7 @@ class detailpenjualan extends DbTable
 					} else {
 
 						//Get stok tanggal = $tanggal
-						$stok_tanggal = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal = '$tanggal' ORDER BY id_kartustok DESC LIMIT 1");
+						$stok_tanggal = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal = '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
 
 						//jika tidak ada transaksi stok di tanggal itu
 						if($stok_tanggal == NULL OR $stok_tanggal == FALSE) {
@@ -2408,7 +2408,7 @@ class detailpenjualan extends DbTable
 							$stok_update = $stok_saldo - $qty;
 
 							//get stok tanggal < $tanggal
-							$stok_tgl_sebelumnya = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal < '$tanggal' ORDER BY id_kartustok DESC LIMIT 1");
+							$stok_tgl_sebelumnya = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal < '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
 
 							//jika tidak ada transaksi stok di tanggal < $tanggal
 							if($stok_tgl_sebelumnya == NULL OR $stok_tgl_sebelumnya == FALSE){
@@ -2454,7 +2454,7 @@ class detailpenjualan extends DbTable
 
 										//print_r($kartu_stok);
 									}
-									$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
+									$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC");
 									foreach($data_stok AS $ds){
 										$id = $ds['id_kartustok'];
 										$stok_awal = $ds['stok_awal'] - $qty;
@@ -2479,7 +2479,7 @@ class detailpenjualan extends DbTable
 
 									//print_r($kartu_stok);
 								}
-								$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
+								$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggel ASC, id_kartustok ASC");
 								foreach($data_stok AS $ds){
 									$id = $ds['id_kartustok'];
 									$stok_awal = $ds['stok_awal'] - $qty;
@@ -2506,7 +2506,7 @@ class detailpenjualan extends DbTable
 
 								//print_r($kartu_stok);
 							}
-							$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY id_kartustok ASC");
+							$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC");
 							foreach($data_stok AS $ds){
 								$id = $ds['id_kartustok'];
 								$stok_awal = $ds['stok_awal'] - $qty;

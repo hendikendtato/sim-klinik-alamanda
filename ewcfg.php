@@ -161,7 +161,7 @@ $CONFIG = [
 
 	// General
 	"UNFORMAT_YEAR" => 50, // Unformat year
-	"RANDOM_KEY" => 'Fbszmgiz6NfsMMmJ', // Random key for encryption
+	"RANDOM_KEY" => 'qeVYhV3IbKx4p8PI', // Random key for encryption
 	"ENCRYPTION_KEY" => '', // Encryption key for data protection
 	"PROJECT_STYLESHEET_FILENAME" => "css/sim_klinik_alamanda.css", // Project stylesheet file name
 	"PROJECT_CHARSET" => "utf-8", // Project charset
@@ -436,7 +436,7 @@ $CONFIG = [
 	"FILE_NOT_FOUND" => "/9j/4AAQSkZJRgABAQAAAQABAAD/7QAuUGhvdG9zaG9wIDMuMAA4QklNBAQAAAAAABIcAigADEZpbGVOb3RGb3VuZAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wgARCAABAAEDAREAAhEBAxEB/8QAFAABAAAAAAAAAAAAAAAAAAAACP/EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhADEAAAAD+f/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPwB//8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAgBAgEBPwB//8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAgBAwEBPwB//9k=", // 1x1 jpeg with IPTC data "2#040"="FileNotFound"
 
 	// API
-	"API_URL" => "api/index.php", // API accessor URL
+	"API_URL" => "api/", // API accessor URL
 	"API_ACTION_NAME" => "action", // API action name
 	"API_OBJECT_NAME" => "object", // API object name
 	"API_FIELD_NAME" => "field", // API field name
@@ -463,7 +463,7 @@ $CONFIG = [
 	"API_USERLEVEL_NAME" => "userlevel", // API userlevel name
 
 	// URL rewrite // PHP
-	"USE_URL_REWRITE" => FALSE, // Use URL rewrite
+	"USE_URL_REWRITE" => TRUE, // Use URL rewrite
 
 	// Image resize
 	"THUMBNAIL_CLASS" => "\PHPThumb\GD",

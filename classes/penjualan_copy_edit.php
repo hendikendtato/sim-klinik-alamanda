@@ -1,0 +1,2745 @@
+<?php
+namespace PHPMaker2020\sim_klinik_alamanda;
+
+/**
+ * Page class
+ */
+class penjualan_copy_edit extends penjualan_copy
+{
+
+	// Page ID
+	public $PageID = "edit";
+
+	// Project ID
+	public $ProjectID = "{8546B030-7993-4749-BFDB-17AFAAF4065D}";
+
+	// Table name
+	public $TableName = 'penjualan_copy';
+
+	// Page object name
+	public $PageObjName = "penjualan_copy_edit";
+
+	// Page headings
+	public $Heading = "";
+	public $Subheading = "";
+	public $PageHeader;
+	public $PageFooter;
+
+	// Token
+	public $Token = "";
+	public $TokenTimeout = 0;
+	public $CheckToken;
+
+	// Page heading
+	public function pageHeading()
+	{
+		global $Language;
+		if ($this->Heading != "")
+			return $this->Heading;
+		if (method_exists($this, "tableCaption"))
+			return $this->tableCaption();
+		return "";
+	}
+
+	// Page subheading
+	public function pageSubheading()
+	{
+		global $Language;
+		if ($this->Subheading != "")
+			return $this->Subheading;
+		if ($this->TableName)
+			return $Language->phrase($this->PageID);
+		return "";
+	}
+
+	// Page name
+	public function pageName()
+	{
+		return CurrentPageName();
+	}
+
+	// Page URL
+	public function pageUrl()
+	{
+		$url = CurrentPageName() . "?";
+		if ($this->UseTokenInUrl)
+			$url .= "t=" . $this->TableVar . "&"; // Add page token
+		return $url;
+	}
+
+	// Messages
+	private $_message = "";
+	private $_failureMessage = "";
+	private $_successMessage = "";
+	private $_warningMessage = "";
+
+	// Get message
+	public function getMessage()
+	{
+		return isset($_SESSION[SESSION_MESSAGE]) ? $_SESSION[SESSION_MESSAGE] : $this->_message;
+	}
+
+	// Set message
+	public function setMessage($v)
+	{
+		AddMessage($this->_message, $v);
+		$_SESSION[SESSION_MESSAGE] = $this->_message;
+	}
+
+	// Get failure message
+	public function getFailureMessage()
+	{
+		return isset($_SESSION[SESSION_FAILURE_MESSAGE]) ? $_SESSION[SESSION_FAILURE_MESSAGE] : $this->_failureMessage;
+	}
+
+	// Set failure message
+	public function setFailureMessage($v)
+	{
+		AddMessage($this->_failureMessage, $v);
+		$_SESSION[SESSION_FAILURE_MESSAGE] = $this->_failureMessage;
+	}
+
+	// Get success message
+	public function getSuccessMessage()
+	{
+		return isset($_SESSION[SESSION_SUCCESS_MESSAGE]) ? $_SESSION[SESSION_SUCCESS_MESSAGE] : $this->_successMessage;
+	}
+
+	// Set success message
+	public function setSuccessMessage($v)
+	{
+		AddMessage($this->_successMessage, $v);
+		$_SESSION[SESSION_SUCCESS_MESSAGE] = $this->_successMessage;
+	}
+
+	// Get warning message
+	public function getWarningMessage()
+	{
+		return isset($_SESSION[SESSION_WARNING_MESSAGE]) ? $_SESSION[SESSION_WARNING_MESSAGE] : $this->_warningMessage;
+	}
+
+	// Set warning message
+	public function setWarningMessage($v)
+	{
+		AddMessage($this->_warningMessage, $v);
+		$_SESSION[SESSION_WARNING_MESSAGE] = $this->_warningMessage;
+	}
+
+	// Clear message
+	public function clearMessage()
+	{
+		$this->_message = "";
+		$_SESSION[SESSION_MESSAGE] = "";
+	}
+
+	// Clear failure message
+	public function clearFailureMessage()
+	{
+		$this->_failureMessage = "";
+		$_SESSION[SESSION_FAILURE_MESSAGE] = "";
+	}
+
+	// Clear success message
+	public function clearSuccessMessage()
+	{
+		$this->_successMessage = "";
+		$_SESSION[SESSION_SUCCESS_MESSAGE] = "";
+	}
+
+	// Clear warning message
+	public function clearWarningMessage()
+	{
+		$this->_warningMessage = "";
+		$_SESSION[SESSION_WARNING_MESSAGE] = "";
+	}
+
+	// Clear messages
+	public function clearMessages()
+	{
+		$this->clearMessage();
+		$this->clearFailureMessage();
+		$this->clearSuccessMessage();
+		$this->clearWarningMessage();
+	}
+
+	// Show message
+	public function showMessage()
+	{
+		$hidden = TRUE;
+		$html = "";
+
+		// Message
+		$message = $this->getMessage();
+		if (method_exists($this, "Message_Showing"))
+			$this->Message_Showing($message, "");
+		if ($message != "") { // Message in Session, display
+			if (!$hidden)
+				$message = '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' . $message;
+			$html .= '<div class="alert alert-info alert-dismissible ew-info"><i class="icon fas fa-info"></i>' . $message . '</div>';
+			$_SESSION[SESSION_MESSAGE] = ""; // Clear message in Session
+		}
+
+		// Warning message
+		$warningMessage = $this->getWarningMessage();
+		if (method_exists($this, "Message_Showing"))
+			$this->Message_Showing($warningMessage, "warning");
+		if ($warningMessage != "") { // Message in Session, display
+			if (!$hidden)
+				$warningMessage = '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' . $warningMessage;
+			$html .= '<div class="alert alert-warning alert-dismissible ew-warning"><i class="icon fas fa-exclamation"></i>' . $warningMessage . '</div>';
+			$_SESSION[SESSION_WARNING_MESSAGE] = ""; // Clear message in Session
+		}
+
+		// Success message
+		$successMessage = $this->getSuccessMessage();
+		if (method_exists($this, "Message_Showing"))
+			$this->Message_Showing($successMessage, "success");
+		if ($successMessage != "") { // Message in Session, display
+			if (!$hidden)
+				$successMessage = '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' . $successMessage;
+			$html .= '<div class="alert alert-success alert-dismissible ew-success"><i class="icon fas fa-check"></i>' . $successMessage . '</div>';
+			$_SESSION[SESSION_SUCCESS_MESSAGE] = ""; // Clear message in Session
+		}
+
+		// Failure message
+		$errorMessage = $this->getFailureMessage();
+		if (method_exists($this, "Message_Showing"))
+			$this->Message_Showing($errorMessage, "failure");
+		if ($errorMessage != "") { // Message in Session, display
+			if (!$hidden)
+				$errorMessage = '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' . $errorMessage;
+			$html .= '<div class="alert alert-danger alert-dismissible ew-error"><i class="icon fas fa-ban"></i>' . $errorMessage . '</div>';
+			$_SESSION[SESSION_FAILURE_MESSAGE] = ""; // Clear message in Session
+		}
+		echo '<div class="ew-message-dialog' . (($hidden) ? ' d-none' : "") . '">' . $html . '</div>';
+	}
+
+	// Get message as array
+	public function getMessages()
+	{
+		$ar = [];
+
+		// Message
+		$message = $this->getMessage();
+
+		//if (method_exists($this, "Message_Showing"))
+		//	$this->Message_Showing($message, "");
+
+		if ($message != "") { // Message in Session, display
+			$ar["message"] = $message;
+			$_SESSION[SESSION_MESSAGE] = ""; // Clear message in Session
+		}
+
+		// Warning message
+		$warningMessage = $this->getWarningMessage();
+
+		//if (method_exists($this, "Message_Showing"))
+		//	$this->Message_Showing($warningMessage, "warning");
+
+		if ($warningMessage != "") { // Message in Session, display
+			$ar["warningMessage"] = $warningMessage;
+			$_SESSION[SESSION_WARNING_MESSAGE] = ""; // Clear message in Session
+		}
+
+		// Success message
+		$successMessage = $this->getSuccessMessage();
+
+		//if (method_exists($this, "Message_Showing"))
+		//	$this->Message_Showing($successMessage, "success");
+
+		if ($successMessage != "") { // Message in Session, display
+			$ar["successMessage"] = $successMessage;
+			$_SESSION[SESSION_SUCCESS_MESSAGE] = ""; // Clear message in Session
+		}
+
+		// Failure message
+		$failureMessage = $this->getFailureMessage();
+
+		//if (method_exists($this, "Message_Showing"))
+		//	$this->Message_Showing($failureMessage, "failure");
+
+		if ($failureMessage != "") { // Message in Session, display
+			$ar["failureMessage"] = $failureMessage;
+			$_SESSION[SESSION_FAILURE_MESSAGE] = ""; // Clear message in Session
+		}
+		return $ar;
+	}
+
+	// Show Page Header
+	public function showPageHeader()
+	{
+		$header = $this->PageHeader;
+		$this->Page_DataRendering($header);
+		if ($header != "") { // Header exists, display
+			echo '<p id="ew-page-header">' . $header . '</p>';
+		}
+	}
+
+	// Show Page Footer
+	public function showPageFooter()
+	{
+		$footer = $this->PageFooter;
+		$this->Page_DataRendered($footer);
+		if ($footer != "") { // Footer exists, display
+			echo '<p id="ew-page-footer">' . $footer . '</p>';
+		}
+	}
+
+	// Validate page request
+	protected function isPageRequest()
+	{
+		global $CurrentForm;
+		if ($this->UseTokenInUrl) {
+			if ($CurrentForm)
+				return ($this->TableVar == $CurrentForm->getValue("t"));
+			if (Get("t") !== NULL)
+				return ($this->TableVar == Get("t"));
+		}
+		return TRUE;
+	}
+
+	// Valid Post
+	protected function validPost()
+	{
+		if (!$this->CheckToken || !IsPost() || IsApi())
+			return TRUE;
+		if (Post(Config("TOKEN_NAME")) === NULL)
+			return FALSE;
+		$fn = Config("CHECK_TOKEN_FUNC");
+		if (is_callable($fn))
+			return $fn(Post(Config("TOKEN_NAME")), $this->TokenTimeout);
+		return FALSE;
+	}
+
+	// Create Token
+	public function createToken()
+	{
+		global $CurrentToken;
+		$fn = Config("CREATE_TOKEN_FUNC"); // Always create token, required by API file/lookup request
+		if ($this->Token == "" && is_callable($fn)) // Create token
+			$this->Token = $fn();
+		$CurrentToken = $this->Token; // Save to global variable
+	}
+
+	// Constructor
+	public function __construct()
+	{
+		global $Language, $DashboardReport;
+		global $UserTable;
+
+		// Check token
+		$this->CheckToken = Config("CHECK_TOKEN");
+
+		// Initialize
+		$GLOBALS["Page"] = &$this;
+		$this->TokenTimeout = SessionTimeoutTime();
+
+		// Language object
+		if (!isset($Language))
+			$Language = new Language();
+
+		// Parent constuctor
+		parent::__construct();
+
+		// Table object (penjualan_copy)
+		if (!isset($GLOBALS["penjualan_copy"]) || get_class($GLOBALS["penjualan_copy"]) == PROJECT_NAMESPACE . "penjualan_copy") {
+			$GLOBALS["penjualan_copy"] = &$this;
+			$GLOBALS["Table"] = &$GLOBALS["penjualan_copy"];
+		}
+
+		// Table object (users)
+		if (!isset($GLOBALS['users']))
+			$GLOBALS['users'] = new users();
+
+		// Page ID (for backward compatibility only)
+		if (!defined(PROJECT_NAMESPACE . "PAGE_ID"))
+			define(PROJECT_NAMESPACE . "PAGE_ID", 'edit');
+
+		// Table name (for backward compatibility only)
+		if (!defined(PROJECT_NAMESPACE . "TABLE_NAME"))
+			define(PROJECT_NAMESPACE . "TABLE_NAME", 'penjualan_copy');
+
+		// Start timer
+		if (!isset($GLOBALS["DebugTimer"]))
+			$GLOBALS["DebugTimer"] = new Timer();
+
+		// Debug message
+		LoadDebugMessage();
+
+		// Open connection
+		if (!isset($GLOBALS["Conn"]))
+			$GLOBALS["Conn"] = $this->getConnection();
+
+		// User table object (users)
+		$UserTable = $UserTable ?: new users();
+	}
+
+	// Terminate page
+	public function terminate($url = "")
+	{
+		global $ExportFileName, $TempImages, $DashboardReport;
+
+		// Page Unload event
+		$this->Page_Unload();
+
+		// Global Page Unloaded event (in userfn*.php)
+		Page_Unloaded();
+
+		// Export
+		global $penjualan_copy;
+		if ($this->CustomExport && $this->CustomExport == $this->Export && array_key_exists($this->CustomExport, Config("EXPORT_CLASSES"))) {
+				$content = ob_get_contents();
+			if ($ExportFileName == "")
+				$ExportFileName = $this->TableVar;
+			$class = PROJECT_NAMESPACE . Config("EXPORT_CLASSES." . $this->CustomExport);
+			if (class_exists($class)) {
+				$doc = new $class($penjualan_copy);
+				$doc->Text = @$content;
+				if ($this->isExport("email"))
+					echo $this->exportEmail($doc->Text);
+				else
+					$doc->export();
+				DeleteTempImages(); // Delete temp images
+				exit();
+			}
+		}
+		if (!IsApi())
+			$this->Page_Redirecting($url);
+
+		// Close connection
+		CloseConnections();
+
+		// Return for API
+		if (IsApi()) {
+			$res = $url === TRUE;
+			if (!$res) // Show error
+				WriteJson(array_merge(["success" => FALSE], $this->getMessages()));
+			return;
+		}
+
+		// Go to URL if specified
+		if ($url != "") {
+			if (!Config("DEBUG") && ob_get_length())
+				ob_end_clean();
+
+			// Handle modal response
+			if ($this->IsModal) { // Show as modal
+				$row = ["url" => $url, "modal" => "1"];
+				$pageName = GetPageName($url);
+				if ($pageName != $this->getListUrl()) { // Not List page
+					$row["caption"] = $this->getModalCaption($pageName);
+					if ($pageName == "penjualan_copyview.php")
+						$row["view"] = "1";
+				} else { // List page should not be shown as modal => error
+					$row["error"] = $this->getFailureMessage();
+					$this->clearFailureMessage();
+				}
+				WriteJson($row);
+			} else {
+				SaveDebugMessage();
+				AddHeader("Location", $url);
+			}
+		}
+		exit();
+	}
+
+	// Get records from recordset
+	protected function getRecordsFromRecordset($rs, $current = FALSE)
+	{
+		$rows = [];
+		if (is_object($rs)) { // Recordset
+			while ($rs && !$rs->EOF) {
+				$this->loadRowValues($rs); // Set up DbValue/CurrentValue
+				$row = $this->getRecordFromArray($rs->fields);
+				if ($current)
+					return $row;
+				else
+					$rows[] = $row;
+				$rs->moveNext();
+			}
+		} elseif (is_array($rs)) {
+			foreach ($rs as $ar) {
+				$row = $this->getRecordFromArray($ar);
+				if ($current)
+					return $row;
+				else
+					$rows[] = $row;
+			}
+		}
+		return $rows;
+	}
+
+	// Get record from array
+	protected function getRecordFromArray($ar)
+	{
+		$row = [];
+		if (is_array($ar)) {
+			foreach ($ar as $fldname => $val) {
+				if (array_key_exists($fldname, $this->fields) && ($this->fields[$fldname]->Visible || $this->fields[$fldname]->IsPrimaryKey)) { // Primary key or Visible
+					$fld = &$this->fields[$fldname];
+					if ($fld->HtmlTag == "FILE") { // Upload field
+						if (EmptyValue($val)) {
+							$row[$fldname] = NULL;
+						} else {
+							if ($fld->DataType == DATATYPE_BLOB) {
+								$url = FullUrl(GetApiUrl(Config("API_FILE_ACTION"),
+									Config("API_OBJECT_NAME") . "=" . $fld->TableVar . "&" .
+									Config("API_FIELD_NAME") . "=" . $fld->Param . "&" .
+									Config("API_KEY_NAME") . "=" . rawurlencode($this->getRecordKeyValue($ar)))); //*** need to add this? API may not be in the same folder
+								$row[$fldname] = ["type" => ContentType($val), "url" => $url, "name" => $fld->Param . ContentExtension($val)];
+							} elseif (!$fld->UploadMultiple || !ContainsString($val, Config("MULTIPLE_UPLOAD_SEPARATOR"))) { // Single file
+								$url = FullUrl(GetApiUrl(Config("API_FILE_ACTION"),
+									Config("API_OBJECT_NAME") . "=" . $fld->TableVar . "&" .
+									"fn=" . Encrypt($fld->physicalUploadPath() . $val)));
+								$row[$fldname] = ["type" => MimeContentType($val), "url" => $url, "name" => $val];
+							} else { // Multiple files
+								$files = explode(Config("MULTIPLE_UPLOAD_SEPARATOR"), $val);
+								$ar = [];
+								foreach ($files as $file) {
+									$url = FullUrl(GetApiUrl(Config("API_FILE_ACTION"),
+										Config("API_OBJECT_NAME") . "=" . $fld->TableVar . "&" .
+										"fn=" . Encrypt($fld->physicalUploadPath() . $file)));
+									if (!EmptyValue($file))
+										$ar[] = ["type" => MimeContentType($file), "url" => $url, "name" => $file];
+								}
+								$row[$fldname] = $ar;
+							}
+						}
+					} else {
+						$row[$fldname] = $val;
+					}
+				}
+			}
+		}
+		return $row;
+	}
+
+	// Get record key value from array
+	protected function getRecordKeyValue($ar)
+	{
+		$key = "";
+		if (is_array($ar)) {
+			$key .= @$ar['id'];
+		}
+		return $key;
+	}
+
+	/**
+	 * Hide fields for add/edit
+	 *
+	 * @return void
+	 */
+	protected function hideFieldsForAddEdit()
+	{
+		if ($this->isAdd() || $this->isCopy() || $this->isGridAdd())
+			$this->id->Visible = FALSE;
+	}
+
+	// Lookup data
+	public function lookup()
+	{
+		global $Language, $Security;
+		if (!isset($Language))
+			$Language = new Language(Config("LANGUAGE_FOLDER"), Post("language", ""));
+
+		// Set up API request
+		if (!ValidApiRequest())
+			return FALSE;
+		$this->setupApiSecurity();
+
+		// Get lookup object
+		$fieldName = Post("field");
+		if (!array_key_exists($fieldName, $this->fields))
+			return FALSE;
+		$lookupField = $this->fields[$fieldName];
+		$lookup = $lookupField->Lookup;
+		if ($lookup === NULL)
+			return FALSE;
+		$tbl = $lookup->getTable();
+		if (!$Security->allowLookup(Config("PROJECT_ID") . $tbl->TableName)) // Lookup permission
+			return FALSE;
+
+		// Get lookup parameters
+		$lookupType = Post("ajax", "unknown");
+		$pageSize = -1;
+		$offset = -1;
+		$searchValue = "";
+		if (SameText($lookupType, "modal")) {
+			$searchValue = Post("sv", "");
+			$pageSize = Post("recperpage", 10);
+			$offset = Post("start", 0);
+		} elseif (SameText($lookupType, "autosuggest")) {
+			$searchValue = Param("q", "");
+			$pageSize = Param("n", -1);
+			$pageSize = is_numeric($pageSize) ? (int)$pageSize : -1;
+			if ($pageSize <= 0)
+				$pageSize = Config("AUTO_SUGGEST_MAX_ENTRIES");
+			$start = Param("start", -1);
+			$start = is_numeric($start) ? (int)$start : -1;
+			$page = Param("page", -1);
+			$page = is_numeric($page) ? (int)$page : -1;
+			$offset = $start >= 0 ? $start : ($page > 0 && $pageSize > 0 ? ($page - 1) * $pageSize : 0);
+		}
+		$userSelect = Decrypt(Post("s", ""));
+		$userFilter = Decrypt(Post("f", ""));
+		$userOrderBy = Decrypt(Post("o", ""));
+		$keys = Post("keys");
+		$lookup->LookupType = $lookupType; // Lookup type
+		if ($keys !== NULL) { // Selected records from modal
+			if (is_array($keys))
+				$keys = implode(Config("MULTIPLE_OPTION_SEPARATOR"), $keys);
+			$lookup->FilterFields = []; // Skip parent fields if any
+			$lookup->FilterValues[] = $keys; // Lookup values
+			$pageSize = -1; // Show all records
+		} else { // Lookup values
+			$lookup->FilterValues[] = Post("v0", Post("lookupValue", ""));
+		}
+		$cnt = is_array($lookup->FilterFields) ? count($lookup->FilterFields) : 0;
+		for ($i = 1; $i <= $cnt; $i++)
+			$lookup->FilterValues[] = Post("v" . $i, "");
+		$lookup->SearchValue = $searchValue;
+		$lookup->PageSize = $pageSize;
+		$lookup->Offset = $offset;
+		if ($userSelect != "")
+			$lookup->UserSelect = $userSelect;
+		if ($userFilter != "")
+			$lookup->UserFilter = $userFilter;
+		if ($userOrderBy != "")
+			$lookup->UserOrderBy = $userOrderBy;
+		$lookup->toJson($this); // Use settings from current page
+	}
+
+	// Set up API security
+	public function setupApiSecurity()
+	{
+		global $Security;
+
+		// Setup security for API request
+		if ($Security->isLoggedIn()) $Security->TablePermission_Loading();
+		$Security->loadCurrentUserLevel(Config("PROJECT_ID") . $this->TableName);
+		if ($Security->isLoggedIn()) $Security->TablePermission_Loaded();
+	}
+	public $FormClassName = "ew-horizontal ew-form ew-edit-form";
+	public $IsModal = FALSE;
+	public $IsMobileOrModal = FALSE;
+	public $DbMasterFilter;
+	public $DbDetailFilter;
+
+	//
+	// Page run
+	//
+
+	public function run()
+	{
+		global $ExportType, $CustomExportType, $ExportFileName, $UserProfile, $Language, $Security, $CurrentForm,
+			$FormError, $SkipHeaderFooter;
+
+		// Is modal
+		$this->IsModal = (Param("modal") == "1");
+
+		// User profile
+		$UserProfile = new UserProfile();
+
+		// Security
+		if (ValidApiRequest()) { // API request
+			$this->setupApiSecurity(); // Set up API Security
+			if (!$Security->canEdit()) {
+				SetStatus(401); // Unauthorized
+				return;
+			}
+		} else {
+			$Security = new AdvancedSecurity();
+			if (!$Security->isLoggedIn())
+				$Security->autoLogin();
+			if ($Security->isLoggedIn())
+				$Security->TablePermission_Loading();
+			$Security->loadCurrentUserLevel($this->ProjectID . $this->TableName);
+			if ($Security->isLoggedIn())
+				$Security->TablePermission_Loaded();
+			if (!$Security->canEdit()) {
+				$Security->saveLastUrl();
+				$this->setFailureMessage(DeniedMessage()); // Set no permission
+				if ($Security->canList())
+					$this->terminate(GetUrl("penjualan_copylist.php"));
+				else
+					$this->terminate(GetUrl("login.php"));
+				return;
+			}
+		}
+
+		// Create form object
+		$CurrentForm = new HttpForm();
+		$this->CurrentAction = Param("action"); // Set up current action
+		$this->id->setVisibility();
+		$this->waktu->setVisibility();
+		$this->id_pelanggan->setVisibility();
+		$this->id_member->setVisibility();
+		$this->diskon_persen->setVisibility();
+		$this->diskon_rupiah->setVisibility();
+		$this->ppn->setVisibility();
+		$this->total->setVisibility();
+		$this->bayar->setVisibility();
+		$this->bayar_non_tunai->setVisibility();
+		$this->total_non_tunai_charge->setVisibility();
+		$this->kode_penjualan->setVisibility();
+		$this->keterangan->setVisibility();
+		$this->dokter->setVisibility();
+		$this->sales->setVisibility();
+		$this->dok_be_wajah->setVisibility();
+		$this->be_body->setVisibility();
+		$this->medis->setVisibility();
+		$this->id_klinik->setVisibility();
+		$this->id_rmd->setVisibility();
+		$this->metode_pembayaran->setVisibility();
+		$this->id_bank->setVisibility();
+		$this->id_kartu->setVisibility();
+		$this->jumlah_voucher->setVisibility();
+		$this->id_kartubank->setVisibility();
+		$this->id_kas->setVisibility();
+		$this->charge->setVisibility();
+		$this->ongkir->setVisibility();
+		$this->klaim_poin->setVisibility();
+		$this->total_penukaran_poin->setVisibility();
+		$this->_action->setVisibility();
+		$this->status->setVisibility();
+		$this->status_void->setVisibility();
+		$this->hideFieldsForAddEdit();
+
+		// Do not use lookup cache
+		$this->setUseLookupCache(FALSE);
+
+		// Global Page Loading event (in userfn*.php)
+		Page_Loading();
+
+		// Page Load event
+		$this->Page_Load();
+
+		// Check token
+		if (!$this->validPost()) {
+			Write($Language->phrase("InvalidPostRequest"));
+			$this->terminate();
+		}
+
+		// Create Token
+		$this->createToken();
+
+		// Set up lookup cache
+		// Check permission
+
+		if (!$Security->canEdit()) {
+			$this->setFailureMessage(DeniedMessage()); // No permission
+			$this->terminate("penjualan_copylist.php");
+			return;
+		}
+
+		// Check modal
+		if ($this->IsModal)
+			$SkipHeaderFooter = TRUE;
+		$this->IsMobileOrModal = IsMobile() || $this->IsModal;
+		$this->FormClassName = "ew-form ew-edit-form ew-horizontal";
+		$loaded = FALSE;
+		$postBack = FALSE;
+
+		// Set up current action and primary key
+		if (IsApi()) {
+
+			// Load key values
+			$loaded = TRUE;
+			if (Get("id") !== NULL) {
+				$this->id->setQueryStringValue(Get("id"));
+				$this->id->setOldValue($this->id->QueryStringValue);
+			} elseif (Key(0) !== NULL) {
+				$this->id->setQueryStringValue(Key(0));
+				$this->id->setOldValue($this->id->QueryStringValue);
+			} elseif (Post("id") !== NULL) {
+				$this->id->setFormValue(Post("id"));
+				$this->id->setOldValue($this->id->FormValue);
+			} elseif (Route(2) !== NULL) {
+				$this->id->setQueryStringValue(Route(2));
+				$this->id->setOldValue($this->id->QueryStringValue);
+			} else {
+				$loaded = FALSE; // Unable to load key
+			}
+
+			// Load record
+			if ($loaded)
+				$loaded = $this->loadRow();
+			if (!$loaded) {
+				$this->setFailureMessage($Language->phrase("NoRecord")); // Set no record message
+				$this->terminate();
+				return;
+			}
+			$this->CurrentAction = "update"; // Update record directly
+			$postBack = TRUE;
+		} else {
+			if (Post("action") !== NULL) {
+				$this->CurrentAction = Post("action"); // Get action code
+				if (!$this->isShow()) // Not reload record, handle as postback
+					$postBack = TRUE;
+
+				// Load key from Form
+				if ($CurrentForm->hasValue("x_id")) {
+					$this->id->setFormValue($CurrentForm->getValue("x_id"));
+				}
+			} else {
+				$this->CurrentAction = "show"; // Default action is display
+
+				// Load key from QueryString / Route
+				$loadByQuery = FALSE;
+				if (Get("id") !== NULL) {
+					$this->id->setQueryStringValue(Get("id"));
+					$loadByQuery = TRUE;
+				} elseif (Route(2) !== NULL) {
+					$this->id->setQueryStringValue(Route(2));
+					$loadByQuery = TRUE;
+				} else {
+					$this->id->CurrentValue = NULL;
+				}
+			}
+
+			// Load current record
+			$loaded = $this->loadRow();
+		}
+
+		// Process form if post back
+		if ($postBack) {
+			$this->loadFormValues(); // Get form values
+		}
+
+		// Validate form if post back
+		if ($postBack) {
+			if (!$this->validateForm()) {
+				$this->setFailureMessage($FormError);
+				$this->EventCancelled = TRUE; // Event cancelled
+				$this->restoreFormValues();
+				if (IsApi()) {
+					$this->terminate();
+					return;
+				} else {
+					$this->CurrentAction = ""; // Form error, reset action
+				}
+			}
+		}
+
+		// Perform current action
+		switch ($this->CurrentAction) {
+			case "show": // Get a record to display
+				if (!$loaded) { // Load record based on key
+					if ($this->getFailureMessage() == "")
+						$this->setFailureMessage($Language->phrase("NoRecord")); // No record found
+					$this->terminate("penjualan_copylist.php"); // No matching record, return to list
+				}
+				break;
+			case "update": // Update
+				$returnUrl = $this->getReturnUrl();
+				if (GetPageName($returnUrl) == "penjualan_copylist.php")
+					$returnUrl = $this->addMasterUrl($returnUrl); // List page, return to List page with correct master key if necessary
+				$this->SendEmail = TRUE; // Send email on update success
+				if ($this->editRow()) { // Update record based on key
+					if ($this->getSuccessMessage() == "")
+						$this->setSuccessMessage($Language->phrase("UpdateSuccess")); // Update success
+					if (IsApi()) {
+						$this->terminate(TRUE);
+						return;
+					} else {
+						$this->terminate($returnUrl); // Return to caller
+					}
+				} elseif (IsApi()) { // API request, return
+					$this->terminate();
+					return;
+				} elseif ($this->getFailureMessage() == $Language->phrase("NoRecord")) {
+					$this->terminate($returnUrl); // Return to caller
+				} else {
+					$this->EventCancelled = TRUE; // Event cancelled
+					$this->restoreFormValues(); // Restore form values if update failed
+				}
+		}
+
+		// Set up Breadcrumb
+		$this->setupBreadcrumb();
+
+		// Render the record
+		$this->RowType = ROWTYPE_EDIT; // Render as Edit
+		$this->resetAttributes();
+		$this->renderRow();
+	}
+
+	// Get upload files
+	protected function getUploadFiles()
+	{
+		global $CurrentForm, $Language;
+	}
+
+	// Load form values
+	protected function loadFormValues()
+	{
+
+		// Load from form
+		global $CurrentForm;
+
+		// Check field name 'id' first before field var 'x_id'
+		$val = $CurrentForm->hasValue("id") ? $CurrentForm->getValue("id") : $CurrentForm->getValue("x_id");
+		if (!$this->id->IsDetailKey)
+			$this->id->setFormValue($val);
+
+		// Check field name 'waktu' first before field var 'x_waktu'
+		$val = $CurrentForm->hasValue("waktu") ? $CurrentForm->getValue("waktu") : $CurrentForm->getValue("x_waktu");
+		if (!$this->waktu->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->waktu->Visible = FALSE; // Disable update for API request
+			else
+				$this->waktu->setFormValue($val);
+			$this->waktu->CurrentValue = UnFormatDateTime($this->waktu->CurrentValue, 0);
+		}
+
+		// Check field name 'id_pelanggan' first before field var 'x_id_pelanggan'
+		$val = $CurrentForm->hasValue("id_pelanggan") ? $CurrentForm->getValue("id_pelanggan") : $CurrentForm->getValue("x_id_pelanggan");
+		if (!$this->id_pelanggan->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->id_pelanggan->Visible = FALSE; // Disable update for API request
+			else
+				$this->id_pelanggan->setFormValue($val);
+		}
+
+		// Check field name 'id_member' first before field var 'x_id_member'
+		$val = $CurrentForm->hasValue("id_member") ? $CurrentForm->getValue("id_member") : $CurrentForm->getValue("x_id_member");
+		if (!$this->id_member->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->id_member->Visible = FALSE; // Disable update for API request
+			else
+				$this->id_member->setFormValue($val);
+		}
+
+		// Check field name 'diskon_persen' first before field var 'x_diskon_persen'
+		$val = $CurrentForm->hasValue("diskon_persen") ? $CurrentForm->getValue("diskon_persen") : $CurrentForm->getValue("x_diskon_persen");
+		if (!$this->diskon_persen->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->diskon_persen->Visible = FALSE; // Disable update for API request
+			else
+				$this->diskon_persen->setFormValue($val);
+		}
+
+		// Check field name 'diskon_rupiah' first before field var 'x_diskon_rupiah'
+		$val = $CurrentForm->hasValue("diskon_rupiah") ? $CurrentForm->getValue("diskon_rupiah") : $CurrentForm->getValue("x_diskon_rupiah");
+		if (!$this->diskon_rupiah->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->diskon_rupiah->Visible = FALSE; // Disable update for API request
+			else
+				$this->diskon_rupiah->setFormValue($val);
+		}
+
+		// Check field name 'ppn' first before field var 'x_ppn'
+		$val = $CurrentForm->hasValue("ppn") ? $CurrentForm->getValue("ppn") : $CurrentForm->getValue("x_ppn");
+		if (!$this->ppn->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->ppn->Visible = FALSE; // Disable update for API request
+			else
+				$this->ppn->setFormValue($val);
+		}
+
+		// Check field name 'total' first before field var 'x_total'
+		$val = $CurrentForm->hasValue("total") ? $CurrentForm->getValue("total") : $CurrentForm->getValue("x_total");
+		if (!$this->total->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->total->Visible = FALSE; // Disable update for API request
+			else
+				$this->total->setFormValue($val);
+		}
+
+		// Check field name 'bayar' first before field var 'x_bayar'
+		$val = $CurrentForm->hasValue("bayar") ? $CurrentForm->getValue("bayar") : $CurrentForm->getValue("x_bayar");
+		if (!$this->bayar->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->bayar->Visible = FALSE; // Disable update for API request
+			else
+				$this->bayar->setFormValue($val);
+		}
+
+		// Check field name 'bayar_non_tunai' first before field var 'x_bayar_non_tunai'
+		$val = $CurrentForm->hasValue("bayar_non_tunai") ? $CurrentForm->getValue("bayar_non_tunai") : $CurrentForm->getValue("x_bayar_non_tunai");
+		if (!$this->bayar_non_tunai->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->bayar_non_tunai->Visible = FALSE; // Disable update for API request
+			else
+				$this->bayar_non_tunai->setFormValue($val);
+		}
+
+		// Check field name 'total_non_tunai_charge' first before field var 'x_total_non_tunai_charge'
+		$val = $CurrentForm->hasValue("total_non_tunai_charge") ? $CurrentForm->getValue("total_non_tunai_charge") : $CurrentForm->getValue("x_total_non_tunai_charge");
+		if (!$this->total_non_tunai_charge->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->total_non_tunai_charge->Visible = FALSE; // Disable update for API request
+			else
+				$this->total_non_tunai_charge->setFormValue($val);
+		}
+
+		// Check field name 'kode_penjualan' first before field var 'x_kode_penjualan'
+		$val = $CurrentForm->hasValue("kode_penjualan") ? $CurrentForm->getValue("kode_penjualan") : $CurrentForm->getValue("x_kode_penjualan");
+		if (!$this->kode_penjualan->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->kode_penjualan->Visible = FALSE; // Disable update for API request
+			else
+				$this->kode_penjualan->setFormValue($val);
+		}
+
+		// Check field name 'keterangan' first before field var 'x_keterangan'
+		$val = $CurrentForm->hasValue("keterangan") ? $CurrentForm->getValue("keterangan") : $CurrentForm->getValue("x_keterangan");
+		if (!$this->keterangan->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->keterangan->Visible = FALSE; // Disable update for API request
+			else
+				$this->keterangan->setFormValue($val);
+		}
+
+		// Check field name 'dokter' first before field var 'x_dokter'
+		$val = $CurrentForm->hasValue("dokter") ? $CurrentForm->getValue("dokter") : $CurrentForm->getValue("x_dokter");
+		if (!$this->dokter->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->dokter->Visible = FALSE; // Disable update for API request
+			else
+				$this->dokter->setFormValue($val);
+		}
+
+		// Check field name 'sales' first before field var 'x_sales'
+		$val = $CurrentForm->hasValue("sales") ? $CurrentForm->getValue("sales") : $CurrentForm->getValue("x_sales");
+		if (!$this->sales->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->sales->Visible = FALSE; // Disable update for API request
+			else
+				$this->sales->setFormValue($val);
+		}
+
+		// Check field name 'dok_be_wajah' first before field var 'x_dok_be_wajah'
+		$val = $CurrentForm->hasValue("dok_be_wajah") ? $CurrentForm->getValue("dok_be_wajah") : $CurrentForm->getValue("x_dok_be_wajah");
+		if (!$this->dok_be_wajah->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->dok_be_wajah->Visible = FALSE; // Disable update for API request
+			else
+				$this->dok_be_wajah->setFormValue($val);
+		}
+
+		// Check field name 'be_body' first before field var 'x_be_body'
+		$val = $CurrentForm->hasValue("be_body") ? $CurrentForm->getValue("be_body") : $CurrentForm->getValue("x_be_body");
+		if (!$this->be_body->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->be_body->Visible = FALSE; // Disable update for API request
+			else
+				$this->be_body->setFormValue($val);
+		}
+
+		// Check field name 'medis' first before field var 'x_medis'
+		$val = $CurrentForm->hasValue("medis") ? $CurrentForm->getValue("medis") : $CurrentForm->getValue("x_medis");
+		if (!$this->medis->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->medis->Visible = FALSE; // Disable update for API request
+			else
+				$this->medis->setFormValue($val);
+		}
+
+		// Check field name 'id_klinik' first before field var 'x_id_klinik'
+		$val = $CurrentForm->hasValue("id_klinik") ? $CurrentForm->getValue("id_klinik") : $CurrentForm->getValue("x_id_klinik");
+		if (!$this->id_klinik->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->id_klinik->Visible = FALSE; // Disable update for API request
+			else
+				$this->id_klinik->setFormValue($val);
+		}
+
+		// Check field name 'id_rmd' first before field var 'x_id_rmd'
+		$val = $CurrentForm->hasValue("id_rmd") ? $CurrentForm->getValue("id_rmd") : $CurrentForm->getValue("x_id_rmd");
+		if (!$this->id_rmd->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->id_rmd->Visible = FALSE; // Disable update for API request
+			else
+				$this->id_rmd->setFormValue($val);
+		}
+
+		// Check field name 'metode_pembayaran' first before field var 'x_metode_pembayaran'
+		$val = $CurrentForm->hasValue("metode_pembayaran") ? $CurrentForm->getValue("metode_pembayaran") : $CurrentForm->getValue("x_metode_pembayaran");
+		if (!$this->metode_pembayaran->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->metode_pembayaran->Visible = FALSE; // Disable update for API request
+			else
+				$this->metode_pembayaran->setFormValue($val);
+		}
+
+		// Check field name 'id_bank' first before field var 'x_id_bank'
+		$val = $CurrentForm->hasValue("id_bank") ? $CurrentForm->getValue("id_bank") : $CurrentForm->getValue("x_id_bank");
+		if (!$this->id_bank->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->id_bank->Visible = FALSE; // Disable update for API request
+			else
+				$this->id_bank->setFormValue($val);
+		}
+
+		// Check field name 'id_kartu' first before field var 'x_id_kartu'
+		$val = $CurrentForm->hasValue("id_kartu") ? $CurrentForm->getValue("id_kartu") : $CurrentForm->getValue("x_id_kartu");
+		if (!$this->id_kartu->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->id_kartu->Visible = FALSE; // Disable update for API request
+			else
+				$this->id_kartu->setFormValue($val);
+		}
+
+		// Check field name 'jumlah_voucher' first before field var 'x_jumlah_voucher'
+		$val = $CurrentForm->hasValue("jumlah_voucher") ? $CurrentForm->getValue("jumlah_voucher") : $CurrentForm->getValue("x_jumlah_voucher");
+		if (!$this->jumlah_voucher->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->jumlah_voucher->Visible = FALSE; // Disable update for API request
+			else
+				$this->jumlah_voucher->setFormValue($val);
+		}
+
+		// Check field name 'id_kartubank' first before field var 'x_id_kartubank'
+		$val = $CurrentForm->hasValue("id_kartubank") ? $CurrentForm->getValue("id_kartubank") : $CurrentForm->getValue("x_id_kartubank");
+		if (!$this->id_kartubank->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->id_kartubank->Visible = FALSE; // Disable update for API request
+			else
+				$this->id_kartubank->setFormValue($val);
+		}
+
+		// Check field name 'id_kas' first before field var 'x_id_kas'
+		$val = $CurrentForm->hasValue("id_kas") ? $CurrentForm->getValue("id_kas") : $CurrentForm->getValue("x_id_kas");
+		if (!$this->id_kas->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->id_kas->Visible = FALSE; // Disable update for API request
+			else
+				$this->id_kas->setFormValue($val);
+		}
+
+		// Check field name 'charge' first before field var 'x_charge'
+		$val = $CurrentForm->hasValue("charge") ? $CurrentForm->getValue("charge") : $CurrentForm->getValue("x_charge");
+		if (!$this->charge->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->charge->Visible = FALSE; // Disable update for API request
+			else
+				$this->charge->setFormValue($val);
+		}
+
+		// Check field name 'ongkir' first before field var 'x_ongkir'
+		$val = $CurrentForm->hasValue("ongkir") ? $CurrentForm->getValue("ongkir") : $CurrentForm->getValue("x_ongkir");
+		if (!$this->ongkir->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->ongkir->Visible = FALSE; // Disable update for API request
+			else
+				$this->ongkir->setFormValue($val);
+		}
+
+		// Check field name 'klaim_poin' first before field var 'x_klaim_poin'
+		$val = $CurrentForm->hasValue("klaim_poin") ? $CurrentForm->getValue("klaim_poin") : $CurrentForm->getValue("x_klaim_poin");
+		if (!$this->klaim_poin->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->klaim_poin->Visible = FALSE; // Disable update for API request
+			else
+				$this->klaim_poin->setFormValue($val);
+		}
+
+		// Check field name 'total_penukaran_poin' first before field var 'x_total_penukaran_poin'
+		$val = $CurrentForm->hasValue("total_penukaran_poin") ? $CurrentForm->getValue("total_penukaran_poin") : $CurrentForm->getValue("x_total_penukaran_poin");
+		if (!$this->total_penukaran_poin->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->total_penukaran_poin->Visible = FALSE; // Disable update for API request
+			else
+				$this->total_penukaran_poin->setFormValue($val);
+		}
+
+		// Check field name '_action' first before field var 'x__action'
+		$val = $CurrentForm->hasValue("_action") ? $CurrentForm->getValue("_action") : $CurrentForm->getValue("x__action");
+		if (!$this->_action->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->_action->Visible = FALSE; // Disable update for API request
+			else
+				$this->_action->setFormValue($val);
+		}
+
+		// Check field name 'status' first before field var 'x_status'
+		$val = $CurrentForm->hasValue("status") ? $CurrentForm->getValue("status") : $CurrentForm->getValue("x_status");
+		if (!$this->status->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->status->Visible = FALSE; // Disable update for API request
+			else
+				$this->status->setFormValue($val);
+		}
+
+		// Check field name 'status_void' first before field var 'x_status_void'
+		$val = $CurrentForm->hasValue("status_void") ? $CurrentForm->getValue("status_void") : $CurrentForm->getValue("x_status_void");
+		if (!$this->status_void->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->status_void->Visible = FALSE; // Disable update for API request
+			else
+				$this->status_void->setFormValue($val);
+		}
+	}
+
+	// Restore form values
+	public function restoreFormValues()
+	{
+		global $CurrentForm;
+		$this->id->CurrentValue = $this->id->FormValue;
+		$this->waktu->CurrentValue = $this->waktu->FormValue;
+		$this->waktu->CurrentValue = UnFormatDateTime($this->waktu->CurrentValue, 0);
+		$this->id_pelanggan->CurrentValue = $this->id_pelanggan->FormValue;
+		$this->id_member->CurrentValue = $this->id_member->FormValue;
+		$this->diskon_persen->CurrentValue = $this->diskon_persen->FormValue;
+		$this->diskon_rupiah->CurrentValue = $this->diskon_rupiah->FormValue;
+		$this->ppn->CurrentValue = $this->ppn->FormValue;
+		$this->total->CurrentValue = $this->total->FormValue;
+		$this->bayar->CurrentValue = $this->bayar->FormValue;
+		$this->bayar_non_tunai->CurrentValue = $this->bayar_non_tunai->FormValue;
+		$this->total_non_tunai_charge->CurrentValue = $this->total_non_tunai_charge->FormValue;
+		$this->kode_penjualan->CurrentValue = $this->kode_penjualan->FormValue;
+		$this->keterangan->CurrentValue = $this->keterangan->FormValue;
+		$this->dokter->CurrentValue = $this->dokter->FormValue;
+		$this->sales->CurrentValue = $this->sales->FormValue;
+		$this->dok_be_wajah->CurrentValue = $this->dok_be_wajah->FormValue;
+		$this->be_body->CurrentValue = $this->be_body->FormValue;
+		$this->medis->CurrentValue = $this->medis->FormValue;
+		$this->id_klinik->CurrentValue = $this->id_klinik->FormValue;
+		$this->id_rmd->CurrentValue = $this->id_rmd->FormValue;
+		$this->metode_pembayaran->CurrentValue = $this->metode_pembayaran->FormValue;
+		$this->id_bank->CurrentValue = $this->id_bank->FormValue;
+		$this->id_kartu->CurrentValue = $this->id_kartu->FormValue;
+		$this->jumlah_voucher->CurrentValue = $this->jumlah_voucher->FormValue;
+		$this->id_kartubank->CurrentValue = $this->id_kartubank->FormValue;
+		$this->id_kas->CurrentValue = $this->id_kas->FormValue;
+		$this->charge->CurrentValue = $this->charge->FormValue;
+		$this->ongkir->CurrentValue = $this->ongkir->FormValue;
+		$this->klaim_poin->CurrentValue = $this->klaim_poin->FormValue;
+		$this->total_penukaran_poin->CurrentValue = $this->total_penukaran_poin->FormValue;
+		$this->_action->CurrentValue = $this->_action->FormValue;
+		$this->status->CurrentValue = $this->status->FormValue;
+		$this->status_void->CurrentValue = $this->status_void->FormValue;
+	}
+
+	// Load row based on key values
+	public function loadRow()
+	{
+		global $Security, $Language;
+		$filter = $this->getRecordFilter();
+
+		// Call Row Selecting event
+		$this->Row_Selecting($filter);
+
+		// Load SQL based on filter
+		$this->CurrentFilter = $filter;
+		$sql = $this->getCurrentSql();
+		$conn = $this->getConnection();
+		$res = FALSE;
+		$rs = LoadRecordset($sql, $conn);
+		if ($rs && !$rs->EOF) {
+			$res = TRUE;
+			$this->loadRowValues($rs); // Load row values
+			$rs->close();
+		}
+		return $res;
+	}
+
+	// Load row values from recordset
+	public function loadRowValues($rs = NULL)
+	{
+		if ($rs && !$rs->EOF)
+			$row = $rs->fields;
+		else
+			$row = $this->newRow();
+
+		// Call Row Selected event
+		$this->Row_Selected($row);
+		if (!$rs || $rs->EOF)
+			return;
+		$this->id->setDbValue($row['id']);
+		$this->waktu->setDbValue($row['waktu']);
+		$this->id_pelanggan->setDbValue($row['id_pelanggan']);
+		$this->id_member->setDbValue($row['id_member']);
+		$this->diskon_persen->setDbValue($row['diskon_persen']);
+		$this->diskon_rupiah->setDbValue($row['diskon_rupiah']);
+		$this->ppn->setDbValue($row['ppn']);
+		$this->total->setDbValue($row['total']);
+		$this->bayar->setDbValue($row['bayar']);
+		$this->bayar_non_tunai->setDbValue($row['bayar_non_tunai']);
+		$this->total_non_tunai_charge->setDbValue($row['total_non_tunai_charge']);
+		$this->kode_penjualan->setDbValue($row['kode_penjualan']);
+		$this->keterangan->setDbValue($row['keterangan']);
+		$this->dokter->setDbValue($row['dokter']);
+		$this->sales->setDbValue($row['sales']);
+		$this->dok_be_wajah->setDbValue($row['dok_be_wajah']);
+		$this->be_body->setDbValue($row['be_body']);
+		$this->medis->setDbValue($row['medis']);
+		$this->id_klinik->setDbValue($row['id_klinik']);
+		$this->id_rmd->setDbValue($row['id_rmd']);
+		$this->metode_pembayaran->setDbValue($row['metode_pembayaran']);
+		$this->id_bank->setDbValue($row['id_bank']);
+		$this->id_kartu->setDbValue($row['id_kartu']);
+		$this->jumlah_voucher->setDbValue($row['jumlah_voucher']);
+		$this->id_kartubank->setDbValue($row['id_kartubank']);
+		$this->id_kas->setDbValue($row['id_kas']);
+		$this->charge->setDbValue($row['charge']);
+		$this->ongkir->setDbValue($row['ongkir']);
+		$this->klaim_poin->setDbValue($row['klaim_poin']);
+		$this->total_penukaran_poin->setDbValue($row['total_penukaran_poin']);
+		$this->_action->setDbValue($row['action']);
+		$this->status->setDbValue($row['status']);
+		$this->status_void->setDbValue($row['status_void']);
+	}
+
+	// Return a row with default values
+	protected function newRow()
+	{
+		$row = [];
+		$row['id'] = NULL;
+		$row['waktu'] = NULL;
+		$row['id_pelanggan'] = NULL;
+		$row['id_member'] = NULL;
+		$row['diskon_persen'] = NULL;
+		$row['diskon_rupiah'] = NULL;
+		$row['ppn'] = NULL;
+		$row['total'] = NULL;
+		$row['bayar'] = NULL;
+		$row['bayar_non_tunai'] = NULL;
+		$row['total_non_tunai_charge'] = NULL;
+		$row['kode_penjualan'] = NULL;
+		$row['keterangan'] = NULL;
+		$row['dokter'] = NULL;
+		$row['sales'] = NULL;
+		$row['dok_be_wajah'] = NULL;
+		$row['be_body'] = NULL;
+		$row['medis'] = NULL;
+		$row['id_klinik'] = NULL;
+		$row['id_rmd'] = NULL;
+		$row['metode_pembayaran'] = NULL;
+		$row['id_bank'] = NULL;
+		$row['id_kartu'] = NULL;
+		$row['jumlah_voucher'] = NULL;
+		$row['id_kartubank'] = NULL;
+		$row['id_kas'] = NULL;
+		$row['charge'] = NULL;
+		$row['ongkir'] = NULL;
+		$row['klaim_poin'] = NULL;
+		$row['total_penukaran_poin'] = NULL;
+		$row['action'] = NULL;
+		$row['status'] = NULL;
+		$row['status_void'] = NULL;
+		return $row;
+	}
+
+	// Load old record
+	protected function loadOldRecord()
+	{
+
+		// Load key values from Session
+		$validKey = TRUE;
+		if (strval($this->getKey("id")) != "")
+			$this->id->OldValue = $this->getKey("id"); // id
+		else
+			$validKey = FALSE;
+
+		// Load old record
+		$this->OldRecordset = NULL;
+		if ($validKey) {
+			$this->CurrentFilter = $this->getRecordFilter();
+			$sql = $this->getCurrentSql();
+			$conn = $this->getConnection();
+			$this->OldRecordset = LoadRecordset($sql, $conn);
+		}
+		$this->loadRowValues($this->OldRecordset); // Load row values
+		return $validKey;
+	}
+
+	// Render row values based on field settings
+	public function renderRow()
+	{
+		global $Security, $Language, $CurrentLanguage;
+
+		// Initialize URLs
+		// Convert decimal values if posted back
+
+		if ($this->diskon_rupiah->FormValue == $this->diskon_rupiah->CurrentValue && is_numeric(ConvertToFloatString($this->diskon_rupiah->CurrentValue)))
+			$this->diskon_rupiah->CurrentValue = ConvertToFloatString($this->diskon_rupiah->CurrentValue);
+
+		// Convert decimal values if posted back
+		if ($this->ppn->FormValue == $this->ppn->CurrentValue && is_numeric(ConvertToFloatString($this->ppn->CurrentValue)))
+			$this->ppn->CurrentValue = ConvertToFloatString($this->ppn->CurrentValue);
+
+		// Convert decimal values if posted back
+		if ($this->total->FormValue == $this->total->CurrentValue && is_numeric(ConvertToFloatString($this->total->CurrentValue)))
+			$this->total->CurrentValue = ConvertToFloatString($this->total->CurrentValue);
+
+		// Convert decimal values if posted back
+		if ($this->bayar->FormValue == $this->bayar->CurrentValue && is_numeric(ConvertToFloatString($this->bayar->CurrentValue)))
+			$this->bayar->CurrentValue = ConvertToFloatString($this->bayar->CurrentValue);
+
+		// Convert decimal values if posted back
+		if ($this->bayar_non_tunai->FormValue == $this->bayar_non_tunai->CurrentValue && is_numeric(ConvertToFloatString($this->bayar_non_tunai->CurrentValue)))
+			$this->bayar_non_tunai->CurrentValue = ConvertToFloatString($this->bayar_non_tunai->CurrentValue);
+
+		// Convert decimal values if posted back
+		if ($this->total_non_tunai_charge->FormValue == $this->total_non_tunai_charge->CurrentValue && is_numeric(ConvertToFloatString($this->total_non_tunai_charge->CurrentValue)))
+			$this->total_non_tunai_charge->CurrentValue = ConvertToFloatString($this->total_non_tunai_charge->CurrentValue);
+
+		// Convert decimal values if posted back
+		if ($this->charge->FormValue == $this->charge->CurrentValue && is_numeric(ConvertToFloatString($this->charge->CurrentValue)))
+			$this->charge->CurrentValue = ConvertToFloatString($this->charge->CurrentValue);
+
+		// Convert decimal values if posted back
+		if ($this->ongkir->FormValue == $this->ongkir->CurrentValue && is_numeric(ConvertToFloatString($this->ongkir->CurrentValue)))
+			$this->ongkir->CurrentValue = ConvertToFloatString($this->ongkir->CurrentValue);
+
+		// Convert decimal values if posted back
+		if ($this->klaim_poin->FormValue == $this->klaim_poin->CurrentValue && is_numeric(ConvertToFloatString($this->klaim_poin->CurrentValue)))
+			$this->klaim_poin->CurrentValue = ConvertToFloatString($this->klaim_poin->CurrentValue);
+
+		// Convert decimal values if posted back
+		if ($this->total_penukaran_poin->FormValue == $this->total_penukaran_poin->CurrentValue && is_numeric(ConvertToFloatString($this->total_penukaran_poin->CurrentValue)))
+			$this->total_penukaran_poin->CurrentValue = ConvertToFloatString($this->total_penukaran_poin->CurrentValue);
+
+		// Call Row_Rendering event
+		$this->Row_Rendering();
+
+		// Common render codes for all row types
+		// id
+		// waktu
+		// id_pelanggan
+		// id_member
+		// diskon_persen
+		// diskon_rupiah
+		// ppn
+		// total
+		// bayar
+		// bayar_non_tunai
+		// total_non_tunai_charge
+		// kode_penjualan
+		// keterangan
+		// dokter
+		// sales
+		// dok_be_wajah
+		// be_body
+		// medis
+		// id_klinik
+		// id_rmd
+		// metode_pembayaran
+		// id_bank
+		// id_kartu
+		// jumlah_voucher
+		// id_kartubank
+		// id_kas
+		// charge
+		// ongkir
+		// klaim_poin
+		// total_penukaran_poin
+		// action
+		// status
+		// status_void
+
+		if ($this->RowType == ROWTYPE_VIEW) { // View row
+
+			// id
+			$this->id->ViewValue = $this->id->CurrentValue;
+			$this->id->ViewCustomAttributes = "";
+
+			// waktu
+			$this->waktu->ViewValue = $this->waktu->CurrentValue;
+			$this->waktu->ViewValue = FormatDateTime($this->waktu->ViewValue, 0);
+			$this->waktu->ViewCustomAttributes = "";
+
+			// id_pelanggan
+			$this->id_pelanggan->ViewValue = $this->id_pelanggan->CurrentValue;
+			$this->id_pelanggan->ViewValue = FormatNumber($this->id_pelanggan->ViewValue, 0, -2, -2, -2);
+			$this->id_pelanggan->ViewCustomAttributes = "";
+
+			// id_member
+			$this->id_member->ViewValue = $this->id_member->CurrentValue;
+			$this->id_member->ViewValue = FormatNumber($this->id_member->ViewValue, 0, -2, -2, -2);
+			$this->id_member->ViewCustomAttributes = "";
+
+			// diskon_persen
+			$this->diskon_persen->ViewValue = $this->diskon_persen->CurrentValue;
+			$this->diskon_persen->ViewCustomAttributes = "";
+
+			// diskon_rupiah
+			$this->diskon_rupiah->ViewValue = $this->diskon_rupiah->CurrentValue;
+			$this->diskon_rupiah->ViewValue = FormatNumber($this->diskon_rupiah->ViewValue, 2, -2, -2, -2);
+			$this->diskon_rupiah->ViewCustomAttributes = "";
+
+			// ppn
+			$this->ppn->ViewValue = $this->ppn->CurrentValue;
+			$this->ppn->ViewValue = FormatNumber($this->ppn->ViewValue, 2, -2, -2, -2);
+			$this->ppn->ViewCustomAttributes = "";
+
+			// total
+			$this->total->ViewValue = $this->total->CurrentValue;
+			$this->total->ViewValue = FormatNumber($this->total->ViewValue, 2, -2, -2, -2);
+			$this->total->ViewCustomAttributes = "";
+
+			// bayar
+			$this->bayar->ViewValue = $this->bayar->CurrentValue;
+			$this->bayar->ViewValue = FormatNumber($this->bayar->ViewValue, 2, -2, -2, -2);
+			$this->bayar->ViewCustomAttributes = "";
+
+			// bayar_non_tunai
+			$this->bayar_non_tunai->ViewValue = $this->bayar_non_tunai->CurrentValue;
+			$this->bayar_non_tunai->ViewValue = FormatNumber($this->bayar_non_tunai->ViewValue, 2, -2, -2, -2);
+			$this->bayar_non_tunai->ViewCustomAttributes = "";
+
+			// total_non_tunai_charge
+			$this->total_non_tunai_charge->ViewValue = $this->total_non_tunai_charge->CurrentValue;
+			$this->total_non_tunai_charge->ViewValue = FormatNumber($this->total_non_tunai_charge->ViewValue, 2, -2, -2, -2);
+			$this->total_non_tunai_charge->ViewCustomAttributes = "";
+
+			// kode_penjualan
+			$this->kode_penjualan->ViewValue = $this->kode_penjualan->CurrentValue;
+			$this->kode_penjualan->ViewCustomAttributes = "";
+
+			// keterangan
+			$this->keterangan->ViewValue = $this->keterangan->CurrentValue;
+			$this->keterangan->ViewCustomAttributes = "";
+
+			// dokter
+			$this->dokter->ViewValue = $this->dokter->CurrentValue;
+			$this->dokter->ViewValue = FormatNumber($this->dokter->ViewValue, 0, -2, -2, -2);
+			$this->dokter->ViewCustomAttributes = "";
+
+			// sales
+			$this->sales->ViewValue = $this->sales->CurrentValue;
+			$this->sales->ViewValue = FormatNumber($this->sales->ViewValue, 0, -2, -2, -2);
+			$this->sales->ViewCustomAttributes = "";
+
+			// dok_be_wajah
+			$this->dok_be_wajah->ViewValue = $this->dok_be_wajah->CurrentValue;
+			$this->dok_be_wajah->ViewValue = FormatNumber($this->dok_be_wajah->ViewValue, 0, -2, -2, -2);
+			$this->dok_be_wajah->ViewCustomAttributes = "";
+
+			// be_body
+			$this->be_body->ViewValue = $this->be_body->CurrentValue;
+			$this->be_body->ViewValue = FormatNumber($this->be_body->ViewValue, 0, -2, -2, -2);
+			$this->be_body->ViewCustomAttributes = "";
+
+			// medis
+			$this->medis->ViewValue = $this->medis->CurrentValue;
+			$this->medis->ViewValue = FormatNumber($this->medis->ViewValue, 0, -2, -2, -2);
+			$this->medis->ViewCustomAttributes = "";
+
+			// id_klinik
+			$this->id_klinik->ViewValue = $this->id_klinik->CurrentValue;
+			$this->id_klinik->ViewValue = FormatNumber($this->id_klinik->ViewValue, 0, -2, -2, -2);
+			$this->id_klinik->ViewCustomAttributes = "";
+
+			// id_rmd
+			$this->id_rmd->ViewValue = $this->id_rmd->CurrentValue;
+			$this->id_rmd->ViewValue = FormatNumber($this->id_rmd->ViewValue, 0, -2, -2, -2);
+			$this->id_rmd->ViewCustomAttributes = "";
+
+			// metode_pembayaran
+			$this->metode_pembayaran->ViewValue = $this->metode_pembayaran->CurrentValue;
+			$this->metode_pembayaran->ViewCustomAttributes = "";
+
+			// id_bank
+			$this->id_bank->ViewValue = $this->id_bank->CurrentValue;
+			$this->id_bank->ViewValue = FormatNumber($this->id_bank->ViewValue, 0, -2, -2, -2);
+			$this->id_bank->ViewCustomAttributes = "";
+
+			// id_kartu
+			$this->id_kartu->ViewValue = $this->id_kartu->CurrentValue;
+			$this->id_kartu->ViewValue = FormatNumber($this->id_kartu->ViewValue, 0, -2, -2, -2);
+			$this->id_kartu->ViewCustomAttributes = "";
+
+			// jumlah_voucher
+			$this->jumlah_voucher->ViewValue = $this->jumlah_voucher->CurrentValue;
+			$this->jumlah_voucher->ViewValue = FormatNumber($this->jumlah_voucher->ViewValue, 0, -2, -2, -2);
+			$this->jumlah_voucher->ViewCustomAttributes = "";
+
+			// id_kartubank
+			$this->id_kartubank->ViewValue = $this->id_kartubank->CurrentValue;
+			$this->id_kartubank->ViewValue = FormatNumber($this->id_kartubank->ViewValue, 0, -2, -2, -2);
+			$this->id_kartubank->ViewCustomAttributes = "";
+
+			// id_kas
+			$this->id_kas->ViewValue = $this->id_kas->CurrentValue;
+			$this->id_kas->ViewValue = FormatNumber($this->id_kas->ViewValue, 0, -2, -2, -2);
+			$this->id_kas->ViewCustomAttributes = "";
+
+			// charge
+			$this->charge->ViewValue = $this->charge->CurrentValue;
+			$this->charge->ViewValue = FormatNumber($this->charge->ViewValue, 2, -2, -2, -2);
+			$this->charge->ViewCustomAttributes = "";
+
+			// ongkir
+			$this->ongkir->ViewValue = $this->ongkir->CurrentValue;
+			$this->ongkir->ViewValue = FormatNumber($this->ongkir->ViewValue, 2, -2, -2, -2);
+			$this->ongkir->ViewCustomAttributes = "";
+
+			// klaim_poin
+			$this->klaim_poin->ViewValue = $this->klaim_poin->CurrentValue;
+			$this->klaim_poin->ViewValue = FormatNumber($this->klaim_poin->ViewValue, 2, -2, -2, -2);
+			$this->klaim_poin->ViewCustomAttributes = "";
+
+			// total_penukaran_poin
+			$this->total_penukaran_poin->ViewValue = $this->total_penukaran_poin->CurrentValue;
+			$this->total_penukaran_poin->ViewValue = FormatNumber($this->total_penukaran_poin->ViewValue, 2, -2, -2, -2);
+			$this->total_penukaran_poin->ViewCustomAttributes = "";
+
+			// action
+			$this->_action->ViewValue = $this->_action->CurrentValue;
+			$this->_action->ViewCustomAttributes = "";
+
+			// status
+			if (strval($this->status->CurrentValue) != "") {
+				$this->status->ViewValue = $this->status->optionCaption($this->status->CurrentValue);
+			} else {
+				$this->status->ViewValue = NULL;
+			}
+			$this->status->ViewCustomAttributes = "";
+
+			// status_void
+			$this->status_void->ViewValue = $this->status_void->CurrentValue;
+			$this->status_void->ViewCustomAttributes = "";
+
+			// id
+			$this->id->LinkCustomAttributes = "";
+			$this->id->HrefValue = "";
+			$this->id->TooltipValue = "";
+
+			// waktu
+			$this->waktu->LinkCustomAttributes = "";
+			$this->waktu->HrefValue = "";
+			$this->waktu->TooltipValue = "";
+
+			// id_pelanggan
+			$this->id_pelanggan->LinkCustomAttributes = "";
+			$this->id_pelanggan->HrefValue = "";
+			$this->id_pelanggan->TooltipValue = "";
+
+			// id_member
+			$this->id_member->LinkCustomAttributes = "";
+			$this->id_member->HrefValue = "";
+			$this->id_member->TooltipValue = "";
+
+			// diskon_persen
+			$this->diskon_persen->LinkCustomAttributes = "";
+			$this->diskon_persen->HrefValue = "";
+			$this->diskon_persen->TooltipValue = "";
+
+			// diskon_rupiah
+			$this->diskon_rupiah->LinkCustomAttributes = "";
+			$this->diskon_rupiah->HrefValue = "";
+			$this->diskon_rupiah->TooltipValue = "";
+
+			// ppn
+			$this->ppn->LinkCustomAttributes = "";
+			$this->ppn->HrefValue = "";
+			$this->ppn->TooltipValue = "";
+
+			// total
+			$this->total->LinkCustomAttributes = "";
+			$this->total->HrefValue = "";
+			$this->total->TooltipValue = "";
+
+			// bayar
+			$this->bayar->LinkCustomAttributes = "";
+			$this->bayar->HrefValue = "";
+			$this->bayar->TooltipValue = "";
+
+			// bayar_non_tunai
+			$this->bayar_non_tunai->LinkCustomAttributes = "";
+			$this->bayar_non_tunai->HrefValue = "";
+			$this->bayar_non_tunai->TooltipValue = "";
+
+			// total_non_tunai_charge
+			$this->total_non_tunai_charge->LinkCustomAttributes = "";
+			$this->total_non_tunai_charge->HrefValue = "";
+			$this->total_non_tunai_charge->TooltipValue = "";
+
+			// kode_penjualan
+			$this->kode_penjualan->LinkCustomAttributes = "";
+			$this->kode_penjualan->HrefValue = "";
+			$this->kode_penjualan->TooltipValue = "";
+
+			// keterangan
+			$this->keterangan->LinkCustomAttributes = "";
+			$this->keterangan->HrefValue = "";
+			$this->keterangan->TooltipValue = "";
+
+			// dokter
+			$this->dokter->LinkCustomAttributes = "";
+			$this->dokter->HrefValue = "";
+			$this->dokter->TooltipValue = "";
+
+			// sales
+			$this->sales->LinkCustomAttributes = "";
+			$this->sales->HrefValue = "";
+			$this->sales->TooltipValue = "";
+
+			// dok_be_wajah
+			$this->dok_be_wajah->LinkCustomAttributes = "";
+			$this->dok_be_wajah->HrefValue = "";
+			$this->dok_be_wajah->TooltipValue = "";
+
+			// be_body
+			$this->be_body->LinkCustomAttributes = "";
+			$this->be_body->HrefValue = "";
+			$this->be_body->TooltipValue = "";
+
+			// medis
+			$this->medis->LinkCustomAttributes = "";
+			$this->medis->HrefValue = "";
+			$this->medis->TooltipValue = "";
+
+			// id_klinik
+			$this->id_klinik->LinkCustomAttributes = "";
+			$this->id_klinik->HrefValue = "";
+			$this->id_klinik->TooltipValue = "";
+
+			// id_rmd
+			$this->id_rmd->LinkCustomAttributes = "";
+			$this->id_rmd->HrefValue = "";
+			$this->id_rmd->TooltipValue = "";
+
+			// metode_pembayaran
+			$this->metode_pembayaran->LinkCustomAttributes = "";
+			$this->metode_pembayaran->HrefValue = "";
+			$this->metode_pembayaran->TooltipValue = "";
+
+			// id_bank
+			$this->id_bank->LinkCustomAttributes = "";
+			$this->id_bank->HrefValue = "";
+			$this->id_bank->TooltipValue = "";
+
+			// id_kartu
+			$this->id_kartu->LinkCustomAttributes = "";
+			$this->id_kartu->HrefValue = "";
+			$this->id_kartu->TooltipValue = "";
+
+			// jumlah_voucher
+			$this->jumlah_voucher->LinkCustomAttributes = "";
+			$this->jumlah_voucher->HrefValue = "";
+			$this->jumlah_voucher->TooltipValue = "";
+
+			// id_kartubank
+			$this->id_kartubank->LinkCustomAttributes = "";
+			$this->id_kartubank->HrefValue = "";
+			$this->id_kartubank->TooltipValue = "";
+
+			// id_kas
+			$this->id_kas->LinkCustomAttributes = "";
+			$this->id_kas->HrefValue = "";
+			$this->id_kas->TooltipValue = "";
+
+			// charge
+			$this->charge->LinkCustomAttributes = "";
+			$this->charge->HrefValue = "";
+			$this->charge->TooltipValue = "";
+
+			// ongkir
+			$this->ongkir->LinkCustomAttributes = "";
+			$this->ongkir->HrefValue = "";
+			$this->ongkir->TooltipValue = "";
+
+			// klaim_poin
+			$this->klaim_poin->LinkCustomAttributes = "";
+			$this->klaim_poin->HrefValue = "";
+			$this->klaim_poin->TooltipValue = "";
+
+			// total_penukaran_poin
+			$this->total_penukaran_poin->LinkCustomAttributes = "";
+			$this->total_penukaran_poin->HrefValue = "";
+			$this->total_penukaran_poin->TooltipValue = "";
+
+			// action
+			$this->_action->LinkCustomAttributes = "";
+			$this->_action->HrefValue = "";
+			$this->_action->TooltipValue = "";
+
+			// status
+			$this->status->LinkCustomAttributes = "";
+			$this->status->HrefValue = "";
+			$this->status->TooltipValue = "";
+
+			// status_void
+			$this->status_void->LinkCustomAttributes = "";
+			$this->status_void->HrefValue = "";
+			$this->status_void->TooltipValue = "";
+		} elseif ($this->RowType == ROWTYPE_EDIT) { // Edit row
+
+			// id
+			$this->id->EditAttrs["class"] = "form-control";
+			$this->id->EditCustomAttributes = "";
+			$this->id->EditValue = $this->id->CurrentValue;
+			$this->id->ViewCustomAttributes = "";
+
+			// waktu
+			$this->waktu->EditAttrs["class"] = "form-control";
+			$this->waktu->EditCustomAttributes = "";
+			$this->waktu->EditValue = HtmlEncode(FormatDateTime($this->waktu->CurrentValue, 8));
+			$this->waktu->PlaceHolder = RemoveHtml($this->waktu->caption());
+
+			// id_pelanggan
+			$this->id_pelanggan->EditAttrs["class"] = "form-control";
+			$this->id_pelanggan->EditCustomAttributes = "";
+			$this->id_pelanggan->EditValue = HtmlEncode($this->id_pelanggan->CurrentValue);
+			$this->id_pelanggan->PlaceHolder = RemoveHtml($this->id_pelanggan->caption());
+
+			// id_member
+			$this->id_member->EditAttrs["class"] = "form-control";
+			$this->id_member->EditCustomAttributes = "";
+			$this->id_member->EditValue = HtmlEncode($this->id_member->CurrentValue);
+			$this->id_member->PlaceHolder = RemoveHtml($this->id_member->caption());
+
+			// diskon_persen
+			$this->diskon_persen->EditAttrs["class"] = "form-control";
+			$this->diskon_persen->EditCustomAttributes = "";
+			if (!$this->diskon_persen->Raw)
+				$this->diskon_persen->CurrentValue = HtmlDecode($this->diskon_persen->CurrentValue);
+			$this->diskon_persen->EditValue = HtmlEncode($this->diskon_persen->CurrentValue);
+			$this->diskon_persen->PlaceHolder = RemoveHtml($this->diskon_persen->caption());
+
+			// diskon_rupiah
+			$this->diskon_rupiah->EditAttrs["class"] = "form-control";
+			$this->diskon_rupiah->EditCustomAttributes = "";
+			$this->diskon_rupiah->EditValue = HtmlEncode($this->diskon_rupiah->CurrentValue);
+			$this->diskon_rupiah->PlaceHolder = RemoveHtml($this->diskon_rupiah->caption());
+			if (strval($this->diskon_rupiah->EditValue) != "" && is_numeric($this->diskon_rupiah->EditValue))
+				$this->diskon_rupiah->EditValue = FormatNumber($this->diskon_rupiah->EditValue, -2, -2, -2, -2);
+			
+
+			// ppn
+			$this->ppn->EditAttrs["class"] = "form-control";
+			$this->ppn->EditCustomAttributes = "";
+			$this->ppn->EditValue = HtmlEncode($this->ppn->CurrentValue);
+			$this->ppn->PlaceHolder = RemoveHtml($this->ppn->caption());
+			if (strval($this->ppn->EditValue) != "" && is_numeric($this->ppn->EditValue))
+				$this->ppn->EditValue = FormatNumber($this->ppn->EditValue, -2, -2, -2, -2);
+			
+
+			// total
+			$this->total->EditAttrs["class"] = "form-control";
+			$this->total->EditCustomAttributes = "";
+			$this->total->EditValue = HtmlEncode($this->total->CurrentValue);
+			$this->total->PlaceHolder = RemoveHtml($this->total->caption());
+			if (strval($this->total->EditValue) != "" && is_numeric($this->total->EditValue))
+				$this->total->EditValue = FormatNumber($this->total->EditValue, -2, -2, -2, -2);
+			
+
+			// bayar
+			$this->bayar->EditAttrs["class"] = "form-control";
+			$this->bayar->EditCustomAttributes = "";
+			$this->bayar->EditValue = HtmlEncode($this->bayar->CurrentValue);
+			$this->bayar->PlaceHolder = RemoveHtml($this->bayar->caption());
+			if (strval($this->bayar->EditValue) != "" && is_numeric($this->bayar->EditValue))
+				$this->bayar->EditValue = FormatNumber($this->bayar->EditValue, -2, -2, -2, -2);
+			
+
+			// bayar_non_tunai
+			$this->bayar_non_tunai->EditAttrs["class"] = "form-control";
+			$this->bayar_non_tunai->EditCustomAttributes = "";
+			$this->bayar_non_tunai->EditValue = HtmlEncode($this->bayar_non_tunai->CurrentValue);
+			$this->bayar_non_tunai->PlaceHolder = RemoveHtml($this->bayar_non_tunai->caption());
+			if (strval($this->bayar_non_tunai->EditValue) != "" && is_numeric($this->bayar_non_tunai->EditValue))
+				$this->bayar_non_tunai->EditValue = FormatNumber($this->bayar_non_tunai->EditValue, -2, -2, -2, -2);
+			
+
+			// total_non_tunai_charge
+			$this->total_non_tunai_charge->EditAttrs["class"] = "form-control";
+			$this->total_non_tunai_charge->EditCustomAttributes = "";
+			$this->total_non_tunai_charge->EditValue = HtmlEncode($this->total_non_tunai_charge->CurrentValue);
+			$this->total_non_tunai_charge->PlaceHolder = RemoveHtml($this->total_non_tunai_charge->caption());
+			if (strval($this->total_non_tunai_charge->EditValue) != "" && is_numeric($this->total_non_tunai_charge->EditValue))
+				$this->total_non_tunai_charge->EditValue = FormatNumber($this->total_non_tunai_charge->EditValue, -2, -2, -2, -2);
+			
+
+			// kode_penjualan
+			$this->kode_penjualan->EditAttrs["class"] = "form-control";
+			$this->kode_penjualan->EditCustomAttributes = "";
+			if (!$this->kode_penjualan->Raw)
+				$this->kode_penjualan->CurrentValue = HtmlDecode($this->kode_penjualan->CurrentValue);
+			$this->kode_penjualan->EditValue = HtmlEncode($this->kode_penjualan->CurrentValue);
+			$this->kode_penjualan->PlaceHolder = RemoveHtml($this->kode_penjualan->caption());
+
+			// keterangan
+			$this->keterangan->EditAttrs["class"] = "form-control";
+			$this->keterangan->EditCustomAttributes = "";
+			if (!$this->keterangan->Raw)
+				$this->keterangan->CurrentValue = HtmlDecode($this->keterangan->CurrentValue);
+			$this->keterangan->EditValue = HtmlEncode($this->keterangan->CurrentValue);
+			$this->keterangan->PlaceHolder = RemoveHtml($this->keterangan->caption());
+
+			// dokter
+			$this->dokter->EditAttrs["class"] = "form-control";
+			$this->dokter->EditCustomAttributes = "";
+			$this->dokter->EditValue = HtmlEncode($this->dokter->CurrentValue);
+			$this->dokter->PlaceHolder = RemoveHtml($this->dokter->caption());
+
+			// sales
+			$this->sales->EditAttrs["class"] = "form-control";
+			$this->sales->EditCustomAttributes = "";
+			$this->sales->EditValue = HtmlEncode($this->sales->CurrentValue);
+			$this->sales->PlaceHolder = RemoveHtml($this->sales->caption());
+
+			// dok_be_wajah
+			$this->dok_be_wajah->EditAttrs["class"] = "form-control";
+			$this->dok_be_wajah->EditCustomAttributes = "";
+			$this->dok_be_wajah->EditValue = HtmlEncode($this->dok_be_wajah->CurrentValue);
+			$this->dok_be_wajah->PlaceHolder = RemoveHtml($this->dok_be_wajah->caption());
+
+			// be_body
+			$this->be_body->EditAttrs["class"] = "form-control";
+			$this->be_body->EditCustomAttributes = "";
+			$this->be_body->EditValue = HtmlEncode($this->be_body->CurrentValue);
+			$this->be_body->PlaceHolder = RemoveHtml($this->be_body->caption());
+
+			// medis
+			$this->medis->EditAttrs["class"] = "form-control";
+			$this->medis->EditCustomAttributes = "";
+			$this->medis->EditValue = HtmlEncode($this->medis->CurrentValue);
+			$this->medis->PlaceHolder = RemoveHtml($this->medis->caption());
+
+			// id_klinik
+			$this->id_klinik->EditAttrs["class"] = "form-control";
+			$this->id_klinik->EditCustomAttributes = "";
+			$this->id_klinik->EditValue = HtmlEncode($this->id_klinik->CurrentValue);
+			$this->id_klinik->PlaceHolder = RemoveHtml($this->id_klinik->caption());
+
+			// id_rmd
+			$this->id_rmd->EditAttrs["class"] = "form-control";
+			$this->id_rmd->EditCustomAttributes = "";
+			$this->id_rmd->EditValue = HtmlEncode($this->id_rmd->CurrentValue);
+			$this->id_rmd->PlaceHolder = RemoveHtml($this->id_rmd->caption());
+
+			// metode_pembayaran
+			$this->metode_pembayaran->EditAttrs["class"] = "form-control";
+			$this->metode_pembayaran->EditCustomAttributes = "";
+			if (!$this->metode_pembayaran->Raw)
+				$this->metode_pembayaran->CurrentValue = HtmlDecode($this->metode_pembayaran->CurrentValue);
+			$this->metode_pembayaran->EditValue = HtmlEncode($this->metode_pembayaran->CurrentValue);
+			$this->metode_pembayaran->PlaceHolder = RemoveHtml($this->metode_pembayaran->caption());
+
+			// id_bank
+			$this->id_bank->EditAttrs["class"] = "form-control";
+			$this->id_bank->EditCustomAttributes = "";
+			$this->id_bank->EditValue = HtmlEncode($this->id_bank->CurrentValue);
+			$this->id_bank->PlaceHolder = RemoveHtml($this->id_bank->caption());
+
+			// id_kartu
+			$this->id_kartu->EditAttrs["class"] = "form-control";
+			$this->id_kartu->EditCustomAttributes = "";
+			$this->id_kartu->EditValue = HtmlEncode($this->id_kartu->CurrentValue);
+			$this->id_kartu->PlaceHolder = RemoveHtml($this->id_kartu->caption());
+
+			// jumlah_voucher
+			$this->jumlah_voucher->EditAttrs["class"] = "form-control";
+			$this->jumlah_voucher->EditCustomAttributes = "";
+			$this->jumlah_voucher->EditValue = HtmlEncode($this->jumlah_voucher->CurrentValue);
+			$this->jumlah_voucher->PlaceHolder = RemoveHtml($this->jumlah_voucher->caption());
+
+			// id_kartubank
+			$this->id_kartubank->EditAttrs["class"] = "form-control";
+			$this->id_kartubank->EditCustomAttributes = "";
+			$this->id_kartubank->EditValue = HtmlEncode($this->id_kartubank->CurrentValue);
+			$this->id_kartubank->PlaceHolder = RemoveHtml($this->id_kartubank->caption());
+
+			// id_kas
+			$this->id_kas->EditAttrs["class"] = "form-control";
+			$this->id_kas->EditCustomAttributes = "";
+			$this->id_kas->EditValue = HtmlEncode($this->id_kas->CurrentValue);
+			$this->id_kas->PlaceHolder = RemoveHtml($this->id_kas->caption());
+
+			// charge
+			$this->charge->EditAttrs["class"] = "form-control";
+			$this->charge->EditCustomAttributes = "";
+			$this->charge->EditValue = HtmlEncode($this->charge->CurrentValue);
+			$this->charge->PlaceHolder = RemoveHtml($this->charge->caption());
+			if (strval($this->charge->EditValue) != "" && is_numeric($this->charge->EditValue))
+				$this->charge->EditValue = FormatNumber($this->charge->EditValue, -2, -2, -2, -2);
+			
+
+			// ongkir
+			$this->ongkir->EditAttrs["class"] = "form-control";
+			$this->ongkir->EditCustomAttributes = "";
+			$this->ongkir->EditValue = HtmlEncode($this->ongkir->CurrentValue);
+			$this->ongkir->PlaceHolder = RemoveHtml($this->ongkir->caption());
+			if (strval($this->ongkir->EditValue) != "" && is_numeric($this->ongkir->EditValue))
+				$this->ongkir->EditValue = FormatNumber($this->ongkir->EditValue, -2, -2, -2, -2);
+			
+
+			// klaim_poin
+			$this->klaim_poin->EditAttrs["class"] = "form-control";
+			$this->klaim_poin->EditCustomAttributes = "";
+			$this->klaim_poin->EditValue = HtmlEncode($this->klaim_poin->CurrentValue);
+			$this->klaim_poin->PlaceHolder = RemoveHtml($this->klaim_poin->caption());
+			if (strval($this->klaim_poin->EditValue) != "" && is_numeric($this->klaim_poin->EditValue))
+				$this->klaim_poin->EditValue = FormatNumber($this->klaim_poin->EditValue, -2, -2, -2, -2);
+			
+
+			// total_penukaran_poin
+			$this->total_penukaran_poin->EditAttrs["class"] = "form-control";
+			$this->total_penukaran_poin->EditCustomAttributes = "";
+			$this->total_penukaran_poin->EditValue = HtmlEncode($this->total_penukaran_poin->CurrentValue);
+			$this->total_penukaran_poin->PlaceHolder = RemoveHtml($this->total_penukaran_poin->caption());
+			if (strval($this->total_penukaran_poin->EditValue) != "" && is_numeric($this->total_penukaran_poin->EditValue))
+				$this->total_penukaran_poin->EditValue = FormatNumber($this->total_penukaran_poin->EditValue, -2, -2, -2, -2);
+			
+
+			// action
+			$this->_action->EditAttrs["class"] = "form-control";
+			$this->_action->EditCustomAttributes = "";
+			if (!$this->_action->Raw)
+				$this->_action->CurrentValue = HtmlDecode($this->_action->CurrentValue);
+			$this->_action->EditValue = HtmlEncode($this->_action->CurrentValue);
+			$this->_action->PlaceHolder = RemoveHtml($this->_action->caption());
+
+			// status
+			$this->status->EditCustomAttributes = "";
+			$this->status->EditValue = $this->status->options(FALSE);
+
+			// status_void
+			$this->status_void->EditAttrs["class"] = "form-control";
+			$this->status_void->EditCustomAttributes = "";
+			if (!$this->status_void->Raw)
+				$this->status_void->CurrentValue = HtmlDecode($this->status_void->CurrentValue);
+			$this->status_void->EditValue = HtmlEncode($this->status_void->CurrentValue);
+			$this->status_void->PlaceHolder = RemoveHtml($this->status_void->caption());
+
+			// Edit refer script
+			// id
+
+			$this->id->LinkCustomAttributes = "";
+			$this->id->HrefValue = "";
+
+			// waktu
+			$this->waktu->LinkCustomAttributes = "";
+			$this->waktu->HrefValue = "";
+
+			// id_pelanggan
+			$this->id_pelanggan->LinkCustomAttributes = "";
+			$this->id_pelanggan->HrefValue = "";
+
+			// id_member
+			$this->id_member->LinkCustomAttributes = "";
+			$this->id_member->HrefValue = "";
+
+			// diskon_persen
+			$this->diskon_persen->LinkCustomAttributes = "";
+			$this->diskon_persen->HrefValue = "";
+
+			// diskon_rupiah
+			$this->diskon_rupiah->LinkCustomAttributes = "";
+			$this->diskon_rupiah->HrefValue = "";
+
+			// ppn
+			$this->ppn->LinkCustomAttributes = "";
+			$this->ppn->HrefValue = "";
+
+			// total
+			$this->total->LinkCustomAttributes = "";
+			$this->total->HrefValue = "";
+
+			// bayar
+			$this->bayar->LinkCustomAttributes = "";
+			$this->bayar->HrefValue = "";
+
+			// bayar_non_tunai
+			$this->bayar_non_tunai->LinkCustomAttributes = "";
+			$this->bayar_non_tunai->HrefValue = "";
+
+			// total_non_tunai_charge
+			$this->total_non_tunai_charge->LinkCustomAttributes = "";
+			$this->total_non_tunai_charge->HrefValue = "";
+
+			// kode_penjualan
+			$this->kode_penjualan->LinkCustomAttributes = "";
+			$this->kode_penjualan->HrefValue = "";
+
+			// keterangan
+			$this->keterangan->LinkCustomAttributes = "";
+			$this->keterangan->HrefValue = "";
+
+			// dokter
+			$this->dokter->LinkCustomAttributes = "";
+			$this->dokter->HrefValue = "";
+
+			// sales
+			$this->sales->LinkCustomAttributes = "";
+			$this->sales->HrefValue = "";
+
+			// dok_be_wajah
+			$this->dok_be_wajah->LinkCustomAttributes = "";
+			$this->dok_be_wajah->HrefValue = "";
+
+			// be_body
+			$this->be_body->LinkCustomAttributes = "";
+			$this->be_body->HrefValue = "";
+
+			// medis
+			$this->medis->LinkCustomAttributes = "";
+			$this->medis->HrefValue = "";
+
+			// id_klinik
+			$this->id_klinik->LinkCustomAttributes = "";
+			$this->id_klinik->HrefValue = "";
+
+			// id_rmd
+			$this->id_rmd->LinkCustomAttributes = "";
+			$this->id_rmd->HrefValue = "";
+
+			// metode_pembayaran
+			$this->metode_pembayaran->LinkCustomAttributes = "";
+			$this->metode_pembayaran->HrefValue = "";
+
+			// id_bank
+			$this->id_bank->LinkCustomAttributes = "";
+			$this->id_bank->HrefValue = "";
+
+			// id_kartu
+			$this->id_kartu->LinkCustomAttributes = "";
+			$this->id_kartu->HrefValue = "";
+
+			// jumlah_voucher
+			$this->jumlah_voucher->LinkCustomAttributes = "";
+			$this->jumlah_voucher->HrefValue = "";
+
+			// id_kartubank
+			$this->id_kartubank->LinkCustomAttributes = "";
+			$this->id_kartubank->HrefValue = "";
+
+			// id_kas
+			$this->id_kas->LinkCustomAttributes = "";
+			$this->id_kas->HrefValue = "";
+
+			// charge
+			$this->charge->LinkCustomAttributes = "";
+			$this->charge->HrefValue = "";
+
+			// ongkir
+			$this->ongkir->LinkCustomAttributes = "";
+			$this->ongkir->HrefValue = "";
+
+			// klaim_poin
+			$this->klaim_poin->LinkCustomAttributes = "";
+			$this->klaim_poin->HrefValue = "";
+
+			// total_penukaran_poin
+			$this->total_penukaran_poin->LinkCustomAttributes = "";
+			$this->total_penukaran_poin->HrefValue = "";
+
+			// action
+			$this->_action->LinkCustomAttributes = "";
+			$this->_action->HrefValue = "";
+
+			// status
+			$this->status->LinkCustomAttributes = "";
+			$this->status->HrefValue = "";
+
+			// status_void
+			$this->status_void->LinkCustomAttributes = "";
+			$this->status_void->HrefValue = "";
+		}
+		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
+			$this->setupFieldTitles();
+
+		// Call Row Rendered event
+		if ($this->RowType != ROWTYPE_AGGREGATEINIT)
+			$this->Row_Rendered();
+	}
+
+	// Validate form
+	protected function validateForm()
+	{
+		global $Language, $FormError;
+
+		// Initialize form error message
+		$FormError = "";
+
+		// Check if validation required
+		if (!Config("SERVER_VALIDATE"))
+			return ($FormError == "");
+		if ($this->id->Required) {
+			if (!$this->id->IsDetailKey && $this->id->FormValue != NULL && $this->id->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->id->caption(), $this->id->RequiredErrorMessage));
+			}
+		}
+		if ($this->waktu->Required) {
+			if (!$this->waktu->IsDetailKey && $this->waktu->FormValue != NULL && $this->waktu->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->waktu->caption(), $this->waktu->RequiredErrorMessage));
+			}
+		}
+		if (!CheckDate($this->waktu->FormValue)) {
+			AddMessage($FormError, $this->waktu->errorMessage());
+		}
+		if ($this->id_pelanggan->Required) {
+			if (!$this->id_pelanggan->IsDetailKey && $this->id_pelanggan->FormValue != NULL && $this->id_pelanggan->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->id_pelanggan->caption(), $this->id_pelanggan->RequiredErrorMessage));
+			}
+		}
+		if (!CheckInteger($this->id_pelanggan->FormValue)) {
+			AddMessage($FormError, $this->id_pelanggan->errorMessage());
+		}
+		if ($this->id_member->Required) {
+			if (!$this->id_member->IsDetailKey && $this->id_member->FormValue != NULL && $this->id_member->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->id_member->caption(), $this->id_member->RequiredErrorMessage));
+			}
+		}
+		if (!CheckInteger($this->id_member->FormValue)) {
+			AddMessage($FormError, $this->id_member->errorMessage());
+		}
+		if ($this->diskon_persen->Required) {
+			if (!$this->diskon_persen->IsDetailKey && $this->diskon_persen->FormValue != NULL && $this->diskon_persen->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->diskon_persen->caption(), $this->diskon_persen->RequiredErrorMessage));
+			}
+		}
+		if ($this->diskon_rupiah->Required) {
+			if (!$this->diskon_rupiah->IsDetailKey && $this->diskon_rupiah->FormValue != NULL && $this->diskon_rupiah->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->diskon_rupiah->caption(), $this->diskon_rupiah->RequiredErrorMessage));
+			}
+		}
+		if (!CheckNumber($this->diskon_rupiah->FormValue)) {
+			AddMessage($FormError, $this->diskon_rupiah->errorMessage());
+		}
+		if ($this->ppn->Required) {
+			if (!$this->ppn->IsDetailKey && $this->ppn->FormValue != NULL && $this->ppn->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->ppn->caption(), $this->ppn->RequiredErrorMessage));
+			}
+		}
+		if (!CheckNumber($this->ppn->FormValue)) {
+			AddMessage($FormError, $this->ppn->errorMessage());
+		}
+		if ($this->total->Required) {
+			if (!$this->total->IsDetailKey && $this->total->FormValue != NULL && $this->total->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->total->caption(), $this->total->RequiredErrorMessage));
+			}
+		}
+		if (!CheckNumber($this->total->FormValue)) {
+			AddMessage($FormError, $this->total->errorMessage());
+		}
+		if ($this->bayar->Required) {
+			if (!$this->bayar->IsDetailKey && $this->bayar->FormValue != NULL && $this->bayar->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->bayar->caption(), $this->bayar->RequiredErrorMessage));
+			}
+		}
+		if (!CheckNumber($this->bayar->FormValue)) {
+			AddMessage($FormError, $this->bayar->errorMessage());
+		}
+		if ($this->bayar_non_tunai->Required) {
+			if (!$this->bayar_non_tunai->IsDetailKey && $this->bayar_non_tunai->FormValue != NULL && $this->bayar_non_tunai->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->bayar_non_tunai->caption(), $this->bayar_non_tunai->RequiredErrorMessage));
+			}
+		}
+		if (!CheckNumber($this->bayar_non_tunai->FormValue)) {
+			AddMessage($FormError, $this->bayar_non_tunai->errorMessage());
+		}
+		if ($this->total_non_tunai_charge->Required) {
+			if (!$this->total_non_tunai_charge->IsDetailKey && $this->total_non_tunai_charge->FormValue != NULL && $this->total_non_tunai_charge->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->total_non_tunai_charge->caption(), $this->total_non_tunai_charge->RequiredErrorMessage));
+			}
+		}
+		if (!CheckNumber($this->total_non_tunai_charge->FormValue)) {
+			AddMessage($FormError, $this->total_non_tunai_charge->errorMessage());
+		}
+		if ($this->kode_penjualan->Required) {
+			if (!$this->kode_penjualan->IsDetailKey && $this->kode_penjualan->FormValue != NULL && $this->kode_penjualan->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->kode_penjualan->caption(), $this->kode_penjualan->RequiredErrorMessage));
+			}
+		}
+		if ($this->keterangan->Required) {
+			if (!$this->keterangan->IsDetailKey && $this->keterangan->FormValue != NULL && $this->keterangan->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->keterangan->caption(), $this->keterangan->RequiredErrorMessage));
+			}
+		}
+		if ($this->dokter->Required) {
+			if (!$this->dokter->IsDetailKey && $this->dokter->FormValue != NULL && $this->dokter->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->dokter->caption(), $this->dokter->RequiredErrorMessage));
+			}
+		}
+		if (!CheckInteger($this->dokter->FormValue)) {
+			AddMessage($FormError, $this->dokter->errorMessage());
+		}
+		if ($this->sales->Required) {
+			if (!$this->sales->IsDetailKey && $this->sales->FormValue != NULL && $this->sales->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->sales->caption(), $this->sales->RequiredErrorMessage));
+			}
+		}
+		if (!CheckInteger($this->sales->FormValue)) {
+			AddMessage($FormError, $this->sales->errorMessage());
+		}
+		if ($this->dok_be_wajah->Required) {
+			if (!$this->dok_be_wajah->IsDetailKey && $this->dok_be_wajah->FormValue != NULL && $this->dok_be_wajah->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->dok_be_wajah->caption(), $this->dok_be_wajah->RequiredErrorMessage));
+			}
+		}
+		if (!CheckInteger($this->dok_be_wajah->FormValue)) {
+			AddMessage($FormError, $this->dok_be_wajah->errorMessage());
+		}
+		if ($this->be_body->Required) {
+			if (!$this->be_body->IsDetailKey && $this->be_body->FormValue != NULL && $this->be_body->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->be_body->caption(), $this->be_body->RequiredErrorMessage));
+			}
+		}
+		if (!CheckInteger($this->be_body->FormValue)) {
+			AddMessage($FormError, $this->be_body->errorMessage());
+		}
+		if ($this->medis->Required) {
+			if (!$this->medis->IsDetailKey && $this->medis->FormValue != NULL && $this->medis->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->medis->caption(), $this->medis->RequiredErrorMessage));
+			}
+		}
+		if (!CheckInteger($this->medis->FormValue)) {
+			AddMessage($FormError, $this->medis->errorMessage());
+		}
+		if ($this->id_klinik->Required) {
+			if (!$this->id_klinik->IsDetailKey && $this->id_klinik->FormValue != NULL && $this->id_klinik->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->id_klinik->caption(), $this->id_klinik->RequiredErrorMessage));
+			}
+		}
+		if (!CheckInteger($this->id_klinik->FormValue)) {
+			AddMessage($FormError, $this->id_klinik->errorMessage());
+		}
+		if ($this->id_rmd->Required) {
+			if (!$this->id_rmd->IsDetailKey && $this->id_rmd->FormValue != NULL && $this->id_rmd->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->id_rmd->caption(), $this->id_rmd->RequiredErrorMessage));
+			}
+		}
+		if (!CheckInteger($this->id_rmd->FormValue)) {
+			AddMessage($FormError, $this->id_rmd->errorMessage());
+		}
+		if ($this->metode_pembayaran->Required) {
+			if (!$this->metode_pembayaran->IsDetailKey && $this->metode_pembayaran->FormValue != NULL && $this->metode_pembayaran->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->metode_pembayaran->caption(), $this->metode_pembayaran->RequiredErrorMessage));
+			}
+		}
+		if ($this->id_bank->Required) {
+			if (!$this->id_bank->IsDetailKey && $this->id_bank->FormValue != NULL && $this->id_bank->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->id_bank->caption(), $this->id_bank->RequiredErrorMessage));
+			}
+		}
+		if (!CheckInteger($this->id_bank->FormValue)) {
+			AddMessage($FormError, $this->id_bank->errorMessage());
+		}
+		if ($this->id_kartu->Required) {
+			if (!$this->id_kartu->IsDetailKey && $this->id_kartu->FormValue != NULL && $this->id_kartu->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->id_kartu->caption(), $this->id_kartu->RequiredErrorMessage));
+			}
+		}
+		if (!CheckInteger($this->id_kartu->FormValue)) {
+			AddMessage($FormError, $this->id_kartu->errorMessage());
+		}
+		if ($this->jumlah_voucher->Required) {
+			if (!$this->jumlah_voucher->IsDetailKey && $this->jumlah_voucher->FormValue != NULL && $this->jumlah_voucher->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->jumlah_voucher->caption(), $this->jumlah_voucher->RequiredErrorMessage));
+			}
+		}
+		if (!CheckInteger($this->jumlah_voucher->FormValue)) {
+			AddMessage($FormError, $this->jumlah_voucher->errorMessage());
+		}
+		if ($this->id_kartubank->Required) {
+			if (!$this->id_kartubank->IsDetailKey && $this->id_kartubank->FormValue != NULL && $this->id_kartubank->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->id_kartubank->caption(), $this->id_kartubank->RequiredErrorMessage));
+			}
+		}
+		if (!CheckInteger($this->id_kartubank->FormValue)) {
+			AddMessage($FormError, $this->id_kartubank->errorMessage());
+		}
+		if ($this->id_kas->Required) {
+			if (!$this->id_kas->IsDetailKey && $this->id_kas->FormValue != NULL && $this->id_kas->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->id_kas->caption(), $this->id_kas->RequiredErrorMessage));
+			}
+		}
+		if (!CheckInteger($this->id_kas->FormValue)) {
+			AddMessage($FormError, $this->id_kas->errorMessage());
+		}
+		if ($this->charge->Required) {
+			if (!$this->charge->IsDetailKey && $this->charge->FormValue != NULL && $this->charge->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->charge->caption(), $this->charge->RequiredErrorMessage));
+			}
+		}
+		if (!CheckNumber($this->charge->FormValue)) {
+			AddMessage($FormError, $this->charge->errorMessage());
+		}
+		if ($this->ongkir->Required) {
+			if (!$this->ongkir->IsDetailKey && $this->ongkir->FormValue != NULL && $this->ongkir->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->ongkir->caption(), $this->ongkir->RequiredErrorMessage));
+			}
+		}
+		if (!CheckNumber($this->ongkir->FormValue)) {
+			AddMessage($FormError, $this->ongkir->errorMessage());
+		}
+		if ($this->klaim_poin->Required) {
+			if (!$this->klaim_poin->IsDetailKey && $this->klaim_poin->FormValue != NULL && $this->klaim_poin->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->klaim_poin->caption(), $this->klaim_poin->RequiredErrorMessage));
+			}
+		}
+		if (!CheckNumber($this->klaim_poin->FormValue)) {
+			AddMessage($FormError, $this->klaim_poin->errorMessage());
+		}
+		if ($this->total_penukaran_poin->Required) {
+			if (!$this->total_penukaran_poin->IsDetailKey && $this->total_penukaran_poin->FormValue != NULL && $this->total_penukaran_poin->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->total_penukaran_poin->caption(), $this->total_penukaran_poin->RequiredErrorMessage));
+			}
+		}
+		if (!CheckNumber($this->total_penukaran_poin->FormValue)) {
+			AddMessage($FormError, $this->total_penukaran_poin->errorMessage());
+		}
+		if ($this->_action->Required) {
+			if (!$this->_action->IsDetailKey && $this->_action->FormValue != NULL && $this->_action->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->_action->caption(), $this->_action->RequiredErrorMessage));
+			}
+		}
+		if ($this->status->Required) {
+			if ($this->status->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->status->caption(), $this->status->RequiredErrorMessage));
+			}
+		}
+		if ($this->status_void->Required) {
+			if (!$this->status_void->IsDetailKey && $this->status_void->FormValue != NULL && $this->status_void->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->status_void->caption(), $this->status_void->RequiredErrorMessage));
+			}
+		}
+
+		// Return validate result
+		$validateForm = ($FormError == "");
+
+		// Call Form_CustomValidate event
+		$formCustomError = "";
+		$validateForm = $validateForm && $this->Form_CustomValidate($formCustomError);
+		if ($formCustomError != "") {
+			AddMessage($FormError, $formCustomError);
+		}
+		return $validateForm;
+	}
+
+	// Update record based on key values
+	protected function editRow()
+	{
+		global $Security, $Language;
+		$oldKeyFilter = $this->getRecordFilter();
+		$filter = $this->applyUserIDFilters($oldKeyFilter);
+		$conn = $this->getConnection();
+		$this->CurrentFilter = $filter;
+		$sql = $this->getCurrentSql();
+		$conn->raiseErrorFn = Config("ERROR_FUNC");
+		$rs = $conn->execute($sql);
+		$conn->raiseErrorFn = "";
+		if ($rs === FALSE)
+			return FALSE;
+		if ($rs->EOF) {
+			$this->setFailureMessage($Language->phrase("NoRecord")); // Set no record message
+			$editRow = FALSE; // Update Failed
+		} else {
+
+			// Save old values
+			$rsold = &$rs->fields;
+			$this->loadDbValues($rsold);
+			$rsnew = [];
+
+			// waktu
+			$this->waktu->setDbValueDef($rsnew, UnFormatDateTime($this->waktu->CurrentValue, 0), CurrentDate(), $this->waktu->ReadOnly);
+
+			// id_pelanggan
+			$this->id_pelanggan->setDbValueDef($rsnew, $this->id_pelanggan->CurrentValue, 0, $this->id_pelanggan->ReadOnly);
+
+			// id_member
+			$this->id_member->setDbValueDef($rsnew, $this->id_member->CurrentValue, NULL, $this->id_member->ReadOnly);
+
+			// diskon_persen
+			$this->diskon_persen->setDbValueDef($rsnew, $this->diskon_persen->CurrentValue, "", $this->diskon_persen->ReadOnly);
+
+			// diskon_rupiah
+			$this->diskon_rupiah->setDbValueDef($rsnew, $this->diskon_rupiah->CurrentValue, 0, $this->diskon_rupiah->ReadOnly);
+
+			// ppn
+			$this->ppn->setDbValueDef($rsnew, $this->ppn->CurrentValue, 0, $this->ppn->ReadOnly);
+
+			// total
+			$this->total->setDbValueDef($rsnew, $this->total->CurrentValue, 0, $this->total->ReadOnly);
+
+			// bayar
+			$this->bayar->setDbValueDef($rsnew, $this->bayar->CurrentValue, 0, $this->bayar->ReadOnly);
+
+			// bayar_non_tunai
+			$this->bayar_non_tunai->setDbValueDef($rsnew, $this->bayar_non_tunai->CurrentValue, 0, $this->bayar_non_tunai->ReadOnly);
+
+			// total_non_tunai_charge
+			$this->total_non_tunai_charge->setDbValueDef($rsnew, $this->total_non_tunai_charge->CurrentValue, 0, $this->total_non_tunai_charge->ReadOnly);
+
+			// kode_penjualan
+			$this->kode_penjualan->setDbValueDef($rsnew, $this->kode_penjualan->CurrentValue, "", $this->kode_penjualan->ReadOnly);
+
+			// keterangan
+			$this->keterangan->setDbValueDef($rsnew, $this->keterangan->CurrentValue, NULL, $this->keterangan->ReadOnly);
+
+			// dokter
+			$this->dokter->setDbValueDef($rsnew, $this->dokter->CurrentValue, NULL, $this->dokter->ReadOnly);
+
+			// sales
+			$this->sales->setDbValueDef($rsnew, $this->sales->CurrentValue, NULL, $this->sales->ReadOnly);
+
+			// dok_be_wajah
+			$this->dok_be_wajah->setDbValueDef($rsnew, $this->dok_be_wajah->CurrentValue, NULL, $this->dok_be_wajah->ReadOnly);
+
+			// be_body
+			$this->be_body->setDbValueDef($rsnew, $this->be_body->CurrentValue, NULL, $this->be_body->ReadOnly);
+
+			// medis
+			$this->medis->setDbValueDef($rsnew, $this->medis->CurrentValue, NULL, $this->medis->ReadOnly);
+
+			// id_klinik
+			$this->id_klinik->setDbValueDef($rsnew, $this->id_klinik->CurrentValue, NULL, $this->id_klinik->ReadOnly);
+
+			// id_rmd
+			$this->id_rmd->setDbValueDef($rsnew, $this->id_rmd->CurrentValue, NULL, $this->id_rmd->ReadOnly);
+
+			// metode_pembayaran
+			$this->metode_pembayaran->setDbValueDef($rsnew, $this->metode_pembayaran->CurrentValue, "", $this->metode_pembayaran->ReadOnly);
+
+			// id_bank
+			$this->id_bank->setDbValueDef($rsnew, $this->id_bank->CurrentValue, 0, $this->id_bank->ReadOnly);
+
+			// id_kartu
+			$this->id_kartu->setDbValueDef($rsnew, $this->id_kartu->CurrentValue, NULL, $this->id_kartu->ReadOnly);
+
+			// jumlah_voucher
+			$this->jumlah_voucher->setDbValueDef($rsnew, $this->jumlah_voucher->CurrentValue, NULL, $this->jumlah_voucher->ReadOnly);
+
+			// id_kartubank
+			$this->id_kartubank->setDbValueDef($rsnew, $this->id_kartubank->CurrentValue, 0, $this->id_kartubank->ReadOnly);
+
+			// id_kas
+			$this->id_kas->setDbValueDef($rsnew, $this->id_kas->CurrentValue, 0, $this->id_kas->ReadOnly);
+
+			// charge
+			$this->charge->setDbValueDef($rsnew, $this->charge->CurrentValue, NULL, $this->charge->ReadOnly);
+
+			// ongkir
+			$this->ongkir->setDbValueDef($rsnew, $this->ongkir->CurrentValue, NULL, $this->ongkir->ReadOnly);
+
+			// klaim_poin
+			$this->klaim_poin->setDbValueDef($rsnew, $this->klaim_poin->CurrentValue, NULL, $this->klaim_poin->ReadOnly);
+
+			// total_penukaran_poin
+			$this->total_penukaran_poin->setDbValueDef($rsnew, $this->total_penukaran_poin->CurrentValue, NULL, $this->total_penukaran_poin->ReadOnly);
+
+			// action
+			$this->_action->setDbValueDef($rsnew, $this->_action->CurrentValue, NULL, $this->_action->ReadOnly);
+
+			// status
+			$this->status->setDbValueDef($rsnew, $this->status->CurrentValue, "", $this->status->ReadOnly);
+
+			// status_void
+			$this->status_void->setDbValueDef($rsnew, $this->status_void->CurrentValue, NULL, $this->status_void->ReadOnly);
+
+			// Call Row Updating event
+			$updateRow = $this->Row_Updating($rsold, $rsnew);
+
+			// Check for duplicate key when key changed
+			if ($updateRow) {
+				$newKeyFilter = $this->getRecordFilter($rsnew);
+				if ($newKeyFilter != $oldKeyFilter) {
+					$rsChk = $this->loadRs($newKeyFilter);
+					if ($rsChk && !$rsChk->EOF) {
+						$keyErrMsg = str_replace("%f", $newKeyFilter, $Language->phrase("DupKey"));
+						$this->setFailureMessage($keyErrMsg);
+						$rsChk->close();
+						$updateRow = FALSE;
+					}
+				}
+			}
+			if ($updateRow) {
+				$conn->raiseErrorFn = Config("ERROR_FUNC");
+				if (count($rsnew) > 0)
+					$editRow = $this->update($rsnew, "", $rsold);
+				else
+					$editRow = TRUE; // No field to update
+				$conn->raiseErrorFn = "";
+				if ($editRow) {
+				}
+			} else {
+				if ($this->getSuccessMessage() != "" || $this->getFailureMessage() != "") {
+
+					// Use the message, do nothing
+				} elseif ($this->CancelMessage != "") {
+					$this->setFailureMessage($this->CancelMessage);
+					$this->CancelMessage = "";
+				} else {
+					$this->setFailureMessage($Language->phrase("UpdateCancelled"));
+				}
+				$editRow = FALSE;
+			}
+		}
+
+		// Call Row_Updated event
+		if ($editRow)
+			$this->Row_Updated($rsold, $rsnew);
+		$rs->close();
+
+		// Clean upload path if any
+		if ($editRow) {
+		}
+
+		// Write JSON for API request
+		if (IsApi() && $editRow) {
+			$row = $this->getRecordsFromRecordset([$rsnew], TRUE);
+			WriteJson(["success" => TRUE, $this->TableVar => $row]);
+		}
+		return $editRow;
+	}
+
+	// Set up Breadcrumb
+	protected function setupBreadcrumb()
+	{
+		global $Breadcrumb, $Language;
+		$Breadcrumb = new Breadcrumb();
+		$url = substr(CurrentUrl(), strrpos(CurrentUrl(), "/")+1);
+		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("penjualan_copylist.php"), "", $this->TableVar, TRUE);
+		$pageId = "edit";
+		$Breadcrumb->add("edit", $pageId, $url);
+	}
+
+	// Setup lookup options
+	public function setupLookupOptions($fld)
+	{
+		if ($fld->Lookup !== NULL && $fld->Lookup->Options === NULL) {
+
+			// Get default connection and filter
+			$conn = $this->getConnection();
+			$lookupFilter = "";
+
+			// No need to check any more
+			$fld->Lookup->Options = [];
+
+			// Set up lookup SQL and connection
+			switch ($fld->FieldVar) {
+				case "x_status":
+					break;
+				default:
+					$lookupFilter = "";
+					break;
+			}
+
+			// Always call to Lookup->getSql so that user can setup Lookup->Options in Lookup_Selecting server event
+			$sql = $fld->Lookup->getSql(FALSE, "", $lookupFilter, $this);
+
+			// Set up lookup cache
+			if ($fld->UseLookupCache && $sql != "" && count($fld->Lookup->Options) == 0) {
+				$totalCnt = $this->getRecordCount($sql, $conn);
+				if ($totalCnt > $fld->LookupCacheCount) // Total count > cache count, do not cache
+					return;
+				$rs = $conn->execute($sql);
+				$ar = [];
+				while ($rs && !$rs->EOF) {
+					$row = &$rs->fields;
+
+					// Format the field values
+					switch ($fld->FieldVar) {
+					}
+					$ar[strval($row[0])] = $row;
+					$rs->moveNext();
+				}
+				if ($rs)
+					$rs->close();
+				$fld->Lookup->Options = $ar;
+			}
+		}
+	}
+
+	// Set up starting record parameters
+	public function setupStartRecord()
+	{
+		if ($this->DisplayRecords == 0)
+			return;
+		if ($this->isPageRequest()) { // Validate request
+			$startRec = Get(Config("TABLE_START_REC"));
+			$pageNo = Get(Config("TABLE_PAGE_NO"));
+			if ($pageNo !== NULL) { // Check for "pageno" parameter first
+				if (is_numeric($pageNo)) {
+					$this->StartRecord = ($pageNo - 1) * $this->DisplayRecords + 1;
+					if ($this->StartRecord <= 0) {
+						$this->StartRecord = 1;
+					} elseif ($this->StartRecord >= (int)(($this->TotalRecords - 1)/$this->DisplayRecords) * $this->DisplayRecords + 1) {
+						$this->StartRecord = (int)(($this->TotalRecords - 1)/$this->DisplayRecords) * $this->DisplayRecords + 1;
+					}
+					$this->setStartRecordNumber($this->StartRecord);
+				}
+			} elseif ($startRec !== NULL) { // Check for "start" parameter
+				$this->StartRecord = $startRec;
+				$this->setStartRecordNumber($this->StartRecord);
+			}
+		}
+		$this->StartRecord = $this->getStartRecordNumber();
+
+		// Check if correct start record counter
+		if (!is_numeric($this->StartRecord) || $this->StartRecord == "") { // Avoid invalid start record counter
+			$this->StartRecord = 1; // Reset start record counter
+			$this->setStartRecordNumber($this->StartRecord);
+		} elseif ($this->StartRecord > $this->TotalRecords) { // Avoid starting record > total records
+			$this->StartRecord = (int)(($this->TotalRecords - 1)/$this->DisplayRecords) * $this->DisplayRecords + 1; // Point to last page first record
+			$this->setStartRecordNumber($this->StartRecord);
+		} elseif (($this->StartRecord - 1) % $this->DisplayRecords != 0) {
+			$this->StartRecord = (int)(($this->StartRecord - 1)/$this->DisplayRecords) * $this->DisplayRecords + 1; // Point to page boundary
+			$this->setStartRecordNumber($this->StartRecord);
+		}
+	}
+
+	// Page Load event
+	function Page_Load() {
+
+		//echo "Page Load";
+	}
+
+	// Page Unload event
+	function Page_Unload() {
+
+		//echo "Page Unload";
+	}
+
+	// Page Redirecting event
+	function Page_Redirecting(&$url) {
+
+		// Example:
+		//$url = "your URL";
+
+	}
+
+	// Message Showing event
+	// $type = ''|'success'|'failure'|'warning'
+	function Message_Showing(&$msg, $type) {
+		if ($type == 'success') {
+
+			//$msg = "your success message";
+		} elseif ($type == 'failure') {
+
+			//$msg = "your failure message";
+		} elseif ($type == 'warning') {
+
+			//$msg = "your warning message";
+		} else {
+
+			//$msg = "your message";
+		}
+	}
+
+	// Page Render event
+	function Page_Render() {
+
+		//echo "Page Render";
+	}
+
+	// Page Data Rendering event
+	function Page_DataRendering(&$header) {
+
+		// Example:
+		//$header = "your header";
+
+	}
+
+	// Page Data Rendered event
+	function Page_DataRendered(&$footer) {
+
+		// Example:
+		//$footer = "your footer";
+
+	}
+
+	// Form Custom Validate event
+	function Form_CustomValidate(&$customError) {
+
+		// Return error message in CustomError
+		return TRUE;
+	}
+} // End class
+?>

@@ -539,6 +539,12 @@ class index
 			$this->terminate("detailterimagudanglist.php");
 		if ($Security->allowList(CurrentProjectID() . 'terimagudang'))
 			$this->terminate("terimagudanglist.php");
+		if ($Security->allowList(CurrentProjectID() . 'laporan_akumulasi_produk_klinik.php'))
+			$this->terminate("laporan_akumulasi_produk_klinik.php");
+		if ($Security->allowList(CurrentProjectID() . 'laporan_best_seller_klinik.php'))
+			$this->terminate("laporan_best_seller_klinik.php");
+		if ($Security->allowList(CurrentProjectID() . 'laporan_summary_penjualan.php'))
+			$this->terminate("laporan_summary_penjualan.php");
 		if ($Security->isLoggedIn()) {
 			$this->setFailureMessage(DeniedMessage() . "<br><br><a href=\"logout.php\">" . $Language->phrase("BackToLogin") . "</a>");
 		} else {

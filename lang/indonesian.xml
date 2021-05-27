@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<ew-language date="2021/5/24" version="16.0.1" id="id" name="Indonesian" desc="Indonesian" author="e.World Technology Ltd.">
+<ew-language date="2021/5/27" version="16.0.1" id="id" name="Indonesian" desc="Indonesian" author="e.World Technology Ltd.">
   <!--
 	*** Important Notes:
 	1. Language ID should follow: https://developers.google.com/recaptcha/docs/language,
@@ -1072,6 +1072,9 @@
     <menu id="669">
       <phrase id="menutext" value="Best" />
     </menu>
+    <menu id="1079">
+      <phrase id="menutext" value="Summary" />
+    </menu>
     <menu id="682">
       <phrase id="menutext" value="Pengeluaran NonJual" />
     </menu>
@@ -1191,6 +1194,12 @@
     </menu>
     <menu id="1072">
       <phrase id="menutext" value="Stok &amp; Harga Jual" />
+    </menu>
+    <menu id="1077">
+      <phrase id="menutext" value="Akumulasi Produk" />
+    </menu>
+    <menu id="1078">
+      <phrase id="menutext" value="Best Seller" />
     </menu>
     <menu id="226">
       <phrase id="menutext" value="Pengguna" />
@@ -3984,6 +3993,15 @@
       <field id="keterangan">
         <phrase id="fldcaption" value="Keterangan" />
       </field>
+    </table>
+    <table id="laporan_akumulasi_produk_klinik">
+      <phrase id="tblcaption" value="Laporan Akumulasi Produk" />
+    </table>
+    <table id="laporan_best_seller_klinik">
+      <phrase id="tblcaption" value="Laporan Best Seller" />
+    </table>
+    <table id="laporan_summary_penjualan">
+      <phrase id="tblcaption" value="Laporan Summary Penjualan" />
     </table>
   </project>
 </ew-language>

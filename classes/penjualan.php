@@ -2406,7 +2406,7 @@ class penjualan extends DbTable
 		$id_klinik = $rsnew['id_klinik'];
 
 		// Mendapatkan kode penjualan terakhir pada klinik $id_klinik, untuk diambil nomor urutnya
-		$kode_penjualan_sebelumnya = ExecuteScalar("SELECT kode_penjualan FROM penjualan WHERE id_klinik=$id_klinik ORDER BY id DESC");
+		$kode_penjualan_sebelumnya = ExecuteScalar("SELECT kode_penjualan FROM penjualan WHERE id_klinik = '$id_klinik' ORDER BY id DESC");
 		$kode = explode('-', $kode_penjualan_sebelumnya);
 		$nomor_urut_terakhir = $kode[2];
 		$bulan_sebelumnya = substr($kode[1], -2);

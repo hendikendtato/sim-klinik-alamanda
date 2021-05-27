@@ -657,7 +657,22 @@ $USER_LEVEL_PRIVS = [["{8546B030-7993-4749-BFDB-17AFAAF4065D}antrian","-2","0"],
 	["{8546B030-7993-4749-BFDB-17AFAAF4065D}terimagudang","0","0"],
 	["{8546B030-7993-4749-BFDB-17AFAAF4065D}terimagudang","1","0"],
 	["{8546B030-7993-4749-BFDB-17AFAAF4065D}terimagudang","2","0"],
-	["{8546B030-7993-4749-BFDB-17AFAAF4065D}terimagudang","3","0"]];
+	["{8546B030-7993-4749-BFDB-17AFAAF4065D}terimagudang","3","0"],
+	["{8546B030-7993-4749-BFDB-17AFAAF4065D}laporan_akumulasi_produk_klinik.php","-2","0"],
+	["{8546B030-7993-4749-BFDB-17AFAAF4065D}laporan_akumulasi_produk_klinik.php","0","0"],
+	["{8546B030-7993-4749-BFDB-17AFAAF4065D}laporan_akumulasi_produk_klinik.php","1","0"],
+	["{8546B030-7993-4749-BFDB-17AFAAF4065D}laporan_akumulasi_produk_klinik.php","2","0"],
+	["{8546B030-7993-4749-BFDB-17AFAAF4065D}laporan_akumulasi_produk_klinik.php","3","0"],
+	["{8546B030-7993-4749-BFDB-17AFAAF4065D}laporan_best_seller_klinik.php","-2","0"],
+	["{8546B030-7993-4749-BFDB-17AFAAF4065D}laporan_best_seller_klinik.php","0","0"],
+	["{8546B030-7993-4749-BFDB-17AFAAF4065D}laporan_best_seller_klinik.php","1","0"],
+	["{8546B030-7993-4749-BFDB-17AFAAF4065D}laporan_best_seller_klinik.php","2","0"],
+	["{8546B030-7993-4749-BFDB-17AFAAF4065D}laporan_best_seller_klinik.php","3","0"],
+	["{8546B030-7993-4749-BFDB-17AFAAF4065D}laporan_summary_penjualan.php","-2","0"],
+	["{8546B030-7993-4749-BFDB-17AFAAF4065D}laporan_summary_penjualan.php","0","0"],
+	["{8546B030-7993-4749-BFDB-17AFAAF4065D}laporan_summary_penjualan.php","1","0"],
+	["{8546B030-7993-4749-BFDB-17AFAAF4065D}laporan_summary_penjualan.php","2","0"],
+	["{8546B030-7993-4749-BFDB-17AFAAF4065D}laporan_summary_penjualan.php","3","0"]];
 
 // User level table info
 $USER_LEVEL_TABLES = [["antrian","antrian","Antrian",true,"{8546B030-7993-4749-BFDB-17AFAAF4065D}"],
@@ -788,4 +803,7 @@ $USER_LEVEL_TABLES = [["antrian","antrian","Antrian",true,"{8546B030-7993-4749-B
 	["laporan_stokhargajual.php","laporan_stokhargajual","Laporan Stok & Harga Jual",true,"{8546B030-7993-4749-BFDB-17AFAAF4065D}"],
 	["Dasbor.php","Dasbor","Dasbor",true,"{8546B030-7993-4749-BFDB-17AFAAF4065D}"],
 	["detailterimagudang","detailterimagudang","Detail Terima Barang Gudang",true,"{8546B030-7993-4749-BFDB-17AFAAF4065D}"],
-	["terimagudang","terimagudang","Terima Barang Gudang",true,"{8546B030-7993-4749-BFDB-17AFAAF4065D}"]];
+	["terimagudang","terimagudang","Terima Barang Gudang",true,"{8546B030-7993-4749-BFDB-17AFAAF4065D}"],
+	["laporan_akumulasi_produk_klinik.php","laporan_akumulasi_produk_klinik","Laporan Akumulasi Produk",true,"{8546B030-7993-4749-BFDB-17AFAAF4065D}"],
+	["laporan_best_seller_klinik.php","laporan_best_seller_klinik","Laporan Best Seller",true,"{8546B030-7993-4749-BFDB-17AFAAF4065D}"],
+	["laporan_summary_penjualan.php","laporan_summary_penjualan","Laporan Summary Penjualan",true,"{8546B030-7993-4749-BFDB-17AFAAF4065D}"]];
