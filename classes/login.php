@@ -671,8 +671,6 @@ class login extends users
 	function Page_DataRendering(&$header) {
 
 		// Example:
-		//$header = "your header";
-
 	}
 
 	// Page Data Rendered event

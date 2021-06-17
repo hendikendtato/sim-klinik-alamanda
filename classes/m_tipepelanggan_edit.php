@@ -856,7 +856,7 @@ class m_tipepelanggan_edit extends m_tipepelanggan
 		// Check field name 'nama_tipe' first before field var 'x_nama_tipe'
 		$val = $CurrentForm->hasValue("nama_tipe") ? $CurrentForm->getValue("nama_tipe") : $CurrentForm->getValue("x_nama_tipe");
 		if (!$this->nama_tipe->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama_tipe->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama_tipe->setFormValue($val);
@@ -865,7 +865,7 @@ class m_tipepelanggan_edit extends m_tipepelanggan
 		// Check field name 'min_kedatangan' first before field var 'x_min_kedatangan'
 		$val = $CurrentForm->hasValue("min_kedatangan") ? $CurrentForm->getValue("min_kedatangan") : $CurrentForm->getValue("x_min_kedatangan");
 		if (!$this->min_kedatangan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->min_kedatangan->Visible = FALSE; // Disable update for API request
 			else
 				$this->min_kedatangan->setFormValue($val);
@@ -874,7 +874,7 @@ class m_tipepelanggan_edit extends m_tipepelanggan
 		// Check field name 'periode' first before field var 'x_periode'
 		$val = $CurrentForm->hasValue("periode") ? $CurrentForm->getValue("periode") : $CurrentForm->getValue("x_periode");
 		if (!$this->periode->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->periode->Visible = FALSE; // Disable update for API request
 			else
 				$this->periode->setFormValue($val);

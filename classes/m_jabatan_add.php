@@ -830,7 +830,7 @@ class m_jabatan_add extends m_jabatan
 		// Check field name 'nama_jabatan' first before field var 'x_nama_jabatan'
 		$val = $CurrentForm->hasValue("nama_jabatan") ? $CurrentForm->getValue("nama_jabatan") : $CurrentForm->getValue("x_nama_jabatan");
 		if (!$this->nama_jabatan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama_jabatan->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama_jabatan->setFormValue($val);

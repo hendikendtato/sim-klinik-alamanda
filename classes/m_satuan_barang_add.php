@@ -842,7 +842,7 @@ class m_satuan_barang_add extends m_satuan_barang
 		// Check field name 'kode_satuan' first before field var 'x_kode_satuan'
 		$val = $CurrentForm->hasValue("kode_satuan") ? $CurrentForm->getValue("kode_satuan") : $CurrentForm->getValue("x_kode_satuan");
 		if (!$this->kode_satuan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kode_satuan->Visible = FALSE; // Disable update for API request
 			else
 				$this->kode_satuan->setFormValue($val);
@@ -851,7 +851,7 @@ class m_satuan_barang_add extends m_satuan_barang
 		// Check field name 'nama_satuan' first before field var 'x_nama_satuan'
 		$val = $CurrentForm->hasValue("nama_satuan") ? $CurrentForm->getValue("nama_satuan") : $CurrentForm->getValue("x_nama_satuan");
 		if (!$this->nama_satuan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama_satuan->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama_satuan->setFormValue($val);
@@ -860,7 +860,7 @@ class m_satuan_barang_add extends m_satuan_barang
 		// Check field name 'level_satuan' first before field var 'x_level_satuan'
 		$val = $CurrentForm->hasValue("level_satuan") ? $CurrentForm->getValue("level_satuan") : $CurrentForm->getValue("x_level_satuan");
 		if (!$this->level_satuan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->level_satuan->Visible = FALSE; // Disable update for API request
 			else
 				$this->level_satuan->setFormValue($val);
@@ -869,7 +869,7 @@ class m_satuan_barang_add extends m_satuan_barang
 		// Check field name 'konversi_satuan' first before field var 'x_konversi_satuan'
 		$val = $CurrentForm->hasValue("konversi_satuan") ? $CurrentForm->getValue("konversi_satuan") : $CurrentForm->getValue("x_konversi_satuan");
 		if (!$this->konversi_satuan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->konversi_satuan->Visible = FALSE; // Disable update for API request
 			else
 				$this->konversi_satuan->setFormValue($val);
@@ -878,7 +878,7 @@ class m_satuan_barang_add extends m_satuan_barang
 		// Check field name 'pid_satuan' first before field var 'x_pid_satuan'
 		$val = $CurrentForm->hasValue("pid_satuan") ? $CurrentForm->getValue("pid_satuan") : $CurrentForm->getValue("x_pid_satuan");
 		if (!$this->pid_satuan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->pid_satuan->Visible = FALSE; // Disable update for API request
 			else
 				$this->pid_satuan->setFormValue($val);

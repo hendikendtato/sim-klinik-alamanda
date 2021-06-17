@@ -139,7 +139,6 @@ loadjs.ready("load", function() {
 
 	// Startup script
 	// Write your startup script here
-	// console.log("page loaded");
 
 });
 </script>

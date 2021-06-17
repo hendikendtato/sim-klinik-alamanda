@@ -450,6 +450,8 @@ class rekmeddokter_add extends rekmeddokter
 		if (is_object($rs)) { // Recordset
 			while ($rs && !$rs->EOF) {
 				$this->loadRowValues($rs); // Set up DbValue/CurrentValue
+		$this->foto_perawatan->OldUploadPath = "foto_perawatan/";
+		$this->foto_perawatan->UploadPath = $this->foto_perawatan->OldUploadPath;
 				$row = $this->getRecordFromArray($rs->fields);
 				if ($current)
 					return $row;
@@ -876,12 +878,11 @@ class rekmeddokter_add extends rekmeddokter
 
 		// Load from form
 		global $CurrentForm;
-		$this->getUploadFiles(); // Get upload files
 
 		// Check field name 'tanggal' first before field var 'x_tanggal'
 		$val = $CurrentForm->hasValue("tanggal") ? $CurrentForm->getValue("tanggal") : $CurrentForm->getValue("x_tanggal");
 		if (!$this->tanggal->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tanggal->Visible = FALSE; // Disable update for API request
 			else
 				$this->tanggal->setFormValue($val);
@@ -891,7 +892,7 @@ class rekmeddokter_add extends rekmeddokter
 		// Check field name 'id_pelanggan' first before field var 'x_id_pelanggan'
 		$val = $CurrentForm->hasValue("id_pelanggan") ? $CurrentForm->getValue("id_pelanggan") : $CurrentForm->getValue("x_id_pelanggan");
 		if (!$this->id_pelanggan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_pelanggan->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_pelanggan->setFormValue($val);
@@ -900,7 +901,7 @@ class rekmeddokter_add extends rekmeddokter
 		// Check field name 'id_dokter' first before field var 'x_id_dokter'
 		$val = $CurrentForm->hasValue("id_dokter") ? $CurrentForm->getValue("id_dokter") : $CurrentForm->getValue("x_id_dokter");
 		if (!$this->id_dokter->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_dokter->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_dokter->setFormValue($val);
@@ -909,7 +910,7 @@ class rekmeddokter_add extends rekmeddokter
 		// Check field name 'id_be' first before field var 'x_id_be'
 		$val = $CurrentForm->hasValue("id_be") ? $CurrentForm->getValue("id_be") : $CurrentForm->getValue("x_id_be");
 		if (!$this->id_be->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_be->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_be->setFormValue($val);
@@ -918,7 +919,7 @@ class rekmeddokter_add extends rekmeddokter
 		// Check field name 'keluhan' first before field var 'x_keluhan'
 		$val = $CurrentForm->hasValue("keluhan") ? $CurrentForm->getValue("keluhan") : $CurrentForm->getValue("x_keluhan");
 		if (!$this->keluhan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->keluhan->Visible = FALSE; // Disable update for API request
 			else
 				$this->keluhan->setFormValue($val);
@@ -927,7 +928,7 @@ class rekmeddokter_add extends rekmeddokter
 		// Check field name 'gejala_klinis' first before field var 'x_gejala_klinis'
 		$val = $CurrentForm->hasValue("gejala_klinis") ? $CurrentForm->getValue("gejala_klinis") : $CurrentForm->getValue("x_gejala_klinis");
 		if (!$this->gejala_klinis->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->gejala_klinis->Visible = FALSE; // Disable update for API request
 			else
 				$this->gejala_klinis->setFormValue($val);
@@ -936,7 +937,7 @@ class rekmeddokter_add extends rekmeddokter
 		// Check field name 'terapi' first before field var 'x_terapi'
 		$val = $CurrentForm->hasValue("terapi") ? $CurrentForm->getValue("terapi") : $CurrentForm->getValue("x_terapi");
 		if (!$this->terapi->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->terapi->Visible = FALSE; // Disable update for API request
 			else
 				$this->terapi->setFormValue($val);
@@ -945,7 +946,7 @@ class rekmeddokter_add extends rekmeddokter
 		// Check field name 'tindakan' first before field var 'x_tindakan'
 		$val = $CurrentForm->hasValue("tindakan") ? $CurrentForm->getValue("tindakan") : $CurrentForm->getValue("x_tindakan");
 		if (!$this->tindakan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tindakan->Visible = FALSE; // Disable update for API request
 			else
 				$this->tindakan->setFormValue($val);
@@ -953,6 +954,9 @@ class rekmeddokter_add extends rekmeddokter
 
 		// Check field name 'id_rekmeddok' first before field var 'x_id_rekmeddok'
 		$val = $CurrentForm->hasValue("id_rekmeddok") ? $CurrentForm->getValue("id_rekmeddok") : $CurrentForm->getValue("x_id_rekmeddok");
+		$this->foto_perawatan->OldUploadPath = "foto_perawatan/";
+		$this->foto_perawatan->UploadPath = $this->foto_perawatan->OldUploadPath;
+		$this->getUploadFiles(); // Get upload files
 	}
 
 	// Restore form values

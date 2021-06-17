@@ -1563,7 +1563,7 @@ class detailperpindahanbarang_grid extends detailperpindahanbarang
 		// Check field name 'id_perpindahanbarang' first before field var 'x_id_perpindahanbarang'
 		$val = $CurrentForm->hasValue("id_perpindahanbarang") ? $CurrentForm->getValue("id_perpindahanbarang") : $CurrentForm->getValue("x_id_perpindahanbarang");
 		if (!$this->id_perpindahanbarang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_perpindahanbarang->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_perpindahanbarang->setFormValue($val);
@@ -1574,7 +1574,7 @@ class detailperpindahanbarang_grid extends detailperpindahanbarang
 		// Check field name 'id_barang' first before field var 'x_id_barang'
 		$val = $CurrentForm->hasValue("id_barang") ? $CurrentForm->getValue("id_barang") : $CurrentForm->getValue("x_id_barang");
 		if (!$this->id_barang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_barang->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_barang->setFormValue($val);
@@ -1585,7 +1585,7 @@ class detailperpindahanbarang_grid extends detailperpindahanbarang
 		// Check field name 'jumlah' first before field var 'x_jumlah'
 		$val = $CurrentForm->hasValue("jumlah") ? $CurrentForm->getValue("jumlah") : $CurrentForm->getValue("x_jumlah");
 		if (!$this->jumlah->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->jumlah->Visible = FALSE; // Disable update for API request
 			else
 				$this->jumlah->setFormValue($val);
@@ -1596,7 +1596,7 @@ class detailperpindahanbarang_grid extends detailperpindahanbarang
 		// Check field name 'id_satuan' first before field var 'x_id_satuan'
 		$val = $CurrentForm->hasValue("id_satuan") ? $CurrentForm->getValue("id_satuan") : $CurrentForm->getValue("x_id_satuan");
 		if (!$this->id_satuan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_satuan->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_satuan->setFormValue($val);

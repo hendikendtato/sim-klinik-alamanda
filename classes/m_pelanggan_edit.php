@@ -873,7 +873,7 @@ class m_pelanggan_edit extends m_pelanggan
 		// Check field name 'noktp_pelanggan' first before field var 'x_noktp_pelanggan'
 		$val = $CurrentForm->hasValue("noktp_pelanggan") ? $CurrentForm->getValue("noktp_pelanggan") : $CurrentForm->getValue("x_noktp_pelanggan");
 		if (!$this->noktp_pelanggan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->noktp_pelanggan->Visible = FALSE; // Disable update for API request
 			else
 				$this->noktp_pelanggan->setFormValue($val);
@@ -882,7 +882,7 @@ class m_pelanggan_edit extends m_pelanggan
 		// Check field name 'nama_pelanggan' first before field var 'x_nama_pelanggan'
 		$val = $CurrentForm->hasValue("nama_pelanggan") ? $CurrentForm->getValue("nama_pelanggan") : $CurrentForm->getValue("x_nama_pelanggan");
 		if (!$this->nama_pelanggan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama_pelanggan->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama_pelanggan->setFormValue($val);
@@ -891,7 +891,7 @@ class m_pelanggan_edit extends m_pelanggan
 		// Check field name 'jenis_pelanggan' first before field var 'x_jenis_pelanggan'
 		$val = $CurrentForm->hasValue("jenis_pelanggan") ? $CurrentForm->getValue("jenis_pelanggan") : $CurrentForm->getValue("x_jenis_pelanggan");
 		if (!$this->jenis_pelanggan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->jenis_pelanggan->Visible = FALSE; // Disable update for API request
 			else
 				$this->jenis_pelanggan->setFormValue($val);
@@ -900,7 +900,7 @@ class m_pelanggan_edit extends m_pelanggan
 		// Check field name 'tgllahir_pelanggan' first before field var 'x_tgllahir_pelanggan'
 		$val = $CurrentForm->hasValue("tgllahir_pelanggan") ? $CurrentForm->getValue("tgllahir_pelanggan") : $CurrentForm->getValue("x_tgllahir_pelanggan");
 		if (!$this->tgllahir_pelanggan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tgllahir_pelanggan->Visible = FALSE; // Disable update for API request
 			else
 				$this->tgllahir_pelanggan->setFormValue($val);
@@ -910,7 +910,7 @@ class m_pelanggan_edit extends m_pelanggan
 		// Check field name 'pekerjaan_pelanggan' first before field var 'x_pekerjaan_pelanggan'
 		$val = $CurrentForm->hasValue("pekerjaan_pelanggan") ? $CurrentForm->getValue("pekerjaan_pelanggan") : $CurrentForm->getValue("x_pekerjaan_pelanggan");
 		if (!$this->pekerjaan_pelanggan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->pekerjaan_pelanggan->Visible = FALSE; // Disable update for API request
 			else
 				$this->pekerjaan_pelanggan->setFormValue($val);
@@ -919,7 +919,7 @@ class m_pelanggan_edit extends m_pelanggan
 		// Check field name 'kota_pelanggan' first before field var 'x_kota_pelanggan'
 		$val = $CurrentForm->hasValue("kota_pelanggan") ? $CurrentForm->getValue("kota_pelanggan") : $CurrentForm->getValue("x_kota_pelanggan");
 		if (!$this->kota_pelanggan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kota_pelanggan->Visible = FALSE; // Disable update for API request
 			else
 				$this->kota_pelanggan->setFormValue($val);
@@ -928,7 +928,7 @@ class m_pelanggan_edit extends m_pelanggan
 		// Check field name 'alamat_pelanggan' first before field var 'x_alamat_pelanggan'
 		$val = $CurrentForm->hasValue("alamat_pelanggan") ? $CurrentForm->getValue("alamat_pelanggan") : $CurrentForm->getValue("x_alamat_pelanggan");
 		if (!$this->alamat_pelanggan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->alamat_pelanggan->Visible = FALSE; // Disable update for API request
 			else
 				$this->alamat_pelanggan->setFormValue($val);
@@ -937,7 +937,7 @@ class m_pelanggan_edit extends m_pelanggan
 		// Check field name 'telpon_pelanggan' first before field var 'x_telpon_pelanggan'
 		$val = $CurrentForm->hasValue("telpon_pelanggan") ? $CurrentForm->getValue("telpon_pelanggan") : $CurrentForm->getValue("x_telpon_pelanggan");
 		if (!$this->telpon_pelanggan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->telpon_pelanggan->Visible = FALSE; // Disable update for API request
 			else
 				$this->telpon_pelanggan->setFormValue($val);
@@ -946,7 +946,7 @@ class m_pelanggan_edit extends m_pelanggan
 		// Check field name 'hp_pelanggan' first before field var 'x_hp_pelanggan'
 		$val = $CurrentForm->hasValue("hp_pelanggan") ? $CurrentForm->getValue("hp_pelanggan") : $CurrentForm->getValue("x_hp_pelanggan");
 		if (!$this->hp_pelanggan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->hp_pelanggan->Visible = FALSE; // Disable update for API request
 			else
 				$this->hp_pelanggan->setFormValue($val);
@@ -955,7 +955,7 @@ class m_pelanggan_edit extends m_pelanggan
 		// Check field name 'id_klinik' first before field var 'x_id_klinik'
 		$val = $CurrentForm->hasValue("id_klinik") ? $CurrentForm->getValue("id_klinik") : $CurrentForm->getValue("x_id_klinik");
 		if (!$this->id_klinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_klinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_klinik->setFormValue($val);
@@ -964,7 +964,7 @@ class m_pelanggan_edit extends m_pelanggan
 		// Check field name 'tgl_daftar' first before field var 'x_tgl_daftar'
 		$val = $CurrentForm->hasValue("tgl_daftar") ? $CurrentForm->getValue("tgl_daftar") : $CurrentForm->getValue("x_tgl_daftar");
 		if (!$this->tgl_daftar->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tgl_daftar->Visible = FALSE; // Disable update for API request
 			else
 				$this->tgl_daftar->setFormValue($val);
@@ -974,7 +974,7 @@ class m_pelanggan_edit extends m_pelanggan
 		// Check field name 'kategori' first before field var 'x_kategori'
 		$val = $CurrentForm->hasValue("kategori") ? $CurrentForm->getValue("kategori") : $CurrentForm->getValue("x_kategori");
 		if (!$this->kategori->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kategori->Visible = FALSE; // Disable update for API request
 			else
 				$this->kategori->setFormValue($val);
@@ -983,7 +983,7 @@ class m_pelanggan_edit extends m_pelanggan
 		// Check field name 'tipe' first before field var 'x_tipe'
 		$val = $CurrentForm->hasValue("tipe") ? $CurrentForm->getValue("tipe") : $CurrentForm->getValue("x_tipe");
 		if (!$this->tipe->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tipe->Visible = FALSE; // Disable update for API request
 			else
 				$this->tipe->setFormValue($val);

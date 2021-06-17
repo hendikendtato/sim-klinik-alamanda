@@ -830,7 +830,7 @@ class m_agama_add extends m_agama
 		// Check field name 'nama_agama' first before field var 'x_nama_agama'
 		$val = $CurrentForm->hasValue("nama_agama") ? $CurrentForm->getValue("nama_agama") : $CurrentForm->getValue("x_nama_agama");
 		if (!$this->nama_agama->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama_agama->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama_agama->setFormValue($val);

@@ -1574,7 +1574,7 @@ class detailpenyesuaianpoin_grid extends detailpenyesuaianpoin
 		// Check field name 'pid_penyesuaianpoin' first before field var 'x_pid_penyesuaianpoin'
 		$val = $CurrentForm->hasValue("pid_penyesuaianpoin") ? $CurrentForm->getValue("pid_penyesuaianpoin") : $CurrentForm->getValue("x_pid_penyesuaianpoin");
 		if (!$this->pid_penyesuaianpoin->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->pid_penyesuaianpoin->Visible = FALSE; // Disable update for API request
 			else
 				$this->pid_penyesuaianpoin->setFormValue($val);
@@ -1585,7 +1585,7 @@ class detailpenyesuaianpoin_grid extends detailpenyesuaianpoin
 		// Check field name 'id_member' first before field var 'x_id_member'
 		$val = $CurrentForm->hasValue("id_member") ? $CurrentForm->getValue("id_member") : $CurrentForm->getValue("x_id_member");
 		if (!$this->id_member->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_member->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_member->setFormValue($val);
@@ -1596,7 +1596,7 @@ class detailpenyesuaianpoin_grid extends detailpenyesuaianpoin
 		// Check field name 'poin_database' first before field var 'x_poin_database'
 		$val = $CurrentForm->hasValue("poin_database") ? $CurrentForm->getValue("poin_database") : $CurrentForm->getValue("x_poin_database");
 		if (!$this->poin_database->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->poin_database->Visible = FALSE; // Disable update for API request
 			else
 				$this->poin_database->setFormValue($val);
@@ -1607,7 +1607,7 @@ class detailpenyesuaianpoin_grid extends detailpenyesuaianpoin
 		// Check field name 'poin_lapangan' first before field var 'x_poin_lapangan'
 		$val = $CurrentForm->hasValue("poin_lapangan") ? $CurrentForm->getValue("poin_lapangan") : $CurrentForm->getValue("x_poin_lapangan");
 		if (!$this->poin_lapangan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->poin_lapangan->Visible = FALSE; // Disable update for API request
 			else
 				$this->poin_lapangan->setFormValue($val);
@@ -1618,7 +1618,7 @@ class detailpenyesuaianpoin_grid extends detailpenyesuaianpoin
 		// Check field name 'selisih' first before field var 'x_selisih'
 		$val = $CurrentForm->hasValue("selisih") ? $CurrentForm->getValue("selisih") : $CurrentForm->getValue("x_selisih");
 		if (!$this->selisih->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->selisih->Visible = FALSE; // Disable update for API request
 			else
 				$this->selisih->setFormValue($val);
@@ -1629,7 +1629,7 @@ class detailpenyesuaianpoin_grid extends detailpenyesuaianpoin
 		// Check field name 'tipe' first before field var 'x_tipe'
 		$val = $CurrentForm->hasValue("tipe") ? $CurrentForm->getValue("tipe") : $CurrentForm->getValue("x_tipe");
 		if (!$this->tipe->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tipe->Visible = FALSE; // Disable update for API request
 			else
 				$this->tipe->setFormValue($val);
@@ -1640,7 +1640,7 @@ class detailpenyesuaianpoin_grid extends detailpenyesuaianpoin
 		// Check field name 'keterangan' first before field var 'x_keterangan'
 		$val = $CurrentForm->hasValue("keterangan") ? $CurrentForm->getValue("keterangan") : $CurrentForm->getValue("x_keterangan");
 		if (!$this->keterangan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->keterangan->Visible = FALSE; // Disable update for API request
 			else
 				$this->keterangan->setFormValue($val);

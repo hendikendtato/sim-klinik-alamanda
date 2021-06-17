@@ -860,7 +860,7 @@ class m_rekening_edit extends m_rekening
 		// Check field name 'id_bank' first before field var 'x_id_bank'
 		$val = $CurrentForm->hasValue("id_bank") ? $CurrentForm->getValue("id_bank") : $CurrentForm->getValue("x_id_bank");
 		if (!$this->id_bank->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_bank->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_bank->setFormValue($val);
@@ -869,7 +869,7 @@ class m_rekening_edit extends m_rekening
 		// Check field name 'id_klinik' first before field var 'x_id_klinik'
 		$val = $CurrentForm->hasValue("id_klinik") ? $CurrentForm->getValue("id_klinik") : $CurrentForm->getValue("x_id_klinik");
 		if (!$this->id_klinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_klinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_klinik->setFormValue($val);
@@ -878,7 +878,7 @@ class m_rekening_edit extends m_rekening
 		// Check field name 'nama_rekening' first before field var 'x_nama_rekening'
 		$val = $CurrentForm->hasValue("nama_rekening") ? $CurrentForm->getValue("nama_rekening") : $CurrentForm->getValue("x_nama_rekening");
 		if (!$this->nama_rekening->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama_rekening->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama_rekening->setFormValue($val);
@@ -887,7 +887,7 @@ class m_rekening_edit extends m_rekening
 		// Check field name 'nomor_rekening' first before field var 'x_nomor_rekening'
 		$val = $CurrentForm->hasValue("nomor_rekening") ? $CurrentForm->getValue("nomor_rekening") : $CurrentForm->getValue("x_nomor_rekening");
 		if (!$this->nomor_rekening->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nomor_rekening->Visible = FALSE; // Disable update for API request
 			else
 				$this->nomor_rekening->setFormValue($val);
@@ -896,7 +896,7 @@ class m_rekening_edit extends m_rekening
 		// Check field name 'saldo' first before field var 'x_saldo'
 		$val = $CurrentForm->hasValue("saldo") ? $CurrentForm->getValue("saldo") : $CurrentForm->getValue("x_saldo");
 		if (!$this->saldo->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->saldo->Visible = FALSE; // Disable update for API request
 			else
 				$this->saldo->setFormValue($val);

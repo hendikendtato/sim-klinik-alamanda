@@ -843,7 +843,7 @@ class m_kartu_add extends m_kartu
 		// Check field name 'id_bank' first before field var 'x_id_bank'
 		$val = $CurrentForm->hasValue("id_bank") ? $CurrentForm->getValue("id_bank") : $CurrentForm->getValue("x_id_bank");
 		if (!$this->id_bank->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_bank->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_bank->setFormValue($val);
@@ -852,7 +852,7 @@ class m_kartu_add extends m_kartu
 		// Check field name 'jenis' first before field var 'x_jenis'
 		$val = $CurrentForm->hasValue("jenis") ? $CurrentForm->getValue("jenis") : $CurrentForm->getValue("x_jenis");
 		if (!$this->jenis->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->jenis->Visible = FALSE; // Disable update for API request
 			else
 				$this->jenis->setFormValue($val);
@@ -861,7 +861,7 @@ class m_kartu_add extends m_kartu
 		// Check field name 'nama_kartu' first before field var 'x_nama_kartu'
 		$val = $CurrentForm->hasValue("nama_kartu") ? $CurrentForm->getValue("nama_kartu") : $CurrentForm->getValue("x_nama_kartu");
 		if (!$this->nama_kartu->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama_kartu->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama_kartu->setFormValue($val);
@@ -870,7 +870,7 @@ class m_kartu_add extends m_kartu
 		// Check field name 'charge_type' first before field var 'x_charge_type'
 		$val = $CurrentForm->hasValue("charge_type") ? $CurrentForm->getValue("charge_type") : $CurrentForm->getValue("x_charge_type");
 		if (!$this->charge_type->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->charge_type->Visible = FALSE; // Disable update for API request
 			else
 				$this->charge_type->setFormValue($val);
@@ -879,7 +879,7 @@ class m_kartu_add extends m_kartu
 		// Check field name 'charge_price' first before field var 'x_charge_price'
 		$val = $CurrentForm->hasValue("charge_price") ? $CurrentForm->getValue("charge_price") : $CurrentForm->getValue("x_charge_price");
 		if (!$this->charge_price->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->charge_price->Visible = FALSE; // Disable update for API request
 			else
 				$this->charge_price->setFormValue($val);

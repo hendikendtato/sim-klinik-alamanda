@@ -848,7 +848,7 @@ class penyesuaian_poin_add extends penyesuaian_poin
 		// Check field name 'id_klinik' first before field var 'x_id_klinik'
 		$val = $CurrentForm->hasValue("id_klinik") ? $CurrentForm->getValue("id_klinik") : $CurrentForm->getValue("x_id_klinik");
 		if (!$this->id_klinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_klinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_klinik->setFormValue($val);
@@ -857,7 +857,7 @@ class penyesuaian_poin_add extends penyesuaian_poin
 		// Check field name 'tgl' first before field var 'x_tgl'
 		$val = $CurrentForm->hasValue("tgl") ? $CurrentForm->getValue("tgl") : $CurrentForm->getValue("x_tgl");
 		if (!$this->tgl->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tgl->Visible = FALSE; // Disable update for API request
 			else
 				$this->tgl->setFormValue($val);

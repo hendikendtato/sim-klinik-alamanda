@@ -869,7 +869,7 @@ class detailpenyesuaianstok_edit extends detailpenyesuaianstok
 		// Check field name 'pid' first before field var 'x_pid'
 		$val = $CurrentForm->hasValue("pid") ? $CurrentForm->getValue("pid") : $CurrentForm->getValue("x_pid");
 		if (!$this->pid->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->pid->Visible = FALSE; // Disable update for API request
 			else
 				$this->pid->setFormValue($val);
@@ -878,7 +878,7 @@ class detailpenyesuaianstok_edit extends detailpenyesuaianstok
 		// Check field name 'kode_barang' first before field var 'x_kode_barang'
 		$val = $CurrentForm->hasValue("kode_barang") ? $CurrentForm->getValue("kode_barang") : $CurrentForm->getValue("x_kode_barang");
 		if (!$this->kode_barang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kode_barang->Visible = FALSE; // Disable update for API request
 			else
 				$this->kode_barang->setFormValue($val);
@@ -887,7 +887,7 @@ class detailpenyesuaianstok_edit extends detailpenyesuaianstok
 		// Check field name 'id_barang' first before field var 'x_id_barang'
 		$val = $CurrentForm->hasValue("id_barang") ? $CurrentForm->getValue("id_barang") : $CurrentForm->getValue("x_id_barang");
 		if (!$this->id_barang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_barang->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_barang->setFormValue($val);
@@ -896,7 +896,7 @@ class detailpenyesuaianstok_edit extends detailpenyesuaianstok
 		// Check field name 'stokdatabase' first before field var 'x_stokdatabase'
 		$val = $CurrentForm->hasValue("stokdatabase") ? $CurrentForm->getValue("stokdatabase") : $CurrentForm->getValue("x_stokdatabase");
 		if (!$this->stokdatabase->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->stokdatabase->Visible = FALSE; // Disable update for API request
 			else
 				$this->stokdatabase->setFormValue($val);
@@ -905,7 +905,7 @@ class detailpenyesuaianstok_edit extends detailpenyesuaianstok
 		// Check field name 'jumlah' first before field var 'x_jumlah'
 		$val = $CurrentForm->hasValue("jumlah") ? $CurrentForm->getValue("jumlah") : $CurrentForm->getValue("x_jumlah");
 		if (!$this->jumlah->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->jumlah->Visible = FALSE; // Disable update for API request
 			else
 				$this->jumlah->setFormValue($val);
@@ -914,7 +914,7 @@ class detailpenyesuaianstok_edit extends detailpenyesuaianstok
 		// Check field name 'selisih' first before field var 'x_selisih'
 		$val = $CurrentForm->hasValue("selisih") ? $CurrentForm->getValue("selisih") : $CurrentForm->getValue("x_selisih");
 		if (!$this->selisih->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->selisih->Visible = FALSE; // Disable update for API request
 			else
 				$this->selisih->setFormValue($val);
@@ -923,7 +923,7 @@ class detailpenyesuaianstok_edit extends detailpenyesuaianstok
 		// Check field name 'tipe' first before field var 'x_tipe'
 		$val = $CurrentForm->hasValue("tipe") ? $CurrentForm->getValue("tipe") : $CurrentForm->getValue("x_tipe");
 		if (!$this->tipe->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tipe->Visible = FALSE; // Disable update for API request
 			else
 				$this->tipe->setFormValue($val);

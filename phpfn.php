@@ -7953,7 +7953,8 @@ function GetConnectionId($dbid = 0) {
 
 // Get connection info
 function Db($dbid = 0) {
-	return Config("CONNECTION_INFO." . ($dbid ?: "DB"));
+	$key = IsLocal() ? "CONNECTION_INFO" : "PRODUCTION_CONNECTION_INFO";
+	return Config($key . "." . ($dbid ?: "DB"));
 }
 
 // Get connection type
@@ -8039,6 +8040,9 @@ function ConnectDb($info) {
 				$conn->Execute("SET TIME ZONE '" . $timezone . "'");
 		}
 		if ($dbtype == "ORACLE") {
+
+			// Check version
+			$conn->checkVersion();
 
 			// Set schema
 			$conn->Execute("ALTER SESSION SET CURRENT_SCHEMA = ". QuotedName(@$info["schema"], $dbid));
@@ -9366,7 +9370,9 @@ function UploadTempPath($fld = NULL, $idx = -1, $tableLevel = FALSE) {
 
 // Render upload field to temp path
 function RenderUploadField(&$fld, $idx = -1) {
-	global $Language;
+	global $Language, $Table;
+	if ($Table !== NULL && $Table->EventCancelled) // Skip render if insert/update cancelled
+		return;
 	$folder = UploadTempPath($fld, $idx);
 	CleanUploadTempPaths(); // Clean all old temp folders
 	CleanPath($folder); // Clean the upload folder
@@ -10214,6 +10220,11 @@ function CurrentUserIP() {
 		ServerVar("HTTP_FORWARDED_FOR") ?: ServerVar("HTTP_FORWARDED") ?: ServerVar("REMOTE_ADDR");
 }
 
+// Is local host
+function IsLocal() {
+	return in_array(CurrentUserIP(), ["127.0.0.1", "::1"]);
+}
+
 // Get current host name, e.g. "www.mycompany.com"
 function CurrentHost() {
 	return ServerVar("HTTP_HOST");
@@ -10414,10 +10425,7 @@ function CurrentUserLevelList() {
 // Get Current user info
 function CurrentUserInfo($fldname) {
 	global $Security, $UserTable;
-	$value = Profile($fldname);
-	if ($value != NULL) {
-		return $value;
-	} elseif (isset($Security)) {
+	if (isset($Security)) {
 		return $Security->currentUserInfo($fldname);
 	} elseif (Config("USER_TABLE") && !IsSysAdmin()) {
 		$info = NULL;
@@ -12769,8 +12777,7 @@ function DomainUrl() {
 	$port = strval(ServerVar("SERVER_PORT"));
 	if (ServerVar("HTTP_X_FORWARDED_PROTO") != "" && strval(ServerVar("HTTP_X_FORWARDED_PORT")) != "")
 		$port = strval(ServerVar("HTTP_X_FORWARDED_PORT"));
-	$defPort = ($ssl) ? "443" : "80";
-	$port = ($port == $defPort) ? "" : (":" . $port);
+	$port = in_array($port, ["80", "443"]) ? "" : (":" . $port);
 	return ($ssl ? "https" : "http") . "://" . ServerVar("SERVER_NAME") . $port;
 }
 
@@ -13428,8 +13435,7 @@ function SetupLoginStatus() {
 	$LoginStatus["loginUrl"] = $loginUrl;
 	$LoginStatus["loginText"] = $Language->phrase("Login");
 	$LoginStatus["canLogin"] = $loginPage && $loginUrl && !IsLoggedIn();
-	$id = ExecuteScalar("SELECT userid FROM users WHERE username LIKE '".CurrentUserName()."' ");
-	$personalDataPage = "usersedit.php?_userid=".$id;
+	$personalDataPage = "personaldata.php";
 	$personalDataUrl = "";
 	if ($currentPage != $personalDataPage)
 		$personalDataUrl = "window.location='" . GetUrl($personalDataPage) . "';return false;";

@@ -857,7 +857,7 @@ class m_kas_edit extends m_kas
 		// Check field name 'id_klinik' first before field var 'x_id_klinik'
 		$val = $CurrentForm->hasValue("id_klinik") ? $CurrentForm->getValue("id_klinik") : $CurrentForm->getValue("x_id_klinik");
 		if (!$this->id_klinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_klinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_klinik->setFormValue($val);
@@ -866,7 +866,7 @@ class m_kas_edit extends m_kas
 		// Check field name 'nama' first before field var 'x_nama'
 		$val = $CurrentForm->hasValue("nama") ? $CurrentForm->getValue("nama") : $CurrentForm->getValue("x_nama");
 		if (!$this->nama->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama->setFormValue($val);
@@ -875,7 +875,7 @@ class m_kas_edit extends m_kas
 		// Check field name 'saldo' first before field var 'x_saldo'
 		$val = $CurrentForm->hasValue("saldo") ? $CurrentForm->getValue("saldo") : $CurrentForm->getValue("x_saldo");
 		if (!$this->saldo->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->saldo->Visible = FALSE; // Disable update for API request
 			else
 				$this->saldo->setFormValue($val);

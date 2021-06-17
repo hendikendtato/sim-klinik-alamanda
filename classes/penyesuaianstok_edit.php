@@ -865,7 +865,6 @@ class penyesuaianstok_edit extends penyesuaianstok
 
 		// Load from form
 		global $CurrentForm;
-		$this->getUploadFiles(); // Get upload files
 
 		// Check field name 'id_penyesuaianstok' first before field var 'x_id_penyesuaianstok'
 		$val = $CurrentForm->hasValue("id_penyesuaianstok") ? $CurrentForm->getValue("id_penyesuaianstok") : $CurrentForm->getValue("x_id_penyesuaianstok");
@@ -875,7 +874,7 @@ class penyesuaianstok_edit extends penyesuaianstok
 		// Check field name 'kode_penyesuaian' first before field var 'x_kode_penyesuaian'
 		$val = $CurrentForm->hasValue("kode_penyesuaian") ? $CurrentForm->getValue("kode_penyesuaian") : $CurrentForm->getValue("x_kode_penyesuaian");
 		if (!$this->kode_penyesuaian->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kode_penyesuaian->Visible = FALSE; // Disable update for API request
 			else
 				$this->kode_penyesuaian->setFormValue($val);
@@ -884,7 +883,7 @@ class penyesuaianstok_edit extends penyesuaianstok
 		// Check field name 'tanggal' first before field var 'x_tanggal'
 		$val = $CurrentForm->hasValue("tanggal") ? $CurrentForm->getValue("tanggal") : $CurrentForm->getValue("x_tanggal");
 		if (!$this->tanggal->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tanggal->Visible = FALSE; // Disable update for API request
 			else
 				$this->tanggal->setFormValue($val);
@@ -894,7 +893,7 @@ class penyesuaianstok_edit extends penyesuaianstok
 		// Check field name 'id_klinik' first before field var 'x_id_klinik'
 		$val = $CurrentForm->hasValue("id_klinik") ? $CurrentForm->getValue("id_klinik") : $CurrentForm->getValue("x_id_klinik");
 		if (!$this->id_klinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_klinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_klinik->setFormValue($val);
@@ -903,11 +902,12 @@ class penyesuaianstok_edit extends penyesuaianstok
 		// Check field name 'keterangan' first before field var 'x_keterangan'
 		$val = $CurrentForm->hasValue("keterangan") ? $CurrentForm->getValue("keterangan") : $CurrentForm->getValue("x_keterangan");
 		if (!$this->keterangan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->keterangan->Visible = FALSE; // Disable update for API request
 			else
 				$this->keterangan->setFormValue($val);
 		}
+		$this->getUploadFiles(); // Get upload files
 	}
 
 	// Restore form values

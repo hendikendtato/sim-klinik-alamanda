@@ -846,7 +846,7 @@ class m_jadwalpegawai_add extends m_jadwalpegawai
 		// Check field name 'tindakan_jadwalpeg' first before field var 'x_tindakan_jadwalpeg'
 		$val = $CurrentForm->hasValue("tindakan_jadwalpeg") ? $CurrentForm->getValue("tindakan_jadwalpeg") : $CurrentForm->getValue("x_tindakan_jadwalpeg");
 		if (!$this->tindakan_jadwalpeg->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tindakan_jadwalpeg->Visible = FALSE; // Disable update for API request
 			else
 				$this->tindakan_jadwalpeg->setFormValue($val);
@@ -855,7 +855,7 @@ class m_jadwalpegawai_add extends m_jadwalpegawai
 		// Check field name 'idpeg' first before field var 'x_idpeg'
 		$val = $CurrentForm->hasValue("idpeg") ? $CurrentForm->getValue("idpeg") : $CurrentForm->getValue("x_idpeg");
 		if (!$this->idpeg->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->idpeg->Visible = FALSE; // Disable update for API request
 			else
 				$this->idpeg->setFormValue($val);
@@ -864,7 +864,7 @@ class m_jadwalpegawai_add extends m_jadwalpegawai
 		// Check field name 'tanggal_jadwalpeg' first before field var 'x_tanggal_jadwalpeg'
 		$val = $CurrentForm->hasValue("tanggal_jadwalpeg") ? $CurrentForm->getValue("tanggal_jadwalpeg") : $CurrentForm->getValue("x_tanggal_jadwalpeg");
 		if (!$this->tanggal_jadwalpeg->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tanggal_jadwalpeg->Visible = FALSE; // Disable update for API request
 			else
 				$this->tanggal_jadwalpeg->setFormValue($val);
@@ -874,7 +874,7 @@ class m_jadwalpegawai_add extends m_jadwalpegawai
 		// Check field name 'jam_jadwalpeg' first before field var 'x_jam_jadwalpeg'
 		$val = $CurrentForm->hasValue("jam_jadwalpeg") ? $CurrentForm->getValue("jam_jadwalpeg") : $CurrentForm->getValue("x_jam_jadwalpeg");
 		if (!$this->jam_jadwalpeg->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->jam_jadwalpeg->Visible = FALSE; // Disable update for API request
 			else
 				$this->jam_jadwalpeg->setFormValue($val);
@@ -884,7 +884,7 @@ class m_jadwalpegawai_add extends m_jadwalpegawai
 		// Check field name 'keterangan_peg' first before field var 'x_keterangan_peg'
 		$val = $CurrentForm->hasValue("keterangan_peg") ? $CurrentForm->getValue("keterangan_peg") : $CurrentForm->getValue("x_keterangan_peg");
 		if (!$this->keterangan_peg->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->keterangan_peg->Visible = FALSE; // Disable update for API request
 			else
 				$this->keterangan_peg->setFormValue($val);
@@ -893,7 +893,7 @@ class m_jadwalpegawai_add extends m_jadwalpegawai
 		// Check field name 'status_jadwalpeg' first before field var 'x_status_jadwalpeg'
 		$val = $CurrentForm->hasValue("status_jadwalpeg") ? $CurrentForm->getValue("status_jadwalpeg") : $CurrentForm->getValue("x_status_jadwalpeg");
 		if (!$this->status_jadwalpeg->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->status_jadwalpeg->Visible = FALSE; // Disable update for API request
 			else
 				$this->status_jadwalpeg->setFormValue($val);

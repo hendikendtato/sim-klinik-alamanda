@@ -853,7 +853,7 @@ class stok_edit extends stok
 		// Check field name 'id_barang' first before field var 'x_id_barang'
 		$val = $CurrentForm->hasValue("id_barang") ? $CurrentForm->getValue("id_barang") : $CurrentForm->getValue("x_id_barang");
 		if (!$this->id_barang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_barang->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_barang->setFormValue($val);
@@ -862,7 +862,7 @@ class stok_edit extends stok
 		// Check field name 'jumlah' first before field var 'x_jumlah'
 		$val = $CurrentForm->hasValue("jumlah") ? $CurrentForm->getValue("jumlah") : $CurrentForm->getValue("x_jumlah");
 		if (!$this->jumlah->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->jumlah->Visible = FALSE; // Disable update for API request
 			else
 				$this->jumlah->setFormValue($val);
@@ -871,7 +871,7 @@ class stok_edit extends stok
 		// Check field name 'id_klinik' first before field var 'x_id_klinik'
 		$val = $CurrentForm->hasValue("id_klinik") ? $CurrentForm->getValue("id_klinik") : $CurrentForm->getValue("x_id_klinik");
 		if (!$this->id_klinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_klinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_klinik->setFormValue($val);

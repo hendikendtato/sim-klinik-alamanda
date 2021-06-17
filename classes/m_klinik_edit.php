@@ -857,7 +857,7 @@ class m_klinik_edit extends m_klinik
 		// Check field name 'nama_klinik' first before field var 'x_nama_klinik'
 		$val = $CurrentForm->hasValue("nama_klinik") ? $CurrentForm->getValue("nama_klinik") : $CurrentForm->getValue("x_nama_klinik");
 		if (!$this->nama_klinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama_klinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama_klinik->setFormValue($val);
@@ -866,7 +866,7 @@ class m_klinik_edit extends m_klinik
 		// Check field name 'telpon_klinik' first before field var 'x_telpon_klinik'
 		$val = $CurrentForm->hasValue("telpon_klinik") ? $CurrentForm->getValue("telpon_klinik") : $CurrentForm->getValue("x_telpon_klinik");
 		if (!$this->telpon_klinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->telpon_klinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->telpon_klinik->setFormValue($val);
@@ -875,7 +875,7 @@ class m_klinik_edit extends m_klinik
 		// Check field name 'alamat_klinik' first before field var 'x_alamat_klinik'
 		$val = $CurrentForm->hasValue("alamat_klinik") ? $CurrentForm->getValue("alamat_klinik") : $CurrentForm->getValue("x_alamat_klinik");
 		if (!$this->alamat_klinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->alamat_klinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->alamat_klinik->setFormValue($val);
@@ -884,7 +884,7 @@ class m_klinik_edit extends m_klinik
 		// Check field name 'foto_klinik' first before field var 'x_foto_klinik'
 		$val = $CurrentForm->hasValue("foto_klinik") ? $CurrentForm->getValue("foto_klinik") : $CurrentForm->getValue("x_foto_klinik");
 		if (!$this->foto_klinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->foto_klinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->foto_klinik->setFormValue($val);

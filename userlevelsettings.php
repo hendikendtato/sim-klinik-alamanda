@@ -804,6 +804,6 @@ $USER_LEVEL_TABLES = [["antrian","antrian","Antrian",true,"{8546B030-7993-4749-B
 	["Dasbor.php","Dasbor","Dasbor",true,"{8546B030-7993-4749-BFDB-17AFAAF4065D}"],
 	["detailterimagudang","detailterimagudang","Detail Terima Barang Gudang",true,"{8546B030-7993-4749-BFDB-17AFAAF4065D}"],
 	["terimagudang","terimagudang","Terima Barang Gudang",true,"{8546B030-7993-4749-BFDB-17AFAAF4065D}"],
-	["laporan_akumulasi_produk_klinik.php","laporan_akumulasi_produk_klinik","Laporan Akumulasi Produk",true,"{8546B030-7993-4749-BFDB-17AFAAF4065D}"],
-	["laporan_best_seller_klinik.php","laporan_best_seller_klinik","Laporan Best Seller",true,"{8546B030-7993-4749-BFDB-17AFAAF4065D}"],
+	["laporan_akumulasi_produk_klinik.php","laporan_akumulasi_produk_klinik","Laporan Akumulasi Produk Klinik",true,"{8546B030-7993-4749-BFDB-17AFAAF4065D}"],
+	["laporan_best_seller_klinik.php","laporan_best_seller_klinik","Laporan Best Seller Klinik",true,"{8546B030-7993-4749-BFDB-17AFAAF4065D}"],
 	["laporan_summary_penjualan.php","laporan_summary_penjualan","Laporan Summary Penjualan",true,"{8546B030-7993-4749-BFDB-17AFAAF4065D}"]];

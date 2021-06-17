@@ -1564,7 +1564,7 @@ class detailterimagudang_grid extends detailterimagudang
 		// Check field name 'id_barang' first before field var 'x_id_barang'
 		$val = $CurrentForm->hasValue("id_barang") ? $CurrentForm->getValue("id_barang") : $CurrentForm->getValue("x_id_barang");
 		if (!$this->id_barang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_barang->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_barang->setFormValue($val);
@@ -1575,7 +1575,7 @@ class detailterimagudang_grid extends detailterimagudang
 		// Check field name 'qty' first before field var 'x_qty'
 		$val = $CurrentForm->hasValue("qty") ? $CurrentForm->getValue("qty") : $CurrentForm->getValue("x_qty");
 		if (!$this->qty->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->qty->Visible = FALSE; // Disable update for API request
 			else
 				$this->qty->setFormValue($val);
@@ -1586,7 +1586,7 @@ class detailterimagudang_grid extends detailterimagudang
 		// Check field name 'id_satuan' first before field var 'x_id_satuan'
 		$val = $CurrentForm->hasValue("id_satuan") ? $CurrentForm->getValue("id_satuan") : $CurrentForm->getValue("x_id_satuan");
 		if (!$this->id_satuan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_satuan->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_satuan->setFormValue($val);

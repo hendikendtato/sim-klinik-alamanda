@@ -860,7 +860,7 @@ class m_poin_edit extends m_poin
 		// Check field name 'id_jenis_member' first before field var 'x_id_jenis_member'
 		$val = $CurrentForm->hasValue("id_jenis_member") ? $CurrentForm->getValue("id_jenis_member") : $CurrentForm->getValue("x_id_jenis_member");
 		if (!$this->id_jenis_member->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_jenis_member->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_jenis_member->setFormValue($val);
@@ -869,7 +869,7 @@ class m_poin_edit extends m_poin
 		// Check field name 'curs_poin' first before field var 'x_curs_poin'
 		$val = $CurrentForm->hasValue("curs_poin") ? $CurrentForm->getValue("curs_poin") : $CurrentForm->getValue("x_curs_poin");
 		if (!$this->curs_poin->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->curs_poin->Visible = FALSE; // Disable update for API request
 			else
 				$this->curs_poin->setFormValue($val);
@@ -878,7 +878,7 @@ class m_poin_edit extends m_poin
 		// Check field name 'curs_to_rp' first before field var 'x_curs_to_rp'
 		$val = $CurrentForm->hasValue("curs_to_rp") ? $CurrentForm->getValue("curs_to_rp") : $CurrentForm->getValue("x_curs_to_rp");
 		if (!$this->curs_to_rp->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->curs_to_rp->Visible = FALSE; // Disable update for API request
 			else
 				$this->curs_to_rp->setFormValue($val);
@@ -887,7 +887,7 @@ class m_poin_edit extends m_poin
 		// Check field name 'max_klaim' first before field var 'x_max_klaim'
 		$val = $CurrentForm->hasValue("max_klaim") ? $CurrentForm->getValue("max_klaim") : $CurrentForm->getValue("x_max_klaim");
 		if (!$this->max_klaim->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->max_klaim->Visible = FALSE; // Disable update for API request
 			else
 				$this->max_klaim->setFormValue($val);
@@ -896,7 +896,7 @@ class m_poin_edit extends m_poin
 		// Check field name 'min_transaksi' first before field var 'x_min_transaksi'
 		$val = $CurrentForm->hasValue("min_transaksi") ? $CurrentForm->getValue("min_transaksi") : $CurrentForm->getValue("x_min_transaksi");
 		if (!$this->min_transaksi->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->min_transaksi->Visible = FALSE; // Disable update for API request
 			else
 				$this->min_transaksi->setFormValue($val);
@@ -905,7 +905,7 @@ class m_poin_edit extends m_poin
 		// Check field name 'waktu_exp' first before field var 'x_waktu_exp'
 		$val = $CurrentForm->hasValue("waktu_exp") ? $CurrentForm->getValue("waktu_exp") : $CurrentForm->getValue("x_waktu_exp");
 		if (!$this->waktu_exp->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->waktu_exp->Visible = FALSE; // Disable update for API request
 			else
 				$this->waktu_exp->setFormValue($val);

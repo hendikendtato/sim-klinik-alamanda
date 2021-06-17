@@ -868,7 +868,7 @@ class promo_edit extends promo
 		// Check field name 'nama' first before field var 'x_nama'
 		$val = $CurrentForm->hasValue("nama") ? $CurrentForm->getValue("nama") : $CurrentForm->getValue("x_nama");
 		if (!$this->nama->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama->setFormValue($val);
@@ -877,7 +877,7 @@ class promo_edit extends promo
 		// Check field name 'tanggal_mulai' first before field var 'x_tanggal_mulai'
 		$val = $CurrentForm->hasValue("tanggal_mulai") ? $CurrentForm->getValue("tanggal_mulai") : $CurrentForm->getValue("x_tanggal_mulai");
 		if (!$this->tanggal_mulai->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tanggal_mulai->Visible = FALSE; // Disable update for API request
 			else
 				$this->tanggal_mulai->setFormValue($val);
@@ -887,7 +887,7 @@ class promo_edit extends promo
 		// Check field name 'tanggal_berakhir' first before field var 'x_tanggal_berakhir'
 		$val = $CurrentForm->hasValue("tanggal_berakhir") ? $CurrentForm->getValue("tanggal_berakhir") : $CurrentForm->getValue("x_tanggal_berakhir");
 		if (!$this->tanggal_berakhir->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tanggal_berakhir->Visible = FALSE; // Disable update for API request
 			else
 				$this->tanggal_berakhir->setFormValue($val);

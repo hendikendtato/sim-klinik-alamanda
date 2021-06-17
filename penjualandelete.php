@@ -90,6 +90,9 @@ $penjualan_delete->showMessage();
 <?php if ($penjualan_delete->metode_pembayaran->Visible) { // metode_pembayaran ?>
 		<th class="<?php echo $penjualan_delete->metode_pembayaran->headerCellClass() ?>"><span id="elh_penjualan_metode_pembayaran" class="penjualan_metode_pembayaran"><?php echo $penjualan_delete->metode_pembayaran->caption() ?></span></th>
 <?php } ?>
+<?php if ($penjualan_delete->jumlah_voucher->Visible) { // jumlah_voucher ?>
+		<th class="<?php echo $penjualan_delete->jumlah_voucher->headerCellClass() ?>"><span id="elh_penjualan_jumlah_voucher" class="penjualan_jumlah_voucher"><?php echo $penjualan_delete->jumlah_voucher->caption() ?></span></th>
+<?php } ?>
 <?php if ($penjualan_delete->id_kartubank->Visible) { // id_kartubank ?>
 		<th class="<?php echo $penjualan_delete->id_kartubank->headerCellClass() ?>"><span id="elh_penjualan_id_kartubank" class="penjualan_id_kartubank"><?php echo $penjualan_delete->id_kartubank->caption() ?></span></th>
 <?php } ?>
@@ -175,6 +178,13 @@ while (!$penjualan_delete->Recordset->EOF) {
 		<td <?php echo $penjualan_delete->metode_pembayaran->cellAttributes() ?>>
 <span id="el<?php echo $penjualan_delete->RowCount ?>_penjualan_metode_pembayaran" class="penjualan_metode_pembayaran">
 <span<?php echo $penjualan_delete->metode_pembayaran->viewAttributes() ?>><?php echo $penjualan_delete->metode_pembayaran->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($penjualan_delete->jumlah_voucher->Visible) { // jumlah_voucher ?>
+		<td <?php echo $penjualan_delete->jumlah_voucher->cellAttributes() ?>>
+<span id="el<?php echo $penjualan_delete->RowCount ?>_penjualan_jumlah_voucher" class="penjualan_jumlah_voucher">
+<span<?php echo $penjualan_delete->jumlah_voucher->viewAttributes() ?>><?php echo $penjualan_delete->jumlah_voucher->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

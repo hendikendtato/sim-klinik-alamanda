@@ -865,7 +865,7 @@ class m_komisi_kinerja_detail_add extends m_komisi_kinerja_detail
 		// Check field name 'id_komisi' first before field var 'x_id_komisi'
 		$val = $CurrentForm->hasValue("id_komisi") ? $CurrentForm->getValue("id_komisi") : $CurrentForm->getValue("x_id_komisi");
 		if (!$this->id_komisi->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_komisi->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_komisi->setFormValue($val);
@@ -874,7 +874,7 @@ class m_komisi_kinerja_detail_add extends m_komisi_kinerja_detail
 		// Check field name 'id_barang' first before field var 'x_id_barang'
 		$val = $CurrentForm->hasValue("id_barang") ? $CurrentForm->getValue("id_barang") : $CurrentForm->getValue("x_id_barang");
 		if (!$this->id_barang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_barang->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_barang->setFormValue($val);
@@ -883,7 +883,7 @@ class m_komisi_kinerja_detail_add extends m_komisi_kinerja_detail
 		// Check field name 'kinerja_default_persen' first before field var 'x_kinerja_default_persen'
 		$val = $CurrentForm->hasValue("kinerja_default_persen") ? $CurrentForm->getValue("kinerja_default_persen") : $CurrentForm->getValue("x_kinerja_default_persen");
 		if (!$this->kinerja_default_persen->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kinerja_default_persen->Visible = FALSE; // Disable update for API request
 			else
 				$this->kinerja_default_persen->setFormValue($val);
@@ -892,7 +892,7 @@ class m_komisi_kinerja_detail_add extends m_komisi_kinerja_detail
 		// Check field name 'kinerja_default_rupiah' first before field var 'x_kinerja_default_rupiah'
 		$val = $CurrentForm->hasValue("kinerja_default_rupiah") ? $CurrentForm->getValue("kinerja_default_rupiah") : $CurrentForm->getValue("x_kinerja_default_rupiah");
 		if (!$this->kinerja_default_rupiah->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kinerja_default_rupiah->Visible = FALSE; // Disable update for API request
 			else
 				$this->kinerja_default_rupiah->setFormValue($val);
@@ -901,7 +901,7 @@ class m_komisi_kinerja_detail_add extends m_komisi_kinerja_detail
 		// Check field name 'kinerja_target_persen' first before field var 'x_kinerja_target_persen'
 		$val = $CurrentForm->hasValue("kinerja_target_persen") ? $CurrentForm->getValue("kinerja_target_persen") : $CurrentForm->getValue("x_kinerja_target_persen");
 		if (!$this->kinerja_target_persen->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kinerja_target_persen->Visible = FALSE; // Disable update for API request
 			else
 				$this->kinerja_target_persen->setFormValue($val);
@@ -910,7 +910,7 @@ class m_komisi_kinerja_detail_add extends m_komisi_kinerja_detail
 		// Check field name 'kinerja_target_rupiah' first before field var 'x_kinerja_target_rupiah'
 		$val = $CurrentForm->hasValue("kinerja_target_rupiah") ? $CurrentForm->getValue("kinerja_target_rupiah") : $CurrentForm->getValue("x_kinerja_target_rupiah");
 		if (!$this->kinerja_target_rupiah->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kinerja_target_rupiah->Visible = FALSE; // Disable update for API request
 			else
 				$this->kinerja_target_rupiah->setFormValue($val);
@@ -919,7 +919,7 @@ class m_komisi_kinerja_detail_add extends m_komisi_kinerja_detail
 		// Check field name 'tgl_mulai' first before field var 'x_tgl_mulai'
 		$val = $CurrentForm->hasValue("tgl_mulai") ? $CurrentForm->getValue("tgl_mulai") : $CurrentForm->getValue("x_tgl_mulai");
 		if (!$this->tgl_mulai->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tgl_mulai->Visible = FALSE; // Disable update for API request
 			else
 				$this->tgl_mulai->setFormValue($val);
@@ -929,7 +929,7 @@ class m_komisi_kinerja_detail_add extends m_komisi_kinerja_detail
 		// Check field name 'tgl_akhir' first before field var 'x_tgl_akhir'
 		$val = $CurrentForm->hasValue("tgl_akhir") ? $CurrentForm->getValue("tgl_akhir") : $CurrentForm->getValue("x_tgl_akhir");
 		if (!$this->tgl_akhir->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tgl_akhir->Visible = FALSE; // Disable update for API request
 			else
 				$this->tgl_akhir->setFormValue($val);
@@ -939,7 +939,7 @@ class m_komisi_kinerja_detail_add extends m_komisi_kinerja_detail
 		// Check field name 'target' first before field var 'x_target'
 		$val = $CurrentForm->hasValue("target") ? $CurrentForm->getValue("target") : $CurrentForm->getValue("x_target");
 		if (!$this->target->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->target->Visible = FALSE; // Disable update for API request
 			else
 				$this->target->setFormValue($val);

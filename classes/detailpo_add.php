@@ -868,7 +868,7 @@ class detailpo_add extends detailpo
 		// Check field name 'idbarang' first before field var 'x_idbarang'
 		$val = $CurrentForm->hasValue("idbarang") ? $CurrentForm->getValue("idbarang") : $CurrentForm->getValue("x_idbarang");
 		if (!$this->idbarang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->idbarang->Visible = FALSE; // Disable update for API request
 			else
 				$this->idbarang->setFormValue($val);
@@ -877,7 +877,7 @@ class detailpo_add extends detailpo
 		// Check field name 'qty' first before field var 'x_qty'
 		$val = $CurrentForm->hasValue("qty") ? $CurrentForm->getValue("qty") : $CurrentForm->getValue("x_qty");
 		if (!$this->qty->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->qty->Visible = FALSE; // Disable update for API request
 			else
 				$this->qty->setFormValue($val);
@@ -886,7 +886,7 @@ class detailpo_add extends detailpo
 		// Check field name 'satuan' first before field var 'x_satuan'
 		$val = $CurrentForm->hasValue("satuan") ? $CurrentForm->getValue("satuan") : $CurrentForm->getValue("x_satuan");
 		if (!$this->satuan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->satuan->Visible = FALSE; // Disable update for API request
 			else
 				$this->satuan->setFormValue($val);

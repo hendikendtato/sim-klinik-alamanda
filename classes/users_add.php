@@ -841,7 +841,7 @@ class users_add extends users
 		// Check field name 'id_klinik' first before field var 'x_id_klinik'
 		$val = $CurrentForm->hasValue("id_klinik") ? $CurrentForm->getValue("id_klinik") : $CurrentForm->getValue("x_id_klinik");
 		if (!$this->id_klinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_klinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_klinik->setFormValue($val);
@@ -850,7 +850,7 @@ class users_add extends users
 		// Check field name 'id_pegawai' first before field var 'x_id_pegawai'
 		$val = $CurrentForm->hasValue("id_pegawai") ? $CurrentForm->getValue("id_pegawai") : $CurrentForm->getValue("x_id_pegawai");
 		if (!$this->id_pegawai->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_pegawai->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_pegawai->setFormValue($val);
@@ -859,7 +859,7 @@ class users_add extends users
 		// Check field name 'username' first before field var 'x_username'
 		$val = $CurrentForm->hasValue("username") ? $CurrentForm->getValue("username") : $CurrentForm->getValue("x_username");
 		if (!$this->username->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->username->Visible = FALSE; // Disable update for API request
 			else
 				$this->username->setFormValue($val);
@@ -868,7 +868,7 @@ class users_add extends users
 		// Check field name 'userpwd' first before field var 'x_userpwd'
 		$val = $CurrentForm->hasValue("userpwd") ? $CurrentForm->getValue("userpwd") : $CurrentForm->getValue("x_userpwd");
 		if (!$this->userpwd->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->userpwd->Visible = FALSE; // Disable update for API request
 			else
 				if (Config("ENCRYPTED_PASSWORD")) // Encrypted password, use raw value
@@ -880,7 +880,7 @@ class users_add extends users
 		// Check field name 'level' first before field var 'x_level'
 		$val = $CurrentForm->hasValue("level") ? $CurrentForm->getValue("level") : $CurrentForm->getValue("x_level");
 		if (!$this->level->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->level->Visible = FALSE; // Disable update for API request
 			else
 				$this->level->setFormValue($val);

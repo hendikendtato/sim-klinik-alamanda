@@ -854,7 +854,7 @@ class audittrail_add extends audittrail
 		// Check field name 'datetime' first before field var 'x_datetime'
 		$val = $CurrentForm->hasValue("datetime") ? $CurrentForm->getValue("datetime") : $CurrentForm->getValue("x_datetime");
 		if (!$this->datetime->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->datetime->Visible = FALSE; // Disable update for API request
 			else
 				$this->datetime->setFormValue($val);
@@ -864,7 +864,7 @@ class audittrail_add extends audittrail
 		// Check field name 'script' first before field var 'x_script'
 		$val = $CurrentForm->hasValue("script") ? $CurrentForm->getValue("script") : $CurrentForm->getValue("x_script");
 		if (!$this->script->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->script->Visible = FALSE; // Disable update for API request
 			else
 				$this->script->setFormValue($val);
@@ -873,7 +873,7 @@ class audittrail_add extends audittrail
 		// Check field name 'user' first before field var 'x_user'
 		$val = $CurrentForm->hasValue("user") ? $CurrentForm->getValue("user") : $CurrentForm->getValue("x_user");
 		if (!$this->user->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->user->Visible = FALSE; // Disable update for API request
 			else
 				$this->user->setFormValue($val);
@@ -882,7 +882,7 @@ class audittrail_add extends audittrail
 		// Check field name '_action' first before field var 'x__action'
 		$val = $CurrentForm->hasValue("_action") ? $CurrentForm->getValue("_action") : $CurrentForm->getValue("x__action");
 		if (!$this->_action->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->_action->Visible = FALSE; // Disable update for API request
 			else
 				$this->_action->setFormValue($val);
@@ -891,7 +891,7 @@ class audittrail_add extends audittrail
 		// Check field name 'table' first before field var 'x__table'
 		$val = $CurrentForm->hasValue("table") ? $CurrentForm->getValue("table") : $CurrentForm->getValue("x__table");
 		if (!$this->_table->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->_table->Visible = FALSE; // Disable update for API request
 			else
 				$this->_table->setFormValue($val);
@@ -900,7 +900,7 @@ class audittrail_add extends audittrail
 		// Check field name 'field' first before field var 'x_field'
 		$val = $CurrentForm->hasValue("field") ? $CurrentForm->getValue("field") : $CurrentForm->getValue("x_field");
 		if (!$this->field->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->field->Visible = FALSE; // Disable update for API request
 			else
 				$this->field->setFormValue($val);
@@ -909,7 +909,7 @@ class audittrail_add extends audittrail
 		// Check field name 'keyvalue' first before field var 'x_keyvalue'
 		$val = $CurrentForm->hasValue("keyvalue") ? $CurrentForm->getValue("keyvalue") : $CurrentForm->getValue("x_keyvalue");
 		if (!$this->keyvalue->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->keyvalue->Visible = FALSE; // Disable update for API request
 			else
 				$this->keyvalue->setFormValue($val);
@@ -918,7 +918,7 @@ class audittrail_add extends audittrail
 		// Check field name 'oldvalue' first before field var 'x_oldvalue'
 		$val = $CurrentForm->hasValue("oldvalue") ? $CurrentForm->getValue("oldvalue") : $CurrentForm->getValue("x_oldvalue");
 		if (!$this->oldvalue->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->oldvalue->Visible = FALSE; // Disable update for API request
 			else
 				$this->oldvalue->setFormValue($val);
@@ -927,7 +927,7 @@ class audittrail_add extends audittrail
 		// Check field name 'newvalue' first before field var 'x_newvalue'
 		$val = $CurrentForm->hasValue("newvalue") ? $CurrentForm->getValue("newvalue") : $CurrentForm->getValue("x_newvalue");
 		if (!$this->newvalue->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->newvalue->Visible = FALSE; // Disable update for API request
 			else
 				$this->newvalue->setFormValue($val);

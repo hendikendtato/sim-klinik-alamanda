@@ -865,7 +865,7 @@ class detailjurnal_edit extends detailjurnal
 		// Check field name 'id_jurnal' first before field var 'x_id_jurnal'
 		$val = $CurrentForm->hasValue("id_jurnal") ? $CurrentForm->getValue("id_jurnal") : $CurrentForm->getValue("x_id_jurnal");
 		if (!$this->id_jurnal->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_jurnal->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_jurnal->setFormValue($val);
@@ -874,7 +874,7 @@ class detailjurnal_edit extends detailjurnal
 		// Check field name 'id_akun' first before field var 'x_id_akun'
 		$val = $CurrentForm->hasValue("id_akun") ? $CurrentForm->getValue("id_akun") : $CurrentForm->getValue("x_id_akun");
 		if (!$this->id_akun->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_akun->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_akun->setFormValue($val);
@@ -883,7 +883,7 @@ class detailjurnal_edit extends detailjurnal
 		// Check field name 'debet' first before field var 'x_debet'
 		$val = $CurrentForm->hasValue("debet") ? $CurrentForm->getValue("debet") : $CurrentForm->getValue("x_debet");
 		if (!$this->debet->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->debet->Visible = FALSE; // Disable update for API request
 			else
 				$this->debet->setFormValue($val);
@@ -892,7 +892,7 @@ class detailjurnal_edit extends detailjurnal
 		// Check field name 'kredit' first before field var 'x_kredit'
 		$val = $CurrentForm->hasValue("kredit") ? $CurrentForm->getValue("kredit") : $CurrentForm->getValue("x_kredit");
 		if (!$this->kredit->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kredit->Visible = FALSE; // Disable update for API request
 			else
 				$this->kredit->setFormValue($val);

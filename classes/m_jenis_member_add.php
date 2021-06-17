@@ -861,7 +861,7 @@ class m_jenis_member_add extends m_jenis_member
 		// Check field name 'nama_member' first before field var 'x_nama_member'
 		$val = $CurrentForm->hasValue("nama_member") ? $CurrentForm->getValue("nama_member") : $CurrentForm->getValue("x_nama_member");
 		if (!$this->nama_member->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama_member->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama_member->setFormValue($val);
@@ -870,7 +870,7 @@ class m_jenis_member_add extends m_jenis_member
 		// Check field name 'member_selanjutnya' first before field var 'x_member_selanjutnya'
 		$val = $CurrentForm->hasValue("member_selanjutnya") ? $CurrentForm->getValue("member_selanjutnya") : $CurrentForm->getValue("x_member_selanjutnya");
 		if (!$this->member_selanjutnya->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->member_selanjutnya->Visible = FALSE; // Disable update for API request
 			else
 				$this->member_selanjutnya->setFormValue($val);
@@ -879,7 +879,7 @@ class m_jenis_member_add extends m_jenis_member
 		// Check field name 'nominal_bawah' first before field var 'x_nominal_bawah'
 		$val = $CurrentForm->hasValue("nominal_bawah") ? $CurrentForm->getValue("nominal_bawah") : $CurrentForm->getValue("x_nominal_bawah");
 		if (!$this->nominal_bawah->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nominal_bawah->Visible = FALSE; // Disable update for API request
 			else
 				$this->nominal_bawah->setFormValue($val);
@@ -888,7 +888,7 @@ class m_jenis_member_add extends m_jenis_member
 		// Check field name 'nominal_atas' first before field var 'x_nominal_atas'
 		$val = $CurrentForm->hasValue("nominal_atas") ? $CurrentForm->getValue("nominal_atas") : $CurrentForm->getValue("x_nominal_atas");
 		if (!$this->nominal_atas->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nominal_atas->Visible = FALSE; // Disable update for API request
 			else
 				$this->nominal_atas->setFormValue($val);
@@ -897,7 +897,7 @@ class m_jenis_member_add extends m_jenis_member
 		// Check field name 'qty_bawah' first before field var 'x_qty_bawah'
 		$val = $CurrentForm->hasValue("qty_bawah") ? $CurrentForm->getValue("qty_bawah") : $CurrentForm->getValue("x_qty_bawah");
 		if (!$this->qty_bawah->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->qty_bawah->Visible = FALSE; // Disable update for API request
 			else
 				$this->qty_bawah->setFormValue($val);
@@ -906,7 +906,7 @@ class m_jenis_member_add extends m_jenis_member
 		// Check field name 'qty_atas' first before field var 'x_qty_atas'
 		$val = $CurrentForm->hasValue("qty_atas") ? $CurrentForm->getValue("qty_atas") : $CurrentForm->getValue("x_qty_atas");
 		if (!$this->qty_atas->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->qty_atas->Visible = FALSE; // Disable update for API request
 			else
 				$this->qty_atas->setFormValue($val);
@@ -915,7 +915,7 @@ class m_jenis_member_add extends m_jenis_member
 		// Check field name 'disc_prosen' first before field var 'x_disc_prosen'
 		$val = $CurrentForm->hasValue("disc_prosen") ? $CurrentForm->getValue("disc_prosen") : $CurrentForm->getValue("x_disc_prosen");
 		if (!$this->disc_prosen->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->disc_prosen->Visible = FALSE; // Disable update for API request
 			else
 				$this->disc_prosen->setFormValue($val);
@@ -924,7 +924,7 @@ class m_jenis_member_add extends m_jenis_member
 		// Check field name 'disc_nominal' first before field var 'x_disc_nominal'
 		$val = $CurrentForm->hasValue("disc_nominal") ? $CurrentForm->getValue("disc_nominal") : $CurrentForm->getValue("x_disc_nominal");
 		if (!$this->disc_nominal->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->disc_nominal->Visible = FALSE; // Disable update for API request
 			else
 				$this->disc_nominal->setFormValue($val);
@@ -933,7 +933,7 @@ class m_jenis_member_add extends m_jenis_member
 		// Check field name 'jangka_waktu' first before field var 'x_jangka_waktu'
 		$val = $CurrentForm->hasValue("jangka_waktu") ? $CurrentForm->getValue("jangka_waktu") : $CurrentForm->getValue("x_jangka_waktu");
 		if (!$this->jangka_waktu->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->jangka_waktu->Visible = FALSE; // Disable update for API request
 			else
 				$this->jangka_waktu->setFormValue($val);
@@ -942,7 +942,7 @@ class m_jenis_member_add extends m_jenis_member
 		// Check field name 'min_kedatangan' first before field var 'x_min_kedatangan'
 		$val = $CurrentForm->hasValue("min_kedatangan") ? $CurrentForm->getValue("min_kedatangan") : $CurrentForm->getValue("x_min_kedatangan");
 		if (!$this->min_kedatangan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->min_kedatangan->Visible = FALSE; // Disable update for API request
 			else
 				$this->min_kedatangan->setFormValue($val);
@@ -951,7 +951,7 @@ class m_jenis_member_add extends m_jenis_member
 		// Check field name 'poin_member' first before field var 'x_poin_member'
 		$val = $CurrentForm->hasValue("poin_member") ? $CurrentForm->getValue("poin_member") : $CurrentForm->getValue("x_poin_member");
 		if (!$this->poin_member->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->poin_member->Visible = FALSE; // Disable update for API request
 			else
 				$this->poin_member->setFormValue($val);

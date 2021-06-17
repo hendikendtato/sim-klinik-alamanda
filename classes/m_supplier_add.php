@@ -868,7 +868,7 @@ class m_supplier_add extends m_supplier
 		// Check field name 'kode_supplier' first before field var 'x_kode_supplier'
 		$val = $CurrentForm->hasValue("kode_supplier") ? $CurrentForm->getValue("kode_supplier") : $CurrentForm->getValue("x_kode_supplier");
 		if (!$this->kode_supplier->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kode_supplier->Visible = FALSE; // Disable update for API request
 			else
 				$this->kode_supplier->setFormValue($val);
@@ -877,7 +877,7 @@ class m_supplier_add extends m_supplier
 		// Check field name 'nama_supplier' first before field var 'x_nama_supplier'
 		$val = $CurrentForm->hasValue("nama_supplier") ? $CurrentForm->getValue("nama_supplier") : $CurrentForm->getValue("x_nama_supplier");
 		if (!$this->nama_supplier->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama_supplier->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama_supplier->setFormValue($val);
@@ -886,7 +886,7 @@ class m_supplier_add extends m_supplier
 		// Check field name 'pic_supplier' first before field var 'x_pic_supplier'
 		$val = $CurrentForm->hasValue("pic_supplier") ? $CurrentForm->getValue("pic_supplier") : $CurrentForm->getValue("x_pic_supplier");
 		if (!$this->pic_supplier->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->pic_supplier->Visible = FALSE; // Disable update for API request
 			else
 				$this->pic_supplier->setFormValue($val);
@@ -895,7 +895,7 @@ class m_supplier_add extends m_supplier
 		// Check field name 'alamat_supplier' first before field var 'x_alamat_supplier'
 		$val = $CurrentForm->hasValue("alamat_supplier") ? $CurrentForm->getValue("alamat_supplier") : $CurrentForm->getValue("x_alamat_supplier");
 		if (!$this->alamat_supplier->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->alamat_supplier->Visible = FALSE; // Disable update for API request
 			else
 				$this->alamat_supplier->setFormValue($val);
@@ -904,7 +904,7 @@ class m_supplier_add extends m_supplier
 		// Check field name 'kelurahan_supplier' first before field var 'x_kelurahan_supplier'
 		$val = $CurrentForm->hasValue("kelurahan_supplier") ? $CurrentForm->getValue("kelurahan_supplier") : $CurrentForm->getValue("x_kelurahan_supplier");
 		if (!$this->kelurahan_supplier->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kelurahan_supplier->Visible = FALSE; // Disable update for API request
 			else
 				$this->kelurahan_supplier->setFormValue($val);
@@ -913,7 +913,7 @@ class m_supplier_add extends m_supplier
 		// Check field name 'kecamatan_supplier' first before field var 'x_kecamatan_supplier'
 		$val = $CurrentForm->hasValue("kecamatan_supplier") ? $CurrentForm->getValue("kecamatan_supplier") : $CurrentForm->getValue("x_kecamatan_supplier");
 		if (!$this->kecamatan_supplier->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kecamatan_supplier->Visible = FALSE; // Disable update for API request
 			else
 				$this->kecamatan_supplier->setFormValue($val);
@@ -922,7 +922,7 @@ class m_supplier_add extends m_supplier
 		// Check field name 'kota_supplier' first before field var 'x_kota_supplier'
 		$val = $CurrentForm->hasValue("kota_supplier") ? $CurrentForm->getValue("kota_supplier") : $CurrentForm->getValue("x_kota_supplier");
 		if (!$this->kota_supplier->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kota_supplier->Visible = FALSE; // Disable update for API request
 			else
 				$this->kota_supplier->setFormValue($val);
@@ -931,7 +931,7 @@ class m_supplier_add extends m_supplier
 		// Check field name 'kodepos_supplier' first before field var 'x_kodepos_supplier'
 		$val = $CurrentForm->hasValue("kodepos_supplier") ? $CurrentForm->getValue("kodepos_supplier") : $CurrentForm->getValue("x_kodepos_supplier");
 		if (!$this->kodepos_supplier->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kodepos_supplier->Visible = FALSE; // Disable update for API request
 			else
 				$this->kodepos_supplier->setFormValue($val);
@@ -940,7 +940,7 @@ class m_supplier_add extends m_supplier
 		// Check field name 'telpon_supplier' first before field var 'x_telpon_supplier'
 		$val = $CurrentForm->hasValue("telpon_supplier") ? $CurrentForm->getValue("telpon_supplier") : $CurrentForm->getValue("x_telpon_supplier");
 		if (!$this->telpon_supplier->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->telpon_supplier->Visible = FALSE; // Disable update for API request
 			else
 				$this->telpon_supplier->setFormValue($val);
@@ -949,7 +949,7 @@ class m_supplier_add extends m_supplier
 		// Check field name 'hp_supplier' first before field var 'x_hp_supplier'
 		$val = $CurrentForm->hasValue("hp_supplier") ? $CurrentForm->getValue("hp_supplier") : $CurrentForm->getValue("x_hp_supplier");
 		if (!$this->hp_supplier->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->hp_supplier->Visible = FALSE; // Disable update for API request
 			else
 				$this->hp_supplier->setFormValue($val);
@@ -958,7 +958,7 @@ class m_supplier_add extends m_supplier
 		// Check field name 'email_supplier' first before field var 'x_email_supplier'
 		$val = $CurrentForm->hasValue("email_supplier") ? $CurrentForm->getValue("email_supplier") : $CurrentForm->getValue("x_email_supplier");
 		if (!$this->email_supplier->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->email_supplier->Visible = FALSE; // Disable update for API request
 			else
 				$this->email_supplier->setFormValue($val);
@@ -967,7 +967,7 @@ class m_supplier_add extends m_supplier
 		// Check field name 'kategori_supplier' first before field var 'x_kategori_supplier'
 		$val = $CurrentForm->hasValue("kategori_supplier") ? $CurrentForm->getValue("kategori_supplier") : $CurrentForm->getValue("x_kategori_supplier");
 		if (!$this->kategori_supplier->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kategori_supplier->Visible = FALSE; // Disable update for API request
 			else
 				$this->kategori_supplier->setFormValue($val);
@@ -976,7 +976,7 @@ class m_supplier_add extends m_supplier
 		// Check field name 'npwp_supplier' first before field var 'x_npwp_supplier'
 		$val = $CurrentForm->hasValue("npwp_supplier") ? $CurrentForm->getValue("npwp_supplier") : $CurrentForm->getValue("x_npwp_supplier");
 		if (!$this->npwp_supplier->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->npwp_supplier->Visible = FALSE; // Disable update for API request
 			else
 				$this->npwp_supplier->setFormValue($val);
@@ -985,7 +985,7 @@ class m_supplier_add extends m_supplier
 		// Check field name 'rekening_supplier' first before field var 'x_rekening_supplier'
 		$val = $CurrentForm->hasValue("rekening_supplier") ? $CurrentForm->getValue("rekening_supplier") : $CurrentForm->getValue("x_rekening_supplier");
 		if (!$this->rekening_supplier->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->rekening_supplier->Visible = FALSE; // Disable update for API request
 			else
 				$this->rekening_supplier->setFormValue($val);

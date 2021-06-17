@@ -902,7 +902,7 @@ class kartustok_add extends kartustok
 		// Check field name 'id_barang' first before field var 'x_id_barang'
 		$val = $CurrentForm->hasValue("id_barang") ? $CurrentForm->getValue("id_barang") : $CurrentForm->getValue("x_id_barang");
 		if (!$this->id_barang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_barang->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_barang->setFormValue($val);
@@ -911,7 +911,7 @@ class kartustok_add extends kartustok
 		// Check field name 'id_klinik' first before field var 'x_id_klinik'
 		$val = $CurrentForm->hasValue("id_klinik") ? $CurrentForm->getValue("id_klinik") : $CurrentForm->getValue("x_id_klinik");
 		if (!$this->id_klinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_klinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_klinik->setFormValue($val);
@@ -920,7 +920,7 @@ class kartustok_add extends kartustok
 		// Check field name 'tanggal' first before field var 'x_tanggal'
 		$val = $CurrentForm->hasValue("tanggal") ? $CurrentForm->getValue("tanggal") : $CurrentForm->getValue("x_tanggal");
 		if (!$this->tanggal->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tanggal->Visible = FALSE; // Disable update for API request
 			else
 				$this->tanggal->setFormValue($val);
@@ -930,7 +930,7 @@ class kartustok_add extends kartustok
 		// Check field name 'id_terimabarang' first before field var 'x_id_terimabarang'
 		$val = $CurrentForm->hasValue("id_terimabarang") ? $CurrentForm->getValue("id_terimabarang") : $CurrentForm->getValue("x_id_terimabarang");
 		if (!$this->id_terimabarang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_terimabarang->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_terimabarang->setFormValue($val);
@@ -939,7 +939,7 @@ class kartustok_add extends kartustok
 		// Check field name 'id_terimagudang' first before field var 'x_id_terimagudang'
 		$val = $CurrentForm->hasValue("id_terimagudang") ? $CurrentForm->getValue("id_terimagudang") : $CurrentForm->getValue("x_id_terimagudang");
 		if (!$this->id_terimagudang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_terimagudang->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_terimagudang->setFormValue($val);
@@ -948,7 +948,7 @@ class kartustok_add extends kartustok
 		// Check field name 'id_penjualan' first before field var 'x_id_penjualan'
 		$val = $CurrentForm->hasValue("id_penjualan") ? $CurrentForm->getValue("id_penjualan") : $CurrentForm->getValue("x_id_penjualan");
 		if (!$this->id_penjualan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_penjualan->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_penjualan->setFormValue($val);
@@ -957,7 +957,7 @@ class kartustok_add extends kartustok
 		// Check field name 'id_kirimbarang' first before field var 'x_id_kirimbarang'
 		$val = $CurrentForm->hasValue("id_kirimbarang") ? $CurrentForm->getValue("id_kirimbarang") : $CurrentForm->getValue("x_id_kirimbarang");
 		if (!$this->id_kirimbarang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_kirimbarang->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_kirimbarang->setFormValue($val);
@@ -966,7 +966,7 @@ class kartustok_add extends kartustok
 		// Check field name 'id_penyesuaian' first before field var 'x_id_penyesuaian'
 		$val = $CurrentForm->hasValue("id_penyesuaian") ? $CurrentForm->getValue("id_penyesuaian") : $CurrentForm->getValue("x_id_penyesuaian");
 		if (!$this->id_penyesuaian->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_penyesuaian->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_penyesuaian->setFormValue($val);
@@ -975,7 +975,7 @@ class kartustok_add extends kartustok
 		// Check field name 'stok_awal' first before field var 'x_stok_awal'
 		$val = $CurrentForm->hasValue("stok_awal") ? $CurrentForm->getValue("stok_awal") : $CurrentForm->getValue("x_stok_awal");
 		if (!$this->stok_awal->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->stok_awal->Visible = FALSE; // Disable update for API request
 			else
 				$this->stok_awal->setFormValue($val);
@@ -984,7 +984,7 @@ class kartustok_add extends kartustok
 		// Check field name 'masuk' first before field var 'x_masuk'
 		$val = $CurrentForm->hasValue("masuk") ? $CurrentForm->getValue("masuk") : $CurrentForm->getValue("x_masuk");
 		if (!$this->masuk->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->masuk->Visible = FALSE; // Disable update for API request
 			else
 				$this->masuk->setFormValue($val);
@@ -993,7 +993,7 @@ class kartustok_add extends kartustok
 		// Check field name 'masuk_penyesuaian' first before field var 'x_masuk_penyesuaian'
 		$val = $CurrentForm->hasValue("masuk_penyesuaian") ? $CurrentForm->getValue("masuk_penyesuaian") : $CurrentForm->getValue("x_masuk_penyesuaian");
 		if (!$this->masuk_penyesuaian->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->masuk_penyesuaian->Visible = FALSE; // Disable update for API request
 			else
 				$this->masuk_penyesuaian->setFormValue($val);
@@ -1002,7 +1002,7 @@ class kartustok_add extends kartustok
 		// Check field name 'keluar' first before field var 'x_keluar'
 		$val = $CurrentForm->hasValue("keluar") ? $CurrentForm->getValue("keluar") : $CurrentForm->getValue("x_keluar");
 		if (!$this->keluar->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->keluar->Visible = FALSE; // Disable update for API request
 			else
 				$this->keluar->setFormValue($val);
@@ -1011,7 +1011,7 @@ class kartustok_add extends kartustok
 		// Check field name 'keluar_nonjual' first before field var 'x_keluar_nonjual'
 		$val = $CurrentForm->hasValue("keluar_nonjual") ? $CurrentForm->getValue("keluar_nonjual") : $CurrentForm->getValue("x_keluar_nonjual");
 		if (!$this->keluar_nonjual->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->keluar_nonjual->Visible = FALSE; // Disable update for API request
 			else
 				$this->keluar_nonjual->setFormValue($val);
@@ -1020,7 +1020,7 @@ class kartustok_add extends kartustok
 		// Check field name 'keluar_penyesuaian' first before field var 'x_keluar_penyesuaian'
 		$val = $CurrentForm->hasValue("keluar_penyesuaian") ? $CurrentForm->getValue("keluar_penyesuaian") : $CurrentForm->getValue("x_keluar_penyesuaian");
 		if (!$this->keluar_penyesuaian->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->keluar_penyesuaian->Visible = FALSE; // Disable update for API request
 			else
 				$this->keluar_penyesuaian->setFormValue($val);
@@ -1029,7 +1029,7 @@ class kartustok_add extends kartustok
 		// Check field name 'keluar_kirim' first before field var 'x_keluar_kirim'
 		$val = $CurrentForm->hasValue("keluar_kirim") ? $CurrentForm->getValue("keluar_kirim") : $CurrentForm->getValue("x_keluar_kirim");
 		if (!$this->keluar_kirim->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->keluar_kirim->Visible = FALSE; // Disable update for API request
 			else
 				$this->keluar_kirim->setFormValue($val);
@@ -1038,7 +1038,7 @@ class kartustok_add extends kartustok
 		// Check field name 'retur' first before field var 'x_retur'
 		$val = $CurrentForm->hasValue("retur") ? $CurrentForm->getValue("retur") : $CurrentForm->getValue("x_retur");
 		if (!$this->retur->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->retur->Visible = FALSE; // Disable update for API request
 			else
 				$this->retur->setFormValue($val);
@@ -1047,7 +1047,7 @@ class kartustok_add extends kartustok
 		// Check field name 'stok_akhir' first before field var 'x_stok_akhir'
 		$val = $CurrentForm->hasValue("stok_akhir") ? $CurrentForm->getValue("stok_akhir") : $CurrentForm->getValue("x_stok_akhir");
 		if (!$this->stok_akhir->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->stok_akhir->Visible = FALSE; // Disable update for API request
 			else
 				$this->stok_akhir->setFormValue($val);

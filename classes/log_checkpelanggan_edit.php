@@ -856,7 +856,7 @@ class log_checkpelanggan_edit extends log_checkpelanggan
 		// Check field name 'tglwaktu_update' first before field var 'x_tglwaktu_update'
 		$val = $CurrentForm->hasValue("tglwaktu_update") ? $CurrentForm->getValue("tglwaktu_update") : $CurrentForm->getValue("x_tglwaktu_update");
 		if (!$this->tglwaktu_update->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tglwaktu_update->Visible = FALSE; // Disable update for API request
 			else
 				$this->tglwaktu_update->setFormValue($val);
@@ -866,7 +866,7 @@ class log_checkpelanggan_edit extends log_checkpelanggan
 		// Check field name 'tgl_update' first before field var 'x_tgl_update'
 		$val = $CurrentForm->hasValue("tgl_update") ? $CurrentForm->getValue("tgl_update") : $CurrentForm->getValue("x_tgl_update");
 		if (!$this->tgl_update->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tgl_update->Visible = FALSE; // Disable update for API request
 			else
 				$this->tgl_update->setFormValue($val);
@@ -876,7 +876,7 @@ class log_checkpelanggan_edit extends log_checkpelanggan
 		// Check field name 'id_user' first before field var 'x_id_user'
 		$val = $CurrentForm->hasValue("id_user") ? $CurrentForm->getValue("id_user") : $CurrentForm->getValue("x_id_user");
 		if (!$this->id_user->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_user->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_user->setFormValue($val);

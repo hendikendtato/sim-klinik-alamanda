@@ -837,7 +837,7 @@ class wp_terapis_add extends wp_terapis
 		// Check field name 'id' first before field var 'x_id'
 		$val = $CurrentForm->hasValue("id") ? $CurrentForm->getValue("id") : $CurrentForm->getValue("x_id");
 		if (!$this->id->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id->Visible = FALSE; // Disable update for API request
 			else
 				$this->id->setFormValue($val);
@@ -846,7 +846,7 @@ class wp_terapis_add extends wp_terapis
 		// Check field name 'nama' first before field var 'x_nama'
 		$val = $CurrentForm->hasValue("nama") ? $CurrentForm->getValue("nama") : $CurrentForm->getValue("x_nama");
 		if (!$this->nama->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama->setFormValue($val);
@@ -855,7 +855,7 @@ class wp_terapis_add extends wp_terapis
 		// Check field name 'deskripsi' first before field var 'x_deskripsi'
 		$val = $CurrentForm->hasValue("deskripsi") ? $CurrentForm->getValue("deskripsi") : $CurrentForm->getValue("x_deskripsi");
 		if (!$this->deskripsi->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->deskripsi->Visible = FALSE; // Disable update for API request
 			else
 				$this->deskripsi->setFormValue($val);
@@ -864,7 +864,7 @@ class wp_terapis_add extends wp_terapis
 		// Check field name 'email' first before field var 'x__email'
 		$val = $CurrentForm->hasValue("email") ? $CurrentForm->getValue("email") : $CurrentForm->getValue("x__email");
 		if (!$this->_email->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->_email->Visible = FALSE; // Disable update for API request
 			else
 				$this->_email->setFormValue($val);
@@ -873,7 +873,7 @@ class wp_terapis_add extends wp_terapis
 		// Check field name 'no_telp' first before field var 'x_no_telp'
 		$val = $CurrentForm->hasValue("no_telp") ? $CurrentForm->getValue("no_telp") : $CurrentForm->getValue("x_no_telp");
 		if (!$this->no_telp->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->no_telp->Visible = FALSE; // Disable update for API request
 			else
 				$this->no_telp->setFormValue($val);

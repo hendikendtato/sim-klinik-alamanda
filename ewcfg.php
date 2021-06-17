@@ -161,7 +161,7 @@ $CONFIG = [
 
 	// General
 	"UNFORMAT_YEAR" => 50, // Unformat year
-	"RANDOM_KEY" => 'qeVYhV3IbKx4p8PI', // Random key for encryption
+	"RANDOM_KEY" => 'RXphb0Q46B30UPtj', // Random key for encryption
 	"ENCRYPTION_KEY" => '', // Encryption key for data protection
 	"PROJECT_STYLESHEET_FILENAME" => "css/sim_klinik_alamanda.css", // Project stylesheet file name
 	"PROJECT_CHARSET" => "utf-8", // Project charset
@@ -218,7 +218,10 @@ $CONFIG = [
 
 	// Database connection info
 	"CONNECTION_INFO" => [
-		"DB" => ["id" => "DB", "type" => "MYSQL", "qs" => "`", "qe" => "`", "host" => "159.65.2.14", "port" => 3306, "user" => "regiadi", "pass" => "mysql-regiadi", "db" => "si_klinik_alamanda_dev"]
+		"DB" => ["id" => "DB", "type" => "MYSQL", "qs" => "`", "qe" => "`", "host" => "159.65.2.14", "port" => "3306", "user" => "regiadi", "pass" => "mysql-regiadi", "db" => "si_klinik_alamanda_dev"]
+	],
+	"PRODUCTION_CONNECTION_INFO" => [
+		"DB" => ["id" => "DB", "type" => "MYSQL", "qs" => "`", "qe" => "`", "host" => "159.65.2.14", "port" => "3306", "user" => "regiadi", "pass" => "mysql-regiadi", "db" => "si_klinik_alamanda_dev"]
 	],
 
 	// Database error function
@@ -267,7 +270,7 @@ $CONFIG = [
 
 	// Language settings
 	"LANGUAGE_FOLDER" => $RELATIVE_PATH . "lang/",
-	"LANGUAGE_DEFAULT_ID" => "id",
+	"LANGUAGE_DEFAULT_ID" => "ID",
 	"LOCALE_FOLDER" => $RELATIVE_PATH . "locale/",
 
 	// Antiforgery token
@@ -425,7 +428,7 @@ $CONFIG = [
 	"ENCRYPT_FILE_PATH" => TRUE, // Encrypt file path
 	"MAX_FILE_SIZE" => 2000000, // Max file size
 	"MAX_FILE_COUNT" => 0, // Max file count
-	"THUMBNAIL_DEFAULT_WIDTH" => 0, // Thumbnail default width
+	"THUMBNAIL_DEFAULT_WIDTH" => 100, // Thumbnail default width
 	"THUMBNAIL_DEFAULT_HEIGHT" => 0, // Thumbnail default height
 	"UPLOADED_FILE_MODE" => 0666, // Uploaded file mode
 	"USER_UPLOAD_TEMP_PATH" => "", // User upload temp path (relative to app root) e.g. "tmp/"
@@ -436,7 +439,7 @@ $CONFIG = [
 	"FILE_NOT_FOUND" => "/9j/4AAQSkZJRgABAQAAAQABAAD/7QAuUGhvdG9zaG9wIDMuMAA4QklNBAQAAAAAABIcAigADEZpbGVOb3RGb3VuZAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wgARCAABAAEDAREAAhEBAxEB/8QAFAABAAAAAAAAAAAAAAAAAAAACP/EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhADEAAAAD+f/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPwB//8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAgBAgEBPwB//8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAgBAwEBPwB//9k=", // 1x1 jpeg with IPTC data "2#040"="FileNotFound"
 
 	// API
-	"API_URL" => "api/", // API accessor URL
+	"API_URL" => "api/index.php", // API accessor URL
 	"API_ACTION_NAME" => "action", // API action name
 	"API_OBJECT_NAME" => "object", // API object name
 	"API_FIELD_NAME" => "field", // API field name
@@ -463,7 +466,7 @@ $CONFIG = [
 	"API_USERLEVEL_NAME" => "userlevel", // API userlevel name
 
 	// URL rewrite // PHP
-	"USE_URL_REWRITE" => TRUE, // Use URL rewrite
+	"USE_URL_REWRITE" => FALSE, // Use URL rewrite
 
 	// Image resize
 	"THUMBNAIL_CLASS" => "\PHPThumb\GD",
@@ -1014,7 +1017,7 @@ $CONFIG = [
 	"COOKIE_CONSENT_BUTTON_CLASS" => "btn btn-dark btn-sm", // CSS class name for cookie consent buttons
 	"COOKIE_EXPIRY_TIME" => time() + 365*24*60*60, // Change cookie expiry time here
 	"COOKIE_HTTP_ONLY" => TRUE,
-	"COOKIE_SECURE" => "FALSE",
+	"COOKIE_SECURE" => FALSE,
 	"COOKIE_SAMESITE" => "Lax",
 
 	// Mime type
@@ -1139,7 +1142,7 @@ date_default_timezone_set($TIME_ZONE);
  * Global variables
  */
 $CONNECTIONS = []; // Connections
-$LANGUAGES = [["id","","indonesian.xml"]];
+$LANGUAGES = [["ID","","indonesia.xml"]];
 $Conn = NULL; // Primary connection
 $Page = NULL; // Page
 $UserTable = NULL; // User table

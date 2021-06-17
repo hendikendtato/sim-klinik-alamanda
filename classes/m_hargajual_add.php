@@ -867,7 +867,7 @@ class m_hargajual_add extends m_hargajual
 		// Check field name 'id_barang' first before field var 'x_id_barang'
 		$val = $CurrentForm->hasValue("id_barang") ? $CurrentForm->getValue("id_barang") : $CurrentForm->getValue("x_id_barang");
 		if (!$this->id_barang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_barang->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_barang->setFormValue($val);
@@ -876,7 +876,7 @@ class m_hargajual_add extends m_hargajual
 		// Check field name 'totalhargajual' first before field var 'x_totalhargajual'
 		$val = $CurrentForm->hasValue("totalhargajual") ? $CurrentForm->getValue("totalhargajual") : $CurrentForm->getValue("x_totalhargajual");
 		if (!$this->totalhargajual->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->totalhargajual->Visible = FALSE; // Disable update for API request
 			else
 				$this->totalhargajual->setFormValue($val);
@@ -885,7 +885,7 @@ class m_hargajual_add extends m_hargajual
 		// Check field name 'disc_pr' first before field var 'x_disc_pr'
 		$val = $CurrentForm->hasValue("disc_pr") ? $CurrentForm->getValue("disc_pr") : $CurrentForm->getValue("x_disc_pr");
 		if (!$this->disc_pr->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->disc_pr->Visible = FALSE; // Disable update for API request
 			else
 				$this->disc_pr->setFormValue($val);
@@ -894,7 +894,7 @@ class m_hargajual_add extends m_hargajual
 		// Check field name 'disc_rp' first before field var 'x_disc_rp'
 		$val = $CurrentForm->hasValue("disc_rp") ? $CurrentForm->getValue("disc_rp") : $CurrentForm->getValue("x_disc_rp");
 		if (!$this->disc_rp->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->disc_rp->Visible = FALSE; // Disable update for API request
 			else
 				$this->disc_rp->setFormValue($val);
@@ -903,7 +903,7 @@ class m_hargajual_add extends m_hargajual
 		// Check field name 'id_klinik' first before field var 'x_id_klinik'
 		$val = $CurrentForm->hasValue("id_klinik") ? $CurrentForm->getValue("id_klinik") : $CurrentForm->getValue("x_id_klinik");
 		if (!$this->id_klinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_klinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_klinik->setFormValue($val);
@@ -912,7 +912,7 @@ class m_hargajual_add extends m_hargajual
 		// Check field name 'stok' first before field var 'x_stok'
 		$val = $CurrentForm->hasValue("stok") ? $CurrentForm->getValue("stok") : $CurrentForm->getValue("x_stok");
 		if (!$this->stok->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->stok->Visible = FALSE; // Disable update for API request
 			else
 				$this->stok->setFormValue($val);
@@ -921,7 +921,7 @@ class m_hargajual_add extends m_hargajual
 		// Check field name 'satuan' first before field var 'x_satuan'
 		$val = $CurrentForm->hasValue("satuan") ? $CurrentForm->getValue("satuan") : $CurrentForm->getValue("x_satuan");
 		if (!$this->satuan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->satuan->Visible = FALSE; // Disable update for API request
 			else
 				$this->satuan->setFormValue($val);
@@ -930,7 +930,7 @@ class m_hargajual_add extends m_hargajual
 		// Check field name 'minimum_stok' first before field var 'x_minimum_stok'
 		$val = $CurrentForm->hasValue("minimum_stok") ? $CurrentForm->getValue("minimum_stok") : $CurrentForm->getValue("x_minimum_stok");
 		if (!$this->minimum_stok->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->minimum_stok->Visible = FALSE; // Disable update for API request
 			else
 				$this->minimum_stok->setFormValue($val);
@@ -939,7 +939,7 @@ class m_hargajual_add extends m_hargajual
 		// Check field name 'tgl_masuk' first before field var 'x_tgl_masuk'
 		$val = $CurrentForm->hasValue("tgl_masuk") ? $CurrentForm->getValue("tgl_masuk") : $CurrentForm->getValue("x_tgl_masuk");
 		if (!$this->tgl_masuk->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tgl_masuk->Visible = FALSE; // Disable update for API request
 			else
 				$this->tgl_masuk->setFormValue($val);
@@ -949,7 +949,7 @@ class m_hargajual_add extends m_hargajual
 		// Check field name 'tgl_exp' first before field var 'x_tgl_exp'
 		$val = $CurrentForm->hasValue("tgl_exp") ? $CurrentForm->getValue("tgl_exp") : $CurrentForm->getValue("x_tgl_exp");
 		if (!$this->tgl_exp->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tgl_exp->Visible = FALSE; // Disable update for API request
 			else
 				$this->tgl_exp->setFormValue($val);
@@ -959,7 +959,7 @@ class m_hargajual_add extends m_hargajual
 		// Check field name 'kategori' first before field var 'x_kategori'
 		$val = $CurrentForm->hasValue("kategori") ? $CurrentForm->getValue("kategori") : $CurrentForm->getValue("x_kategori");
 		if (!$this->kategori->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kategori->Visible = FALSE; // Disable update for API request
 			else
 				$this->kategori->setFormValue($val);
@@ -968,7 +968,7 @@ class m_hargajual_add extends m_hargajual
 		// Check field name 'subkategori' first before field var 'x_subkategori'
 		$val = $CurrentForm->hasValue("subkategori") ? $CurrentForm->getValue("subkategori") : $CurrentForm->getValue("x_subkategori");
 		if (!$this->subkategori->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->subkategori->Visible = FALSE; // Disable update for API request
 			else
 				$this->subkategori->setFormValue($val);

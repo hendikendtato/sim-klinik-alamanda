@@ -2124,7 +2124,7 @@ class antrian_list extends antrian
 		// Check field name 'tanggal' first before field var 'x_tanggal'
 		$val = $CurrentForm->hasValue("tanggal") ? $CurrentForm->getValue("tanggal") : $CurrentForm->getValue("x_tanggal");
 		if (!$this->tanggal->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tanggal->Visible = FALSE; // Disable update for API request
 			else
 				$this->tanggal->setFormValue($val);
@@ -2134,7 +2134,7 @@ class antrian_list extends antrian
 		// Check field name 'nomor_antrian' first before field var 'x_nomor_antrian'
 		$val = $CurrentForm->hasValue("nomor_antrian") ? $CurrentForm->getValue("nomor_antrian") : $CurrentForm->getValue("x_nomor_antrian");
 		if (!$this->nomor_antrian->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nomor_antrian->Visible = FALSE; // Disable update for API request
 			else
 				$this->nomor_antrian->setFormValue($val);
@@ -2143,7 +2143,7 @@ class antrian_list extends antrian
 		// Check field name 'keperluan' first before field var 'x_keperluan'
 		$val = $CurrentForm->hasValue("keperluan") ? $CurrentForm->getValue("keperluan") : $CurrentForm->getValue("x_keperluan");
 		if (!$this->keperluan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->keperluan->Visible = FALSE; // Disable update for API request
 			else
 				$this->keperluan->setFormValue($val);
@@ -2152,7 +2152,7 @@ class antrian_list extends antrian
 		// Check field name 'nama_klinik' first before field var 'x_nama_klinik'
 		$val = $CurrentForm->hasValue("nama_klinik") ? $CurrentForm->getValue("nama_klinik") : $CurrentForm->getValue("x_nama_klinik");
 		if (!$this->nama_klinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama_klinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama_klinik->setFormValue($val);
@@ -2161,7 +2161,7 @@ class antrian_list extends antrian
 		// Check field name 'selesai' first before field var 'x_selesai'
 		$val = $CurrentForm->hasValue("selesai") ? $CurrentForm->getValue("selesai") : $CurrentForm->getValue("x_selesai");
 		if (!$this->selesai->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->selesai->Visible = FALSE; // Disable update for API request
 			else
 				$this->selesai->setFormValue($val);

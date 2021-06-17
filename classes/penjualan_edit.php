@@ -704,6 +704,7 @@ class penjualan_edit extends penjualan
 		$this->metode_pembayaran->setVisibility();
 		$this->id_bank->setVisibility();
 		$this->id_kartu->setVisibility();
+		$this->jumlah_voucher->setVisibility();
 		$this->sales->setVisibility();
 		$this->dok_be_wajah->setVisibility();
 		$this->be_body->setVisibility();
@@ -718,7 +719,6 @@ class penjualan_edit extends penjualan
 		$this->_action->setVisibility();
 		$this->status->setVisibility();
 		$this->status_void->Visible = FALSE;
-		$this->jumlah_voucher->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -918,7 +918,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'kode_penjualan' first before field var 'x_kode_penjualan'
 		$val = $CurrentForm->hasValue("kode_penjualan") ? $CurrentForm->getValue("kode_penjualan") : $CurrentForm->getValue("x_kode_penjualan");
 		if (!$this->kode_penjualan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kode_penjualan->Visible = FALSE; // Disable update for API request
 			else
 				$this->kode_penjualan->setFormValue($val);
@@ -927,7 +927,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'id_pelanggan' first before field var 'x_id_pelanggan'
 		$val = $CurrentForm->hasValue("id_pelanggan") ? $CurrentForm->getValue("id_pelanggan") : $CurrentForm->getValue("x_id_pelanggan");
 		if (!$this->id_pelanggan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_pelanggan->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_pelanggan->setFormValue($val);
@@ -936,7 +936,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'id_member' first before field var 'x_id_member'
 		$val = $CurrentForm->hasValue("id_member") ? $CurrentForm->getValue("id_member") : $CurrentForm->getValue("x_id_member");
 		if (!$this->id_member->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_member->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_member->setFormValue($val);
@@ -945,7 +945,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'waktu' first before field var 'x_waktu'
 		$val = $CurrentForm->hasValue("waktu") ? $CurrentForm->getValue("waktu") : $CurrentForm->getValue("x_waktu");
 		if (!$this->waktu->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->waktu->Visible = FALSE; // Disable update for API request
 			else
 				$this->waktu->setFormValue($val);
@@ -955,7 +955,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'diskon_persen' first before field var 'x_diskon_persen'
 		$val = $CurrentForm->hasValue("diskon_persen") ? $CurrentForm->getValue("diskon_persen") : $CurrentForm->getValue("x_diskon_persen");
 		if (!$this->diskon_persen->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->diskon_persen->Visible = FALSE; // Disable update for API request
 			else
 				$this->diskon_persen->setFormValue($val);
@@ -964,7 +964,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'diskon_rupiah' first before field var 'x_diskon_rupiah'
 		$val = $CurrentForm->hasValue("diskon_rupiah") ? $CurrentForm->getValue("diskon_rupiah") : $CurrentForm->getValue("x_diskon_rupiah");
 		if (!$this->diskon_rupiah->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->diskon_rupiah->Visible = FALSE; // Disable update for API request
 			else
 				$this->diskon_rupiah->setFormValue($val);
@@ -973,7 +973,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'ppn' first before field var 'x_ppn'
 		$val = $CurrentForm->hasValue("ppn") ? $CurrentForm->getValue("ppn") : $CurrentForm->getValue("x_ppn");
 		if (!$this->ppn->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->ppn->Visible = FALSE; // Disable update for API request
 			else
 				$this->ppn->setFormValue($val);
@@ -982,7 +982,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'total' first before field var 'x_total'
 		$val = $CurrentForm->hasValue("total") ? $CurrentForm->getValue("total") : $CurrentForm->getValue("x_total");
 		if (!$this->total->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->total->Visible = FALSE; // Disable update for API request
 			else
 				$this->total->setFormValue($val);
@@ -991,7 +991,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'bayar' first before field var 'x_bayar'
 		$val = $CurrentForm->hasValue("bayar") ? $CurrentForm->getValue("bayar") : $CurrentForm->getValue("x_bayar");
 		if (!$this->bayar->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->bayar->Visible = FALSE; // Disable update for API request
 			else
 				$this->bayar->setFormValue($val);
@@ -1000,7 +1000,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'bayar_non_tunai' first before field var 'x_bayar_non_tunai'
 		$val = $CurrentForm->hasValue("bayar_non_tunai") ? $CurrentForm->getValue("bayar_non_tunai") : $CurrentForm->getValue("x_bayar_non_tunai");
 		if (!$this->bayar_non_tunai->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->bayar_non_tunai->Visible = FALSE; // Disable update for API request
 			else
 				$this->bayar_non_tunai->setFormValue($val);
@@ -1009,7 +1009,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'total_non_tunai_charge' first before field var 'x_total_non_tunai_charge'
 		$val = $CurrentForm->hasValue("total_non_tunai_charge") ? $CurrentForm->getValue("total_non_tunai_charge") : $CurrentForm->getValue("x_total_non_tunai_charge");
 		if (!$this->total_non_tunai_charge->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->total_non_tunai_charge->Visible = FALSE; // Disable update for API request
 			else
 				$this->total_non_tunai_charge->setFormValue($val);
@@ -1018,7 +1018,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'keterangan' first before field var 'x_keterangan'
 		$val = $CurrentForm->hasValue("keterangan") ? $CurrentForm->getValue("keterangan") : $CurrentForm->getValue("x_keterangan");
 		if (!$this->keterangan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->keterangan->Visible = FALSE; // Disable update for API request
 			else
 				$this->keterangan->setFormValue($val);
@@ -1027,7 +1027,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'id_klinik' first before field var 'x_id_klinik'
 		$val = $CurrentForm->hasValue("id_klinik") ? $CurrentForm->getValue("id_klinik") : $CurrentForm->getValue("x_id_klinik");
 		if (!$this->id_klinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_klinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_klinik->setFormValue($val);
@@ -1036,7 +1036,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'id_rmd' first before field var 'x_id_rmd'
 		$val = $CurrentForm->hasValue("id_rmd") ? $CurrentForm->getValue("id_rmd") : $CurrentForm->getValue("x_id_rmd");
 		if (!$this->id_rmd->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_rmd->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_rmd->setFormValue($val);
@@ -1045,7 +1045,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'metode_pembayaran' first before field var 'x_metode_pembayaran'
 		$val = $CurrentForm->hasValue("metode_pembayaran") ? $CurrentForm->getValue("metode_pembayaran") : $CurrentForm->getValue("x_metode_pembayaran");
 		if (!$this->metode_pembayaran->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->metode_pembayaran->Visible = FALSE; // Disable update for API request
 			else
 				$this->metode_pembayaran->setFormValue($val);
@@ -1054,7 +1054,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'id_bank' first before field var 'x_id_bank'
 		$val = $CurrentForm->hasValue("id_bank") ? $CurrentForm->getValue("id_bank") : $CurrentForm->getValue("x_id_bank");
 		if (!$this->id_bank->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_bank->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_bank->setFormValue($val);
@@ -1063,16 +1063,25 @@ class penjualan_edit extends penjualan
 		// Check field name 'id_kartu' first before field var 'x_id_kartu'
 		$val = $CurrentForm->hasValue("id_kartu") ? $CurrentForm->getValue("id_kartu") : $CurrentForm->getValue("x_id_kartu");
 		if (!$this->id_kartu->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_kartu->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_kartu->setFormValue($val);
 		}
 
+		// Check field name 'jumlah_voucher' first before field var 'x_jumlah_voucher'
+		$val = $CurrentForm->hasValue("jumlah_voucher") ? $CurrentForm->getValue("jumlah_voucher") : $CurrentForm->getValue("x_jumlah_voucher");
+		if (!$this->jumlah_voucher->IsDetailKey) {
+			if (IsApi() && $val === NULL)
+				$this->jumlah_voucher->Visible = FALSE; // Disable update for API request
+			else
+				$this->jumlah_voucher->setFormValue($val);
+		}
+
 		// Check field name 'sales' first before field var 'x_sales'
 		$val = $CurrentForm->hasValue("sales") ? $CurrentForm->getValue("sales") : $CurrentForm->getValue("x_sales");
 		if (!$this->sales->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->sales->Visible = FALSE; // Disable update for API request
 			else
 				$this->sales->setFormValue($val);
@@ -1081,7 +1090,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'dok_be_wajah' first before field var 'x_dok_be_wajah'
 		$val = $CurrentForm->hasValue("dok_be_wajah") ? $CurrentForm->getValue("dok_be_wajah") : $CurrentForm->getValue("x_dok_be_wajah");
 		if (!$this->dok_be_wajah->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->dok_be_wajah->Visible = FALSE; // Disable update for API request
 			else
 				$this->dok_be_wajah->setFormValue($val);
@@ -1090,7 +1099,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'be_body' first before field var 'x_be_body'
 		$val = $CurrentForm->hasValue("be_body") ? $CurrentForm->getValue("be_body") : $CurrentForm->getValue("x_be_body");
 		if (!$this->be_body->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->be_body->Visible = FALSE; // Disable update for API request
 			else
 				$this->be_body->setFormValue($val);
@@ -1099,7 +1108,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'medis' first before field var 'x_medis'
 		$val = $CurrentForm->hasValue("medis") ? $CurrentForm->getValue("medis") : $CurrentForm->getValue("x_medis");
 		if (!$this->medis->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->medis->Visible = FALSE; // Disable update for API request
 			else
 				$this->medis->setFormValue($val);
@@ -1108,7 +1117,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'dokter' first before field var 'x_dokter'
 		$val = $CurrentForm->hasValue("dokter") ? $CurrentForm->getValue("dokter") : $CurrentForm->getValue("x_dokter");
 		if (!$this->dokter->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->dokter->Visible = FALSE; // Disable update for API request
 			else
 				$this->dokter->setFormValue($val);
@@ -1117,7 +1126,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'id_kartubank' first before field var 'x_id_kartubank'
 		$val = $CurrentForm->hasValue("id_kartubank") ? $CurrentForm->getValue("id_kartubank") : $CurrentForm->getValue("x_id_kartubank");
 		if (!$this->id_kartubank->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_kartubank->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_kartubank->setFormValue($val);
@@ -1126,7 +1135,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'id_kas' first before field var 'x_id_kas'
 		$val = $CurrentForm->hasValue("id_kas") ? $CurrentForm->getValue("id_kas") : $CurrentForm->getValue("x_id_kas");
 		if (!$this->id_kas->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_kas->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_kas->setFormValue($val);
@@ -1135,7 +1144,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'charge' first before field var 'x_charge'
 		$val = $CurrentForm->hasValue("charge") ? $CurrentForm->getValue("charge") : $CurrentForm->getValue("x_charge");
 		if (!$this->charge->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->charge->Visible = FALSE; // Disable update for API request
 			else
 				$this->charge->setFormValue($val);
@@ -1144,7 +1153,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'klaim_poin' first before field var 'x_klaim_poin'
 		$val = $CurrentForm->hasValue("klaim_poin") ? $CurrentForm->getValue("klaim_poin") : $CurrentForm->getValue("x_klaim_poin");
 		if (!$this->klaim_poin->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->klaim_poin->Visible = FALSE; // Disable update for API request
 			else
 				$this->klaim_poin->setFormValue($val);
@@ -1153,7 +1162,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'total_penukaran_poin' first before field var 'x_total_penukaran_poin'
 		$val = $CurrentForm->hasValue("total_penukaran_poin") ? $CurrentForm->getValue("total_penukaran_poin") : $CurrentForm->getValue("x_total_penukaran_poin");
 		if (!$this->total_penukaran_poin->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->total_penukaran_poin->Visible = FALSE; // Disable update for API request
 			else
 				$this->total_penukaran_poin->setFormValue($val);
@@ -1162,7 +1171,7 @@ class penjualan_edit extends penjualan
 		// Check field name 'ongkir' first before field var 'x_ongkir'
 		$val = $CurrentForm->hasValue("ongkir") ? $CurrentForm->getValue("ongkir") : $CurrentForm->getValue("x_ongkir");
 		if (!$this->ongkir->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->ongkir->Visible = FALSE; // Disable update for API request
 			else
 				$this->ongkir->setFormValue($val);
@@ -1171,7 +1180,7 @@ class penjualan_edit extends penjualan
 		// Check field name '_action' first before field var 'x__action'
 		$val = $CurrentForm->hasValue("_action") ? $CurrentForm->getValue("_action") : $CurrentForm->getValue("x__action");
 		if (!$this->_action->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->_action->Visible = FALSE; // Disable update for API request
 			else
 				$this->_action->setFormValue($val);
@@ -1180,19 +1189,10 @@ class penjualan_edit extends penjualan
 		// Check field name 'status' first before field var 'x_status'
 		$val = $CurrentForm->hasValue("status") ? $CurrentForm->getValue("status") : $CurrentForm->getValue("x_status");
 		if (!$this->status->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->status->Visible = FALSE; // Disable update for API request
 			else
 				$this->status->setFormValue($val);
-		}
-
-		// Check field name 'jumlah_voucher' first before field var 'x_jumlah_voucher'
-		$val = $CurrentForm->hasValue("jumlah_voucher") ? $CurrentForm->getValue("jumlah_voucher") : $CurrentForm->getValue("x_jumlah_voucher");
-		if (!$this->jumlah_voucher->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->jumlah_voucher->Visible = FALSE; // Disable update for API request
-			else
-				$this->jumlah_voucher->setFormValue($val);
 		}
 
 		// Check field name 'id' first before field var 'x_id'
@@ -1224,6 +1224,7 @@ class penjualan_edit extends penjualan
 		$this->metode_pembayaran->CurrentValue = $this->metode_pembayaran->FormValue;
 		$this->id_bank->CurrentValue = $this->id_bank->FormValue;
 		$this->id_kartu->CurrentValue = $this->id_kartu->FormValue;
+		$this->jumlah_voucher->CurrentValue = $this->jumlah_voucher->FormValue;
 		$this->sales->CurrentValue = $this->sales->FormValue;
 		$this->dok_be_wajah->CurrentValue = $this->dok_be_wajah->FormValue;
 		$this->be_body->CurrentValue = $this->be_body->FormValue;
@@ -1237,7 +1238,6 @@ class penjualan_edit extends penjualan
 		$this->ongkir->CurrentValue = $this->ongkir->FormValue;
 		$this->_action->CurrentValue = $this->_action->FormValue;
 		$this->status->CurrentValue = $this->status->FormValue;
-		$this->jumlah_voucher->CurrentValue = $this->jumlah_voucher->FormValue;
 	}
 
 	// Load row based on key values
@@ -1298,6 +1298,7 @@ class penjualan_edit extends penjualan
 		$this->metode_pembayaran->setDbValue($row['metode_pembayaran']);
 		$this->id_bank->setDbValue($row['id_bank']);
 		$this->id_kartu->setDbValue($row['id_kartu']);
+		$this->jumlah_voucher->setDbValue($row['jumlah_voucher']);
 		$this->sales->setDbValue($row['sales']);
 		$this->dok_be_wajah->setDbValue($row['dok_be_wajah']);
 		$this->be_body->setDbValue($row['be_body']);
@@ -1312,7 +1313,6 @@ class penjualan_edit extends penjualan
 		$this->_action->setDbValue($row['action']);
 		$this->status->setDbValue($row['status']);
 		$this->status_void->setDbValue($row['status_void']);
-		$this->jumlah_voucher->setDbValue($row['jumlah_voucher']);
 	}
 
 	// Return a row with default values
@@ -1337,6 +1337,7 @@ class penjualan_edit extends penjualan
 		$row['metode_pembayaran'] = NULL;
 		$row['id_bank'] = NULL;
 		$row['id_kartu'] = NULL;
+		$row['jumlah_voucher'] = NULL;
 		$row['sales'] = NULL;
 		$row['dok_be_wajah'] = NULL;
 		$row['be_body'] = NULL;
@@ -1351,7 +1352,6 @@ class penjualan_edit extends penjualan
 		$row['action'] = NULL;
 		$row['status'] = NULL;
 		$row['status_void'] = NULL;
-		$row['jumlah_voucher'] = NULL;
 		return $row;
 	}
 
@@ -1447,6 +1447,7 @@ class penjualan_edit extends penjualan
 		// metode_pembayaran
 		// id_bank
 		// id_kartu
+		// jumlah_voucher
 		// sales
 		// dok_be_wajah
 		// be_body
@@ -1461,7 +1462,6 @@ class penjualan_edit extends penjualan
 		// action
 		// status
 		// status_void
-		// jumlah_voucher
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -1669,6 +1669,11 @@ class penjualan_edit extends penjualan
 				$this->id_kartu->ViewValue = NULL;
 			}
 			$this->id_kartu->ViewCustomAttributes = "";
+
+			// jumlah_voucher
+			$this->jumlah_voucher->ViewValue = $this->jumlah_voucher->CurrentValue;
+			$this->jumlah_voucher->ViewValue = FormatNumber($this->jumlah_voucher->ViewValue, 0, -2, -2, -2);
+			$this->jumlah_voucher->ViewCustomAttributes = "";
 
 			// sales
 			$curVal = strval($this->sales->CurrentValue);
@@ -1889,11 +1894,6 @@ class penjualan_edit extends penjualan
 			$this->status_void->ViewValue = $this->status_void->CurrentValue;
 			$this->status_void->ViewCustomAttributes = "";
 
-			// jumlah_voucher
-			$this->jumlah_voucher->ViewValue = $this->jumlah_voucher->CurrentValue;
-			$this->jumlah_voucher->ViewValue = FormatNumber($this->jumlah_voucher->ViewValue, 0, -2, -2, -2);
-			$this->jumlah_voucher->ViewCustomAttributes = "";
-
 			// kode_penjualan
 			$this->kode_penjualan->LinkCustomAttributes = "";
 			$this->kode_penjualan->HrefValue = "";
@@ -1979,6 +1979,11 @@ class penjualan_edit extends penjualan
 			$this->id_kartu->HrefValue = "";
 			$this->id_kartu->TooltipValue = "";
 
+			// jumlah_voucher
+			$this->jumlah_voucher->LinkCustomAttributes = "";
+			$this->jumlah_voucher->HrefValue = "";
+			$this->jumlah_voucher->TooltipValue = "";
+
 			// sales
 			$this->sales->LinkCustomAttributes = "";
 			$this->sales->HrefValue = "";
@@ -2043,11 +2048,6 @@ class penjualan_edit extends penjualan
 			$this->status->LinkCustomAttributes = "";
 			$this->status->HrefValue = "";
 			$this->status->TooltipValue = "";
-
-			// jumlah_voucher
-			$this->jumlah_voucher->LinkCustomAttributes = "";
-			$this->jumlah_voucher->HrefValue = "";
-			$this->jumlah_voucher->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_EDIT) { // Edit row
 
 			// kode_penjualan
@@ -2300,6 +2300,12 @@ class penjualan_edit extends penjualan
 					$rswrk->close();
 				$this->id_kartu->EditValue = $arwrk;
 			}
+
+			// jumlah_voucher
+			$this->jumlah_voucher->EditAttrs["class"] = "form-control";
+			$this->jumlah_voucher->EditCustomAttributes = "";
+			$this->jumlah_voucher->EditValue = HtmlEncode($this->jumlah_voucher->CurrentValue);
+			$this->jumlah_voucher->PlaceHolder = RemoveHtml($this->jumlah_voucher->caption());
 
 			// sales
 			$this->sales->EditAttrs["class"] = "form-control";
@@ -2561,12 +2567,6 @@ class penjualan_edit extends penjualan
 			$this->status->EditCustomAttributes = "";
 			$this->status->EditValue = $this->status->options(FALSE);
 
-			// jumlah_voucher
-			$this->jumlah_voucher->EditAttrs["class"] = "form-control";
-			$this->jumlah_voucher->EditCustomAttributes = "";
-			$this->jumlah_voucher->EditValue = HtmlEncode($this->jumlah_voucher->CurrentValue);
-			$this->jumlah_voucher->PlaceHolder = RemoveHtml($this->jumlah_voucher->caption());
-
 			// Edit refer script
 			// kode_penjualan
 
@@ -2637,6 +2637,10 @@ class penjualan_edit extends penjualan
 			$this->id_kartu->LinkCustomAttributes = "";
 			$this->id_kartu->HrefValue = "";
 
+			// jumlah_voucher
+			$this->jumlah_voucher->LinkCustomAttributes = "";
+			$this->jumlah_voucher->HrefValue = "";
+
 			// sales
 			$this->sales->LinkCustomAttributes = "";
 			$this->sales->HrefValue = "";
@@ -2688,10 +2692,6 @@ class penjualan_edit extends penjualan
 			// status
 			$this->status->LinkCustomAttributes = "";
 			$this->status->HrefValue = "";
-
-			// jumlah_voucher
-			$this->jumlah_voucher->LinkCustomAttributes = "";
-			$this->jumlah_voucher->HrefValue = "";
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -2828,6 +2828,14 @@ class penjualan_edit extends penjualan
 				AddMessage($FormError, str_replace("%s", $this->id_kartu->caption(), $this->id_kartu->RequiredErrorMessage));
 			}
 		}
+		if ($this->jumlah_voucher->Required) {
+			if (!$this->jumlah_voucher->IsDetailKey && $this->jumlah_voucher->FormValue != NULL && $this->jumlah_voucher->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->jumlah_voucher->caption(), $this->jumlah_voucher->RequiredErrorMessage));
+			}
+		}
+		if (!CheckInteger($this->jumlah_voucher->FormValue)) {
+			AddMessage($FormError, $this->jumlah_voucher->errorMessage());
+		}
 		if ($this->sales->Required) {
 			if (!$this->sales->IsDetailKey && $this->sales->FormValue != NULL && $this->sales->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->sales->caption(), $this->sales->RequiredErrorMessage));
@@ -2904,14 +2912,6 @@ class penjualan_edit extends penjualan
 			if ($this->status->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->status->caption(), $this->status->RequiredErrorMessage));
 			}
-		}
-		if ($this->jumlah_voucher->Required) {
-			if (!$this->jumlah_voucher->IsDetailKey && $this->jumlah_voucher->FormValue != NULL && $this->jumlah_voucher->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->jumlah_voucher->caption(), $this->jumlah_voucher->RequiredErrorMessage));
-			}
-		}
-		if (!CheckInteger($this->jumlah_voucher->FormValue)) {
-			AddMessage($FormError, $this->jumlah_voucher->errorMessage());
 		}
 
 		// Validate detail grid
@@ -3013,6 +3013,9 @@ class penjualan_edit extends penjualan
 			// id_kartu
 			$this->id_kartu->setDbValueDef($rsnew, $this->id_kartu->CurrentValue, NULL, $this->id_kartu->ReadOnly);
 
+			// jumlah_voucher
+			$this->jumlah_voucher->setDbValueDef($rsnew, $this->jumlah_voucher->CurrentValue, NULL, $this->jumlah_voucher->ReadOnly);
+
 			// sales
 			$this->sales->setDbValueDef($rsnew, $this->sales->CurrentValue, NULL, $this->sales->ReadOnly);
 
@@ -3051,9 +3054,6 @@ class penjualan_edit extends penjualan
 
 			// status
 			$this->status->setDbValueDef($rsnew, $this->status->CurrentValue, "", $this->status->ReadOnly);
-
-			// jumlah_voucher
-			$this->jumlah_voucher->setDbValueDef($rsnew, $this->jumlah_voucher->CurrentValue, NULL, $this->jumlah_voucher->ReadOnly);
 
 			// Call Row Updating event
 			$updateRow = $this->Row_Updating($rsold, $rsnew);

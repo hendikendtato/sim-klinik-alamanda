@@ -865,7 +865,7 @@ class detailmintapembelian_add extends detailmintapembelian
 		// Check field name 'pid_pp' first before field var 'x_pid_pp'
 		$val = $CurrentForm->hasValue("pid_pp") ? $CurrentForm->getValue("pid_pp") : $CurrentForm->getValue("x_pid_pp");
 		if (!$this->pid_pp->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->pid_pp->Visible = FALSE; // Disable update for API request
 			else
 				$this->pid_pp->setFormValue($val);
@@ -874,7 +874,7 @@ class detailmintapembelian_add extends detailmintapembelian
 		// Check field name 'idbarang' first before field var 'x_idbarang'
 		$val = $CurrentForm->hasValue("idbarang") ? $CurrentForm->getValue("idbarang") : $CurrentForm->getValue("x_idbarang");
 		if (!$this->idbarang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->idbarang->Visible = FALSE; // Disable update for API request
 			else
 				$this->idbarang->setFormValue($val);
@@ -883,7 +883,7 @@ class detailmintapembelian_add extends detailmintapembelian
 		// Check field name 'part' first before field var 'x_part'
 		$val = $CurrentForm->hasValue("part") ? $CurrentForm->getValue("part") : $CurrentForm->getValue("x_part");
 		if (!$this->part->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->part->Visible = FALSE; // Disable update for API request
 			else
 				$this->part->setFormValue($val);
@@ -892,7 +892,7 @@ class detailmintapembelian_add extends detailmintapembelian
 		// Check field name 'lot' first before field var 'x_lot'
 		$val = $CurrentForm->hasValue("lot") ? $CurrentForm->getValue("lot") : $CurrentForm->getValue("x_lot");
 		if (!$this->lot->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->lot->Visible = FALSE; // Disable update for API request
 			else
 				$this->lot->setFormValue($val);
@@ -901,7 +901,7 @@ class detailmintapembelian_add extends detailmintapembelian
 		// Check field name 'qty_pp' first before field var 'x_qty_pp'
 		$val = $CurrentForm->hasValue("qty_pp") ? $CurrentForm->getValue("qty_pp") : $CurrentForm->getValue("x_qty_pp");
 		if (!$this->qty_pp->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->qty_pp->Visible = FALSE; // Disable update for API request
 			else
 				$this->qty_pp->setFormValue($val);
@@ -910,7 +910,7 @@ class detailmintapembelian_add extends detailmintapembelian
 		// Check field name 'qty_acc' first before field var 'x_qty_acc'
 		$val = $CurrentForm->hasValue("qty_acc") ? $CurrentForm->getValue("qty_acc") : $CurrentForm->getValue("x_qty_acc");
 		if (!$this->qty_acc->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->qty_acc->Visible = FALSE; // Disable update for API request
 			else
 				$this->qty_acc->setFormValue($val);
@@ -919,7 +919,7 @@ class detailmintapembelian_add extends detailmintapembelian
 		// Check field name 'id_satuan' first before field var 'x_id_satuan'
 		$val = $CurrentForm->hasValue("id_satuan") ? $CurrentForm->getValue("id_satuan") : $CurrentForm->getValue("x_id_satuan");
 		if (!$this->id_satuan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_satuan->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_satuan->setFormValue($val);
@@ -928,7 +928,7 @@ class detailmintapembelian_add extends detailmintapembelian
 		// Check field name 'harga' first before field var 'x_harga'
 		$val = $CurrentForm->hasValue("harga") ? $CurrentForm->getValue("harga") : $CurrentForm->getValue("x_harga");
 		if (!$this->harga->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->harga->Visible = FALSE; // Disable update for API request
 			else
 				$this->harga->setFormValue($val);
@@ -937,7 +937,7 @@ class detailmintapembelian_add extends detailmintapembelian
 		// Check field name 'total' first before field var 'x_total'
 		$val = $CurrentForm->hasValue("total") ? $CurrentForm->getValue("total") : $CurrentForm->getValue("x_total");
 		if (!$this->total->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->total->Visible = FALSE; // Disable update for API request
 			else
 				$this->total->setFormValue($val);

@@ -75,6 +75,16 @@ namespace PHPMaker2020\sim_klinik_alamanda;
 </td>
 		</tr>
 <?php } ?>
+<?php if ($penjualan->jumlah_voucher->Visible) { // jumlah_voucher ?>
+		<tr id="r_jumlah_voucher">
+			<td class="<?php echo $penjualan->TableLeftColumnClass ?>"><?php echo $penjualan->jumlah_voucher->caption() ?></td>
+			<td <?php echo $penjualan->jumlah_voucher->cellAttributes() ?>>
+<span id="el_penjualan_jumlah_voucher">
+<span<?php echo $penjualan->jumlah_voucher->viewAttributes() ?>><?php echo $penjualan->jumlah_voucher->getViewValue() ?></span>
+</span>
+</td>
+		</tr>
+<?php } ?>
 <?php if ($penjualan->id_kartubank->Visible) { // id_kartubank ?>
 		<tr id="r_id_kartubank">
 			<td class="<?php echo $penjualan->TableLeftColumnClass ?>"><?php echo $penjualan->id_kartubank->caption() ?></td>

@@ -833,7 +833,7 @@ class jenisbarang_add extends jenisbarang
 		// Check field name 'kode' first before field var 'x_kode'
 		$val = $CurrentForm->hasValue("kode") ? $CurrentForm->getValue("kode") : $CurrentForm->getValue("x_kode");
 		if (!$this->kode->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kode->Visible = FALSE; // Disable update for API request
 			else
 				$this->kode->setFormValue($val);
@@ -842,7 +842,7 @@ class jenisbarang_add extends jenisbarang
 		// Check field name 'jenis' first before field var 'x_jenis'
 		$val = $CurrentForm->hasValue("jenis") ? $CurrentForm->getValue("jenis") : $CurrentForm->getValue("x_jenis");
 		if (!$this->jenis->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->jenis->Visible = FALSE; // Disable update for API request
 			else
 				$this->jenis->setFormValue($val);

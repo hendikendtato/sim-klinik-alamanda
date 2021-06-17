@@ -51,6 +51,7 @@ class penjualan extends DbTable
 	public $metode_pembayaran;
 	public $id_bank;
 	public $id_kartu;
+	public $jumlah_voucher;
 	public $sales;
 	public $dok_be_wajah;
 	public $be_body;
@@ -65,7 +66,6 @@ class penjualan extends DbTable
 	public $_action;
 	public $status;
 	public $status_void;
-	public $jumlah_voucher;
 
 	// Constructor
 	public function __construct()
@@ -248,6 +248,12 @@ class penjualan extends DbTable
 		$this->id_kartu->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id_kartu'] = &$this->id_kartu;
 
+		// jumlah_voucher
+		$this->jumlah_voucher = new DbField('penjualan', 'penjualan', 'x_jumlah_voucher', 'jumlah_voucher', '`jumlah_voucher`', '`jumlah_voucher`', 3, 11, -1, FALSE, '`jumlah_voucher`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->jumlah_voucher->Sortable = TRUE; // Allow sort
+		$this->jumlah_voucher->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->fields['jumlah_voucher'] = &$this->jumlah_voucher;
+
 		// sales
 		$this->sales = new DbField('penjualan', 'penjualan', 'x_sales', 'sales', '`sales`', '`sales`', 3, 11, -1, FALSE, '`sales`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
 		$this->sales->Sortable = TRUE; // Allow sort
@@ -357,12 +363,6 @@ class penjualan extends DbTable
 		$this->status_void = new DbField('penjualan', 'penjualan', 'x_status_void', 'status_void', '`status_void`', '`status_void`', 200, 50, -1, FALSE, '`status_void`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->status_void->Sortable = TRUE; // Allow sort
 		$this->fields['status_void'] = &$this->status_void;
-
-		// jumlah_voucher
-		$this->jumlah_voucher = new DbField('penjualan', 'penjualan', 'x_jumlah_voucher', 'jumlah_voucher', '`jumlah_voucher`', '`jumlah_voucher`', 3, 11, -1, FALSE, '`jumlah_voucher`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->jumlah_voucher->Sortable = TRUE; // Allow sort
-		$this->jumlah_voucher->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->fields['jumlah_voucher'] = &$this->jumlah_voucher;
 	}
 
 	// Field Visibility
@@ -854,6 +854,7 @@ class penjualan extends DbTable
 		$this->metode_pembayaran->DbValue = $row['metode_pembayaran'];
 		$this->id_bank->DbValue = $row['id_bank'];
 		$this->id_kartu->DbValue = $row['id_kartu'];
+		$this->jumlah_voucher->DbValue = $row['jumlah_voucher'];
 		$this->sales->DbValue = $row['sales'];
 		$this->dok_be_wajah->DbValue = $row['dok_be_wajah'];
 		$this->be_body->DbValue = $row['be_body'];
@@ -868,7 +869,6 @@ class penjualan extends DbTable
 		$this->_action->DbValue = $row['action'];
 		$this->status->DbValue = $row['status'];
 		$this->status_void->DbValue = $row['status_void'];
-		$this->jumlah_voucher->DbValue = $row['jumlah_voucher'];
 	}
 
 	// Delete uploaded files
@@ -1123,6 +1123,7 @@ class penjualan extends DbTable
 		$this->metode_pembayaran->setDbValue($rs->fields('metode_pembayaran'));
 		$this->id_bank->setDbValue($rs->fields('id_bank'));
 		$this->id_kartu->setDbValue($rs->fields('id_kartu'));
+		$this->jumlah_voucher->setDbValue($rs->fields('jumlah_voucher'));
 		$this->sales->setDbValue($rs->fields('sales'));
 		$this->dok_be_wajah->setDbValue($rs->fields('dok_be_wajah'));
 		$this->be_body->setDbValue($rs->fields('be_body'));
@@ -1137,7 +1138,6 @@ class penjualan extends DbTable
 		$this->_action->setDbValue($rs->fields('action'));
 		$this->status->setDbValue($rs->fields('status'));
 		$this->status_void->setDbValue($rs->fields('status_void'));
-		$this->jumlah_voucher->setDbValue($rs->fields('jumlah_voucher'));
 	}
 
 	// Render list row values
@@ -1167,6 +1167,7 @@ class penjualan extends DbTable
 		// metode_pembayaran
 		// id_bank
 		// id_kartu
+		// jumlah_voucher
 		// sales
 
 		$this->sales->CellCssStyle = "white-space: nowrap;";
@@ -1184,7 +1185,6 @@ class penjualan extends DbTable
 		// action
 		// status
 		// status_void
-		// jumlah_voucher
 		// id
 
 		$this->id->ViewValue = $this->id->CurrentValue;
@@ -1390,6 +1390,11 @@ class penjualan extends DbTable
 			$this->id_kartu->ViewValue = NULL;
 		}
 		$this->id_kartu->ViewCustomAttributes = "";
+
+		// jumlah_voucher
+		$this->jumlah_voucher->ViewValue = $this->jumlah_voucher->CurrentValue;
+		$this->jumlah_voucher->ViewValue = FormatNumber($this->jumlah_voucher->ViewValue, 0, -2, -2, -2);
+		$this->jumlah_voucher->ViewCustomAttributes = "";
 
 		// sales
 		$curVal = strval($this->sales->CurrentValue);
@@ -1610,11 +1615,6 @@ class penjualan extends DbTable
 		$this->status_void->ViewValue = $this->status_void->CurrentValue;
 		$this->status_void->ViewCustomAttributes = "";
 
-		// jumlah_voucher
-		$this->jumlah_voucher->ViewValue = $this->jumlah_voucher->CurrentValue;
-		$this->jumlah_voucher->ViewValue = FormatNumber($this->jumlah_voucher->ViewValue, 0, -2, -2, -2);
-		$this->jumlah_voucher->ViewCustomAttributes = "";
-
 		// id
 		$this->id->LinkCustomAttributes = "";
 		$this->id->HrefValue = "";
@@ -1705,6 +1705,11 @@ class penjualan extends DbTable
 		$this->id_kartu->HrefValue = "";
 		$this->id_kartu->TooltipValue = "";
 
+		// jumlah_voucher
+		$this->jumlah_voucher->LinkCustomAttributes = "";
+		$this->jumlah_voucher->HrefValue = "";
+		$this->jumlah_voucher->TooltipValue = "";
+
 		// sales
 		$this->sales->LinkCustomAttributes = "";
 		$this->sales->HrefValue = "";
@@ -1774,11 +1779,6 @@ class penjualan extends DbTable
 		$this->status_void->LinkCustomAttributes = "";
 		$this->status_void->HrefValue = "";
 		$this->status_void->TooltipValue = "";
-
-		// jumlah_voucher
-		$this->jumlah_voucher->LinkCustomAttributes = "";
-		$this->jumlah_voucher->HrefValue = "";
-		$this->jumlah_voucher->TooltipValue = "";
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -1917,6 +1917,12 @@ class penjualan extends DbTable
 		$this->id_kartu->EditAttrs["class"] = "form-control";
 		$this->id_kartu->EditCustomAttributes = "";
 
+		// jumlah_voucher
+		$this->jumlah_voucher->EditAttrs["class"] = "form-control";
+		$this->jumlah_voucher->EditCustomAttributes = "";
+		$this->jumlah_voucher->EditValue = $this->jumlah_voucher->CurrentValue;
+		$this->jumlah_voucher->PlaceHolder = RemoveHtml($this->jumlah_voucher->caption());
+
 		// sales
 		$this->sales->EditAttrs["class"] = "form-control";
 		$this->sales->EditCustomAttributes = "";
@@ -2001,12 +2007,6 @@ class penjualan extends DbTable
 		$this->status_void->EditValue = $this->status_void->CurrentValue;
 		$this->status_void->PlaceHolder = RemoveHtml($this->status_void->caption());
 
-		// jumlah_voucher
-		$this->jumlah_voucher->EditAttrs["class"] = "form-control";
-		$this->jumlah_voucher->EditCustomAttributes = "";
-		$this->jumlah_voucher->EditValue = $this->jumlah_voucher->CurrentValue;
-		$this->jumlah_voucher->PlaceHolder = RemoveHtml($this->jumlah_voucher->caption());
-
 		// Call Row Rendered event
 		$this->Row_Rendered();
 	}
@@ -2067,7 +2067,6 @@ class penjualan extends DbTable
 					$doc->exportCaption($this->_action);
 					$doc->exportCaption($this->status);
 					$doc->exportCaption($this->status_void);
-					$doc->exportCaption($this->jumlah_voucher);
 				} else {
 					$doc->exportCaption($this->id);
 					$doc->exportCaption($this->kode_penjualan);
@@ -2087,6 +2086,7 @@ class penjualan extends DbTable
 					$doc->exportCaption($this->metode_pembayaran);
 					$doc->exportCaption($this->id_bank);
 					$doc->exportCaption($this->id_kartu);
+					$doc->exportCaption($this->jumlah_voucher);
 					$doc->exportCaption($this->sales);
 					$doc->exportCaption($this->dok_be_wajah);
 					$doc->exportCaption($this->be_body);
@@ -2101,7 +2101,6 @@ class penjualan extends DbTable
 					$doc->exportCaption($this->_action);
 					$doc->exportCaption($this->status);
 					$doc->exportCaption($this->status_void);
-					$doc->exportCaption($this->jumlah_voucher);
 				}
 				$doc->endExportRow();
 			}
@@ -2164,7 +2163,6 @@ class penjualan extends DbTable
 						$doc->exportField($this->_action);
 						$doc->exportField($this->status);
 						$doc->exportField($this->status_void);
-						$doc->exportField($this->jumlah_voucher);
 					} else {
 						$doc->exportField($this->id);
 						$doc->exportField($this->kode_penjualan);
@@ -2184,6 +2182,7 @@ class penjualan extends DbTable
 						$doc->exportField($this->metode_pembayaran);
 						$doc->exportField($this->id_bank);
 						$doc->exportField($this->id_kartu);
+						$doc->exportField($this->jumlah_voucher);
 						$doc->exportField($this->sales);
 						$doc->exportField($this->dok_be_wajah);
 						$doc->exportField($this->be_body);
@@ -2198,7 +2197,6 @@ class penjualan extends DbTable
 						$doc->exportField($this->_action);
 						$doc->exportField($this->status);
 						$doc->exportField($this->status_void);
-						$doc->exportField($this->jumlah_voucher);
 					}
 					$doc->endExportRow($rowCnt);
 				}
@@ -2406,7 +2404,7 @@ class penjualan extends DbTable
 		$id_klinik = $rsnew['id_klinik'];
 
 		// Mendapatkan kode penjualan terakhir pada klinik $id_klinik, untuk diambil nomor urutnya
-		$kode_penjualan_sebelumnya = ExecuteScalar("SELECT kode_penjualan FROM penjualan WHERE id_klinik = '$id_klinik' ORDER BY id DESC");
+		$kode_penjualan_sebelumnya = ExecuteScalar("SELECT kode_penjualan FROM penjualan WHERE id_klinik=$id_klinik ORDER BY id DESC");
 		$kode = explode('-', $kode_penjualan_sebelumnya);
 		$nomor_urut_terakhir = $kode[2];
 		$bulan_sebelumnya = substr($kode[1], -2);
@@ -2445,227 +2443,166 @@ class penjualan extends DbTable
 	// Row Inserted event
 	function Row_Inserted($rsold, &$rsnew) {
 
-		//echo "Row Inserted";
-		$id_pelanggan = $rsnew['id_pelanggan'];
-		$id_klinik = $rsnew['id_klinik'];
-		$ongkir = $rsnew['ongkir'];
-		$total = $rsnew['total'];
+			//echo "Row Inserted";
+			$id_pelanggan = $rsnew['id_pelanggan'];
+			$id_klinik = $rsnew['id_klinik'];
+			$ongkir = $rsnew['ongkir'];
+			$total = $rsnew['total'];
 
-		//Cek lagi kode penjualan
-		$kode_penjualan_sebelumnya = ExecuteScalar("SELECT kode_penjualan FROM penjualan WHERE id_klinik='$id_klinik' ORDER BY id DESC LIMIT 1, 1");
-		$kode_penjualan_sekarang = $rsnew['kode_penjualan'];
+			//Cek lagi kode penjualan
+			$kode_penjualan_sebelumnya = ExecuteScalar("SELECT kode_penjualan FROM penjualan WHERE id_klinik='$id_klinik' ORDER BY id DESC LIMIT 1, 1");
+			$kode_penjualan_sekarang = $rsnew['kode_penjualan'];
 
-		// Jika kodenya sekarang sama dengan kode sebelumnya
-		if($kode_penjualan_sekarang == $kode_penjualan_sebelumnya) {
-			$kode = explode('-', $kode_penjualan_sekarang);
+			// Jika kodenya sekarang sama dengan kode sebelumnya
+			if($kode_penjualan_sekarang == $kode_penjualan_sebelumnya) {
+				$kode = explode('-', $kode_penjualan_sekarang);
+				$nomor_urut_terakhir = $kode[2];
+				$bulan_sebelumnya = substr($kode[1], -2);
+				$nomor_urut = '0000';
+				$nomor_urut = sprintf('%04d', (int)$nomor_urut_terakhir + 1);
+				$rsnew['kode_penjualan'] = 'J' . $id_klinik . '-' . date('ym') . '-' . $nomor_urut;		
+			}
+
+			// Mendapatkan kode mutasi terakhir pada klinik $id_klinik, untuk diambil nomor urutnya
+			$kode_mutasi_sebelumnya = ExecuteScalar("SELECT no_bukti FROM mutasi_kas WHERE id_klinik='$id_klinik' AND no_bukti LIKE '%KBM%' ORDER BY id DESC LIMIT 1");
+			$kode = explode('-', $kode_mutasi_sebelumnya);
 			$nomor_urut_terakhir = $kode[2];
 			$bulan_sebelumnya = substr($kode[1], -2);
 			$nomor_urut = '0000';
-			$nomor_urut = sprintf('%04d', (int)$nomor_urut_terakhir + 1);
-			$rsnew['kode_penjualan'] = 'J' . $id_klinik . '-' . date('ym') . '-' . $nomor_urut;		
-		}
-
-		// Mendapatkan kode mutasi terakhir pada klinik $id_klinik, untuk diambil nomor urutnya
-		$kode_mutasi_sebelumnya = ExecuteScalar("SELECT no_bukti FROM mutasi_kas WHERE id_klinik='$id_klinik' AND no_bukti LIKE '%KBM%' ORDER BY id DESC LIMIT 1");
-		$kode = explode('-', $kode_mutasi_sebelumnya);
-		$nomor_urut_terakhir = $kode[2];
-		$bulan_sebelumnya = substr($kode[1], -2);
-		$nomor_urut = '0000';
-		if ($bulan_sebelumnya == date('m')) {
-			$nomor_urut = sprintf('%04d', (int)$nomor_urut_terakhir + 1);
-		} else {
-			$nomor_urut = sprintf('%04d', 1);
-		}
-		$metode_pembayaran = $rsnew['metode_pembayaran'];
-		$kartu = $rsnew['id_kartu'];
-		$id_bankrekening = $rsnew['id_bank'];
-		$id_kartubank = $rsnew['id_kartubank'];
-		$id_kas = $rsnew['id_kas'];
-		$charge = $rsnew['charge'];
-		$nilai_charge = str_replace('.',',',$charge);
-		$id_klinik = $rsnew['id_klinik'];
-		$kode_penjualan = $rsnew['kode_penjualan'];
-		$tanggal = $rsnew['waktu'];
-		$jumlah = $rsnew['bayar'];
-		$jumlah_non_tunai = $rsnew['bayar_non_tunai'];
-		$total_non_tunai = $rsnew['total_non_tunai_charge'];
-		$klaim_poin = $rsnew['klaim_poin'];
-		$status = $rsnew['status'];
-		$id_sebelumnya = ExecuteScalar("SELECT id FROM penggunaan_kartu ORDER BY id DESC LIMIT 1");
-		$id_sekarang = $id_sebelumnya+1;
-		$id_setelahnya = $id_sekarang+1;
-		if($status == 'Printed') { //begin of if(status == printed)
-
-			//INSERTING KAS / REKENING
-			if($metode_pembayaran == 'Debit' OR $metode_pembayaran == 'Kredit'){
-				$jenis_kartu = ExecuteScalar("SELECT jenis FROM m_kartu WHERE id_kartu = '$id_kartubank'");
-				$saldo_lama_bank = ExecuteScalar("SELECT saldo FROM m_rekening WHERE id_rekening = '$id_bankrekening' AND id_klinik='$id_klinik'");
-				$saldo_baru_bank = $saldo_lama_bank + $total_non_tunai;
-				Execute("INSERT INTO penggunaan_kartu (id_kartu, jenis_kartu, id_klinik, kode_penjualan, tgl, total, charge, total_charge) VALUES ('".$id_kartubank."', '".$jenis_kartu."', '".$id_klinik."', '".$kode_penjualan."', '".$tanggal."', '".$jumlah_non_tunai."', '".$nilai_charge."', '".$total_non_tunai."')");
-				Execute("INSERT INTO laporan_rekening (id_rekening, id_klinik, kode_penjualan, saldo_awal, jumlah, sisa_saldo, tanggal) VALUES ('".$id_bankrekening."', '".$id_klinik."', '".$kode_penjualan."', '".$saldo_lama_bank."','".$total_non_tunai."', '".$saldo_baru_bank."', '".$tanggal."')");
-				Execute("UPDATE m_rekening SET saldo='$saldo_baru_bank' WHERE id_rekening = '$id_bankrekening' AND id_klinik='$id_klinik'");
-			} else if($metode_pembayaran == 'Transfer'){
-				$saldo_lama_bank = ExecuteScalar("SELECT saldo FROM m_rekening WHERE id_rekening = '$id_bankrekening' AND id_klinik='$id_klinik'");
-				$saldo_baru_bank = $saldo_lama_bank + $total_non_tunai;
-				Execute("INSERT INTO laporan_rekening (id_rekening, id_klinik, kode_penjualan, saldo_awal, jumlah, sisa_saldo, tanggal) VALUES ('".$id_bankrekening."', '".$id_klinik."', '".$kode_penjualan."', '".$saldo_lama_bank."', '".$total_non_tunai."', '".$saldo_baru_bank."', '".$tanggal."')");
-				Execute("UPDATE m_rekening SET saldo='$saldo_baru_bank' WHERE id_rekening = '$id_bankrekening' AND id_klinik='$id_klinik'");		
-			} else if($metode_pembayaran == 'Tunai-Debit' OR $metode_pembayaran == 'Tunai-Kredit'){
-				$jenis_kartu = ExecuteScalar("SELECT jenis FROM m_kartu WHERE id_kartu = '$id_kartubank'");
-				$saldo_lama_bank = ExecuteScalar("SELECT saldo FROM m_rekening WHERE id_rekening = '$id_bankrekening' AND id_klinik='$id_klinik'");
-				$saldo_baru_bank = $saldo_lama_bank + $total_non_tunai;
-				Execute("INSERT INTO penggunaan_kartu (id_kartu, jenis_kartu, id_klinik, kode_penjualan, tgl, total, charge, total_charge) VALUES ('".$id_kartubank."', '".$jenis_kartu."', '".$id_klinik."', '".$kode_penjualan."', '".$tanggal."', '".$jumlah_non_tunai."', '".$nilai_charge."', '".$total_non_tunai."')");
-				Execute("INSERT INTO laporan_rekening (id_rekening, id_klinik, kode_penjualan, saldo_awal, jumlah, sisa_saldo, tanggal) VALUES ('".$id_bankrekening."', '".$id_klinik."', '".$kode_penjualan."', '".$saldo_lama_bank."', '".$total_non_tunai."', '".$saldo_baru_bank."', '".$tanggal."')");
-				Execute("UPDATE m_rekening SET saldo='$saldo_baru_bank' WHERE id_rekening = '$id_bankrekening' AND id_klinik='$id_klinik'");		            
-				$saldo_lama_kas = ExecuteScalar("SELECT saldo FROM m_kas WHERE id = '$id_kas' AND id_klinik='$id_klinik'");
-				$saldo_baru_kas = $saldo_lama_kas + ($total - $total_non_tunai);
-				$jumlah_tunai = $total - $total_non_tunai;
-				Execute("INSERT INTO laporan_kas (id_klinik, id_kas, kode_penjualan, saldo_awal, jumlah, sisa_saldo, tanggal) VALUES ('".$id_klinik."', '".$id_kas."', '".$kode_penjualan."', '".$saldo_lama_kas."', '".$jumlah_tunai."', '".$saldo_baru_kas."', '".$tanggal."')");
-				Execute("UPDATE m_kas SET saldo='$saldo_baru_kas' WHERE id = '$id_kas' AND id_klinik='$id_klinik'");		
-			} else if($metode_pembayaran == 'Tunai'){
-				$saldo_lama_kas = ExecuteScalar("SELECT saldo FROM m_kas WHERE id = '$id_kas' AND id_klinik='$id_klinik'");
-				$saldo_baru_kas = $saldo_lama_kas + $total;
-				Execute("INSERT INTO laporan_kas (id_klinik, id_kas, kode_penjualan, saldo_awal, jumlah, sisa_saldo, tanggal) VALUES ('".$id_klinik."', '".$id_kas."', '".$kode_penjualan."', '".$saldo_lama_kas."', '".$total."', '".$saldo_baru_kas."', '".$tanggal."')");
-				Execute("UPDATE m_kas SET saldo='$saldo_baru_kas' WHERE id = '$id_kas' AND id_klinik='$id_klinik'");		
+			if ($bulan_sebelumnya == date('m')) {
+				$nomor_urut = sprintf('%04d', (int)$nomor_urut_terakhir + 1);
+			} else {
+				$nomor_urut = sprintf('%04d', 1);
 			}
+			$metode_pembayaran = $rsnew['metode_pembayaran'];
+			$kartu = $rsnew['id_kartu'];
+			$id_bankrekening = $rsnew['id_bank'];
+			$id_kartubank = $rsnew['id_kartubank'];
+			$id_kas = $rsnew['id_kas'];
+			$charge = $rsnew['charge'];
+			$nilai_charge = str_replace('.',',',$charge);
+			$id_klinik = $rsnew['id_klinik'];
+			$kode_penjualan = $rsnew['kode_penjualan'];
+			$tanggal = $rsnew['waktu'];
+			$jumlah = $rsnew['bayar'];
+			$jumlah_non_tunai = $rsnew['bayar_non_tunai'];
+			$total_non_tunai = $rsnew['total_non_tunai_charge'];
+			$klaim_poin = $rsnew['klaim_poin'];
+			$status = $rsnew['status'];
+			$id_sebelumnya = ExecuteScalar("SELECT id FROM penggunaan_kartu ORDER BY id DESC LIMIT 1");
+			$id_sekarang = $id_sebelumnya+1;
+			$id_setelahnya = $id_sekarang+1;
+			if($status == 'Printed') { //begin of if(status == printed)
 
-			//INSERTING VOUCHER INTO PENGGUNAAN KARTU
-			if($kartu != '' OR $kartu != NULL){
-				$jumlah_voucher = $rsnew['jumlah_voucher'];
-				$jenis_kartu_voucher = ExecuteScalar("SELECT jenis FROM m_kartu WHERE id_kartu = '$kartu'");
-				$charge_price_voucher = ExecuteScalar("SELECT charge_price FROM m_kartu WHERE id_kartu = '$kartu'");
-				$pembayaran = $total + ($charge_price_voucher * $jumlah_voucher);
-				Execute("INSERT INTO penggunaan_kartu (id_kartu, jenis_kartu, id_klinik, kode_penjualan, tgl, total, charge, total_charge, jumlah_pemakaian) VALUES ('".$kartu."', '".$jenis_kartu_voucher."', '".$id_klinik."', '".$kode_penjualan."', '".$tanggal."', '".$pembayaran."', '".$charge_price_voucher."', '".$total."', '".$jumlah_voucher."')");
-			}
+				//INSERTING KAS / REKENING
+				if($metode_pembayaran == 'Debit' OR $metode_pembayaran == 'Kredit' OR $metode_pembayaran == 'E-Wallet'){
+					$jenis_kartu = ExecuteScalar("SELECT jenis FROM m_kartu WHERE id_kartu = '$id_kartubank'");
+					$saldo_lama_bank = ExecuteScalar("SELECT saldo FROM m_rekening WHERE id_rekening = '$id_bankrekening' AND id_klinik='$id_klinik'");
+					$saldo_baru_bank = $saldo_lama_bank + $total_non_tunai;
+					Execute("INSERT INTO penggunaan_kartu (id_kartu, jenis_kartu, id_klinik, kode_penjualan, tgl, total, charge, total_charge) VALUES ('".$id_kartubank."', '".$jenis_kartu."', '".$id_klinik."', '".$kode_penjualan."', '".$tanggal."', '".$jumlah_non_tunai."', '".$nilai_charge."', '".$total_non_tunai."')");
+					Execute("INSERT INTO laporan_rekening (id_rekening, id_klinik, kode_penjualan, saldo_awal, jumlah, sisa_saldo, tanggal) VALUES ('".$id_bankrekening."', '".$id_klinik."', '".$kode_penjualan."', '".$saldo_lama_bank."','".$total_non_tunai."', '".$saldo_baru_bank."', '".$tanggal."')");
+					Execute("UPDATE m_rekening SET saldo='$saldo_baru_bank' WHERE id_rekening = '$id_bankrekening' AND id_klinik='$id_klinik'");
+				} else if($metode_pembayaran == 'Transfer'){
+					$saldo_lama_bank = ExecuteScalar("SELECT saldo FROM m_rekening WHERE id_rekening = '$id_bankrekening' AND id_klinik='$id_klinik'");
+					$saldo_baru_bank = $saldo_lama_bank + $total_non_tunai;
+					Execute("INSERT INTO laporan_rekening (id_rekening, id_klinik, kode_penjualan, saldo_awal, jumlah, sisa_saldo, tanggal) VALUES ('".$id_bankrekening."', '".$id_klinik."', '".$kode_penjualan."', '".$saldo_lama_bank."', '".$total_non_tunai."', '".$saldo_baru_bank."', '".$tanggal."')");
+					Execute("UPDATE m_rekening SET saldo='$saldo_baru_bank' WHERE id_rekening = '$id_bankrekening' AND id_klinik='$id_klinik'");		
+				} else if($metode_pembayaran == 'Tunai-Debit' OR $metode_pembayaran == 'Tunai-Kredit'){
+					$jenis_kartu = ExecuteScalar("SELECT jenis FROM m_kartu WHERE id_kartu = '$id_kartubank'");
+					$saldo_lama_bank = ExecuteScalar("SELECT saldo FROM m_rekening WHERE id_rekening = '$id_bankrekening' AND id_klinik='$id_klinik'");
+					$saldo_baru_bank = $saldo_lama_bank + $total_non_tunai;
+					Execute("INSERT INTO penggunaan_kartu (id_kartu, jenis_kartu, id_klinik, kode_penjualan, tgl, total, charge, total_charge) VALUES ('".$id_kartubank."', '".$jenis_kartu."', '".$id_klinik."', '".$kode_penjualan."', '".$tanggal."', '".$jumlah_non_tunai."', '".$nilai_charge."', '".$total_non_tunai."')");
+					Execute("INSERT INTO laporan_rekening (id_rekening, id_klinik, kode_penjualan, saldo_awal, jumlah, sisa_saldo, tanggal) VALUES ('".$id_bankrekening."', '".$id_klinik."', '".$kode_penjualan."', '".$saldo_lama_bank."', '".$total_non_tunai."', '".$saldo_baru_bank."', '".$tanggal."')");
+					Execute("UPDATE m_rekening SET saldo='$saldo_baru_bank' WHERE id_rekening = '$id_bankrekening' AND id_klinik='$id_klinik'");		            
+					$saldo_lama_kas = ExecuteScalar("SELECT saldo FROM m_kas WHERE id = '$id_kas' AND id_klinik='$id_klinik'");
+					$saldo_baru_kas = $saldo_lama_kas + ($total - $total_non_tunai);
+					$jumlah_tunai = $total - $total_non_tunai;
+					Execute("INSERT INTO laporan_kas (id_klinik, id_kas, kode_penjualan, saldo_awal, jumlah, sisa_saldo, tanggal) VALUES ('".$id_klinik."', '".$id_kas."', '".$kode_penjualan."', '".$saldo_lama_kas."', '".$jumlah_tunai."', '".$saldo_baru_kas."', '".$tanggal."')");
+					Execute("UPDATE m_kas SET saldo='$saldo_baru_kas' WHERE id = '$id_kas' AND id_klinik='$id_klinik'");		
+				} else if($metode_pembayaran == 'Tunai'){
+					$saldo_lama_kas = ExecuteScalar("SELECT saldo FROM m_kas WHERE id = '$id_kas' AND id_klinik='$id_klinik'");
+					$saldo_baru_kas = $saldo_lama_kas + $total;
+					Execute("INSERT INTO laporan_kas (id_klinik, id_kas, kode_penjualan, saldo_awal, jumlah, sisa_saldo, tanggal) VALUES ('".$id_klinik."', '".$id_kas."', '".$kode_penjualan."', '".$saldo_lama_kas."', '".$total."', '".$saldo_baru_kas."', '".$tanggal."')");
+					Execute("UPDATE m_kas SET saldo='$saldo_baru_kas' WHERE id = '$id_kas' AND id_klinik='$id_klinik'");		
+				}
 
-			//ADDING POIN MEMBER
-			$idpelanggan = ExecuteScalar("SELECT id_pelanggan FROM m_pelanggan WHERE id_pelanggan IN (SELECT id_pelanggan FROM m_member WHERE id_pelanggan='$id_pelanggan')");
-			$jenismember = ExecuteScalar("SELECT jenis_member FROM m_member WHERE id_pelanggan = '$idpelanggan'");
-			$kelipatan = ExecuteScalar("SELECT curs_poin FROM m_poin WHERE id_jenis_member = '$jenismember'");
-			$perhitungan = ($total - $ongkir) / $kelipatan;
-			$poinsebelumnya = ExecuteScalar("SELECT poin_member FROM m_member WHERE id_pelanggan = '$idpelanggan'");
-			$min_transaksi = ExecuteScalar("SELECT min_transaksi FROM m_poin WHERE id_jenis_member = '$jenismember'");
-			if($total >= $min_transaksi) {
-				if($idpelanggan == FALSE){
+				//INSERTING VOUCHER INTO PENGGUNAAN KARTU
+				if($kartu != '' OR $kartu != NULL){
+					$jumlah_voucher = $rsnew['jumlah_voucher'];
+					$jenis_kartu_voucher = ExecuteScalar("SELECT jenis FROM m_kartu WHERE id_kartu = '$kartu'");
+					$charge_price_voucher = ExecuteScalar("SELECT charge_price FROM m_kartu WHERE id_kartu = '$kartu'");
+					$pembayaran = $total + ($charge_price_voucher * $jumlah_voucher);
+					Execute("INSERT INTO penggunaan_kartu (id_kartu, jenis_kartu, id_klinik, kode_penjualan, tgl, total, charge, total_charge, jumlah_pemakaian) VALUES ('".$kartu."', '".$jenis_kartu_voucher."', '".$id_klinik."', '".$kode_penjualan."', '".$tanggal."', '".$pembayaran."', '".$charge_price_voucher."', '".$total."', '".$jumlah_voucher."')");
+				}
 
-					// Execute("INSERT INTO m_member (kode_member, idpelanggan, jenis_member, tgl_mulai, tgl_akhir, poin_member) VALUES ('', '".$id_pelanggan."', '1', '".date("Y-m-d h:i:s")."', '', '".floor($perhitungan)."')");
-				} else {
-					if($klaim_poin != NULL OR $klaim_poin != '') {
-						$saldo_poin_klaim = $poinsebelumnya - $klaim_poin;
-						Execute("INSERT INTO kartupoin (id_pelanggan, kode_penjualan, tgl, masuk, keluar, saldo_poin, id_klinik) VALUES ('".$idpelanggan."', '".$kode_penjualan."', '".$tanggal."', '0', '".$klaim_poin."','".$saldo_poin_klaim."', '".$id_klinik."')");
-						Execute("UPDATE m_member SET poin_member=$saldo_poin_klaim WHERE id_pelanggan='$idpelanggan'");
-						$poin_saat_ini = $saldo_poin_klaim + floor($perhitungan);
-						Execute("INSERT INTO kartupoin (id_pelanggan, kode_penjualan, tgl, masuk, keluar, saldo_poin, id_klinik) VALUES ('".$idpelanggan."', '".$kode_penjualan."', '".$tanggal."', '".floor($perhitungan)."', '0','".$poin_saat_ini."', '".$id_klinik."')");
-						Execute("UPDATE m_member SET poin_member=$poin_saat_ini WHERE id_pelanggan='$idpelanggan'");
+				//ADDING POIN MEMBER
+				$idpelanggan = ExecuteScalar("SELECT id_pelanggan FROM m_pelanggan WHERE id_pelanggan IN (SELECT id_pelanggan FROM m_member WHERE id_pelanggan='$id_pelanggan')");
+				$jenismember = ExecuteScalar("SELECT jenis_member FROM m_member WHERE id_pelanggan = '$idpelanggan'");
+				$kelipatan = ExecuteScalar("SELECT curs_poin FROM m_poin WHERE id_jenis_member = '$jenismember'");
+				$perhitungan = ($total - $ongkir) / $kelipatan;
+				$poinsebelumnya = ExecuteScalar("SELECT poin_member FROM m_member WHERE id_pelanggan = '$idpelanggan'");
+				$min_transaksi = ExecuteScalar("SELECT min_transaksi FROM m_poin WHERE id_jenis_member = '$jenismember'");
+				if($total >= $min_transaksi) {
+					if($idpelanggan == FALSE){
+
+						// Execute("INSERT INTO m_member (kode_member, idpelanggan, jenis_member, tgl_mulai, tgl_akhir, poin_member) VALUES ('', '".$id_pelanggan."', '1', '".date("Y-m-d h:i:s")."', '', '".floor($perhitungan)."')");
 					} else {
-						$poin_saat_ini = $poinsebelumnya + floor($perhitungan);
-						Execute("INSERT INTO kartupoin (id_pelanggan, kode_penjualan, tgl, masuk, keluar, saldo_poin, id_klinik) VALUES ('".$idpelanggan."', '".$kode_penjualan."', '".$tanggal."', '".floor($perhitungan)."', '0','".$poin_saat_ini."', '".$id_klinik."')");
-						Execute("UPDATE m_member SET poin_member=$poin_saat_ini WHERE id_pelanggan='$idpelanggan'");
+						if($klaim_poin != NULL OR $klaim_poin != '') {
+							$saldo_poin_klaim = $poinsebelumnya - $klaim_poin;
+							Execute("INSERT INTO kartupoin (id_pelanggan, kode_penjualan, tgl, masuk, keluar, saldo_poin, id_klinik) VALUES ('".$idpelanggan."', '".$kode_penjualan."', '".$tanggal."', '0', '".$klaim_poin."','".$saldo_poin_klaim."', '".$id_klinik."')");
+							Execute("UPDATE m_member SET poin_member=$saldo_poin_klaim WHERE id_pelanggan='$idpelanggan'");
+							$poin_saat_ini = $saldo_poin_klaim + floor($perhitungan);
+							Execute("INSERT INTO kartupoin (id_pelanggan, kode_penjualan, tgl, masuk, keluar, saldo_poin, id_klinik) VALUES ('".$idpelanggan."', '".$kode_penjualan."', '".$tanggal."', '".floor($perhitungan)."', '0','".$poin_saat_ini."', '".$id_klinik."')");
+							Execute("UPDATE m_member SET poin_member=$poin_saat_ini WHERE id_pelanggan='$idpelanggan'");
+						} else {
+							$poin_saat_ini = $poinsebelumnya + floor($perhitungan);
+							Execute("INSERT INTO kartupoin (id_pelanggan, kode_penjualan, tgl, masuk, keluar, saldo_poin, id_klinik) VALUES ('".$idpelanggan."', '".$kode_penjualan."', '".$tanggal."', '".floor($perhitungan)."', '0','".$poin_saat_ini."', '".$id_klinik."')");
+							Execute("UPDATE m_member SET poin_member=$poin_saat_ini WHERE id_pelanggan='$idpelanggan'");
+						}
 					}
 				}
-			}
 
-			// KOMISI PEGAWAI KINERJA
-			$sales = $rsnew['sales'];
-			$dok_be_wajah = $rsnew['dok_be_wajah'];
-			$be_body = $rsnew['be_body'];
-			$medis = $rsnew['medis'];
-			$dokter = $rsnew['dokter'];
-			$idpenjualan = $rsnew['id'];
-			$waktu = $rsnew['waktu'];
-			$kode_penjualan = $rsnew['kode_penjualan'];
-			$date = date("Y-m-d");
-			$qty = ExecuteScalar("SELECT SUM(qty) AS qty FROM detailpenjualan WHERE id_penjualan='$idpenjualan'");
+				// KOMISI PEGAWAI KINERJA
+				$sales = $rsnew['sales'];
+				$dok_be_wajah = $rsnew['dok_be_wajah'];
+				$be_body = $rsnew['be_body'];
+				$medis = $rsnew['medis'];
+				$dokter = $rsnew['dokter'];
+				$idpenjualan = $rsnew['id'];
+				$waktu = $rsnew['waktu'];
+				$kode_penjualan = $rsnew['kode_penjualan'];
+				$date = date("Y-m-d");
+				$qty = ExecuteScalar("SELECT SUM(qty) AS qty FROM detailpenjualan WHERE id_penjualan='$idpenjualan'");
 
-			//KOMISI KINERJA SALES
-			if($sales != "") {
-				$JabatanSales = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai='$sales'");					
-				$sql_sales = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
-					if($sql_sales -> RecordCount() > 0){
-						$sql_sales->MoveFirst();
-						while(!$sql_sales->EOF) {
-							$id_barang_penjualan = $sql_sales->fields['id_barang'];
-							$subtotal_penjualan = $sql_sales->fields['subtotal'];
+				//KOMISI KINERJA SALES
+				if($sales != "") {
+					$JabatanSales = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai='$sales'");					
+					$sql_sales = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
+						if($sql_sales -> RecordCount() > 0){
+							$sql_sales->MoveFirst();
+							while(!$sql_sales->EOF) {
+								$id_barang_penjualan = $sql_sales->fields['id_barang'];
+								$subtotal_penjualan = $sql_sales->fields['subtotal'];
 
-							//$harga_jual = $sql_sales->fields['harga_jual'];
-							$qty_penjualan = $sql_sales->fields['qty'];
-							$subtotal_satuan = $subtotal_penjualan / $qty_penjualan;
+								//$harga_jual = $sql_sales->fields['harga_jual'];
+								$qty_penjualan = $sql_sales->fields['qty'];
+								$subtotal_satuan = $subtotal_penjualan / $qty_penjualan;
 
-							//$KomisiPegawaiSales = ExecuteScalar("SELECT nilai_komisi FROM transaksi_komisi WHERE id_pegawai='$sales'");
-							$BarangKomisiSales = ExecuteScalar("SELECT id_barang FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi_kinerja_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");					
-							$qtyBarangKomisiSales = ExecuteScalar("SELECT qty FROM detailpenjualan WHERE id_barang = '$BarangKomisiSales' AND id_penjualan = '$idpenjualan'");
-							if($BarangKomisiSales != ""){
-								$TargetBarangSales = ExecuteScalar("SELECT target FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								$TglAwalSales = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								$TglAkhirSales = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+								//$KomisiPegawaiSales = ExecuteScalar("SELECT nilai_komisi FROM transaksi_komisi WHERE id_pegawai='$sales'");
+								$BarangKomisiSales = ExecuteScalar("SELECT id_barang FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi_kinerja_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");					
+								$qtyBarangKomisiSales = ExecuteScalar("SELECT qty FROM detailpenjualan WHERE id_barang = '$BarangKomisiSales' AND id_penjualan = '$idpenjualan'");
+								if($BarangKomisiSales != ""){
+									$TargetBarangSales = ExecuteScalar("SELECT target FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									$TglAwalSales = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									$TglAkhirSales = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
 
-								//$Periode = ExecuteScalar("SELECT '$date' - INTERVAL '1' MONTH");
-								$JmlPenjualanSales = ExecuteScalar("SELECT SUM(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE detailpenjualan.id_barang = '$id_barang_penjualan' AND penjualan.sales = '$sales' AND (penjualan.waktu BETWEEN '$TglAwalSales' AND '$TglAkhirSales')");
-								if($JmlPenjualanSales >= $TargetBarangSales){
-									$KomisiTargetRpSales = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-									$KomisiTargetPrSales = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-										if($KomisiTargetRpSales != "" && $KomisiTargetRpSales != "0"){
-											$JmlKomisiTargetRpSales = $KomisiTargetRpSales * $qty_penjualan;
-											Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$sales', '$JabatanSales', '$BarangKomisiSales', '$qtyBarangKomisiSales', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpSales', '$JmlKomisiTargetRpSales')");
-
-											//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpSales WHERE id_pegawai='$sales'");
-										}
-										if($KomisiTargetPrSales != "" && $KomisiTargetPrSales != "0"){
-											$JmlKomisiTargetPrSales = (($KomisiTargetPrSales / 100) * $subtotal_satuan);
-											$total_komisi_target_sales = $JmlKomisiTargetPrSales * $qty_penjualan;
-											Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$sales', '$JabatanSales', '$BarangKomisiSales', '$qtyBarangKomisiSales', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrSales', '$total_komisi_target_sales')");
-
-											//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrSales WHERE id_pegawai='$sales'");
-										}						
-
-									// Get Transaksi Komisi Sales
-									$sql_transaksi_komisi_sales = Execute("SELECT * FROM transaksi_komisi WHERE id_barang = '$BarangKomisiSales' AND id_pegawai = '$sales' AND id_jabatan = '$JabatanSales' AND (tgl BETWEEN '$TglAwalSales' AND '$TglAkhirSales') AND jenis_komisi='Kinerja'");
-
-										// If Transaksi Komisi Sales != NULL
-										if($sql_transaksi_komisi_sales != NULL OR $sql_transaksi_komisi_sales != FALSE){
-											if($sql_transaksi_komisi_sales -> RecordCount() > 0){
-												$sql_transaksi_komisi_sales->MoveFirst();
-												while(!$sql_transaksi_komisi_sales->EOF) {
-													$id_transaksi = $sql_transaksi_komisi_sales->fields['id'];
-													$id_pegawai_transaksi = $sql_transaksi_komisi_sales->fields['id_pegawai'];
-													$id_jabatan_transaksi = $sql_transaksi_komisi_sales->fields['id_jabatan'];
-													$kode_penjualan = $sql_transaksi_komisi_sales->fields['kode_penjualan'];
-													$id_barang_transaksi = $sql_transaksi_komisi_sales->fields['id_barang'];
-													$subtotal_transaksi = $sql_transaksi_komisi_sales->fields['subtotal'];
-													$qty_transaksi = $sql_transaksi_komisi_sales->fields['qty'];
-													$harga_jual_transaksi = $subtotal_transaksi / $qty_transaksi;
-													var_dump($harga_jual_transaksi);
-
-														// If Komisi Target Rupiah != 0
-														if($KomisiTargetRpSales != "" && $KomisiTargetRpSales != "0"){
-
-															// Insert into transaksi komisi
-															//Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$sales', '$JabatanSales', '$BarangKomisiSales', '$qtyBarangKomisiSales', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpSales', '$KomisiTargetRpSales')");
-
-															$JmlKomisiTargetRpSales = $KomisiTargetRpSales * $qty_transaksi;
-
-															// Update data sebelumnya
-															Execute("UPDATE transaksi_komisi SET komisi='$KomisiTargetRpSales', total_komisi='$JmlKomisiTargetRpSales' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
-
-															//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpSales WHERE id_pegawai='$sales'");
-														}
-
-														// If Komisi Target Persen != 0
-														if($KomisiTargetPrSales != "" && $KomisiTargetPrSales != "0"){
-															$JmlKomisiTargetPrSales = (($KomisiTargetPrSales / 100) * $harga_jual_transaksi);
-															$total_komisi_target_sales = $JmlKomisiTargetPrSales * $qty_transaksi;
-															Execute("UPDATE transaksi_komisi SET komisi='$JmlKomisiTargetPrSales', total_komisi='$total_komisi_target_sales' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
-
-															//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrSales WHERE id_pegawai='$sales'");
-														}
-												$sql_transaksi_komisi_sales->MoveNext();
-												}
-											$sql_transaksi_komisi_sales->Close();	
-											}
-										} else {
-											$KomisiTargetRpSales = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-											$KomisiTargetPrSales = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									//$Periode = ExecuteScalar("SELECT '$date' - INTERVAL '1' MONTH");
+									$JmlPenjualanSales = ExecuteScalar("SELECT SUM(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE detailpenjualan.id_barang = '$id_barang_penjualan' AND penjualan.sales = '$sales' AND (penjualan.waktu BETWEEN '$TglAwalSales' AND '$TglAkhirSales')");
+									if($JmlPenjualanSales >= $TargetBarangSales){
+										$KomisiTargetRpSales = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+										$KomisiTargetPrSales = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
 											if($KomisiTargetRpSales != "" && $KomisiTargetRpSales != "0"){
-												$JmlKomisiTargetRpSales =  $KomisiTargetRpSales * $qty_penjualan;
+												$JmlKomisiTargetRpSales = $KomisiTargetRpSales * $qty_penjualan;
 												Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$sales', '$JabatanSales', '$BarangKomisiSales', '$qtyBarangKomisiSales', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpSales', '$JmlKomisiTargetRpSales')");
 
 												//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpSales WHERE id_pegawai='$sales'");
@@ -2676,242 +2613,242 @@ class penjualan extends DbTable
 												Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$sales', '$JabatanSales', '$BarangKomisiSales', '$qtyBarangKomisiSales', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrSales', '$total_komisi_target_sales')");
 
 												//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrSales WHERE id_pegawai='$sales'");
-											}
-										}
-								} else {
-									$KomisiDefaultRpSales = ExecuteScalar("SELECT kinerja_default_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-									$KomisiDefaultPrSales = ExecuteScalar("SELECT kinerja_default_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-									if($KomisiDefaultRpSales != "" && $KomisiDefaultRpSales != "0"){
-										$JmlKomisiDefaultRpSales = $KomisiDefaultRpSales * $qty_penjualan;
-										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$sales', '$JabatanSales', '$BarangKomisiSales', '$qtyBarangKomisiSales', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiDefaultRpSales', '$JmlKomisiDefaultRpSales')");
+											}						
 
-										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultRpSales WHERE id_pegawai='$sales'");	
-									}
-									if($KomisiDefaultPrSales != "" && $KomisiDefaultPrSales != "0"){
-										$JmlKomisiDefaultPrSales = (($KomisiDefaultPrSales / 100) * $subtotal_satuan);
-										$total_komisi_default_sales = $JmlKomisiDefaultPrSales * $qty_penjualan;
-										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$sales', '$JabatanSales', '$BarangKomisiSales', '$qtyBarangKomisiSales', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiDefaultPrSales', '$total_komisi_default_sales')");
+										// Get Transaksi Komisi Sales
+										$sql_transaksi_komisi_sales = Execute("SELECT * FROM transaksi_komisi WHERE id_barang = '$BarangKomisiSales' AND id_pegawai = '$sales' AND id_jabatan = '$JabatanSales' AND (tgl BETWEEN '$TglAwalSales' AND '$TglAkhirSales') AND jenis_komisi='Kinerja'");
 
-										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultPrSales WHERE id_pegawai='$sales'");
-									}
-								}
-							}
-						$sql_sales->MoveNext();	
-						}
-					$sql_sales->Close();
-					}
-			}
+											// If Transaksi Komisi Sales != NULL
+											if($sql_transaksi_komisi_sales != NULL OR $sql_transaksi_komisi_sales != FALSE){
+												if($sql_transaksi_komisi_sales -> RecordCount() > 0){
+													$sql_transaksi_komisi_sales->MoveFirst();
+													while(!$sql_transaksi_komisi_sales->EOF) {
+														$id_transaksi = $sql_transaksi_komisi_sales->fields['id'];
+														$id_pegawai_transaksi = $sql_transaksi_komisi_sales->fields['id_pegawai'];
+														$id_jabatan_transaksi = $sql_transaksi_komisi_sales->fields['id_jabatan'];
+														$kode_penjualan = $sql_transaksi_komisi_sales->fields['kode_penjualan'];
+														$id_barang_transaksi = $sql_transaksi_komisi_sales->fields['id_barang'];
+														$subtotal_transaksi = $sql_transaksi_komisi_sales->fields['subtotal'];
+														$qty_transaksi = $sql_transaksi_komisi_sales->fields['qty'];
+														$harga_jual_transaksi = $subtotal_transaksi / $qty_transaksi;
+														var_dump($harga_jual_transaksi);
 
-			//KOMISI KINERJA BE WAJAH
-			if($dok_be_wajah != "") {
-			$JabatanDokBeWajah = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai='$dok_be_wajah'");
-			$sql_dok_be_wajah = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
-				if($sql_dok_be_wajah -> RecordCount() > 0){
-					$sql_dok_be_wajah->MoveFirst();
-					while(!$sql_dok_be_wajah->EOF) {
-						$id_barang_penjualan = $sql_dok_be_wajah->fields['id_barang'];
-						$subtotal_penjualan = $sql_dok_be_wajah->fields['subtotal'];
+															// If Komisi Target Rupiah != 0
+															if($KomisiTargetRpSales != "" && $KomisiTargetRpSales != "0"){
 
-						//$harga_jual = $sql_dok_be_wajah->fields['harga_jual'];
-						$qty_penjualan = $sql_sales->fields['qty'];
-						$subtotal_satuan = $subtotal_penjualan / $qty_penjualan;
+																// Insert into transaksi komisi
+																//Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$sales', '$JabatanSales', '$BarangKomisiSales', '$qtyBarangKomisiSales', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpSales', '$KomisiTargetRpSales')");
 
-						//$KomisiPegawaiDokBeWajah = ExecuteScalar("SELECT nilai_komisi FROM m_pegawai WHERE id_pegawai='$dok_be_wajah'");
-						$BarangKomisiDokBeWajah = ExecuteScalar("SELECT id_barang FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi_kinerja_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");					
-						$qtyBarangKomisiDokBeWajah = ExecuteScalar("SELECT qty FROM detailpenjualan WHERE id_barang = '$BarangKomisiDokBeWajah' AND id_penjualan = '$idpenjualan'");
-						if($BarangKomisiDokBeWajah != ""){
-							$TargetBarangDokBeWajah = ExecuteScalar("SELECT target FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-							$TglAwalDokBeWajah = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-							$TglAkhirDokBeWajah = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+																$JmlKomisiTargetRpSales = $KomisiTargetRpSales * $qty_transaksi;
 
-							//$Periode = ExecuteScalar("SELECT '$date' - INTERVAL '1' MONTH");
-							$JmlPenjualanDokBeWajah = ExecuteScalar("SELECT SUM(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE detailpenjualan.id_barang = '$id_barang_penjualan' AND penjualan.dok_be_wajah = '$dok_be_wajah' AND (penjualan.waktu BETWEEN '$TglAwalDokBeWajah' AND '$TglAkhirDokBeWajah')");                    
-							if($JmlPenjualanDokBeWajah >= $TargetBarangDokBeWajah){
-								$KomisiTargetRpDokBeWajah = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								$KomisiTargetPrDokBeWajah = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								if($KomisiTargetRpDokBeWajah != "" && $KomisiTargetRpDokBeWajah != "0"){
-									$JmlKomisiTargetRpDokBeWajah = $KomisiTargetRpDokBeWajah * $qty_penjualan;
-									Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$JabatanDokBeWajah', '$BarangKomisiDokBeWajah', '$qtyBarangKomisiDokBeWajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpDokBeWajah', '$JmlKomisiTargetRpDokBeWajah')");
-								}
-								if($KomisiTargetPrDokBeWajah != "" && $KomisiTargetPrDokBeWajah != "0"){
-									$JmlKomisiTargetPrDokBeWajah = (($KomisiTargetPrDokBeWajah / 100) * $subtotal_satuan);
-									$total_komisi_target_dok_be_wajah = $JmlKomisiTargetPrDokBeWajah * $qty_penjualan;
-									Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$JabatanDokBeWajah', '$BarangKomisiDokBeWajah', '$qtyBarangKomisiDokBeWajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrDokBeWajah', '$total_komisi_target_dok_be_wajah')");
-								}
-								$sql_transaksi_komisi_dok_be_wajah = Execute("SELECT * FROM transaksi_komisi WHERE id_barang = '$BarangKomisiDokBeWajah' AND id_pegawai = '$dok_be_wajah' AND id_jabatan = '$JabatanDokBeWajah' AND (tgl BETWEEN '$TglAwalDokBeWajah' AND '$TglAkhirDokBeWajah') AND jenis_komisi='Kinerja'");
+																// Update data sebelumnya
+																Execute("UPDATE transaksi_komisi SET komisi='$KomisiTargetRpSales', total_komisi='$JmlKomisiTargetRpSales' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
 
-										// If Transaksi Komisi dok_be_wajah != NULL
-										if($sql_transaksi_komisi_dok_be_wajah != NULL OR $sql_transaksi_komisi_dok_be_wajah != FALSE){
-											if($sql_transaksi_komisi_dok_be_wajah -> RecordCount() > 0){
-												$sql_transaksi_komisi_dok_be_wajah->MoveFirst();
-												while(!$sql_transaksi_komisi_dok_be_wajah->EOF) {
-													$id_transaksi = $sql_transaksi_komisi_dok_be_wajah->fields['id'];
-													$id_pegawai_transaksi = $sql_transaksi_komisi_dok_be_wajah->fields['id_pegawai'];
-													$id_jabatan_transaksi = $sql_transaksi_komisi_dok_be_wajah->fields['id_jabatan'];
-													$kode_penjualan = $sql_transaksi_komisi_dok_be_wajah->fields['kode_penjualan'];
-													$id_barang_transaksi = $sql_transaksi_komisi_dok_be_wajah->fields['id_barang'];
-													$subtotal_transaksi = $sql_transaksi_komisi_dok_be_wajah->fields['subtotal'];
-													$qty_transaksi = $sql_transaksi_komisi_dok_be_wajah->fields['qty'];
-													$harga_jual_transaksi = $subtotal_transaksi / $qty_transaksi;
-													var_dump($harga_jual_transaksi);
+																//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpSales WHERE id_pegawai='$sales'");
+															}
 
-														// If Komisi Target Rupiah != 0
-														if($KomisiTargetRpDokBeWajah != "" && $KomisiTargetRpDokBeWajah != "0"){
+															// If Komisi Target Persen != 0
+															if($KomisiTargetPrSales != "" && $KomisiTargetPrSales != "0"){
+																$JmlKomisiTargetPrSales = (($KomisiTargetPrSales / 100) * $harga_jual_transaksi);
+																$total_komisi_target_sales = $JmlKomisiTargetPrSales * $qty_transaksi;
+																Execute("UPDATE transaksi_komisi SET komisi='$JmlKomisiTargetPrSales', total_komisi='$total_komisi_target_sales' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
 
-															// Insert into transaksi komisi
-															//Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$Jabatandok_be_wajah', '$BarangKomisidok_be_wajah', '$qtyBarangKomisidok_be_wajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpDokBeWajah', '$KomisiTargetRpDokBeWajah')");
-
-															$JmlKomisiTargetRpDokBeWajah = $KomisiTargetRpDokBeWajah * $qty_transaksi;
-
-															// Update data sebelumnya
-															Execute("UPDATE transaksi_komisi SET komisi='$KomisiTargetRpDokBeWajah', total_komisi='$JmlKomisiTargetRpDokBeWajah' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
-
-															//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpDokBeWajah WHERE id_pegawai='$dok_be_wajah'");
-														}
-
-														// If Komisi Target Persen != 0
-														if($KomisiTargetPrDokBeWajah != "" && $KomisiTargetPrDokBeWajah != "0"){
-															$JmlKomisiTargetPrDokBeWajah = (($KomisiTargetPrDokBeWajah / 100) * $harga_jual_transaksi);
-															$total_komisi_target_dok_be_wajah = $JmlKomisiTargetPrDokBeWajah * $qty_transaksi;
-															Execute("UPDATE transaksi_komisi SET komisi='$JmlKomisiTargetPrDokBeWajah', total_komisi='$total_komisi_target_dok_be_wajah' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
-
-															//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrDokBeWajah WHERE id_pegawai='$dok_be_wajah'");
-														}
-												$sql_transaksi_komisi_dok_be_wajah->MoveNext();
+																//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrSales WHERE id_pegawai='$sales'");
+															}
+													$sql_transaksi_komisi_sales->MoveNext();
+													}
+												$sql_transaksi_komisi_sales->Close();	
 												}
-											$sql_transaksi_komisi_dok_be_wajah->Close();	
-											}
-										} else {
-											$KomisiTargetRpDokBeWajah = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$Jabatandok_be_wajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-											$KomisiTargetPrDokBeWajah = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$Jabatandok_be_wajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-											if($KomisiTargetRpDokBeWajah != "" && $KomisiTargetRpDokBeWajah != "0"){
-												$JmlKomisiTargetRpDokBeWajah =  $KomisiTargetRpDokBeWajah * $qty_penjualan;
-												Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$Jabatandok_be_wajah', '$BarangKomisidok_be_wajah', '$qtyBarangKomisidok_be_wajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpDokBeWajah', '$JmlKomisiTargetRpDokBeWajah')");
+											} else {
+												$KomisiTargetRpSales = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+												$KomisiTargetPrSales = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+												if($KomisiTargetRpSales != "" && $KomisiTargetRpSales != "0"){
+													$JmlKomisiTargetRpSales =  $KomisiTargetRpSales * $qty_penjualan;
+													Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$sales', '$JabatanSales', '$BarangKomisiSales', '$qtyBarangKomisiSales', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpSales', '$JmlKomisiTargetRpSales')");
 
-												//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpDokBeWajah WHERE id_pegawai='$dok_be_wajah'");
-											}
-											if($KomisiTargetPrDokBeWajah != "" && $KomisiTargetPrDokBeWajah != "0"){
-												$JmlKomisiTargetPrDokBeWajah = (($KomisiTargetPrDokBeWajah / 100) * $subtotal_satuan);
-												$total_komisi_target_dok_be_wajah = $JmlKomisiTargetPrDokBeWajah * $qty_penjualan;
-												Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$Jabatandok_be_wajah', '$BarangKomisidok_be_wajah', '$qtyBarangKomisidok_be_wajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrDokBeWajah', '$total_komisi_target_dok_be_wajah')");
+													//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpSales WHERE id_pegawai='$sales'");
+												}
+												if($KomisiTargetPrSales != "" && $KomisiTargetPrSales != "0"){
+													$JmlKomisiTargetPrSales = (($KomisiTargetPrSales / 100) * $subtotal_satuan);
+													$total_komisi_target_sales = $JmlKomisiTargetPrSales * $qty_penjualan;
+													Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$sales', '$JabatanSales', '$BarangKomisiSales', '$qtyBarangKomisiSales', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrSales', '$total_komisi_target_sales')");
 
-												//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrDokBeWajah WHERE id_pegawai='$dok_be_wajah'");
+													//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrSales WHERE id_pegawai='$sales'");
+												}
 											}
+									} else {
+										$KomisiDefaultRpSales = ExecuteScalar("SELECT kinerja_default_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+										$KomisiDefaultPrSales = ExecuteScalar("SELECT kinerja_default_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+										if($KomisiDefaultRpSales != "" && $KomisiDefaultRpSales != "0"){
+											$JmlKomisiDefaultRpSales = $KomisiDefaultRpSales * $qty_penjualan;
+											Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$sales', '$JabatanSales', '$BarangKomisiSales', '$qtyBarangKomisiSales', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiDefaultRpSales', '$JmlKomisiDefaultRpSales')");
+
+											//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultRpSales WHERE id_pegawai='$sales'");	
 										}
-							} else {
-								$KomisiDefaultRpDokBeWajah = ExecuteScalar("SELECT kinerja_default_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								$KomisiDefaultPrDokBeWajah = ExecuteScalar("SELECT kinerja_default_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								if($KomisiDefaultRpDokBeWajah != "" && $KomisiDefaultRpDokBeWajah != "0"){
-									$JmlKomisiDefaultRpDokBeWajah =  $KomisiDefaultRpDokBeWajah * $qty_penjualan;
-									Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$JabatanDokBeWajah', '$BarangKomisiDokBeWajah', '$qtyBarangKomisiDokBeWajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiDefaultRpDokBeWajah', '$JmlKomisiDefaultRpDokBeWajah')");
+										if($KomisiDefaultPrSales != "" && $KomisiDefaultPrSales != "0"){
+											$JmlKomisiDefaultPrSales = (($KomisiDefaultPrSales / 100) * $subtotal_satuan);
+											$total_komisi_default_sales = $JmlKomisiDefaultPrSales * $qty_penjualan;
+											Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$sales', '$JabatanSales', '$BarangKomisiSales', '$qtyBarangKomisiSales', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiDefaultPrSales', '$total_komisi_default_sales')");
 
-									//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultRpDokBeWajah WHERE id_pegawai='$dok_be_wajah'");	
+											//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultPrSales WHERE id_pegawai='$sales'");
+										}
+									}
 								}
-								if($KomisiDefaultPrDokBeWajah != "" && $KomisiDefaultPrDokBeWajah != "0"){
-									$JmlKomisiDefaultPrDokBeWajah = (($KomisiDefaultPrDokBeWajah / 100) * $subtotal_satuan);
-									$total_komisi_default_dok_be_wajah = $JmlKomisiDefaultPrDokBeWajah * $qty_penjualan;
-									Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$JabatanDokBeWajah', '$BarangKomisiDokBeWajah', '$qtyBarangKomisiDokBeWajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiDefaultPrDokBeWajah', '$total_komisi_default_dok_be_wajah')");
+							$sql_sales->MoveNext();	
+							}
+						$sql_sales->Close();
+						}
+				}
 
-									//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultPrDokBeWajah WHERE id_pegawai='$dok_be_wajah'");
+				//KOMISI KINERJA BE WAJAH
+				if($dok_be_wajah != "") {
+				$JabatanDokBeWajah = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai='$dok_be_wajah'");
+				$sql_dok_be_wajah = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
+					if($sql_dok_be_wajah -> RecordCount() > 0){
+						$sql_dok_be_wajah->MoveFirst();
+						while(!$sql_dok_be_wajah->EOF) {
+							$id_barang_penjualan = $sql_dok_be_wajah->fields['id_barang'];
+							$subtotal_penjualan = $sql_dok_be_wajah->fields['subtotal'];
+
+							//$harga_jual = $sql_dok_be_wajah->fields['harga_jual'];
+							$qty_penjualan = $sql_sales->fields['qty'];
+							$subtotal_satuan = $subtotal_penjualan / $qty_penjualan;
+
+							//$KomisiPegawaiDokBeWajah = ExecuteScalar("SELECT nilai_komisi FROM m_pegawai WHERE id_pegawai='$dok_be_wajah'");
+							$BarangKomisiDokBeWajah = ExecuteScalar("SELECT id_barang FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi_kinerja_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");					
+							$qtyBarangKomisiDokBeWajah = ExecuteScalar("SELECT qty FROM detailpenjualan WHERE id_barang = '$BarangKomisiDokBeWajah' AND id_penjualan = '$idpenjualan'");
+							if($BarangKomisiDokBeWajah != ""){
+								$TargetBarangDokBeWajah = ExecuteScalar("SELECT target FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+								$TglAwalDokBeWajah = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+								$TglAkhirDokBeWajah = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+
+								//$Periode = ExecuteScalar("SELECT '$date' - INTERVAL '1' MONTH");
+								$JmlPenjualanDokBeWajah = ExecuteScalar("SELECT SUM(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE detailpenjualan.id_barang = '$id_barang_penjualan' AND penjualan.dok_be_wajah = '$dok_be_wajah' AND (penjualan.waktu BETWEEN '$TglAwalDokBeWajah' AND '$TglAkhirDokBeWajah')");                    
+								if($JmlPenjualanDokBeWajah >= $TargetBarangDokBeWajah){
+									$KomisiTargetRpDokBeWajah = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									$KomisiTargetPrDokBeWajah = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									if($KomisiTargetRpDokBeWajah != "" && $KomisiTargetRpDokBeWajah != "0"){
+										$JmlKomisiTargetRpDokBeWajah = $KomisiTargetRpDokBeWajah * $qty_penjualan;
+										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$JabatanDokBeWajah', '$BarangKomisiDokBeWajah', '$qtyBarangKomisiDokBeWajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpDokBeWajah', '$JmlKomisiTargetRpDokBeWajah')");
+									}
+									if($KomisiTargetPrDokBeWajah != "" && $KomisiTargetPrDokBeWajah != "0"){
+										$JmlKomisiTargetPrDokBeWajah = (($KomisiTargetPrDokBeWajah / 100) * $subtotal_satuan);
+										$total_komisi_target_dok_be_wajah = $JmlKomisiTargetPrDokBeWajah * $qty_penjualan;
+										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$JabatanDokBeWajah', '$BarangKomisiDokBeWajah', '$qtyBarangKomisiDokBeWajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrDokBeWajah', '$total_komisi_target_dok_be_wajah')");
+									}
+									$sql_transaksi_komisi_dok_be_wajah = Execute("SELECT * FROM transaksi_komisi WHERE id_barang = '$BarangKomisiDokBeWajah' AND id_pegawai = '$dok_be_wajah' AND id_jabatan = '$JabatanDokBeWajah' AND (tgl BETWEEN '$TglAwalDokBeWajah' AND '$TglAkhirDokBeWajah') AND jenis_komisi='Kinerja'");
+
+											// If Transaksi Komisi dok_be_wajah != NULL
+											if($sql_transaksi_komisi_dok_be_wajah != NULL OR $sql_transaksi_komisi_dok_be_wajah != FALSE){
+												if($sql_transaksi_komisi_dok_be_wajah -> RecordCount() > 0){
+													$sql_transaksi_komisi_dok_be_wajah->MoveFirst();
+													while(!$sql_transaksi_komisi_dok_be_wajah->EOF) {
+														$id_transaksi = $sql_transaksi_komisi_dok_be_wajah->fields['id'];
+														$id_pegawai_transaksi = $sql_transaksi_komisi_dok_be_wajah->fields['id_pegawai'];
+														$id_jabatan_transaksi = $sql_transaksi_komisi_dok_be_wajah->fields['id_jabatan'];
+														$kode_penjualan = $sql_transaksi_komisi_dok_be_wajah->fields['kode_penjualan'];
+														$id_barang_transaksi = $sql_transaksi_komisi_dok_be_wajah->fields['id_barang'];
+														$subtotal_transaksi = $sql_transaksi_komisi_dok_be_wajah->fields['subtotal'];
+														$qty_transaksi = $sql_transaksi_komisi_dok_be_wajah->fields['qty'];
+														$harga_jual_transaksi = $subtotal_transaksi / $qty_transaksi;
+														var_dump($harga_jual_transaksi);
+
+															// If Komisi Target Rupiah != 0
+															if($KomisiTargetRpDokBeWajah != "" && $KomisiTargetRpDokBeWajah != "0"){
+
+																// Insert into transaksi komisi
+																//Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$Jabatandok_be_wajah', '$BarangKomisidok_be_wajah', '$qtyBarangKomisidok_be_wajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpDokBeWajah', '$KomisiTargetRpDokBeWajah')");
+
+																$JmlKomisiTargetRpDokBeWajah = $KomisiTargetRpDokBeWajah * $qty_transaksi;
+
+																// Update data sebelumnya
+																Execute("UPDATE transaksi_komisi SET komisi='$KomisiTargetRpDokBeWajah', total_komisi='$JmlKomisiTargetRpDokBeWajah' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+
+																//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpDokBeWajah WHERE id_pegawai='$dok_be_wajah'");
+															}
+
+															// If Komisi Target Persen != 0
+															if($KomisiTargetPrDokBeWajah != "" && $KomisiTargetPrDokBeWajah != "0"){
+																$JmlKomisiTargetPrDokBeWajah = (($KomisiTargetPrDokBeWajah / 100) * $harga_jual_transaksi);
+																$total_komisi_target_dok_be_wajah = $JmlKomisiTargetPrDokBeWajah * $qty_transaksi;
+																Execute("UPDATE transaksi_komisi SET komisi='$JmlKomisiTargetPrDokBeWajah', total_komisi='$total_komisi_target_dok_be_wajah' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+
+																//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrDokBeWajah WHERE id_pegawai='$dok_be_wajah'");
+															}
+													$sql_transaksi_komisi_dok_be_wajah->MoveNext();
+													}
+												$sql_transaksi_komisi_dok_be_wajah->Close();	
+												}
+											} else {
+												$KomisiTargetRpDokBeWajah = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$Jabatandok_be_wajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+												$KomisiTargetPrDokBeWajah = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$Jabatandok_be_wajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+												if($KomisiTargetRpDokBeWajah != "" && $KomisiTargetRpDokBeWajah != "0"){
+													$JmlKomisiTargetRpDokBeWajah =  $KomisiTargetRpDokBeWajah * $qty_penjualan;
+													Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$Jabatandok_be_wajah', '$BarangKomisidok_be_wajah', '$qtyBarangKomisidok_be_wajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpDokBeWajah', '$JmlKomisiTargetRpDokBeWajah')");
+
+													//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpDokBeWajah WHERE id_pegawai='$dok_be_wajah'");
+												}
+												if($KomisiTargetPrDokBeWajah != "" && $KomisiTargetPrDokBeWajah != "0"){
+													$JmlKomisiTargetPrDokBeWajah = (($KomisiTargetPrDokBeWajah / 100) * $subtotal_satuan);
+													$total_komisi_target_dok_be_wajah = $JmlKomisiTargetPrDokBeWajah * $qty_penjualan;
+													Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$Jabatandok_be_wajah', '$BarangKomisidok_be_wajah', '$qtyBarangKomisidok_be_wajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrDokBeWajah', '$total_komisi_target_dok_be_wajah')");
+
+													//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrDokBeWajah WHERE id_pegawai='$dok_be_wajah'");
+												}
+											}
+								} else {
+									$KomisiDefaultRpDokBeWajah = ExecuteScalar("SELECT kinerja_default_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									$KomisiDefaultPrDokBeWajah = ExecuteScalar("SELECT kinerja_default_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									if($KomisiDefaultRpDokBeWajah != "" && $KomisiDefaultRpDokBeWajah != "0"){
+										$JmlKomisiDefaultRpDokBeWajah =  $KomisiDefaultRpDokBeWajah * $qty_penjualan;
+										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$JabatanDokBeWajah', '$BarangKomisiDokBeWajah', '$qtyBarangKomisiDokBeWajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiDefaultRpDokBeWajah', '$JmlKomisiDefaultRpDokBeWajah')");
+
+										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultRpDokBeWajah WHERE id_pegawai='$dok_be_wajah'");	
+									}
+									if($KomisiDefaultPrDokBeWajah != "" && $KomisiDefaultPrDokBeWajah != "0"){
+										$JmlKomisiDefaultPrDokBeWajah = (($KomisiDefaultPrDokBeWajah / 100) * $subtotal_satuan);
+										$total_komisi_default_dok_be_wajah = $JmlKomisiDefaultPrDokBeWajah * $qty_penjualan;
+										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$JabatanDokBeWajah', '$BarangKomisiDokBeWajah', '$qtyBarangKomisiDokBeWajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiDefaultPrDokBeWajah', '$total_komisi_default_dok_be_wajah')");
+
+										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultPrDokBeWajah WHERE id_pegawai='$dok_be_wajah'");
+									}
 								}
 							}
+						$sql_dok_be_wajah->MoveNext();	
 						}
-					$sql_dok_be_wajah->MoveNext();	
+					$sql_dok_be_wajah->Close();
 					}
-				$sql_dok_be_wajah->Close();
 				}
-			}
 
-			// KOMISI KINERJA BE BODY	
-			if($be_body != "") {
-			$JabatanBeBody = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai='$be_body'");
-			$sql_be_body = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
-				if($sql_be_body -> RecordCount() > 0){
-					$sql_be_body->MoveFirst();
-					while(!$sql_be_body->EOF) {
-						$id_barang_penjualan = $sql_be_body->fields['id_barang'];
-						$subtotal_penjualan = $sql_be_body->fields['subtotal'];
+				// KOMISI KINERJA BE BODY	
+				if($be_body != "") {
+				$JabatanBeBody = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai='$be_body'");
+				$sql_be_body = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
+					if($sql_be_body -> RecordCount() > 0){
+						$sql_be_body->MoveFirst();
+						while(!$sql_be_body->EOF) {
+							$id_barang_penjualan = $sql_be_body->fields['id_barang'];
+							$subtotal_penjualan = $sql_be_body->fields['subtotal'];
 
-						//$harga_jual = $sql_be_body->fields['harga_jual'];
-						$qty_penjualan = $sql_be_body->fields['qty'];
-						$subtotal_satuan = $subtotal_penjualan / $qty_penjualan;
+							//$harga_jual = $sql_be_body->fields['harga_jual'];
+							$qty_penjualan = $sql_be_body->fields['qty'];
+							$subtotal_satuan = $subtotal_penjualan / $qty_penjualan;
 
-						//$KomisiPegawaiBe Body = ExecuteScalar("SELECT nilai_komisi FROM transaksi_komisi WHERE id_pegawai='$be_body'");
-						$BarangKomisiBeBody = ExecuteScalar("SELECT id_barang FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi_kinerja_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");					
-						$qtyBarangKomisiBeBody = ExecuteScalar("SELECT qty FROM detailpenjualan WHERE id_barang = '$BarangKomisiBeBody' AND id_penjualan = '$idpenjualan'");
-						if($BarangKomisiBeBody != ""){
-							$TargetBarangBeBody = ExecuteScalar("SELECT target FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-							$TglAwalBeBody = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-							$TglAkhirBeBody = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+							//$KomisiPegawaiBe Body = ExecuteScalar("SELECT nilai_komisi FROM transaksi_komisi WHERE id_pegawai='$be_body'");
+							$BarangKomisiBeBody = ExecuteScalar("SELECT id_barang FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi_kinerja_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");					
+							$qtyBarangKomisiBeBody = ExecuteScalar("SELECT qty FROM detailpenjualan WHERE id_barang = '$BarangKomisiBeBody' AND id_penjualan = '$idpenjualan'");
+							if($BarangKomisiBeBody != ""){
+								$TargetBarangBeBody = ExecuteScalar("SELECT target FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+								$TglAwalBeBody = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+								$TglAkhirBeBody = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
 
-							//$Periode = ExecuteScalar("SELECT '$date' - INTERVAL '1' MONTH");
-							$JmlPenjualanBeBody = ExecuteScalar("SELECT SUM(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE detailpenjualan.id_barang = '$id_barang_penjualan' AND penjualan.be_body = '$be_body' AND (penjualan.waktu BETWEEN '$TglAwalBeBody' AND '$TglAkhirBeBody')");
-							if($JmlPenjualanBeBody >= $TargetBarangBeBody){
-								$KomisiTargetRpBeBody = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								$KomisiTargetPrBeBody = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-									if($KomisiTargetRpBeBody != "" && $KomisiTargetRpBeBody != "0"){
-										$JmlKomisiTargetRpBeBody = $KomisiTargetRpBeBody * $qty_penjualan;
-										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$be_body', '$JabatanBeBody', '$BarangKomisiBeBody', '$qtyBarangKomisiBeBody', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpBeBody', '$JmlKomisiTargetRpBeBody')");
-
-										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpBeBody WHERE id_pegawai='$be_body'");
-									}
-									if($KomisiTargetPrBeBody != "" && $KomisiTargetPrBeBody != "0"){
-										$JmlKomisiTargetPrBeBody = (($KomisiTargetPrBeBody / 100) * $subtotal_satuan);
-										$total_komisi_target_be_body = $JmlKomisiTargetPrBeBody * $qty_penjualan;
-										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$be_body', '$JabatanBeBody', '$BarangKomisiBeBody', '$qtyBarangKomisiBeBody', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrBeBody', '$total_komisi_target_be_body')");
-
-										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrBeBody WHERE id_pegawai='$be_body'");
-									}						
-
-								// Get Transaksi Komisi Be Body
-								$sql_transaksi_komisi_be_body = Execute("SELECT * FROM transaksi_komisi WHERE id_barang = '$BarangKomisiBeBody' AND id_pegawai = '$be_body' AND id_jabatan = '$JabatanBeBody' AND (tgl BETWEEN '$TglAwalBeBody' AND '$TglAkhirBeBody') AND jenis_komisi='Kinerja'");
-
-									// If Transaksi Komisi Be Body != NULL
-									if($sql_transaksi_komisi_be_body != NULL OR $sql_transaksi_komisi_be_body != FALSE){
-										if($sql_transaksi_komisi_be_body -> RecordCount() > 0){
-											$sql_transaksi_komisi_be_body->MoveFirst();
-											while(!$sql_transaksi_komisi_be_body->EOF) {
-												$id_transaksi = $sql_transaksi_komisi_be_body->fields['id'];
-												$id_pegawai_transaksi = $sql_transaksi_komisi_be_body->fields['id_pegawai'];
-												$id_jabatan_transaksi = $sql_transaksi_komisi_be_body->fields['id_jabatan'];
-												$kode_penjualan = $sql_transaksi_komisi_be_body->fields['kode_penjualan'];
-												$id_barang_transaksi = $sql_transaksi_komisi_be_body->fields['id_barang'];
-												$subtotal_transaksi = $sql_transaksi_komisi_be_body->fields['subtotal'];
-												$qty_transaksi = $sql_transaksi_komisi_be_body->fields['qty'];
-												$harga_jual_transaksi = $subtotal_transaksi / $qty_transaksi;
-												var_dump($harga_jual_transaksi);
-
-													// If Komisi Target Rupiah != 0
-													if($KomisiTargetRpBeBody != "" && $KomisiTargetRpBeBody != "0"){
-
-														// Insert into transaksi komisi
-														//Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$be_body', '$JabatanBeBody', '$BarangKomisiBeBody', '$qtyBarangKomisiBeBody', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpBeBody', '$KomisiTargetRpBeBody')");
-
-														$JmlKomisiTargetRpBeBody = $KomisiTargetRpBeBody * $qty_transaksi;
-
-														// Update data sebelumnya
-														Execute("UPDATE transaksi_komisi SET komisi='$KomisiTargetRpBeBody', total_komisi='$JmlKomisiTargetRpBeBody' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
-
-														//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpBeBody WHERE id_pegawai='$be_body'");
-													}
-
-													// If Komisi Target Persen != 0
-													if($KomisiTargetPrBeBody != "" && $KomisiTargetPrBeBody != "0"){
-														$JmlKomisiTargetPrBeBody = (($KomisiTargetPrBeBody / 100) * $harga_jual_transaksi);
-														$total_komisi_target_be_body = $JmlKomisiTargetPrBeBody * $qty_transaksi;
-														Execute("UPDATE transaksi_komisi SET komisi='$JmlKomisiTargetPrBeBody', total_komisi='$total_komisi_target_be_body' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
-
-														//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrBeBody WHERE id_pegawai='$be_body'");
-													}
-											$sql_transaksi_komisi_be_body->MoveNext();
-											}
-										$sql_transaksi_komisi_be_body->Close();	
-										}
-									} else {
-										$KomisiTargetRpBeBody = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-										$KomisiTargetPrBeBody = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+								//$Periode = ExecuteScalar("SELECT '$date' - INTERVAL '1' MONTH");
+								$JmlPenjualanBeBody = ExecuteScalar("SELECT SUM(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE detailpenjualan.id_barang = '$id_barang_penjualan' AND penjualan.be_body = '$be_body' AND (penjualan.waktu BETWEEN '$TglAwalBeBody' AND '$TglAkhirBeBody')");
+								if($JmlPenjualanBeBody >= $TargetBarangBeBody){
+									$KomisiTargetRpBeBody = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									$KomisiTargetPrBeBody = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
 										if($KomisiTargetRpBeBody != "" && $KomisiTargetRpBeBody != "0"){
-											$JmlKomisiTargetRpBeBody =  $KomisiTargetRpBeBody * $qty_penjualan;
+											$JmlKomisiTargetRpBeBody = $KomisiTargetRpBeBody * $qty_penjualan;
 											Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$be_body', '$JabatanBeBody', '$BarangKomisiBeBody', '$qtyBarangKomisiBeBody', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpBeBody', '$JmlKomisiTargetRpBeBody')");
 
 											//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpBeBody WHERE id_pegawai='$be_body'");
@@ -2922,122 +2859,122 @@ class penjualan extends DbTable
 											Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$be_body', '$JabatanBeBody', '$BarangKomisiBeBody', '$qtyBarangKomisiBeBody', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrBeBody', '$total_komisi_target_be_body')");
 
 											//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrBeBody WHERE id_pegawai='$be_body'");
+										}						
+
+									// Get Transaksi Komisi Be Body
+									$sql_transaksi_komisi_be_body = Execute("SELECT * FROM transaksi_komisi WHERE id_barang = '$BarangKomisiBeBody' AND id_pegawai = '$be_body' AND id_jabatan = '$JabatanBeBody' AND (tgl BETWEEN '$TglAwalBeBody' AND '$TglAkhirBeBody') AND jenis_komisi='Kinerja'");
+
+										// If Transaksi Komisi Be Body != NULL
+										if($sql_transaksi_komisi_be_body != NULL OR $sql_transaksi_komisi_be_body != FALSE){
+											if($sql_transaksi_komisi_be_body -> RecordCount() > 0){
+												$sql_transaksi_komisi_be_body->MoveFirst();
+												while(!$sql_transaksi_komisi_be_body->EOF) {
+													$id_transaksi = $sql_transaksi_komisi_be_body->fields['id'];
+													$id_pegawai_transaksi = $sql_transaksi_komisi_be_body->fields['id_pegawai'];
+													$id_jabatan_transaksi = $sql_transaksi_komisi_be_body->fields['id_jabatan'];
+													$kode_penjualan = $sql_transaksi_komisi_be_body->fields['kode_penjualan'];
+													$id_barang_transaksi = $sql_transaksi_komisi_be_body->fields['id_barang'];
+													$subtotal_transaksi = $sql_transaksi_komisi_be_body->fields['subtotal'];
+													$qty_transaksi = $sql_transaksi_komisi_be_body->fields['qty'];
+													$harga_jual_transaksi = $subtotal_transaksi / $qty_transaksi;
+													var_dump($harga_jual_transaksi);
+
+														// If Komisi Target Rupiah != 0
+														if($KomisiTargetRpBeBody != "" && $KomisiTargetRpBeBody != "0"){
+
+															// Insert into transaksi komisi
+															//Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$be_body', '$JabatanBeBody', '$BarangKomisiBeBody', '$qtyBarangKomisiBeBody', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpBeBody', '$KomisiTargetRpBeBody')");
+
+															$JmlKomisiTargetRpBeBody = $KomisiTargetRpBeBody * $qty_transaksi;
+
+															// Update data sebelumnya
+															Execute("UPDATE transaksi_komisi SET komisi='$KomisiTargetRpBeBody', total_komisi='$JmlKomisiTargetRpBeBody' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+
+															//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpBeBody WHERE id_pegawai='$be_body'");
+														}
+
+														// If Komisi Target Persen != 0
+														if($KomisiTargetPrBeBody != "" && $KomisiTargetPrBeBody != "0"){
+															$JmlKomisiTargetPrBeBody = (($KomisiTargetPrBeBody / 100) * $harga_jual_transaksi);
+															$total_komisi_target_be_body = $JmlKomisiTargetPrBeBody * $qty_transaksi;
+															Execute("UPDATE transaksi_komisi SET komisi='$JmlKomisiTargetPrBeBody', total_komisi='$total_komisi_target_be_body' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+
+															//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrBeBody WHERE id_pegawai='$be_body'");
+														}
+												$sql_transaksi_komisi_be_body->MoveNext();
+												}
+											$sql_transaksi_komisi_be_body->Close();	
+											}
+										} else {
+											$KomisiTargetRpBeBody = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+											$KomisiTargetPrBeBody = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+											if($KomisiTargetRpBeBody != "" && $KomisiTargetRpBeBody != "0"){
+												$JmlKomisiTargetRpBeBody =  $KomisiTargetRpBeBody * $qty_penjualan;
+												Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$be_body', '$JabatanBeBody', '$BarangKomisiBeBody', '$qtyBarangKomisiBeBody', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpBeBody', '$JmlKomisiTargetRpBeBody')");
+
+												//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpBeBody WHERE id_pegawai='$be_body'");
+											}
+											if($KomisiTargetPrBeBody != "" && $KomisiTargetPrBeBody != "0"){
+												$JmlKomisiTargetPrBeBody = (($KomisiTargetPrBeBody / 100) * $subtotal_satuan);
+												$total_komisi_target_be_body = $JmlKomisiTargetPrBeBody * $qty_penjualan;
+												Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$be_body', '$JabatanBeBody', '$BarangKomisiBeBody', '$qtyBarangKomisiBeBody', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrBeBody', '$total_komisi_target_be_body')");
+
+												//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrBeBody WHERE id_pegawai='$be_body'");
+											}
 										}
+								} else {
+									$KomisiDefaultRpBeBody = ExecuteScalar("SELECT kinerja_default_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									$KomisiDefaultPrBeBody = ExecuteScalar("SELECT kinerja_default_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									if($KomisiDefaultRpBeBody != "" && $KomisiDefaultRpBeBody != "0"){
+										$JmlKomisiDefaultRpBeBody = $KomisiDefaultRpBeBody * $qty_penjualan;
+										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$be_body', '$JabatanBeBody', '$BarangKomisiBeBody', '$qtyBarangKomisiBeBody', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiDefaultRpBeBody', '$JmlKomisiDefaultRpBeBody')");
+
+										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultRpBeBody WHERE id_pegawai='$be_body'");	
 									}
-							} else {
-								$KomisiDefaultRpBeBody = ExecuteScalar("SELECT kinerja_default_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								$KomisiDefaultPrBeBody = ExecuteScalar("SELECT kinerja_default_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								if($KomisiDefaultRpBeBody != "" && $KomisiDefaultRpBeBody != "0"){
-									$JmlKomisiDefaultRpBeBody = $KomisiDefaultRpBeBody * $qty_penjualan;
-									Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$be_body', '$JabatanBeBody', '$BarangKomisiBeBody', '$qtyBarangKomisiBeBody', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiDefaultRpBeBody', '$JmlKomisiDefaultRpBeBody')");
+									if($KomisiDefaultPrBeBody != "" && $KomisiDefaultPrBeBody != "0"){
+										$JmlKomisiDefaultPrBeBody = (($KomisiDefaultPrBeBody / 100) * $subtotal_satuan);
+										$total_komisi_default_be_body = $JmlKomisiDefaultPrBeBody * $qty_penjualan;
+										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$be_body', '$JabatanBeBody', '$BarangKomisiBeBody', '$qtyBarangKomisiBeBody', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiDefaultPrBeBody', '$total_komisi_default_be_body')");
 
-									//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultRpBeBody WHERE id_pegawai='$be_body'");	
-								}
-								if($KomisiDefaultPrBeBody != "" && $KomisiDefaultPrBeBody != "0"){
-									$JmlKomisiDefaultPrBeBody = (($KomisiDefaultPrBeBody / 100) * $subtotal_satuan);
-									$total_komisi_default_be_body = $JmlKomisiDefaultPrBeBody * $qty_penjualan;
-									Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$be_body', '$JabatanBeBody', '$BarangKomisiBeBody', '$qtyBarangKomisiBeBody', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiDefaultPrBeBody', '$total_komisi_default_be_body')");
-
-									//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultPrBeBody WHERE id_pegawai='$be_body'");
+										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultPrBeBody WHERE id_pegawai='$be_body'");
+									}
 								}
 							}
+						$sql_be_body->MoveNext();	
 						}
-					$sql_be_body->MoveNext();	
+					$sql_be_body->Close();
 					}
-				$sql_be_body->Close();
 				}
-			}
 
-			//KOMISI KINERJA MEDIS
-			if($medis != "") {
-			$JabatanMedis = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai='$medis'");
-			$sql_medis = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
-				if($sql_medis -> RecordCount() > 0){
-					$sql_medis->MoveFirst();
-					while(!$sql_medis->EOF) {
-						$id_barang_penjualan = $sql_medis->fields['id_barang'];
-						$subtotal_penjualan = $sql_medis->fields['subtotal'];
+				//KOMISI KINERJA MEDIS
+				if($medis != "") {
+				$JabatanMedis = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai='$medis'");
+				$sql_medis = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
+					if($sql_medis -> RecordCount() > 0){
+						$sql_medis->MoveFirst();
+						while(!$sql_medis->EOF) {
+							$id_barang_penjualan = $sql_medis->fields['id_barang'];
+							$subtotal_penjualan = $sql_medis->fields['subtotal'];
 
-						//$harga_jual = $sql_medis->fields['harga_jual'];
-						$qty_penjualan = $sql_medis->fields['qty'];
-						$subtotal_satuan = $subtotal_penjualan / $qty_penjualan;
+							//$harga_jual = $sql_medis->fields['harga_jual'];
+							$qty_penjualan = $sql_medis->fields['qty'];
+							$subtotal_satuan = $subtotal_penjualan / $qty_penjualan;
 
-						//$KomisiPegawaiBe Body = ExecuteScalar("SELECT nilai_komisi FROM transaksi_komisi WHERE id_pegawai='$medis'");
-						$BarangKomisiMedis = ExecuteScalar("SELECT id_barang FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi_kinerja_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");					
-						$qtyBarangKomisiMedis = ExecuteScalar("SELECT qty FROM detailpenjualan WHERE id_barang = '$BarangKomisiMedis' AND id_penjualan = '$idpenjualan'");
-						if($BarangKomisiMedis != ""){ 
-							$TargetBarangMedis = ExecuteScalar("SELECT target FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-							$TglAwalMedis = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-							$TglAkhirMedis = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+							//$KomisiPegawaiBe Body = ExecuteScalar("SELECT nilai_komisi FROM transaksi_komisi WHERE id_pegawai='$medis'");
+							$BarangKomisiMedis = ExecuteScalar("SELECT id_barang FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi_kinerja_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");					
+							$qtyBarangKomisiMedis = ExecuteScalar("SELECT qty FROM detailpenjualan WHERE id_barang = '$BarangKomisiMedis' AND id_penjualan = '$idpenjualan'");
+							if($BarangKomisiMedis != ""){ 
+								$TargetBarangMedis = ExecuteScalar("SELECT target FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+								$TglAwalMedis = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+								$TglAkhirMedis = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
 
-							//$Periode = ExecuteScalar("SELECT '$date' - INTERVAL '1' MONTH");
-							$JmlPenjualanMedis = ExecuteScalar("SELECT SUM(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE detailpenjualan.id_barang = '$id_barang_penjualan' AND penjualan.medis = '$medis' AND (penjualan.waktu BETWEEN '$TglAwalMedis' AND '$TglAkhirMedis')");
-							if($JmlPenjualanMedis >= $TargetBarangMedis){
-								$KomisiTargetRpMedis = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								$KomisiTargetPrMedis = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-									if($KomisiTargetRpMedis != "" && $KomisiTargetRpMedis != "0"){
-										$JmlKomisiTargetRpMedis = $KomisiTargetRpMedis * $qty_penjualan;
-										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$medis', '$JabatanMedis', '$BarangKomisiMedis', '$qtyBarangKomisiMedis', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpMedis', '$JmlKomisiTargetRpMedis')");
-
-										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpMedis WHERE id_pegawai='$medis'");
-									}
-									if($KomisiTargetPrMedis != "" && $KomisiTargetPrMedis != "0"){
-										$JmlKomisiTargetPrMedis = (($KomisiTargetPrMedis / 100) * $subtotal_satuan);
-										$total_komisi_target_medis = $JmlKomisiTargetPrMedis * $qty_penjualan;
-										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$medis', '$JabatanMedis', '$BarangKomisiMedis', '$qtyBarangKomisiMedis', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrMedis', '$total_komisi_target_medis')");
-
-										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrMedis WHERE id_pegawai='$medis'");
-									}						
-
-								// Get Transaksi Komisi Be Body
-								$sql_transaksi_komisi_medis = Execute("SELECT * FROM transaksi_komisi WHERE id_barang = '$BarangKomisiMedis' AND id_pegawai = '$medis' AND id_jabatan = '$JabatanMedis' AND (tgl BETWEEN '$TglAwalMedis' AND '$TglAkhirMedis') AND jenis_komisi='Kinerja'");
-
-									// If Transaksi Komisi Be Body != NULL
-									if($sql_transaksi_komisi_medis != NULL OR $sql_transaksi_komisi_medis != FALSE){
-										if($sql_transaksi_komisi_medis -> RecordCount() > 0){
-											$sql_transaksi_komisi_medis->MoveFirst();
-											while(!$sql_transaksi_komisi_medis->EOF) {
-												$id_transaksi = $sql_transaksi_komisi_medis->fields['id'];
-												$id_pegawai_transaksi = $sql_transaksi_komisi_medis->fields['id_pegawai'];
-												$id_jabatan_transaksi = $sql_transaksi_komisi_medis->fields['id_jabatan'];
-												$kode_penjualan = $sql_transaksi_komisi_medis->fields['kode_penjualan'];
-												$id_barang_transaksi = $sql_transaksi_komisi_medis->fields['id_barang'];
-												$subtotal_transaksi = $sql_transaksi_komisi_medis->fields['subtotal'];
-												$qty_transaksi = $sql_transaksi_komisi_medis->fields['qty'];
-												$harga_jual_transaksi = $subtotal_transaksi / $qty_transaksi;
-												var_dump($harga_jual_transaksi);
-
-													// If Komisi Target Rupiah != 0
-													if($KomisiTargetRpMedis != "" && $KomisiTargetRpMedis != "0"){
-
-														// Insert into transaksi komisi
-														//Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$medis', '$JabatanMedis', '$BarangKomisiMedis', '$qtyBarangKomisiMedis', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpMedis', '$KomisiTargetRpMedis')");
-
-														$JmlKomisiTargetRpMedis = $KomisiTargetRpMedis * $qty_transaksi;
-
-														// Update data sebelumnya
-														Execute("UPDATE transaksi_komisi SET komisi='$KomisiTargetRpMedis', total_komisi='$JmlKomisiTargetRpMedis' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
-
-														//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpMedis WHERE id_pegawai='$medis'");
-													}
-
-													// If Komisi Target Persen != 0
-													if($KomisiTargetPrMedis != "" && $KomisiTargetPrMedis != "0"){
-														$JmlKomisiTargetPrMedis = (($KomisiTargetPrMedis / 100) * $harga_jual_transaksi);
-														$total_komisi_target_medis = $JmlKomisiTargetPrMedis * $qty_transaksi;
-														Execute("UPDATE transaksi_komisi SET komisi=$JmlKomisiTargetPrMedis, total_komisi=$total_komisi_target_medis WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
-
-														//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrMedis WHERE id_pegawai='$medis'");
-													}
-											$sql_transaksi_komisi_medis->MoveNext();
-											}
-										$sql_transaksi_komisi_medis->Close();	
-										}
-									} else {
-										$KomisiTargetRpMedis = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-										$KomisiTargetPrMedis = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+								//$Periode = ExecuteScalar("SELECT '$date' - INTERVAL '1' MONTH");
+								$JmlPenjualanMedis = ExecuteScalar("SELECT SUM(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE detailpenjualan.id_barang = '$id_barang_penjualan' AND penjualan.medis = '$medis' AND (penjualan.waktu BETWEEN '$TglAwalMedis' AND '$TglAkhirMedis')");
+								if($JmlPenjualanMedis >= $TargetBarangMedis){
+									$KomisiTargetRpMedis = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									$KomisiTargetPrMedis = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
 										if($KomisiTargetRpMedis != "" && $KomisiTargetRpMedis != "0"){
-											$JmlKomisiTargetRpMedis =  $KomisiTargetRpMedis * $qty_penjualan;
+											$JmlKomisiTargetRpMedis = $KomisiTargetRpMedis * $qty_penjualan;
 											Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$medis', '$JabatanMedis', '$BarangKomisiMedis', '$qtyBarangKomisiMedis', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpMedis', '$JmlKomisiTargetRpMedis')");
 
 											//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpMedis WHERE id_pegawai='$medis'");
@@ -3048,122 +2985,122 @@ class penjualan extends DbTable
 											Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$medis', '$JabatanMedis', '$BarangKomisiMedis', '$qtyBarangKomisiMedis', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrMedis', '$total_komisi_target_medis')");
 
 											//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrMedis WHERE id_pegawai='$medis'");
+										}						
+
+									// Get Transaksi Komisi Be Body
+									$sql_transaksi_komisi_medis = Execute("SELECT * FROM transaksi_komisi WHERE id_barang = '$BarangKomisiMedis' AND id_pegawai = '$medis' AND id_jabatan = '$JabatanMedis' AND (tgl BETWEEN '$TglAwalMedis' AND '$TglAkhirMedis') AND jenis_komisi='Kinerja'");
+
+										// If Transaksi Komisi Be Body != NULL
+										if($sql_transaksi_komisi_medis != NULL OR $sql_transaksi_komisi_medis != FALSE){
+											if($sql_transaksi_komisi_medis -> RecordCount() > 0){
+												$sql_transaksi_komisi_medis->MoveFirst();
+												while(!$sql_transaksi_komisi_medis->EOF) {
+													$id_transaksi = $sql_transaksi_komisi_medis->fields['id'];
+													$id_pegawai_transaksi = $sql_transaksi_komisi_medis->fields['id_pegawai'];
+													$id_jabatan_transaksi = $sql_transaksi_komisi_medis->fields['id_jabatan'];
+													$kode_penjualan = $sql_transaksi_komisi_medis->fields['kode_penjualan'];
+													$id_barang_transaksi = $sql_transaksi_komisi_medis->fields['id_barang'];
+													$subtotal_transaksi = $sql_transaksi_komisi_medis->fields['subtotal'];
+													$qty_transaksi = $sql_transaksi_komisi_medis->fields['qty'];
+													$harga_jual_transaksi = $subtotal_transaksi / $qty_transaksi;
+													var_dump($harga_jual_transaksi);
+
+														// If Komisi Target Rupiah != 0
+														if($KomisiTargetRpMedis != "" && $KomisiTargetRpMedis != "0"){
+
+															// Insert into transaksi komisi
+															//Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$medis', '$JabatanMedis', '$BarangKomisiMedis', '$qtyBarangKomisiMedis', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpMedis', '$KomisiTargetRpMedis')");
+
+															$JmlKomisiTargetRpMedis = $KomisiTargetRpMedis * $qty_transaksi;
+
+															// Update data sebelumnya
+															Execute("UPDATE transaksi_komisi SET komisi='$KomisiTargetRpMedis', total_komisi='$JmlKomisiTargetRpMedis' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+
+															//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpMedis WHERE id_pegawai='$medis'");
+														}
+
+														// If Komisi Target Persen != 0
+														if($KomisiTargetPrMedis != "" && $KomisiTargetPrMedis != "0"){
+															$JmlKomisiTargetPrMedis = (($KomisiTargetPrMedis / 100) * $harga_jual_transaksi);
+															$total_komisi_target_medis = $JmlKomisiTargetPrMedis * $qty_transaksi;
+															Execute("UPDATE transaksi_komisi SET komisi=$JmlKomisiTargetPrMedis, total_komisi=$total_komisi_target_medis WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+
+															//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrMedis WHERE id_pegawai='$medis'");
+														}
+												$sql_transaksi_komisi_medis->MoveNext();
+												}
+											$sql_transaksi_komisi_medis->Close();	
+											}
+										} else {
+											$KomisiTargetRpMedis = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+											$KomisiTargetPrMedis = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+											if($KomisiTargetRpMedis != "" && $KomisiTargetRpMedis != "0"){
+												$JmlKomisiTargetRpMedis =  $KomisiTargetRpMedis * $qty_penjualan;
+												Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$medis', '$JabatanMedis', '$BarangKomisiMedis', '$qtyBarangKomisiMedis', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpMedis', '$JmlKomisiTargetRpMedis')");
+
+												//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpMedis WHERE id_pegawai='$medis'");
+											}
+											if($KomisiTargetPrMedis != "" && $KomisiTargetPrMedis != "0"){
+												$JmlKomisiTargetPrMedis = (($KomisiTargetPrMedis / 100) * $subtotal_satuan);
+												$total_komisi_target_medis = $JmlKomisiTargetPrMedis * $qty_penjualan;
+												Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$medis', '$JabatanMedis', '$BarangKomisiMedis', '$qtyBarangKomisiMedis', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrMedis', '$total_komisi_target_medis')");
+
+												//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrMedis WHERE id_pegawai='$medis'");
+											}
 										}
+								} else {
+									$KomisiDefaultRpMedis = ExecuteScalar("SELECT kinerja_default_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									$KomisiDefaultPrMedis = ExecuteScalar("SELECT kinerja_default_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									if($KomisiDefaultRpMedis != "" && $KomisiDefaultRpMedis != "0"){
+										$JmlKomisiDefaultRpMedis = $KomisiDefaultRpMedis * $qty_penjualan;
+										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$medis', '$JabatanMedis', '$BarangKomisiMedis', '$qtyBarangKomisiMedis', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiDefaultRpMedis', '$JmlKomisiDefaultRpMedis')");
+
+										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultRpMedis WHERE id_pegawai='$medis'");	
 									}
-							} else {
-								$KomisiDefaultRpMedis = ExecuteScalar("SELECT kinerja_default_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								$KomisiDefaultPrMedis = ExecuteScalar("SELECT kinerja_default_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								if($KomisiDefaultRpMedis != "" && $KomisiDefaultRpMedis != "0"){
-									$JmlKomisiDefaultRpMedis = $KomisiDefaultRpMedis * $qty_penjualan;
-									Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$medis', '$JabatanMedis', '$BarangKomisiMedis', '$qtyBarangKomisiMedis', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiDefaultRpMedis', '$JmlKomisiDefaultRpMedis')");
+									if($KomisiDefaultPrMedis != "" && $KomisiDefaultPrMedis != "0"){
+										$JmlKomisiDefaultPrMedis = (($KomisiDefaultPrMedis / 100) * $subtotal_satuan);
+										$total_komisi_default_medis = $JmlKomisiDefaultPrMedis * $qty_penjualan;
+										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$medis', '$JabatanMedis', '$BarangKomisiMedis', '$qtyBarangKomisiMedis', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiDefaultPrMedis', '$total_komisi_default_medis')");
 
-									//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultRpMedis WHERE id_pegawai='$medis'");	
-								}
-								if($KomisiDefaultPrMedis != "" && $KomisiDefaultPrMedis != "0"){
-									$JmlKomisiDefaultPrMedis = (($KomisiDefaultPrMedis / 100) * $subtotal_satuan);
-									$total_komisi_default_medis = $JmlKomisiDefaultPrMedis * $qty_penjualan;
-									Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$medis', '$JabatanMedis', '$BarangKomisiMedis', '$qtyBarangKomisiMedis', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiDefaultPrMedis', '$total_komisi_default_medis')");
-
-									//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultPrMedis WHERE id_pegawai='$medis'");
+										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultPrMedis WHERE id_pegawai='$medis'");
+									}
 								}
 							}
+						$sql_medis->MoveNext();	
 						}
-					$sql_medis->MoveNext();	
+					$sql_medis->Close();
 					}
-				$sql_medis->Close();
 				}
-			}
 
-			//KOMISI KINERJA DOKTER
-			if($dokter != "") {
-			$JabatanDokter = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai='$dokter'");
-			$sql_dokter = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
-				if($sql_dokter -> RecordCount() > 0){
-					$sql_dokter->MoveFirst();
-					while(!$sql_dokter->EOF) {
-						$id_barang_penjualan = $sql_dokter->fields['id_barang'];
-						$subtotal_penjualan = $sql_dokter->fields['subtotal'];
+				//KOMISI KINERJA DOKTER
+				if($dokter != "") {
+				$JabatanDokter = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai='$dokter'");
+				$sql_dokter = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
+					if($sql_dokter -> RecordCount() > 0){
+						$sql_dokter->MoveFirst();
+						while(!$sql_dokter->EOF) {
+							$id_barang_penjualan = $sql_dokter->fields['id_barang'];
+							$subtotal_penjualan = $sql_dokter->fields['subtotal'];
 
-						//$harga_jual = $sql_dokter->fields['harga_jual'];
-						$qty_penjualan = $sql_dokter->fields['qty'];
-						$subtotal_satuan = $subtotal_penjualan / $qty_penjualan;
+							//$harga_jual = $sql_dokter->fields['harga_jual'];
+							$qty_penjualan = $sql_dokter->fields['qty'];
+							$subtotal_satuan = $subtotal_penjualan / $qty_penjualan;
 
-						//$KomisiPegawaiBe Body = ExecuteScalar("SELECT nilai_komisi FROM transaksi_komisi WHERE id_pegawai='$dokter'");
-						$BarangKomisiDokter = ExecuteScalar("SELECT id_barang FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi_kinerja_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");					
-						$qtyBarangKomisiDokter = ExecuteScalar("SELECT qty FROM detailpenjualan WHERE id_barang = '$BarangKomisiDokter' AND id_penjualan = '$idpenjualan'");
-						if($BarangKomisiDokter != ""){  
-							$TargetBarangDokter = ExecuteScalar("SELECT target FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-							$TglAwalDokter = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-							$TglAkhirDokter = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+							//$KomisiPegawaiBe Body = ExecuteScalar("SELECT nilai_komisi FROM transaksi_komisi WHERE id_pegawai='$dokter'");
+							$BarangKomisiDokter = ExecuteScalar("SELECT id_barang FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi_kinerja_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");					
+							$qtyBarangKomisiDokter = ExecuteScalar("SELECT qty FROM detailpenjualan WHERE id_barang = '$BarangKomisiDokter' AND id_penjualan = '$idpenjualan'");
+							if($BarangKomisiDokter != ""){  
+								$TargetBarangDokter = ExecuteScalar("SELECT target FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+								$TglAwalDokter = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+								$TglAkhirDokter = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
 
-							//$Periode = ExecuteScalar("SELECT '$date' - INTERVAL '1' MONTH");
-							$JmlPenjualanDokter = ExecuteScalar("SELECT SUM(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE detailpenjualan.id_barang = '$id_barang_penjualan' AND penjualan.dokter = '$dokter' AND (penjualan.waktu BETWEEN '$TglAwalDokter' AND '$TglAkhirDokter')");
-							if($JmlPenjualanDokter >= $TargetBarangDokter){
-								$KomisiTargetRpDokter = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								$KomisiTargetPrDokter = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-									if($KomisiTargetRpDokter != "" && $KomisiTargetRpDokter != "0"){
-										$JmlKomisiTargetRpDokter = $KomisiTargetRpDokter * $qty_penjualan;
-										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$dokter', '$JabatanDokter', '$BarangKomisiDokter', '$qtyBarangKomisiDokter', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpDokter', '$JmlKomisiTargetRpDokter')");
-
-										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpDokter WHERE id_pegawai='$dokter'");
-									}
-									if($KomisiTargetPrDokter != "" && $KomisiTargetPrDokter != "0"){
-										$JmlKomisiTargetPrDokter = (($KomisiTargetPrDokter / 100) * $subtotal_satuan);
-										$total_komisi_target_dokter = $JmlKomisiTargetPrDokter * $qty_penjualan;
-										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dokter', '$JabatanDokter', '$BarangKomisiDokter', '$qtyBarangKomisiDokter', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrDokter', '$total_komisi_target_dokter')");
-
-										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrDokter WHERE id_pegawai='$dokter'");
-									}						
-
-								// Get Transaksi Komisi Be Body
-								$sql_transaksi_komisi_dokter = Execute("SELECT * FROM transaksi_komisi WHERE id_barang = '$BarangKomisiDokter' AND id_pegawai = '$dokter' AND id_jabatan = '$JabatanDokter' AND (tgl BETWEEN '$TglAwalDokter' AND '$TglAkhirDokter') AND jenis_komisi='Kinerja'");
-
-									// If Transaksi Komisi Be Body != NULL
-									if($sql_transaksi_komisi_dokter != NULL OR $sql_transaksi_komisi_dokter != FALSE){
-										if($sql_transaksi_komisi_dokter -> RecordCount() > 0){
-											$sql_transaksi_komisi_dokter->MoveFirst();
-											while(!$sql_transaksi_komisi_dokter->EOF) {
-												$id_transaksi = $sql_transaksi_komisi_dokter->fields['id'];
-												$id_pegawai_transaksi = $sql_transaksi_komisi_dokter->fields['id_pegawai'];
-												$id_jabatan_transaksi = $sql_transaksi_komisi_dokter->fields['id_jabatan'];
-												$kode_penjualan = $sql_transaksi_komisi_dokter->fields['kode_penjualan'];
-												$id_barang_transaksi = $sql_transaksi_komisi_dokter->fields['id_barang'];
-												$subtotal_transaksi = $sql_transaksi_komisi_dokter->fields['subtotal'];
-												$qty_transaksi = $sql_transaksi_komisi_dokter->fields['qty'];
-												$harga_jual_transaksi = $subtotal_transaksi / $qty_transaksi;
-												var_dump($harga_jual_transaksi);
-
-													// If Komisi Target Rupiah != 0
-													if($KomisiTargetRpDokter != "" && $KomisiTargetRpDokter != "0"){
-
-														// Insert into transaksi komisi
-														//Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$dokter', '$JabatanDokter', '$BarangKomisiDokter', '$qtyBarangKomisiDokter', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpDokter', '$KomisiTargetRpDokter')");
-
-														$JmlKomisiTargetRpDokter = $KomisiTargetRpDokter * $qty_transaksi;
-
-														// Update data sebelumnya
-														Execute("UPDATE transaksi_komisi SET komisi='$KomisiTargetRpDokter', total_komisi='$JmlKomisiTargetRpDokter' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
-
-														//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpDokter WHERE id_pegawai='$dokter'");
-													}
-
-													// If Komisi Target Persen != 0
-													if($KomisiTargetPrDokter != "" && $KomisiTargetPrDokter != "0"){
-														$JmlKomisiTargetPrDokter = (($KomisiTargetPrDokter / 100) * $harga_jual_transaksi);
-														$total_komisi_target_dokter = $JmlKomisiTargetPrDokter * $qty_transaksi;
-														Execute("UPDATE transaksi_komisi SET komisi='$JmlKomisiTargetPrDokter', total_komisi='$total_komisi_target_dokter' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
-
-														//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrDokter WHERE id_pegawai='$dokter'");
-													}
-											$sql_transaksi_komisi_dokter->MoveNext();
-											}
-										$sql_transaksi_komisi_dokter->Close();	
-										}
-									} else {
-										$KomisiTargetRpDokter = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-										$KomisiTargetPrDokter = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+								//$Periode = ExecuteScalar("SELECT '$date' - INTERVAL '1' MONTH");
+								$JmlPenjualanDokter = ExecuteScalar("SELECT SUM(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE detailpenjualan.id_barang = '$id_barang_penjualan' AND penjualan.dokter = '$dokter' AND (penjualan.waktu BETWEEN '$TglAwalDokter' AND '$TglAkhirDokter')");
+								if($JmlPenjualanDokter >= $TargetBarangDokter){
+									$KomisiTargetRpDokter = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									$KomisiTargetPrDokter = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
 										if($KomisiTargetRpDokter != "" && $KomisiTargetRpDokter != "0"){
-											$JmlKomisiTargetRpDokter =  $KomisiTargetRpDokter * $qty_penjualan;
+											$JmlKomisiTargetRpDokter = $KomisiTargetRpDokter * $qty_penjualan;
 											Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$dokter', '$JabatanDokter', '$BarangKomisiDokter', '$qtyBarangKomisiDokter', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpDokter', '$JmlKomisiTargetRpDokter')");
 
 											//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpDokter WHERE id_pegawai='$dokter'");
@@ -3174,191 +3111,252 @@ class penjualan extends DbTable
 											Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dokter', '$JabatanDokter', '$BarangKomisiDokter', '$qtyBarangKomisiDokter', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrDokter', '$total_komisi_target_dokter')");
 
 											//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrDokter WHERE id_pegawai='$dokter'");
-										}
-									}
-							} else {
-								$KomisiDefaultRpDokter = ExecuteScalar("SELECT kinerja_default_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								$KomisiDefaultPrDokter = ExecuteScalar("SELECT kinerja_default_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								if($KomisiDefaultRpDokter != "" && $KomisiDefaultRpDokter != "0"){
-									$JmlKomisiDefaultRpDokter = $KomisiDefaultRpDokter * $qty_penjualan;
-									Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dokter', '$JabatanDokter', '$BarangKomisiDokter', '$qtyBarangKomisiDokter', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiDefaultRpDokter', '$JmlKomisiDefaultRpDokter')");
+										}						
 
-									//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultRpDokter WHERE id_pegawai='$dokter'");	
-								}
-								if($KomisiDefaultPrDokter != "" && $KomisiDefaultPrDokter != "0"){
-									$JmlKomisiDefaultPrDokter = (($KomisiDefaultPrDokter / 100) * $subtotal_satuan);
-									$total_komisi_default_dokter = $JmlKomisiDefaultPrDokter * $qty_penjualan;
-									Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dokter', '$JabatanDokter', '$BarangKomisiDokter', '$qtyBarangKomisiDokter', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiDefaultPrDokter', '$total_komisi_default_dokter')");
+									// Get Transaksi Komisi Be Body
+									$sql_transaksi_komisi_dokter = Execute("SELECT * FROM transaksi_komisi WHERE id_barang = '$BarangKomisiDokter' AND id_pegawai = '$dokter' AND id_jabatan = '$JabatanDokter' AND (tgl BETWEEN '$TglAwalDokter' AND '$TglAkhirDokter') AND jenis_komisi='Kinerja'");
 
-									//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultPrDokter WHERE id_pegawai='$dokter'");
-								}
-							}
-						}
-					$sql_dokter->MoveNext();	
-					}
-				$sql_dokter->Close();
-				}
-			}
+										// If Transaksi Komisi Be Body != NULL
+										if($sql_transaksi_komisi_dokter != NULL OR $sql_transaksi_komisi_dokter != FALSE){
+											if($sql_transaksi_komisi_dokter -> RecordCount() > 0){
+												$sql_transaksi_komisi_dokter->MoveFirst();
+												while(!$sql_transaksi_komisi_dokter->EOF) {
+													$id_transaksi = $sql_transaksi_komisi_dokter->fields['id'];
+													$id_pegawai_transaksi = $sql_transaksi_komisi_dokter->fields['id_pegawai'];
+													$id_jabatan_transaksi = $sql_transaksi_komisi_dokter->fields['id_jabatan'];
+													$kode_penjualan = $sql_transaksi_komisi_dokter->fields['kode_penjualan'];
+													$id_barang_transaksi = $sql_transaksi_komisi_dokter->fields['id_barang'];
+													$subtotal_transaksi = $sql_transaksi_komisi_dokter->fields['subtotal'];
+													$qty_transaksi = $sql_transaksi_komisi_dokter->fields['qty'];
+													$harga_jual_transaksi = $subtotal_transaksi / $qty_transaksi;
+													var_dump($harga_jual_transaksi);
 
-			// KOMISI PEGAWAI RECALL
-			$sql_komisi_recall = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
-					if($sql_komisi_recall -> RecordCount() > 0){
-						$sql_komisi_recall->MoveFirst();
-						while(!$sql_komisi_recall->EOF) {
-							$id_barang_penjualan = $sql_komisi_recall->fields['id_barang'];
-							$id_pegawai_recall = $sql_komisi_recall->fields['komisi_recall'];
-							$qty_penjualan = $sql_komisi_recall->fields['qty'];
-							$subtotal_penjualan = $sql_komisi_recall->fields['subtotal'];
-							$harga_jual = $sql_komisi_recall->fields['harga_jual'];
-							if($id_pegawai_recall != ''){
-								$JabatanPegawai = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai='$id_pegawai_recall'");
-								$BarangKomisiRecall = ExecuteScalar("SELECT id_barang FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi_recall_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
-								$TglAwalRecall = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanPegawai' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								$TglAkhirRecall = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanPegawai' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								if($BarangKomisiRecall != '') {
-									$TargetBarangRecall = ExecuteScalar("SELECT target FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
-									$Periode = ExecuteScalar("SELECT '$date' - INTERVAL '1' MONTH");
-									$JmlPenjualan = ExecuteScalar("SELECT SUM(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE detailpenjualan.id_barang = '$id_barang_penjualan' AND detailpenjualan.komisi_recall = '$id_pegawai_recall' AND (penjualan.waktu BETWEEN '$Periode' AND '$date')");
-										if($JmlPenjualan >= $TargetBarangRecall) {
-											$KomisiTargetRpRecall = ExecuteScalar("SELECT recall_target_rupiah FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
-											$KomisiTargetPrRecall = ExecuteScalar("SELECT recall_target_persen FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");									
-												if($KomisiTargetRpRecall != "" && $KomisiTargetRpRecall != "0"){
-													$total_komisi_target_rp = $KomisiTargetRpRecall * $qty_penjualan;
-													Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, jenis_komisi, kode_penjualan,tgl, komisi, id_barang, qty, subtotal, total_komisi) VALUES ('$id_pegawai_recall', '$JabatanPegawai', 'Recall', '$kode_penjualan', '$waktu', '$KomisiTargetRpRecall', '$id_barang_penjualan', '$qty_penjualan', '$subtotal_penjualan', '$total_komisi_target_rp')");								
+														// If Komisi Target Rupiah != 0
+														if($KomisiTargetRpDokter != "" && $KomisiTargetRpDokter != "0"){
 
-													//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpDokter WHERE id_pegawai='$dokter'");
-												}
-												if($KomisiTargetPrRecall != "" && $KomisiTargetPrRecall != "0"){
-													$JmlKomisiTargetPrRecall = (($KomisiTargetPrRecall / 100) * $harga_jual);
-													$total_komisi_target_pr = (($KomisiTargetPrRecall / 100) * $subtotal_penjualan);
-													Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, jenis_komisi, kode_penjualan,tgl, komisi, id_barang, qty, subtotal, total_komisi) VALUES ('$id_pegawai_recall', '$JabatanPegawai', 'Recall', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrRecall', '$id_barang_penjualan', '$qty_penjualan', '$subtotal_penjualan', '$total_komisi_target_pr')");								
+															// Insert into transaksi komisi
+															//Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$dokter', '$JabatanDokter', '$BarangKomisiDokter', '$qtyBarangKomisiDokter', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpDokter', '$KomisiTargetRpDokter')");
 
-													//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrDokter WHERE id_pegawai='$dokter'");
-												}
+															$JmlKomisiTargetRpDokter = $KomisiTargetRpDokter * $qty_transaksi;
 
-												// Get Transaksi Komisi Recall
-												$sql_transaksi_komisi_recall = Execute("SELECT * FROM transaksi_komisi WHERE id_barang = '$BarangKomisiRecall' AND id_pegawai = '$id_pegawai_recall' AND id_jabatan = '$JabatanPegawai' AND (tgl BETWEEN '$TglAwalRecall' AND '$TglAkhirRecall') AND jenis_komisi='Recall'");
+															// Update data sebelumnya
+															Execute("UPDATE transaksi_komisi SET komisi='$KomisiTargetRpDokter', total_komisi='$JmlKomisiTargetRpDokter' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
 
-													// If Transaksi Komisi Be Body != NULL
-													if($sql_transaksi_komisi_recall != NULL OR $sql_transaksi_komisi_recall != FALSE) {
-														if($sql_transaksi_komisi_recall -> RecordCount() > 0){
-															$sql_transaksi_komisi_recall->MoveFirst();
-															while(!$sql_transaksi_komisi_recall->EOF) {
-																$id_transaksi = $sql_transaksi_komisi_recall->fields['id'];
-																$id_pegawai_transaksi = $sql_transaksi_komisi_recall->fields['id_pegawai'];
-																$id_jabatan_transaksi = $sql_transaksi_komisi_recall->fields['id_jabatan'];
-																$kode_penjualan = $sql_transaksi_komisi_recall->fields['kode_penjualan'];
-																$id_barang_transaksi = $sql_transaksi_komisi_recall->fields['id_barang'];
-																$subtotal_transaksi = $sql_transaksi_komisi_recall->fields['subtotal'];
-																$qty_transaksi = $sql_transaksi_komisi_recall->fields['qty'];
-																$harga_jual_transaksi = $subtotal_transaksi / $qty_transaksi;
-																var_dump($harga_jual_transaksi);
-
-																	// If Komisi Target Rupiah != 0
-																	if($KomisiTargetRpRecall != "" && $KomisiTargetRpRecall != "0"){
-																		$JmlKomisiTargetRpRecall = $KomisiTargetRpRecall * $qty_transaksi;
-
-																		// Update data sebelumnya
-																		Execute("UPDATE transaksi_komisi SET komisi='$KomisiTargetRpRecall', total_komisi='$JmlKomisiTargetRpRecall' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
-																	}
-
-																	// If Komisi Target Persen != 0
-																	if($KomisiTargetPrRecall != "" && $KomisiTargetPrRecall != "0"){
-																		$JmlKomisiTargetPrRecall = (($KomisiTargetPrRecall / 100) * $harga_jual_transaksi);
-																		$total_komisi_target_recall = $JmlKomisiTargetPrRecall * $qty_transaksi;
-																		Execute("UPDATE transaksi_komisi SET komisi='$JmlKomisiTargetPrRecall', total_komisi='$total_komisi_target_recall' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
-																	}
-															$sql_transaksi_komisi_recall->MoveNext();
-															}
-														$sql_transaksi_komisi_recall->Close();	
+															//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpDokter WHERE id_pegawai='$dokter'");
 														}
-													} else {
-															$KomisiTargetRpRecall = ExecuteScalar("SELECT recall_target_rupiah FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
-															$KomisiTargetPrRecall = ExecuteScalar("SELECT recall_target_persen FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");									
-																if($KomisiTargetRpRecall != "" && $KomisiTargetRpRecall != "0"){
-																	$total_komisi_target_rp = $KomisiTargetRpRecall * $qty_penjualan;
-																	Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, jenis_komisi, kode_penjualan,tgl, komisi, id_barang, qty, subtotal, total_komisi) VALUES ('$id_pegawai_recall', '$JabatanPegawai', 'Recall', '$kode_penjualan', '$waktu', '$KomisiTargetRpRecall', '$id_barang_penjualan', '$qty_penjualan', '$subtotal_penjualan', '$total_komisi_target_rp')");								
-																}
-																if($KomisiTargetPrRecall != "" && $KomisiTargetPrRecall != "0"){
-																	$JmlKomisiTargetPrRecall = (($KomisiTargetPrRecall / 100) * $harga_jual);
-																	$total_komisi_target_pr = (($KomisiTargetPrRecall / 100) * $subtotal_penjualan);
-																	Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, jenis_komisi, kode_penjualan,tgl, komisi, id_barang, qty, subtotal, total_komisi) VALUES ('$id_pegawai_recall', '$JabatanPegawai', 'Recall', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrRecall', '$id_barang_penjualan', '$qty_penjualan', '$subtotal_penjualan', '$total_komisi_target_pr')");								
-																}
-													}
+
+														// If Komisi Target Persen != 0
+														if($KomisiTargetPrDokter != "" && $KomisiTargetPrDokter != "0"){
+															$JmlKomisiTargetPrDokter = (($KomisiTargetPrDokter / 100) * $harga_jual_transaksi);
+															$total_komisi_target_dokter = $JmlKomisiTargetPrDokter * $qty_transaksi;
+															Execute("UPDATE transaksi_komisi SET komisi='$JmlKomisiTargetPrDokter', total_komisi='$total_komisi_target_dokter' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+
+															//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrDokter WHERE id_pegawai='$dokter'");
+														}
+												$sql_transaksi_komisi_dokter->MoveNext();
+												}
+											$sql_transaksi_komisi_dokter->Close();	
+											}
 										} else {
-											$KomisiDefaultRpRecall = ExecuteScalar("SELECT recall_default_rupiah FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
-											$KomisiDefaultPrRecall = ExecuteScalar("SELECT recall_default_persen FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
-												if($KomisiDefaultRpRecall != "" && $KomisiDefaultRpRecall != "0"){
-													$total_komisi_default_rp = $KomisiDefaultRpRecall * $qty_penjualan;
-													Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, jenis_komisi, kode_penjualan,tgl, komisi, id_barang, qty, subtotal, total_komisi) VALUES ('$id_pegawai_recall', '$JabatanPegawai', 'Recall', '$kode_penjualan', '$waktu', '$KomisiDefaultRpRecall', '$id_barang_penjualan', '$qty_penjualan', '$subtotal_penjualan', '$total_komisi_default_rp')");								
-												}
-												if($KomisiDefaultPrRecall != "" && $KomisiDefaultPrRecall != "0"){
-													$JmlKomisiDefaultPrRecall = (($KomisiDefaultPrRecall / 100) * $harga_jual);
-													$total_komisi_default_pr = (($KomisiDefaultPrRecall / 100) * $subtotal_penjualan);
-													Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, jenis_komisi, kode_penjualan,tgl, komisi, id_barang, qty, subtotal, total_komisi) VALUES ('$id_pegawai_recall', '$JabatanPegawai', 'Recall', '$kode_penjualan', '$waktu', '$JmlKomisiDefaultPrRecall', '$id_barang_penjualan', '$qty_penjualan', '$subtotal_penjualan', '$total_komisi_default_pr')");								                                
-												}
+											$KomisiTargetRpDokter = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+											$KomisiTargetPrDokter = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+											if($KomisiTargetRpDokter != "" && $KomisiTargetRpDokter != "0"){
+												$JmlKomisiTargetRpDokter =  $KomisiTargetRpDokter * $qty_penjualan;
+												Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$dokter', '$JabatanDokter', '$BarangKomisiDokter', '$qtyBarangKomisiDokter', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpDokter', '$JmlKomisiTargetRpDokter')");
+
+												//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpDokter WHERE id_pegawai='$dokter'");
+											}
+											if($KomisiTargetPrDokter != "" && $KomisiTargetPrDokter != "0"){
+												$JmlKomisiTargetPrDokter = (($KomisiTargetPrDokter / 100) * $subtotal_satuan);
+												$total_komisi_target_dokter = $JmlKomisiTargetPrDokter * $qty_penjualan;
+												Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dokter', '$JabatanDokter', '$BarangKomisiDokter', '$qtyBarangKomisiDokter', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrDokter', '$total_komisi_target_dokter')");
+
+												//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrDokter WHERE id_pegawai='$dokter'");
+											}
 										}
+								} else {
+									$KomisiDefaultRpDokter = ExecuteScalar("SELECT kinerja_default_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									$KomisiDefaultPrDokter = ExecuteScalar("SELECT kinerja_default_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									if($KomisiDefaultRpDokter != "" && $KomisiDefaultRpDokter != "0"){
+										$JmlKomisiDefaultRpDokter = $KomisiDefaultRpDokter * $qty_penjualan;
+										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dokter', '$JabatanDokter', '$BarangKomisiDokter', '$qtyBarangKomisiDokter', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiDefaultRpDokter', '$JmlKomisiDefaultRpDokter')");
+
+										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultRpDokter WHERE id_pegawai='$dokter'");	
+									}
+									if($KomisiDefaultPrDokter != "" && $KomisiDefaultPrDokter != "0"){
+										$JmlKomisiDefaultPrDokter = (($KomisiDefaultPrDokter / 100) * $subtotal_satuan);
+										$total_komisi_default_dokter = $JmlKomisiDefaultPrDokter * $qty_penjualan;
+										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dokter', '$JabatanDokter', '$BarangKomisiDokter', '$qtyBarangKomisiDokter', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiDefaultPrDokter', '$total_komisi_default_dokter')");
+
+										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultPrDokter WHERE id_pegawai='$dokter'");
+									}
 								}
 							}
-						$sql_komisi_recall->MoveNext();	
+						$sql_dokter->MoveNext();	
 						}
-					$sql_komisi_recall->Close();
+					$sql_dokter->Close();
 					}
-			if($idpelanggan != FALSE) {
-
-				//INSERT TGL AWAL TRANSAKSI && JML AKUMULASI
-				$total_akumulasi = ExecuteScalar("SELECT total_akumulasi FROM m_member WHERE id_pelanggan='$idpelanggan'");
-				$tglmulai = ExecuteScalar("SELECT tgl_mulai FROM m_member WHERE id_pelanggan='$idpelanggan'");
-				if($total_akumulasi == '' OR $total_akumulasi == '0' OR $total_akumulasi == NULL){
-					$tglawaltransaksi = ExecuteScalar("SELECT tgl_awal_transaksi FROM m_member WHERE id_pelanggan='$idpelanggan'");
-						if($tglawaltransaksi == '') {
-							$date = date("Y-m-d");
-							date_default_timezone_set("Indonesia/Jakarta");
-							$tgltransaksiawal = ExecuteScalar("SELECT waktu FROM penjualan WHERE waktu >= '$tglmulai' ORDER BY waktu ASC LIMIT 1");
-							$jmlakumulasi = ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE id_pelanggan='$idpelanggan' AND (waktu BETWEEN '$tgltransaksiawal' AND '$date')");
-							Execute("UPDATE m_member SET tgl_awal_transaksi='$tgltransaksiawal', total_akumulasi='$jmlakumulasi' WHERE id_pelanggan='$idpelanggan'");
-						}
-				} else {
-					$date = date("Y-m-d");
-					$tgltransaksiawal = ExecuteScalar("SELECT waktu FROM penjualan WHERE waktu >= '$tglmulai' ORDER BY waktu ASC LIMIT 1");
-					$jmlakumulasi = ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE id_pelanggan='$idpelanggan' AND (waktu BETWEEN '$tgltransaksiawal' AND '$date')");
-					Execute("UPDATE m_member SET total_akumulasi='$jmlakumulasi' WHERE id_pelanggan='$idpelanggan'");
 				}
 
-				//UPGRADE MEMBER
-				$firstdate = date("Y-n-j", strtotime("first day of this month"));
-				$lastdate = date("Y-n-j", strtotime("last day of this month"));
-				$KedatanganBlnIni = ExecuteScalar("SELECT COUNT(id) FROM penjualan WHERE id_pelanggan = '$idpelanggan' AND (waktu BETWEEN '$firstdate' AND '$lastdate')");
-				if($KedatanganBlnIni > '1') {
-				} else {
-					$firstdateprevmonth = date("Y-n-j", strtotime("first day of previous month"));
-					$lastdateprevmonth = date("Y-n-j", strtotime("last day of previous month"));
-					$KedatanganBlnLalu = ExecuteScalar("SELECT COUNT(id) FROM penjualan WHERE id_pelanggan = '$idpelanggan' AND (waktu BETWEEN '$firstdateprevmonth' AND '$lastdateprevmonth')");
-					$min_kedatangan = ExecuteSCalar("SELECT min_kedatangan FROM m_jenis_member WHERE id_jenis_member='$jenismember'");
-					if($KedatanganBlnLalu >= $min_kedatangan){
-						$TglAwal = ExecuteScalar("SELECT tgl_awal_transaksi FROM m_member WHERE id_pelanggan='$idpelanggan'");
-						$CountDay = ExecuteScalar("SELECT DATEDIFF('$date', '$TglAwal')");
-						$JangkaWaktu = ExecuteScalar("SELECT jangka_waktu FROM m_jenis_member WHERE id_jenis_member='$jenismember'");
-							if($CountDay >= $JangkaWaktu){
-								$nominalbwh_reguler = ExecuteScalar("SELECT nominal_bawah FROM m_jenis_member WHERE nama_member='Reguler'");
-								$nominalats_reguler = ExecuteScalar("SELECT nominal_atas FROM m_jenis_member WHERE nama_member='Reguler'");
-								$nominalbwh_vip = ExecuteScalar("SELECT nominal_bawah FROM m_jenis_member WHERE nama_member='VIP'");
-								$level_selanjutnya = ExecuteScalar("SELECT member_selanjutnya FROM m_jenis_member WHERE id_jenis_member='$jenismember'");
-								$id_vvip = ExecuteScalar("SELECT id FROM m_jenis_member WHERE nama_member='VVIP'");
-									if($total_akumulasi >= $nominalbwh_reguler || $total_akumulasi <= $nominalats_reguler) {
-										Execute("UPDATE m_member SET jenis_member='$level_selanjutnya' WHERE id_pelanggan='$idpelanggan'");
+				// KOMISI PEGAWAI RECALL
+				$sql_komisi_recall = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
+						if($sql_komisi_recall -> RecordCount() > 0){
+							$sql_komisi_recall->MoveFirst();
+							while(!$sql_komisi_recall->EOF) {
+								$id_barang_penjualan = $sql_komisi_recall->fields['id_barang'];
+								$id_pegawai_recall = $sql_komisi_recall->fields['komisi_recall'];
+								$qty_penjualan = $sql_komisi_recall->fields['qty'];
+								$subtotal_penjualan = $sql_komisi_recall->fields['subtotal'];
+								$harga_jual = $sql_komisi_recall->fields['harga_jual'];
+								if($id_pegawai_recall != ''){
+									$JabatanPegawai = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai='$id_pegawai_recall'");
+									$BarangKomisiRecall = ExecuteScalar("SELECT id_barang FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi_recall_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
+									$TglAwalRecall = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanPegawai' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									$TglAkhirRecall = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanPegawai' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									if($BarangKomisiRecall != '') {
+										$TargetBarangRecall = ExecuteScalar("SELECT target FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
+										$Periode = ExecuteScalar("SELECT '$date' - INTERVAL '1' MONTH");
+										$JmlPenjualan = ExecuteScalar("SELECT SUM(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE detailpenjualan.id_barang = '$id_barang_penjualan' AND detailpenjualan.komisi_recall = '$id_pegawai_recall' AND (penjualan.waktu BETWEEN '$Periode' AND '$date')");
+											if($JmlPenjualan >= $TargetBarangRecall) {
+												$KomisiTargetRpRecall = ExecuteScalar("SELECT recall_target_rupiah FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
+												$KomisiTargetPrRecall = ExecuteScalar("SELECT recall_target_persen FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");									
+													if($KomisiTargetRpRecall != "" && $KomisiTargetRpRecall != "0"){
+														$total_komisi_target_rp = $KomisiTargetRpRecall * $qty_penjualan;
+														Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, jenis_komisi, kode_penjualan,tgl, komisi, id_barang, qty, subtotal, total_komisi) VALUES ('$id_pegawai_recall', '$JabatanPegawai', 'Recall', '$kode_penjualan', '$waktu', '$KomisiTargetRpRecall', '$id_barang_penjualan', '$qty_penjualan', '$subtotal_penjualan', '$total_komisi_target_rp')");								
+
+														//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpDokter WHERE id_pegawai='$dokter'");
+													}
+													if($KomisiTargetPrRecall != "" && $KomisiTargetPrRecall != "0"){
+														$JmlKomisiTargetPrRecall = (($KomisiTargetPrRecall / 100) * $harga_jual);
+														$total_komisi_target_pr = (($KomisiTargetPrRecall / 100) * $subtotal_penjualan);
+														Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, jenis_komisi, kode_penjualan,tgl, komisi, id_barang, qty, subtotal, total_komisi) VALUES ('$id_pegawai_recall', '$JabatanPegawai', 'Recall', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrRecall', '$id_barang_penjualan', '$qty_penjualan', '$subtotal_penjualan', '$total_komisi_target_pr')");								
+
+														//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrDokter WHERE id_pegawai='$dokter'");
+													}
+
+													// Get Transaksi Komisi Recall
+													$sql_transaksi_komisi_recall = Execute("SELECT * FROM transaksi_komisi WHERE id_barang = '$BarangKomisiRecall' AND id_pegawai = '$id_pegawai_recall' AND id_jabatan = '$JabatanPegawai' AND (tgl BETWEEN '$TglAwalRecall' AND '$TglAkhirRecall') AND jenis_komisi='Recall'");
+
+														// If Transaksi Komisi Be Body != NULL
+														if($sql_transaksi_komisi_recall != NULL OR $sql_transaksi_komisi_recall != FALSE) {
+															if($sql_transaksi_komisi_recall -> RecordCount() > 0){
+																$sql_transaksi_komisi_recall->MoveFirst();
+																while(!$sql_transaksi_komisi_recall->EOF) {
+																	$id_transaksi = $sql_transaksi_komisi_recall->fields['id'];
+																	$id_pegawai_transaksi = $sql_transaksi_komisi_recall->fields['id_pegawai'];
+																	$id_jabatan_transaksi = $sql_transaksi_komisi_recall->fields['id_jabatan'];
+																	$kode_penjualan = $sql_transaksi_komisi_recall->fields['kode_penjualan'];
+																	$id_barang_transaksi = $sql_transaksi_komisi_recall->fields['id_barang'];
+																	$subtotal_transaksi = $sql_transaksi_komisi_recall->fields['subtotal'];
+																	$qty_transaksi = $sql_transaksi_komisi_recall->fields['qty'];
+																	$harga_jual_transaksi = $subtotal_transaksi / $qty_transaksi;
+																	var_dump($harga_jual_transaksi);
+
+																		// If Komisi Target Rupiah != 0
+																		if($KomisiTargetRpRecall != "" && $KomisiTargetRpRecall != "0"){
+																			$JmlKomisiTargetRpRecall = $KomisiTargetRpRecall * $qty_transaksi;
+
+																			// Update data sebelumnya
+																			Execute("UPDATE transaksi_komisi SET komisi='$KomisiTargetRpRecall', total_komisi='$JmlKomisiTargetRpRecall' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+																		}
+
+																		// If Komisi Target Persen != 0
+																		if($KomisiTargetPrRecall != "" && $KomisiTargetPrRecall != "0"){
+																			$JmlKomisiTargetPrRecall = (($KomisiTargetPrRecall / 100) * $harga_jual_transaksi);
+																			$total_komisi_target_recall = $JmlKomisiTargetPrRecall * $qty_transaksi;
+																			Execute("UPDATE transaksi_komisi SET komisi='$JmlKomisiTargetPrRecall', total_komisi='$total_komisi_target_recall' WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+																		}
+																$sql_transaksi_komisi_recall->MoveNext();
+																}
+															$sql_transaksi_komisi_recall->Close();	
+															}
+														} else {
+																$KomisiTargetRpRecall = ExecuteScalar("SELECT recall_target_rupiah FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
+																$KomisiTargetPrRecall = ExecuteScalar("SELECT recall_target_persen FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");									
+																	if($KomisiTargetRpRecall != "" && $KomisiTargetRpRecall != "0"){
+																		$total_komisi_target_rp = $KomisiTargetRpRecall * $qty_penjualan;
+																		Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, jenis_komisi, kode_penjualan,tgl, komisi, id_barang, qty, subtotal, total_komisi) VALUES ('$id_pegawai_recall', '$JabatanPegawai', 'Recall', '$kode_penjualan', '$waktu', '$KomisiTargetRpRecall', '$id_barang_penjualan', '$qty_penjualan', '$subtotal_penjualan', '$total_komisi_target_rp')");								
+																	}
+																	if($KomisiTargetPrRecall != "" && $KomisiTargetPrRecall != "0"){
+																		$JmlKomisiTargetPrRecall = (($KomisiTargetPrRecall / 100) * $harga_jual);
+																		$total_komisi_target_pr = (($KomisiTargetPrRecall / 100) * $subtotal_penjualan);
+																		Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, jenis_komisi, kode_penjualan,tgl, komisi, id_barang, qty, subtotal, total_komisi) VALUES ('$id_pegawai_recall', '$JabatanPegawai', 'Recall', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrRecall', '$id_barang_penjualan', '$qty_penjualan', '$subtotal_penjualan', '$total_komisi_target_pr')");								
+																	}
+														}
+											} else {
+												$KomisiDefaultRpRecall = ExecuteScalar("SELECT recall_default_rupiah FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
+												$KomisiDefaultPrRecall = ExecuteScalar("SELECT recall_default_persen FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
+													if($KomisiDefaultRpRecall != "" && $KomisiDefaultRpRecall != "0"){
+														$total_komisi_default_rp = $KomisiDefaultRpRecall * $qty_penjualan;
+														Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, jenis_komisi, kode_penjualan,tgl, komisi, id_barang, qty, subtotal, total_komisi) VALUES ('$id_pegawai_recall', '$JabatanPegawai', 'Recall', '$kode_penjualan', '$waktu', '$KomisiDefaultRpRecall', '$id_barang_penjualan', '$qty_penjualan', '$subtotal_penjualan', '$total_komisi_default_rp')");								
+													}
+													if($KomisiDefaultPrRecall != "" && $KomisiDefaultPrRecall != "0"){
+														$JmlKomisiDefaultPrRecall = (($KomisiDefaultPrRecall / 100) * $harga_jual);
+														$total_komisi_default_pr = (($KomisiDefaultPrRecall / 100) * $subtotal_penjualan);
+														Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, jenis_komisi, kode_penjualan,tgl, komisi, id_barang, qty, subtotal, total_komisi) VALUES ('$id_pegawai_recall', '$JabatanPegawai', 'Recall', '$kode_penjualan', '$waktu', '$JmlKomisiDefaultPrRecall', '$id_barang_penjualan', '$qty_penjualan', '$subtotal_penjualan', '$total_komisi_default_pr')");								                                
+													}
+											}
 									}
-									if($total_akumulasi >= $nominalbwh_vip){
-										Execute("UPDATE m_member SET jenis_member='$id_vvip' WHERE id_pelanggan='$idpelanggan'");
-									}
+								}
+							$sql_komisi_recall->MoveNext();	
 							}
+						$sql_komisi_recall->Close();
+						}
+				if($idpelanggan != FALSE) {
+
+					//INSERT TGL AWAL TRANSAKSI && JML AKUMULASI
+					$total_akumulasi = ExecuteScalar("SELECT total_akumulasi FROM m_member WHERE id_pelanggan='$idpelanggan'");
+					$tglmulai = ExecuteScalar("SELECT tgl_mulai FROM m_member WHERE id_pelanggan='$idpelanggan'");
+					if($total_akumulasi == '' OR $total_akumulasi == '0' OR $total_akumulasi == NULL){
+						$tglawaltransaksi = ExecuteScalar("SELECT tgl_awal_transaksi FROM m_member WHERE id_pelanggan='$idpelanggan'");
+							if($tglawaltransaksi == '') {
+								$date = date("Y-m-d");
+								date_default_timezone_set("Indonesia/Jakarta");
+								$tgltransaksiawal = ExecuteScalar("SELECT waktu FROM penjualan WHERE waktu >= '$tglmulai' ORDER BY waktu ASC LIMIT 1");
+								$jmlakumulasi = ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE id_pelanggan='$idpelanggan' AND (waktu BETWEEN '$tgltransaksiawal' AND '$date')");
+								Execute("UPDATE m_member SET tgl_awal_transaksi='$tgltransaksiawal', total_akumulasi='$jmlakumulasi' WHERE id_pelanggan='$idpelanggan'");
+							}
+					} else {
+						$date = date("Y-m-d");
+						$tgltransaksiawal = ExecuteScalar("SELECT waktu FROM penjualan WHERE waktu >= '$tglmulai' ORDER BY waktu ASC LIMIT 1");
+						$jmlakumulasi = ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE id_pelanggan='$idpelanggan' AND (waktu BETWEEN '$tgltransaksiawal' AND '$date')");
+						Execute("UPDATE m_member SET total_akumulasi='$jmlakumulasi' WHERE id_pelanggan='$idpelanggan'");
+					}
+
+					//UPGRADE MEMBER
+					$firstdate = date("Y-n-j", strtotime("first day of this month"));
+					$lastdate = date("Y-n-j", strtotime("last day of this month"));
+					$KedatanganBlnIni = ExecuteScalar("SELECT COUNT(id) FROM penjualan WHERE id_pelanggan = '$idpelanggan' AND (waktu BETWEEN '$firstdate' AND '$lastdate')");
+					if($KedatanganBlnIni > '1') {
+					} else {
+						$firstdateprevmonth = date("Y-n-j", strtotime("first day of previous month"));
+						$lastdateprevmonth = date("Y-n-j", strtotime("last day of previous month"));
+						$KedatanganBlnLalu = ExecuteScalar("SELECT COUNT(id) FROM penjualan WHERE id_pelanggan = '$idpelanggan' AND (waktu BETWEEN '$firstdateprevmonth' AND '$lastdateprevmonth')");
+						$min_kedatangan = ExecuteSCalar("SELECT min_kedatangan FROM m_jenis_member WHERE id_jenis_member='$jenismember'");
+						if($KedatanganBlnLalu >= $min_kedatangan){
+							$TglAwal = ExecuteScalar("SELECT tgl_awal_transaksi FROM m_member WHERE id_pelanggan='$idpelanggan'");
+							$CountDay = ExecuteScalar("SELECT DATEDIFF('$date', '$TglAwal')");
+							$JangkaWaktu = ExecuteScalar("SELECT jangka_waktu FROM m_jenis_member WHERE id_jenis_member='$jenismember'");
+								if($CountDay >= $JangkaWaktu){
+									$nominalbwh_reguler = ExecuteScalar("SELECT nominal_bawah FROM m_jenis_member WHERE nama_member='Reguler'");
+									$nominalats_reguler = ExecuteScalar("SELECT nominal_atas FROM m_jenis_member WHERE nama_member='Reguler'");
+									$nominalbwh_vip = ExecuteScalar("SELECT nominal_bawah FROM m_jenis_member WHERE nama_member='VIP'");
+									$level_selanjutnya = ExecuteScalar("SELECT member_selanjutnya FROM m_jenis_member WHERE id_jenis_member='$jenismember'");
+									$id_vvip = ExecuteScalar("SELECT id FROM m_jenis_member WHERE nama_member='VVIP'");
+										if($total_akumulasi >= $nominalbwh_reguler || $total_akumulasi <= $nominalats_reguler) {
+											Execute("UPDATE m_member SET jenis_member='$level_selanjutnya' WHERE id_pelanggan='$idpelanggan'");
+										}
+										if($total_akumulasi >= $nominalbwh_vip){
+											Execute("UPDATE m_member SET jenis_member='$id_vvip' WHERE id_pelanggan='$idpelanggan'");
+										}
+								}
+						}
 					}
 				}
-			}
-			$tgl_terakhir_transaksi = date("Y-m-d H:i:s");
-			Execute("UPDATE m_pelanggan SET tgl_terakhir_transaksi = '".$tgl_terakhir_transaksi."' WHERE id_pelanggan='".$id_pelanggan."'");
-		} //End of if(status == printed)
-		return TRUE;
+				$tgl_terakhir_transaksi = date("Y-m-d H:i:s");
+				Execute("UPDATE m_pelanggan SET tgl_terakhir_transaksi = '".$tgl_terakhir_transaksi."' WHERE id_pelanggan='".$id_pelanggan."'");
+			} //End of if(status == printed)
+			return TRUE;
 	}
 
 	// Row Updating event
@@ -3384,207 +3382,146 @@ class penjualan extends DbTable
 	// Row Updated event
 	function Row_Updated($rsold, &$rsnew) {
 
-		//echo "Row Updated";
-		$id_pelanggan = $rsnew['id_pelanggan'];
-		$id_klinik = $rsnew['id_klinik'];
-		$total = $rsnew['total'];
-		$_SESSION["id_penjualan"] = $rsnew["id"];
-		$id_penjualan = $rsold['id'];
-		$kode_penjualan = $rsold['kode_penjualan'];
+			//echo "Row Updated";
+			$id_pelanggan = $rsnew['id_pelanggan'];
+			$id_klinik = $rsnew['id_klinik'];
+			$total = $rsnew['total'];
+			$_SESSION["id_penjualan"] = $rsnew["id"];
+			$id_penjualan = $rsold['id'];
+			$kode_penjualan = $rsold['kode_penjualan'];
 
-		//Update Kode Penjualan
-		Execute("UPDATE penjualan SET kode_penjualan='$kode_penjualan' WHERE id = '$id_penjualan'");	
-		$metode_pembayaran = $rsnew['metode_pembayaran'];
-		$kartu = $rsnew['id_kartu'];
-		$id_bankrekening = $rsnew['id_bank'];
-		$id_kartubank = $rsnew['id_kartubank'];
-		$id_kas = $rsnew['id_kas'];
-		$charge = $rsnew['charge'];
-		$nilai_charge = str_replace('.',',',$charge);
-		$klinik = $rsnew['id_klinik'];
-		$tanggal = $rsnew['waktu'];
-		$jumlah = $rsnew['bayar'];
-		$jumlah_non_tunai = $rsnew['bayar_non_tunai'];
-		$total_non_tunai = $rsnew['total_non_tunai_charge'];
-		$klaim_poin = $rsnew['klaim_poin'];
-		$status = $rsnew['status'];
-		$id_sebelumnya = ExecuteScalar("SELECT id FROM penggunaan_kartu ORDER BY id DESC LIMIT 1");
-		$id_sekarang = $id_sebelumnya+1;
-		$id_setelahnya = $id_sekarang+1;
+			//Update Kode Penjualan
+			Execute("UPDATE penjualan SET kode_penjualan='$kode_penjualan' WHERE id = '$id_penjualan'");	
+			$metode_pembayaran = $rsnew['metode_pembayaran'];
+			$kartu = $rsnew['id_kartu'];
+			$id_bankrekening = $rsnew['id_bank'];
+			$id_kartubank = $rsnew['id_kartubank'];
+			$id_kas = $rsnew['id_kas'];
+			$charge = $rsnew['charge'];
+			$nilai_charge = str_replace('.',',',$charge);
+			$klinik = $rsnew['id_klinik'];
+			$tanggal = $rsnew['waktu'];
+			$jumlah = $rsnew['bayar'];
+			$jumlah_non_tunai = $rsnew['bayar_non_tunai'];
+			$total_non_tunai = $rsnew['total_non_tunai_charge'];
+			$klaim_poin = $rsnew['klaim_poin'];
+			$status = $rsnew['status'];
+			$id_sebelumnya = ExecuteScalar("SELECT id FROM penggunaan_kartu ORDER BY id DESC LIMIT 1");
+			$id_sekarang = $id_sebelumnya+1;
+			$id_setelahnya = $id_sekarang+1;
 
-		//var_dump($kode_penjualan); exit();
-		if($status == 'Printed') { //begin of if(status == printed)
+			//var_dump($kode_penjualan); exit();
+			if($status == 'Printed') { //begin of if(status == printed)
 
-			//INSERTING KAS / REKENING
-			if($metode_pembayaran == 'Debit' OR $metode_pembayaran == 'Kredit'){
-				$jenis_kartu = ExecuteScalar("SELECT jenis FROM m_kartu WHERE id_kartu = '$id_kartubank'");
-				$saldo_lama_bank = ExecuteScalar("SELECT saldo FROM m_rekening WHERE id_rekening = '$id_bankrekening' AND id_klinik='$id_klinik'");
-				$saldo_baru_bank = $saldo_lama_bank + $total_non_tunai;
-				Execute("INSERT INTO penggunaan_kartu (id_kartu, jenis_kartu, id_klinik, kode_penjualan, tgl, total, charge, total_charge) VALUES ('".$id_kartubank."', '".$jenis_kartu."', '".$id_klinik."', '".$kode_penjualan."', '".$tanggal."', '".$jumlah_non_tunai."', '".$nilai_charge."', '".$total_non_tunai."')");
-				Execute("INSERT INTO laporan_rekening (id_rekening, id_klinik, kode_penjualan, saldo_awal, jumlah, sisa_saldo, tanggal) VALUES ('".$id_bankrekening."', '".$id_klinik."', '".$kode_penjualan."', '".$saldo_lama_bank."','".$total_non_tunai."', '".$saldo_baru_bank."', '".$tanggal."')");
-				Execute("UPDATE m_rekening SET saldo='$saldo_baru_bank' WHERE id_rekening = '$id_bankrekening' AND id_klinik='$id_klinik'");
-			} else if($metode_pembayaran == 'Transfer'){
-				$saldo_lama_bank = ExecuteScalar("SELECT saldo FROM m_rekening WHERE id_rekening = '$id_bankrekening' AND id_klinik='$id_klinik'");
-				$saldo_baru_bank = $saldo_lama_bank + $total_non_tunai;
-				Execute("INSERT INTO laporan_rekening (id_rekening, id_klinik, kode_penjualan, saldo_awal, jumlah, sisa_saldo, tanggal) VALUES ('".$id_bankrekening."', '".$id_klinik."', '".$kode_penjualan."', '".$saldo_lama_bank."', '".$total_non_tunai."', '".$saldo_baru_bank."', '".$tanggal."')");
-				Execute("UPDATE m_rekening SET saldo='$saldo_baru_bank' WHERE id_rekening = '$id_bankrekening' AND id_klinik='$id_klinik'");		
-			} else if($metode_pembayaran == 'Tunai-Debit' OR $metode_pembayaran == 'Tunai-Kredit'){
-				$jenis_kartu = ExecuteScalar("SELECT jenis FROM m_kartu WHERE id_kartu = '$id_kartubank'");
-				$saldo_lama_bank = ExecuteScalar("SELECT saldo FROM m_rekening WHERE id_rekening = '$id_bankrekening' AND id_klinik='$id_klinik'");
-				$saldo_baru_bank = $saldo_lama_bank + $total_non_tunai;
-				Execute("INSERT INTO penggunaan_kartu (id_kartu, jenis_kartu, id_klinik, kode_penjualan, tgl, total, charge, total_charge) VALUES ('".$id_kartubank."', '".$jenis_kartu."', '".$id_klinik."', '".$kode_penjualan."', '".$tanggal."', '".$jumlah_non_tunai."', '".$nilai_charge."', '".$total_non_tunai."')");
-				Execute("INSERT INTO laporan_rekening (id_rekening, id_klinik, kode_penjualan, saldo_awal, jumlah, sisa_saldo, tanggal) VALUES ('".$id_bankrekening."', '".$id_klinik."', '".$kode_penjualan."', '".$saldo_lama_bank."', '".$total_non_tunai."', '".$saldo_baru_bank."', '".$tanggal."')");
-				Execute("UPDATE m_rekening SET saldo='$saldo_baru_bank' WHERE id_rekening = '$id_bankrekening' AND id_klinik='$id_klinik'");		            
-				$saldo_lama_kas = ExecuteScalar("SELECT saldo FROM m_kas WHERE id = '$id_kas' AND id_klinik='$id_klinik'");
-				$saldo_baru_kas = $saldo_lama_kas + ($total - $total_non_tunai);
-				$jumlah_tunai = $total - $total_non_tunai;
-				Execute("INSERT INTO laporan_kas (id_klinik, id_kas, kode_penjualan, saldo_awal, jumlah, sisa_saldo, tanggal) VALUES ('".$id_klinik."', '".$id_kas."', '".$kode_penjualan."', '".$saldo_lama_kas."', '".$jumlah_tunai."', '".$saldo_baru_kas."', '".$tanggal."')");
-				Execute("UPDATE m_kas SET saldo='$saldo_baru_kas' WHERE id = '$id_kas' AND id_klinik='$id_klinik'");		
-			} else if($metode_pembayaran == 'Tunai'){
-				$saldo_lama_kas = ExecuteScalar("SELECT saldo FROM m_kas WHERE id = '$id_kas' AND id_klinik='$id_klinik'");
-				$saldo_baru_kas = $saldo_lama_kas + $total;
-				Execute("INSERT INTO laporan_kas (id_klinik, id_kas, kode_penjualan, saldo_awal, jumlah, sisa_saldo, tanggal) VALUES ('".$id_klinik."', '".$id_kas."', '".$kode_penjualan."', '".$saldo_lama_kas."', '".$total."', '".$saldo_baru_kas."', '".$tanggal."')");
-				Execute("UPDATE m_kas SET saldo='$saldo_baru_kas' WHERE id = '$id_kas' AND id_klinik='$id_klinik'");		
-			}
+				//INSERTING KAS / REKENING
+				if($metode_pembayaran == 'Debit' OR $metode_pembayaran == 'Kredit' OR $metode_pembayaran == 'E-Wallet'){
+					$jenis_kartu = ExecuteScalar("SELECT jenis FROM m_kartu WHERE id_kartu = '$id_kartubank'");
+					$saldo_lama_bank = ExecuteScalar("SELECT saldo FROM m_rekening WHERE id_rekening = '$id_bankrekening' AND id_klinik='$id_klinik'");
+					$saldo_baru_bank = $saldo_lama_bank + $total_non_tunai;
+					Execute("INSERT INTO penggunaan_kartu (id_kartu, jenis_kartu, id_klinik, kode_penjualan, tgl, total, charge, total_charge) VALUES ('".$id_kartubank."', '".$jenis_kartu."', '".$id_klinik."', '".$kode_penjualan."', '".$tanggal."', '".$jumlah_non_tunai."', '".$nilai_charge."', '".$total_non_tunai."')");
+					Execute("INSERT INTO laporan_rekening (id_rekening, id_klinik, kode_penjualan, saldo_awal, jumlah, sisa_saldo, tanggal) VALUES ('".$id_bankrekening."', '".$id_klinik."', '".$kode_penjualan."', '".$saldo_lama_bank."','".$total_non_tunai."', '".$saldo_baru_bank."', '".$tanggal."')");
+					Execute("UPDATE m_rekening SET saldo='$saldo_baru_bank' WHERE id_rekening = '$id_bankrekening' AND id_klinik='$id_klinik'");
+				} else if($metode_pembayaran == 'Transfer'){
+					$saldo_lama_bank = ExecuteScalar("SELECT saldo FROM m_rekening WHERE id_rekening = '$id_bankrekening' AND id_klinik='$id_klinik'");
+					$saldo_baru_bank = $saldo_lama_bank + $total_non_tunai;
+					Execute("INSERT INTO laporan_rekening (id_rekening, id_klinik, kode_penjualan, saldo_awal, jumlah, sisa_saldo, tanggal) VALUES ('".$id_bankrekening."', '".$id_klinik."', '".$kode_penjualan."', '".$saldo_lama_bank."', '".$total_non_tunai."', '".$saldo_baru_bank."', '".$tanggal."')");
+					Execute("UPDATE m_rekening SET saldo='$saldo_baru_bank' WHERE id_rekening = '$id_bankrekening' AND id_klinik='$id_klinik'");		
+				} else if($metode_pembayaran == 'Tunai-Debit' OR $metode_pembayaran == 'Tunai-Kredit'){
+					$jenis_kartu = ExecuteScalar("SELECT jenis FROM m_kartu WHERE id_kartu = '$id_kartubank'");
+					$saldo_lama_bank = ExecuteScalar("SELECT saldo FROM m_rekening WHERE id_rekening = '$id_bankrekening' AND id_klinik='$id_klinik'");
+					$saldo_baru_bank = $saldo_lama_bank + $total_non_tunai;
+					Execute("INSERT INTO penggunaan_kartu (id_kartu, jenis_kartu, id_klinik, kode_penjualan, tgl, total, charge, total_charge) VALUES ('".$id_kartubank."', '".$jenis_kartu."', '".$id_klinik."', '".$kode_penjualan."', '".$tanggal."', '".$jumlah_non_tunai."', '".$nilai_charge."', '".$total_non_tunai."')");
+					Execute("INSERT INTO laporan_rekening (id_rekening, id_klinik, kode_penjualan, saldo_awal, jumlah, sisa_saldo, tanggal) VALUES ('".$id_bankrekening."', '".$id_klinik."', '".$kode_penjualan."', '".$saldo_lama_bank."', '".$total_non_tunai."', '".$saldo_baru_bank."', '".$tanggal."')");
+					Execute("UPDATE m_rekening SET saldo='$saldo_baru_bank' WHERE id_rekening = '$id_bankrekening' AND id_klinik='$id_klinik'");		            
+					$saldo_lama_kas = ExecuteScalar("SELECT saldo FROM m_kas WHERE id = '$id_kas' AND id_klinik='$id_klinik'");
+					$saldo_baru_kas = $saldo_lama_kas + ($total - $total_non_tunai);
+					$jumlah_tunai = $total - $total_non_tunai;
+					Execute("INSERT INTO laporan_kas (id_klinik, id_kas, kode_penjualan, saldo_awal, jumlah, sisa_saldo, tanggal) VALUES ('".$id_klinik."', '".$id_kas."', '".$kode_penjualan."', '".$saldo_lama_kas."', '".$jumlah_tunai."', '".$saldo_baru_kas."', '".$tanggal."')");
+					Execute("UPDATE m_kas SET saldo='$saldo_baru_kas' WHERE id = '$id_kas' AND id_klinik='$id_klinik'");		
+				} else if($metode_pembayaran == 'Tunai'){
+					$saldo_lama_kas = ExecuteScalar("SELECT saldo FROM m_kas WHERE id = '$id_kas' AND id_klinik='$id_klinik'");
+					$saldo_baru_kas = $saldo_lama_kas + $total;
+					Execute("INSERT INTO laporan_kas (id_klinik, id_kas, kode_penjualan, saldo_awal, jumlah, sisa_saldo, tanggal) VALUES ('".$id_klinik."', '".$id_kas."', '".$kode_penjualan."', '".$saldo_lama_kas."', '".$total."', '".$saldo_baru_kas."', '".$tanggal."')");
+					Execute("UPDATE m_kas SET saldo='$saldo_baru_kas' WHERE id = '$id_kas' AND id_klinik='$id_klinik'");		
+				}
 
-			//INSERTING VOUCHER INTO PENGGUNAAN KARTU
-			if($kartu != '' OR $kartu != NULL){
-				$jumlah_voucher = $rsnew['jumlah_voucher'];		
-				$jenis_kartu_voucher = ExecuteScalar("SELECT jenis FROM m_kartu WHERE id_kartu = '$kartu'");
-				$charge_price_voucher = ExecuteScalar("SELECT charge_price FROM m_kartu WHERE id_kartu = '$kartu'");	
-				$pembayaran = $total + ($charge_price_voucher * $jumlah_voucher);
-				Execute("INSERT INTO penggunaan_kartu (id_kartu, jenis_kartu, id_klinik, kode_penjualan, tgl, total, charge, total_charge, jumlah_pemakaian) VALUES ('".$kartu."', '".$jenis_kartu_voucher."', '".$id_klinik."', '".$kode_penjualan."', '".$tanggal."', '".$pembayaran."', '".$charge_price_voucher."', '".$total."', '".$jumlah_voucher."')");
-			}
+				//INSERTING VOUCHER INTO PENGGUNAAN KARTU
+				if($kartu != '' OR $kartu != NULL){
+					$jumlah_voucher = $rsnew['jumlah_voucher'];		
+					$jenis_kartu_voucher = ExecuteScalar("SELECT jenis FROM m_kartu WHERE id_kartu = '$kartu'");
+					$charge_price_voucher = ExecuteScalar("SELECT charge_price FROM m_kartu WHERE id_kartu = '$kartu'");	
+					$pembayaran = $total + ($charge_price_voucher * $jumlah_voucher);
+					Execute("INSERT INTO penggunaan_kartu (id_kartu, jenis_kartu, id_klinik, kode_penjualan, tgl, total, charge, total_charge, jumlah_pemakaian) VALUES ('".$kartu."', '".$jenis_kartu_voucher."', '".$id_klinik."', '".$kode_penjualan."', '".$tanggal."', '".$pembayaran."', '".$charge_price_voucher."', '".$total."', '".$jumlah_voucher."')");
+				}
 
-			//ADDING POIN MEMBER
-			$idpelanggan = ExecuteScalar("SELECT id_pelanggan FROM m_pelanggan WHERE id_pelanggan IN (SELECT id_pelanggan FROM m_member WHERE id_pelanggan='$id_pelanggan')");
-			$jenismember = ExecuteScalar("SELECT jenis_member FROM m_member WHERE id_pelanggan = $idpelanggan");
-			$kelipatan = ExecuteScalar("SELECT curs_poin FROM m_poin WHERE id_jenis_member = $jenismember");
-			$perhitungan = ($total - $ongkir) / $kelipatan;
-			$poinsebelumnya = ExecuteScalar("SELECT poin_member FROM m_member WHERE id_pelanggan = $idpelanggan");
-			$min_transaksi = ExecuteScalar("SELECT min_transaksi FROM m_poin WHERE id_jenis_member = $jenismember");
-			if($total >= $min_transaksi) {
-				if($idpelanggan == FALSE){
+				//ADDING POIN MEMBER
+				$idpelanggan = ExecuteScalar("SELECT id_pelanggan FROM m_pelanggan WHERE id_pelanggan IN (SELECT id_pelanggan FROM m_member WHERE id_pelanggan='$id_pelanggan')");
+				$jenismember = ExecuteScalar("SELECT jenis_member FROM m_member WHERE id_pelanggan = $idpelanggan");
+				$kelipatan = ExecuteScalar("SELECT curs_poin FROM m_poin WHERE id_jenis_member = $jenismember");
+				$perhitungan = ($total - $ongkir) / $kelipatan;
+				$poinsebelumnya = ExecuteScalar("SELECT poin_member FROM m_member WHERE id_pelanggan = $idpelanggan");
+				$min_transaksi = ExecuteScalar("SELECT min_transaksi FROM m_poin WHERE id_jenis_member = $jenismember");
+				if($total >= $min_transaksi) {
+					if($idpelanggan == FALSE){
 
-					// Execute("INSERT INTO m_member (kode_member, idpelanggan, jenis_member, tgl_mulai, tgl_akhir, poin_member) VALUES ('', '".$id_pelanggan."', '1', '".date("Y-m-d h:i:s")."', '', '".floor($perhitungan)."')");
-				} else {
-					if($klaim_poin != NULL OR $klaim_poin != '') {
-						$saldo_poin_klaim = $poinsebelumnya - $klaim_poin;
-						Execute("INSERT INTO kartupoin (id_pelanggan, kode_penjualan, tgl, masuk, keluar, saldo_poin, id_klinik) VALUES ('".$idpelanggan."', '".$kode_penjualan."', '".$tanggal."', '0', '".$klaim_poin."','".$saldo_poin_klaim."', '".$id_klinik."')");
-						Execute("UPDATE m_member SET poin_member=$saldo_poin_klaim WHERE id_pelanggan=$idpelanggan");
-						$poin_saat_ini = $saldo_poin_klaim + floor($perhitungan);
-						Execute("INSERT INTO kartupoin (id_pelanggan, kode_penjualan, tgl, masuk, keluar, saldo_poin, id_klinik) VALUES ('".$idpelanggan."', '".$kode_penjualan."', '".$tanggal."', '".floor($perhitungan)."', '0','".$poin_saat_ini."', '".$id_klinik."')");
-						Execute("UPDATE m_member SET poin_member=$poin_saat_ini WHERE id_pelanggan=$idpelanggan");
+						// Execute("INSERT INTO m_member (kode_member, idpelanggan, jenis_member, tgl_mulai, tgl_akhir, poin_member) VALUES ('', '".$id_pelanggan."', '1', '".date("Y-m-d h:i:s")."', '', '".floor($perhitungan)."')");
 					} else {
-						$poin_saat_ini = $poinsebelumnya + floor($perhitungan);
-						Execute("INSERT INTO kartupoin (id_pelanggan, kode_penjualan, tgl, masuk, keluar, saldo_poin, id_klinik) VALUES ('".$idpelanggan."', '".$kode_penjualan."', '".$tanggal."', '".floor($perhitungan)."', '0','".$poin_saat_ini."', '".$id_klinik."')");
-						Execute("UPDATE m_member SET poin_member=$poin_saat_ini WHERE id_pelanggan=$idpelanggan");
+						if($klaim_poin != NULL OR $klaim_poin != '') {
+							$saldo_poin_klaim = $poinsebelumnya - $klaim_poin;
+							Execute("INSERT INTO kartupoin (id_pelanggan, kode_penjualan, tgl, masuk, keluar, saldo_poin, id_klinik) VALUES ('".$idpelanggan."', '".$kode_penjualan."', '".$tanggal."', '0', '".$klaim_poin."','".$saldo_poin_klaim."', '".$id_klinik."')");
+							Execute("UPDATE m_member SET poin_member=$saldo_poin_klaim WHERE id_pelanggan=$idpelanggan");
+							$poin_saat_ini = $saldo_poin_klaim + floor($perhitungan);
+							Execute("INSERT INTO kartupoin (id_pelanggan, kode_penjualan, tgl, masuk, keluar, saldo_poin, id_klinik) VALUES ('".$idpelanggan."', '".$kode_penjualan."', '".$tanggal."', '".floor($perhitungan)."', '0','".$poin_saat_ini."', '".$id_klinik."')");
+							Execute("UPDATE m_member SET poin_member=$poin_saat_ini WHERE id_pelanggan=$idpelanggan");
+						} else {
+							$poin_saat_ini = $poinsebelumnya + floor($perhitungan);
+							Execute("INSERT INTO kartupoin (id_pelanggan, kode_penjualan, tgl, masuk, keluar, saldo_poin, id_klinik) VALUES ('".$idpelanggan."', '".$kode_penjualan."', '".$tanggal."', '".floor($perhitungan)."', '0','".$poin_saat_ini."', '".$id_klinik."')");
+							Execute("UPDATE m_member SET poin_member=$poin_saat_ini WHERE id_pelanggan=$idpelanggan");
+						}
 					}
 				}
-			}
 
-			// KOMISI PEGAWAI KINERJA
-			$sales = $rsnew['sales'];
-			$dok_be_wajah = $rsnew['dok_be_wajah'];
-			$be_body = $rsnew['be_body'];
-			$medis = $rsnew['medis'];
-			$dokter = $rsnew['dokter'];
-			$idpenjualan = $rsnew['id'];
-			$waktu = $rsnew['waktu'];
-			$kode_penjualan = $rsnew['kode_penjualan'];
-			$date = date("Y-m-d");
-			$qty = ExecuteScalar("SELECT SUM(qty) AS qty FROM detailpenjualan WHERE id_penjualan=$idpenjualan");
+				// KOMISI PEGAWAI KINERJA
+				$sales = $rsnew['sales'];
+				$dok_be_wajah = $rsnew['dok_be_wajah'];
+				$be_body = $rsnew['be_body'];
+				$medis = $rsnew['medis'];
+				$dokter = $rsnew['dokter'];
+				$idpenjualan = $rsnew['id'];
+				$waktu = $rsnew['waktu'];
+				$kode_penjualan = $rsnew['kode_penjualan'];
+				$date = date("Y-m-d");
+				$qty = ExecuteScalar("SELECT SUM(qty) AS qty FROM detailpenjualan WHERE id_penjualan=$idpenjualan");
 
-			//KOMISI KINERJA SALES
-			if($sales != "") {
-				$JabatanSales = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai=$sales");					
-				$sql_sales = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
-					if($sql_sales -> RecordCount() > 0){
-						$sql_sales->MoveFirst();
-						while(!$sql_sales->EOF) {
-							$id_barang_penjualan = $sql_sales->fields['id_barang'];
-							$subtotal_penjualan = $sql_sales->fields['subtotal'];
+				//KOMISI KINERJA SALES
+				if($sales != "") {
+					$JabatanSales = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai=$sales");					
+					$sql_sales = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
+						if($sql_sales -> RecordCount() > 0){
+							$sql_sales->MoveFirst();
+							while(!$sql_sales->EOF) {
+								$id_barang_penjualan = $sql_sales->fields['id_barang'];
+								$subtotal_penjualan = $sql_sales->fields['subtotal'];
 
-							//$harga_jual = $sql_sales->fields['harga_jual'];
-							$qty_penjualan = $sql_sales->fields['qty'];
-							$subtotal_satuan = $subtotal_penjualan / $qty_penjualan;
+								//$harga_jual = $sql_sales->fields['harga_jual'];
+								$qty_penjualan = $sql_sales->fields['qty'];
+								$subtotal_satuan = $subtotal_penjualan / $qty_penjualan;
 
-							//$KomisiPegawaiSales = ExecuteScalar("SELECT nilai_komisi FROM transaksi_komisi WHERE id_pegawai='$sales'");
-							$BarangKomisiSales = ExecuteScalar("SELECT id_barang FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi_kinerja_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");					
-							$qtyBarangKomisiSales = ExecuteScalar("SELECT qty FROM detailpenjualan WHERE id_barang = '$BarangKomisiSales' AND id_penjualan = '$idpenjualan'");
-							if($BarangKomisiSales != ""){
-								$TargetBarangSales = ExecuteScalar("SELECT target FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								$TglAwalSales = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								$TglAkhirSales = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+								//$KomisiPegawaiSales = ExecuteScalar("SELECT nilai_komisi FROM transaksi_komisi WHERE id_pegawai='$sales'");
+								$BarangKomisiSales = ExecuteScalar("SELECT id_barang FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi_kinerja_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");					
+								$qtyBarangKomisiSales = ExecuteScalar("SELECT qty FROM detailpenjualan WHERE id_barang = '$BarangKomisiSales' AND id_penjualan = '$idpenjualan'");
+								if($BarangKomisiSales != ""){
+									$TargetBarangSales = ExecuteScalar("SELECT target FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									$TglAwalSales = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									$TglAkhirSales = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
 
-								//$Periode = ExecuteScalar("SELECT '$date' - INTERVAL '1' MONTH");
-								$JmlPenjualanSales = ExecuteScalar("SELECT SUM(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE detailpenjualan.id_barang = '$id_barang_penjualan' AND penjualan.sales = '$sales' AND (penjualan.waktu BETWEEN '$TglAwalSales' AND '$TglAkhirSales')");
-								if($JmlPenjualanSales >= $TargetBarangSales){
-									$KomisiTargetRpSales = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-									$KomisiTargetPrSales = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-										if($KomisiTargetRpSales != "" && $KomisiTargetRpSales != "0"){
-											$JmlKomisiTargetRpSales = $KomisiTargetRpSales * $qty_penjualan;
-											Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$sales', '$JabatanSales', '$BarangKomisiSales', '$qtyBarangKomisiSales', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpSales', '$JmlKomisiTargetRpSales')");
-
-											//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpSales WHERE id_pegawai='$sales'");
-										}
-										if($KomisiTargetPrSales != "" && $KomisiTargetPrSales != "0"){
-											$JmlKomisiTargetPrSales = (($KomisiTargetPrSales / 100) * $subtotal_satuan);
-											$total_komisi_target_sales = $JmlKomisiTargetPrSales * $qty_penjualan;
-											Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$sales', '$JabatanSales', '$BarangKomisiSales', '$qtyBarangKomisiSales', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrSales', '$total_komisi_target_sales')");
-
-											//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrSales WHERE id_pegawai='$sales'");
-										}						
-
-									// Get Transaksi Komisi Sales
-									$sql_transaksi_komisi_sales = Execute("SELECT * FROM transaksi_komisi WHERE id_barang = '$BarangKomisiSales' AND id_pegawai = '$sales' AND id_jabatan = '$JabatanSales' AND (tgl BETWEEN '$TglAwalSales' AND '$TglAkhirSales') AND jenis_komisi='Kinerja'");
-
-										// If Transaksi Komisi Sales != NULL
-										if($sql_transaksi_komisi_sales != NULL OR $sql_transaksi_komisi_sales != FALSE){
-											if($sql_transaksi_komisi_sales -> RecordCount() > 0){
-												$sql_transaksi_komisi_sales->MoveFirst();
-												while(!$sql_transaksi_komisi_sales->EOF) {
-													$id_transaksi = $sql_transaksi_komisi_sales->fields['id'];
-													$id_pegawai_transaksi = $sql_transaksi_komisi_sales->fields['id_pegawai'];
-													$id_jabatan_transaksi = $sql_transaksi_komisi_sales->fields['id_jabatan'];
-													$kode_penjualan = $sql_transaksi_komisi_sales->fields['kode_penjualan'];
-													$id_barang_transaksi = $sql_transaksi_komisi_sales->fields['id_barang'];
-													$subtotal_transaksi = $sql_transaksi_komisi_sales->fields['subtotal'];
-													$qty_transaksi = $sql_transaksi_komisi_sales->fields['qty'];
-													$harga_jual_transaksi = $subtotal_transaksi / $qty_transaksi;
-													var_dump($harga_jual_transaksi);
-
-														// If Komisi Target Rupiah != 0
-														if($KomisiTargetRpSales != "" && $KomisiTargetRpSales != "0"){
-
-															// Insert into transaksi komisi
-															//Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$sales', '$JabatanSales', '$BarangKomisiSales', '$qtyBarangKomisiSales', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpSales', '$KomisiTargetRpSales')");
-
-															$JmlKomisiTargetRpSales = $KomisiTargetRpSales * $qty_transaksi;
-
-															// Update data sebelumnya
-															Execute("UPDATE transaksi_komisi SET komisi=$KomisiTargetRpSales, total_komisi=$JmlKomisiTargetRpSales WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
-
-															//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpSales WHERE id_pegawai='$sales'");
-														}
-
-														// If Komisi Target Persen != 0
-														if($KomisiTargetPrSales != "" && $KomisiTargetPrSales != "0"){
-															$JmlKomisiTargetPrSales = (($KomisiTargetPrSales / 100) * $harga_jual_transaksi);
-															$total_komisi_target_sales = $JmlKomisiTargetPrSales * $qty_transaksi;
-															Execute("UPDATE transaksi_komisi SET komisi=$JmlKomisiTargetPrSales, total_komisi=$total_komisi_target_sales WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
-
-															//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrSales WHERE id_pegawai='$sales'");
-														}
-												$sql_transaksi_komisi_sales->MoveNext();
-												}
-											$sql_transaksi_komisi_sales->Close();	
-											}
-										} else {
-											$KomisiTargetRpSales = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-											$KomisiTargetPrSales = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									//$Periode = ExecuteScalar("SELECT '$date' - INTERVAL '1' MONTH");
+									$JmlPenjualanSales = ExecuteScalar("SELECT SUM(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE detailpenjualan.id_barang = '$id_barang_penjualan' AND penjualan.sales = '$sales' AND (penjualan.waktu BETWEEN '$TglAwalSales' AND '$TglAkhirSales')");
+									if($JmlPenjualanSales >= $TargetBarangSales){
+										$KomisiTargetRpSales = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+										$KomisiTargetPrSales = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
 											if($KomisiTargetRpSales != "" && $KomisiTargetRpSales != "0"){
-												$JmlKomisiTargetRpSales =  $KomisiTargetRpSales * $qty_penjualan;
+												$JmlKomisiTargetRpSales = $KomisiTargetRpSales * $qty_penjualan;
 												Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$sales', '$JabatanSales', '$BarangKomisiSales', '$qtyBarangKomisiSales', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpSales', '$JmlKomisiTargetRpSales')");
 
 												//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpSales WHERE id_pegawai='$sales'");
@@ -3595,242 +3532,242 @@ class penjualan extends DbTable
 												Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$sales', '$JabatanSales', '$BarangKomisiSales', '$qtyBarangKomisiSales', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrSales', '$total_komisi_target_sales')");
 
 												//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrSales WHERE id_pegawai='$sales'");
-											}
-										}
-								} else {
-									$KomisiDefaultRpSales = ExecuteScalar("SELECT kinerja_default_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-									$KomisiDefaultPrSales = ExecuteScalar("SELECT kinerja_default_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-									if($KomisiDefaultRpSales != "" && $KomisiDefaultRpSales != "0"){
-										$JmlKomisiDefaultRpSales = $KomisiDefaultRpSales * $qty_penjualan;
-										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$sales', '$JabatanSales', '$BarangKomisiSales', '$qtyBarangKomisiSales', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiDefaultRpSales', '$JmlKomisiDefaultRpSales')");
+											}						
 
-										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultRpSales WHERE id_pegawai='$sales'");	
-									}
-									if($KomisiDefaultPrSales != "" && $KomisiDefaultPrSales != "0"){
-										$JmlKomisiDefaultPrSales = (($KomisiDefaultPrSales / 100) * $subtotal_satuan);
-										$total_komisi_default_sales = $JmlKomisiDefaultPrSales * $qty_penjualan;
-										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$sales', '$JabatanSales', '$BarangKomisiSales', '$qtyBarangKomisiSales', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiDefaultPrSales', '$total_komisi_default_sales')");
+										// Get Transaksi Komisi Sales
+										$sql_transaksi_komisi_sales = Execute("SELECT * FROM transaksi_komisi WHERE id_barang = '$BarangKomisiSales' AND id_pegawai = '$sales' AND id_jabatan = '$JabatanSales' AND (tgl BETWEEN '$TglAwalSales' AND '$TglAkhirSales') AND jenis_komisi='Kinerja'");
 
-										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultPrSales WHERE id_pegawai='$sales'");
-									}
-								}
-							}
-						$sql_sales->MoveNext();	
-						}
-					$sql_sales->Close();
-					}
-			}
+											// If Transaksi Komisi Sales != NULL
+											if($sql_transaksi_komisi_sales != NULL OR $sql_transaksi_komisi_sales != FALSE){
+												if($sql_transaksi_komisi_sales -> RecordCount() > 0){
+													$sql_transaksi_komisi_sales->MoveFirst();
+													while(!$sql_transaksi_komisi_sales->EOF) {
+														$id_transaksi = $sql_transaksi_komisi_sales->fields['id'];
+														$id_pegawai_transaksi = $sql_transaksi_komisi_sales->fields['id_pegawai'];
+														$id_jabatan_transaksi = $sql_transaksi_komisi_sales->fields['id_jabatan'];
+														$kode_penjualan = $sql_transaksi_komisi_sales->fields['kode_penjualan'];
+														$id_barang_transaksi = $sql_transaksi_komisi_sales->fields['id_barang'];
+														$subtotal_transaksi = $sql_transaksi_komisi_sales->fields['subtotal'];
+														$qty_transaksi = $sql_transaksi_komisi_sales->fields['qty'];
+														$harga_jual_transaksi = $subtotal_transaksi / $qty_transaksi;
+														var_dump($harga_jual_transaksi);
 
-			//KOMISI KINERJA BE WAJAH
-			if($dok_be_wajah != "") {
-			$JabatanDokBeWajah = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai=$dok_be_wajah");
-			$sql_dok_be_wajah = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
-				if($sql_dok_be_wajah -> RecordCount() > 0){
-					$sql_dok_be_wajah->MoveFirst();
-					while(!$sql_dok_be_wajah->EOF) {
-						$id_barang_penjualan = $sql_dok_be_wajah->fields['id_barang'];
-						$subtotal_penjualan = $sql_dok_be_wajah->fields['subtotal'];
+															// If Komisi Target Rupiah != 0
+															if($KomisiTargetRpSales != "" && $KomisiTargetRpSales != "0"){
 
-						//$harga_jual = $sql_dok_be_wajah->fields['harga_jual'];
-						$qty_penjualan = $sql_sales->fields['qty'];
-						$subtotal_satuan = $subtotal_penjualan / $qty_penjualan;
+																// Insert into transaksi komisi
+																//Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$sales', '$JabatanSales', '$BarangKomisiSales', '$qtyBarangKomisiSales', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpSales', '$KomisiTargetRpSales')");
 
-						//$KomisiPegawaiDokBeWajah = ExecuteScalar("SELECT nilai_komisi FROM m_pegawai WHERE id_pegawai='$dok_be_wajah'");
-						$BarangKomisiDokBeWajah = ExecuteScalar("SELECT id_barang FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi_kinerja_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");					
-						$qtyBarangKomisiDokBeWajah = ExecuteScalar("SELECT qty FROM detailpenjualan WHERE id_barang = '$BarangKomisiDokBeWajah' AND id_penjualan = '$idpenjualan'");
-						if($BarangKomisiDokBeWajah != ""){
-							$TargetBarangDokBeWajah = ExecuteScalar("SELECT target FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-							$TglAwalDokBeWajah = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-							$TglAkhirDokBeWajah = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+																$JmlKomisiTargetRpSales = $KomisiTargetRpSales * $qty_transaksi;
 
-							//$Periode = ExecuteScalar("SELECT '$date' - INTERVAL '1' MONTH");
-							$JmlPenjualanDokBeWajah = ExecuteScalar("SELECT SUM(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE detailpenjualan.id_barang = '$id_barang_penjualan' AND penjualan.dok_be_wajah = '$dok_be_wajah' AND (penjualan.waktu BETWEEN '$TglAwalDokBeWajah' AND '$TglAkhirDokBeWajah')");                    
-							if($JmlPenjualanDokBeWajah >= $TargetBarangDokBeWajah){
-								$KomisiTargetRpDokBeWajah = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								$KomisiTargetPrDokBeWajah = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								if($KomisiTargetRpDokBeWajah != "" && $KomisiTargetRpDokBeWajah != "0"){
-									$JmlKomisiTargetRpDokBeWajah = $KomisiTargetRpDokBeWajah * $qty_penjualan;
-									Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$JabatanDokBeWajah', '$BarangKomisiDokBeWajah', '$qtyBarangKomisiDokBeWajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpDokBeWajah', '$JmlKomisiTargetRpDokBeWajah')");
-								}
-								if($KomisiTargetPrDokBeWajah != "" && $KomisiTargetPrDokBeWajah != "0"){
-									$JmlKomisiTargetPrDokBeWajah = (($KomisiTargetPrDokBeWajah / 100) * $subtotal_satuan);
-									$total_komisi_target_dok_be_wajah = $JmlKomisiTargetPrDokBeWajah * $qty_penjualan;
-									Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$JabatanDokBeWajah', '$BarangKomisiDokBeWajah', '$qtyBarangKomisiDokBeWajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrDokBeWajah', '$total_komisi_target_dok_be_wajah')");
-								}
-								$sql_transaksi_komisi_dok_be_wajah = Execute("SELECT * FROM transaksi_komisi WHERE id_barang = '$BarangKomisiDokBeWajah' AND id_pegawai = '$dok_be_wajah' AND id_jabatan = '$JabatanDokBeWajah' AND (tgl BETWEEN '$TglAwalDokBeWajah' AND '$TglAkhirDokBeWajah') AND jenis_komisi='Kinerja'");
+																// Update data sebelumnya
+																Execute("UPDATE transaksi_komisi SET komisi=$KomisiTargetRpSales, total_komisi=$JmlKomisiTargetRpSales WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
 
-										// If Transaksi Komisi dok_be_wajah != NULL
-										if($sql_transaksi_komisi_dok_be_wajah != NULL OR $sql_transaksi_komisi_dok_be_wajah != FALSE){
-											if($sql_transaksi_komisi_dok_be_wajah -> RecordCount() > 0){
-												$sql_transaksi_komisi_dok_be_wajah->MoveFirst();
-												while(!$sql_transaksi_komisi_dok_be_wajah->EOF) {
-													$id_transaksi = $sql_transaksi_komisi_dok_be_wajah->fields['id'];
-													$id_pegawai_transaksi = $sql_transaksi_komisi_dok_be_wajah->fields['id_pegawai'];
-													$id_jabatan_transaksi = $sql_transaksi_komisi_dok_be_wajah->fields['id_jabatan'];
-													$kode_penjualan = $sql_transaksi_komisi_dok_be_wajah->fields['kode_penjualan'];
-													$id_barang_transaksi = $sql_transaksi_komisi_dok_be_wajah->fields['id_barang'];
-													$subtotal_transaksi = $sql_transaksi_komisi_dok_be_wajah->fields['subtotal'];
-													$qty_transaksi = $sql_transaksi_komisi_dok_be_wajah->fields['qty'];
-													$harga_jual_transaksi = $subtotal_transaksi / $qty_transaksi;
-													var_dump($harga_jual_transaksi);
+																//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpSales WHERE id_pegawai='$sales'");
+															}
 
-														// If Komisi Target Rupiah != 0
-														if($KomisiTargetRpDokBeWajah != "" && $KomisiTargetRpDokBeWajah != "0"){
+															// If Komisi Target Persen != 0
+															if($KomisiTargetPrSales != "" && $KomisiTargetPrSales != "0"){
+																$JmlKomisiTargetPrSales = (($KomisiTargetPrSales / 100) * $harga_jual_transaksi);
+																$total_komisi_target_sales = $JmlKomisiTargetPrSales * $qty_transaksi;
+																Execute("UPDATE transaksi_komisi SET komisi=$JmlKomisiTargetPrSales, total_komisi=$total_komisi_target_sales WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
 
-															// Insert into transaksi komisi
-															//Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$Jabatandok_be_wajah', '$BarangKomisidok_be_wajah', '$qtyBarangKomisidok_be_wajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpDokBeWajah', '$KomisiTargetRpDokBeWajah')");
-
-															$JmlKomisiTargetRpDokBeWajah = $KomisiTargetRpDokBeWajah * $qty_transaksi;
-
-															// Update data sebelumnya
-															Execute("UPDATE transaksi_komisi SET komisi=$KomisiTargetRpDokBeWajah, total_komisi=$JmlKomisiTargetRpDokBeWajah WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
-
-															//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpDokBeWajah WHERE id_pegawai='$dok_be_wajah'");
-														}
-
-														// If Komisi Target Persen != 0
-														if($KomisiTargetPrDokBeWajah != "" && $KomisiTargetPrDokBeWajah != "0"){
-															$JmlKomisiTargetPrDokBeWajah = (($KomisiTargetPrDokBeWajah / 100) * $harga_jual_transaksi);
-															$total_komisi_target_dok_be_wajah = $JmlKomisiTargetPrDokBeWajah * $qty_transaksi;
-															Execute("UPDATE transaksi_komisi SET komisi=$JmlKomisiTargetPrDokBeWajah, total_komisi=$total_komisi_target_dok_be_wajah WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
-
-															//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrDokBeWajah WHERE id_pegawai='$dok_be_wajah'");
-														}
-												$sql_transaksi_komisi_dok_be_wajah->MoveNext();
+																//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrSales WHERE id_pegawai='$sales'");
+															}
+													$sql_transaksi_komisi_sales->MoveNext();
+													}
+												$sql_transaksi_komisi_sales->Close();	
 												}
-											$sql_transaksi_komisi_dok_be_wajah->Close();	
-											}
-										} else {
-											$KomisiTargetRpDokBeWajah = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$Jabatandok_be_wajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-											$KomisiTargetPrDokBeWajah = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$Jabatandok_be_wajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-											if($KomisiTargetRpDokBeWajah != "" && $KomisiTargetRpDokBeWajah != "0"){
-												$JmlKomisiTargetRpDokBeWajah =  $KomisiTargetRpDokBeWajah * $qty_penjualan;
-												Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$Jabatandok_be_wajah', '$BarangKomisidok_be_wajah', '$qtyBarangKomisidok_be_wajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpDokBeWajah', '$JmlKomisiTargetRpDokBeWajah')");
+											} else {
+												$KomisiTargetRpSales = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+												$KomisiTargetPrSales = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+												if($KomisiTargetRpSales != "" && $KomisiTargetRpSales != "0"){
+													$JmlKomisiTargetRpSales =  $KomisiTargetRpSales * $qty_penjualan;
+													Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$sales', '$JabatanSales', '$BarangKomisiSales', '$qtyBarangKomisiSales', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpSales', '$JmlKomisiTargetRpSales')");
 
-												//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpDokBeWajah WHERE id_pegawai='$dok_be_wajah'");
-											}
-											if($KomisiTargetPrDokBeWajah != "" && $KomisiTargetPrDokBeWajah != "0"){
-												$JmlKomisiTargetPrDokBeWajah = (($KomisiTargetPrDokBeWajah / 100) * $subtotal_satuan);
-												$total_komisi_target_dok_be_wajah = $JmlKomisiTargetPrDokBeWajah * $qty_penjualan;
-												Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$Jabatandok_be_wajah', '$BarangKomisidok_be_wajah', '$qtyBarangKomisidok_be_wajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrDokBeWajah', '$total_komisi_target_dok_be_wajah')");
+													//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpSales WHERE id_pegawai='$sales'");
+												}
+												if($KomisiTargetPrSales != "" && $KomisiTargetPrSales != "0"){
+													$JmlKomisiTargetPrSales = (($KomisiTargetPrSales / 100) * $subtotal_satuan);
+													$total_komisi_target_sales = $JmlKomisiTargetPrSales * $qty_penjualan;
+													Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$sales', '$JabatanSales', '$BarangKomisiSales', '$qtyBarangKomisiSales', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrSales', '$total_komisi_target_sales')");
 
-												//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrDokBeWajah WHERE id_pegawai='$dok_be_wajah'");
+													//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrSales WHERE id_pegawai='$sales'");
+												}
 											}
+									} else {
+										$KomisiDefaultRpSales = ExecuteScalar("SELECT kinerja_default_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+										$KomisiDefaultPrSales = ExecuteScalar("SELECT kinerja_default_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanSales' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+										if($KomisiDefaultRpSales != "" && $KomisiDefaultRpSales != "0"){
+											$JmlKomisiDefaultRpSales = $KomisiDefaultRpSales * $qty_penjualan;
+											Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$sales', '$JabatanSales', '$BarangKomisiSales', '$qtyBarangKomisiSales', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiDefaultRpSales', '$JmlKomisiDefaultRpSales')");
+
+											//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultRpSales WHERE id_pegawai='$sales'");	
 										}
-							} else {
-								$KomisiDefaultRpDokBeWajah = ExecuteScalar("SELECT kinerja_default_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								$KomisiDefaultPrDokBeWajah = ExecuteScalar("SELECT kinerja_default_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								if($KomisiDefaultRpDokBeWajah != "" && $KomisiDefaultRpDokBeWajah != "0"){
-									$JmlKomisiDefaultRpDokBeWajah =  $KomisiDefaultRpDokBeWajah * $qty_penjualan;
-									Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$JabatanDokBeWajah', '$BarangKomisiDokBeWajah', '$qtyBarangKomisiDokBeWajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiDefaultRpDokBeWajah', '$JmlKomisiDefaultRpDokBeWajah')");
+										if($KomisiDefaultPrSales != "" && $KomisiDefaultPrSales != "0"){
+											$JmlKomisiDefaultPrSales = (($KomisiDefaultPrSales / 100) * $subtotal_satuan);
+											$total_komisi_default_sales = $JmlKomisiDefaultPrSales * $qty_penjualan;
+											Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$sales', '$JabatanSales', '$BarangKomisiSales', '$qtyBarangKomisiSales', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiDefaultPrSales', '$total_komisi_default_sales')");
 
-									//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultRpDokBeWajah WHERE id_pegawai='$dok_be_wajah'");	
+											//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultPrSales WHERE id_pegawai='$sales'");
+										}
+									}
 								}
-								if($KomisiDefaultPrDokBeWajah != "" && $KomisiDefaultPrDokBeWajah != "0"){
-									$JmlKomisiDefaultPrDokBeWajah = (($KomisiDefaultPrDokBeWajah / 100) * $subtotal_satuan);
-									$total_komisi_default_dok_be_wajah = $JmlKomisiDefaultPrDokBeWajah * $qty_penjualan;
-									Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$JabatanDokBeWajah', '$BarangKomisiDokBeWajah', '$qtyBarangKomisiDokBeWajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiDefaultPrDokBeWajah', '$total_komisi_default_dok_be_wajah')");
+							$sql_sales->MoveNext();	
+							}
+						$sql_sales->Close();
+						}
+				}
 
-									//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultPrDokBeWajah WHERE id_pegawai='$dok_be_wajah'");
+				//KOMISI KINERJA BE WAJAH
+				if($dok_be_wajah != "") {
+				$JabatanDokBeWajah = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai=$dok_be_wajah");
+				$sql_dok_be_wajah = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
+					if($sql_dok_be_wajah -> RecordCount() > 0){
+						$sql_dok_be_wajah->MoveFirst();
+						while(!$sql_dok_be_wajah->EOF) {
+							$id_barang_penjualan = $sql_dok_be_wajah->fields['id_barang'];
+							$subtotal_penjualan = $sql_dok_be_wajah->fields['subtotal'];
+
+							//$harga_jual = $sql_dok_be_wajah->fields['harga_jual'];
+							$qty_penjualan = $sql_sales->fields['qty'];
+							$subtotal_satuan = $subtotal_penjualan / $qty_penjualan;
+
+							//$KomisiPegawaiDokBeWajah = ExecuteScalar("SELECT nilai_komisi FROM m_pegawai WHERE id_pegawai='$dok_be_wajah'");
+							$BarangKomisiDokBeWajah = ExecuteScalar("SELECT id_barang FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi_kinerja_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");					
+							$qtyBarangKomisiDokBeWajah = ExecuteScalar("SELECT qty FROM detailpenjualan WHERE id_barang = '$BarangKomisiDokBeWajah' AND id_penjualan = '$idpenjualan'");
+							if($BarangKomisiDokBeWajah != ""){
+								$TargetBarangDokBeWajah = ExecuteScalar("SELECT target FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+								$TglAwalDokBeWajah = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+								$TglAkhirDokBeWajah = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+
+								//$Periode = ExecuteScalar("SELECT '$date' - INTERVAL '1' MONTH");
+								$JmlPenjualanDokBeWajah = ExecuteScalar("SELECT SUM(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE detailpenjualan.id_barang = '$id_barang_penjualan' AND penjualan.dok_be_wajah = '$dok_be_wajah' AND (penjualan.waktu BETWEEN '$TglAwalDokBeWajah' AND '$TglAkhirDokBeWajah')");                    
+								if($JmlPenjualanDokBeWajah >= $TargetBarangDokBeWajah){
+									$KomisiTargetRpDokBeWajah = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									$KomisiTargetPrDokBeWajah = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									if($KomisiTargetRpDokBeWajah != "" && $KomisiTargetRpDokBeWajah != "0"){
+										$JmlKomisiTargetRpDokBeWajah = $KomisiTargetRpDokBeWajah * $qty_penjualan;
+										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$JabatanDokBeWajah', '$BarangKomisiDokBeWajah', '$qtyBarangKomisiDokBeWajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpDokBeWajah', '$JmlKomisiTargetRpDokBeWajah')");
+									}
+									if($KomisiTargetPrDokBeWajah != "" && $KomisiTargetPrDokBeWajah != "0"){
+										$JmlKomisiTargetPrDokBeWajah = (($KomisiTargetPrDokBeWajah / 100) * $subtotal_satuan);
+										$total_komisi_target_dok_be_wajah = $JmlKomisiTargetPrDokBeWajah * $qty_penjualan;
+										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$JabatanDokBeWajah', '$BarangKomisiDokBeWajah', '$qtyBarangKomisiDokBeWajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrDokBeWajah', '$total_komisi_target_dok_be_wajah')");
+									}
+									$sql_transaksi_komisi_dok_be_wajah = Execute("SELECT * FROM transaksi_komisi WHERE id_barang = '$BarangKomisiDokBeWajah' AND id_pegawai = '$dok_be_wajah' AND id_jabatan = '$JabatanDokBeWajah' AND (tgl BETWEEN '$TglAwalDokBeWajah' AND '$TglAkhirDokBeWajah') AND jenis_komisi='Kinerja'");
+
+											// If Transaksi Komisi dok_be_wajah != NULL
+											if($sql_transaksi_komisi_dok_be_wajah != NULL OR $sql_transaksi_komisi_dok_be_wajah != FALSE){
+												if($sql_transaksi_komisi_dok_be_wajah -> RecordCount() > 0){
+													$sql_transaksi_komisi_dok_be_wajah->MoveFirst();
+													while(!$sql_transaksi_komisi_dok_be_wajah->EOF) {
+														$id_transaksi = $sql_transaksi_komisi_dok_be_wajah->fields['id'];
+														$id_pegawai_transaksi = $sql_transaksi_komisi_dok_be_wajah->fields['id_pegawai'];
+														$id_jabatan_transaksi = $sql_transaksi_komisi_dok_be_wajah->fields['id_jabatan'];
+														$kode_penjualan = $sql_transaksi_komisi_dok_be_wajah->fields['kode_penjualan'];
+														$id_barang_transaksi = $sql_transaksi_komisi_dok_be_wajah->fields['id_barang'];
+														$subtotal_transaksi = $sql_transaksi_komisi_dok_be_wajah->fields['subtotal'];
+														$qty_transaksi = $sql_transaksi_komisi_dok_be_wajah->fields['qty'];
+														$harga_jual_transaksi = $subtotal_transaksi / $qty_transaksi;
+														var_dump($harga_jual_transaksi);
+
+															// If Komisi Target Rupiah != 0
+															if($KomisiTargetRpDokBeWajah != "" && $KomisiTargetRpDokBeWajah != "0"){
+
+																// Insert into transaksi komisi
+																//Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$Jabatandok_be_wajah', '$BarangKomisidok_be_wajah', '$qtyBarangKomisidok_be_wajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpDokBeWajah', '$KomisiTargetRpDokBeWajah')");
+
+																$JmlKomisiTargetRpDokBeWajah = $KomisiTargetRpDokBeWajah * $qty_transaksi;
+
+																// Update data sebelumnya
+																Execute("UPDATE transaksi_komisi SET komisi=$KomisiTargetRpDokBeWajah, total_komisi=$JmlKomisiTargetRpDokBeWajah WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+
+																//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpDokBeWajah WHERE id_pegawai='$dok_be_wajah'");
+															}
+
+															// If Komisi Target Persen != 0
+															if($KomisiTargetPrDokBeWajah != "" && $KomisiTargetPrDokBeWajah != "0"){
+																$JmlKomisiTargetPrDokBeWajah = (($KomisiTargetPrDokBeWajah / 100) * $harga_jual_transaksi);
+																$total_komisi_target_dok_be_wajah = $JmlKomisiTargetPrDokBeWajah * $qty_transaksi;
+																Execute("UPDATE transaksi_komisi SET komisi=$JmlKomisiTargetPrDokBeWajah, total_komisi=$total_komisi_target_dok_be_wajah WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+
+																//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrDokBeWajah WHERE id_pegawai='$dok_be_wajah'");
+															}
+													$sql_transaksi_komisi_dok_be_wajah->MoveNext();
+													}
+												$sql_transaksi_komisi_dok_be_wajah->Close();	
+												}
+											} else {
+												$KomisiTargetRpDokBeWajah = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$Jabatandok_be_wajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+												$KomisiTargetPrDokBeWajah = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$Jabatandok_be_wajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+												if($KomisiTargetRpDokBeWajah != "" && $KomisiTargetRpDokBeWajah != "0"){
+													$JmlKomisiTargetRpDokBeWajah =  $KomisiTargetRpDokBeWajah * $qty_penjualan;
+													Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$Jabatandok_be_wajah', '$BarangKomisidok_be_wajah', '$qtyBarangKomisidok_be_wajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpDokBeWajah', '$JmlKomisiTargetRpDokBeWajah')");
+
+													//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpDokBeWajah WHERE id_pegawai='$dok_be_wajah'");
+												}
+												if($KomisiTargetPrDokBeWajah != "" && $KomisiTargetPrDokBeWajah != "0"){
+													$JmlKomisiTargetPrDokBeWajah = (($KomisiTargetPrDokBeWajah / 100) * $subtotal_satuan);
+													$total_komisi_target_dok_be_wajah = $JmlKomisiTargetPrDokBeWajah * $qty_penjualan;
+													Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$Jabatandok_be_wajah', '$BarangKomisidok_be_wajah', '$qtyBarangKomisidok_be_wajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrDokBeWajah', '$total_komisi_target_dok_be_wajah')");
+
+													//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrDokBeWajah WHERE id_pegawai='$dok_be_wajah'");
+												}
+											}
+								} else {
+									$KomisiDefaultRpDokBeWajah = ExecuteScalar("SELECT kinerja_default_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									$KomisiDefaultPrDokBeWajah = ExecuteScalar("SELECT kinerja_default_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokBeWajah' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									if($KomisiDefaultRpDokBeWajah != "" && $KomisiDefaultRpDokBeWajah != "0"){
+										$JmlKomisiDefaultRpDokBeWajah =  $KomisiDefaultRpDokBeWajah * $qty_penjualan;
+										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$JabatanDokBeWajah', '$BarangKomisiDokBeWajah', '$qtyBarangKomisiDokBeWajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiDefaultRpDokBeWajah', '$JmlKomisiDefaultRpDokBeWajah')");
+
+										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultRpDokBeWajah WHERE id_pegawai='$dok_be_wajah'");	
+									}
+									if($KomisiDefaultPrDokBeWajah != "" && $KomisiDefaultPrDokBeWajah != "0"){
+										$JmlKomisiDefaultPrDokBeWajah = (($KomisiDefaultPrDokBeWajah / 100) * $subtotal_satuan);
+										$total_komisi_default_dok_be_wajah = $JmlKomisiDefaultPrDokBeWajah * $qty_penjualan;
+										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dok_be_wajah', '$JabatanDokBeWajah', '$BarangKomisiDokBeWajah', '$qtyBarangKomisiDokBeWajah', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiDefaultPrDokBeWajah', '$total_komisi_default_dok_be_wajah')");
+
+										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultPrDokBeWajah WHERE id_pegawai='$dok_be_wajah'");
+									}
 								}
 							}
+						$sql_dok_be_wajah->MoveNext();	
 						}
-					$sql_dok_be_wajah->MoveNext();	
+					$sql_dok_be_wajah->Close();
 					}
-				$sql_dok_be_wajah->Close();
 				}
-			}
 
-			// KOMISI KINERJA BE BODY	
-			if($be_body != "") {
-			$JabatanBeBody = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai=$be_body");
-			$sql_be_body = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
-				if($sql_be_body -> RecordCount() > 0){
-					$sql_be_body->MoveFirst();
-					while(!$sql_be_body->EOF) {
-						$id_barang_penjualan = $sql_be_body->fields['id_barang'];
-						$subtotal_penjualan = $sql_be_body->fields['subtotal'];
+				// KOMISI KINERJA BE BODY	
+				if($be_body != "") {
+				$JabatanBeBody = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai=$be_body");
+				$sql_be_body = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
+					if($sql_be_body -> RecordCount() > 0){
+						$sql_be_body->MoveFirst();
+						while(!$sql_be_body->EOF) {
+							$id_barang_penjualan = $sql_be_body->fields['id_barang'];
+							$subtotal_penjualan = $sql_be_body->fields['subtotal'];
 
-						//$harga_jual = $sql_be_body->fields['harga_jual'];
-						$qty_penjualan = $sql_be_body->fields['qty'];
-						$subtotal_satuan = $subtotal_penjualan / $qty_penjualan;
+							//$harga_jual = $sql_be_body->fields['harga_jual'];
+							$qty_penjualan = $sql_be_body->fields['qty'];
+							$subtotal_satuan = $subtotal_penjualan / $qty_penjualan;
 
-						//$KomisiPegawaiBe Body = ExecuteScalar("SELECT nilai_komisi FROM transaksi_komisi WHERE id_pegawai='$be_body'");
-						$BarangKomisiBeBody = ExecuteScalar("SELECT id_barang FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi_kinerja_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");					
-						$qtyBarangKomisiBeBody = ExecuteScalar("SELECT qty FROM detailpenjualan WHERE id_barang = '$BarangKomisiBeBody' AND id_penjualan = '$idpenjualan'");
-						if($BarangKomisiBeBody != ""){
-							$TargetBarangBeBody = ExecuteScalar("SELECT target FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-							$TglAwalBeBody = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-							$TglAkhirBeBody = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+							//$KomisiPegawaiBe Body = ExecuteScalar("SELECT nilai_komisi FROM transaksi_komisi WHERE id_pegawai='$be_body'");
+							$BarangKomisiBeBody = ExecuteScalar("SELECT id_barang FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi_kinerja_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");					
+							$qtyBarangKomisiBeBody = ExecuteScalar("SELECT qty FROM detailpenjualan WHERE id_barang = '$BarangKomisiBeBody' AND id_penjualan = '$idpenjualan'");
+							if($BarangKomisiBeBody != ""){
+								$TargetBarangBeBody = ExecuteScalar("SELECT target FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+								$TglAwalBeBody = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+								$TglAkhirBeBody = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
 
-							//$Periode = ExecuteScalar("SELECT '$date' - INTERVAL '1' MONTH");
-							$JmlPenjualanBeBody = ExecuteScalar("SELECT SUM(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE detailpenjualan.id_barang = '$id_barang_penjualan' AND penjualan.be_body = '$be_body' AND (penjualan.waktu BETWEEN '$TglAwalBeBody' AND '$TglAkhirBeBody')");
-							if($JmlPenjualanBeBody >= $TargetBarangBeBody){
-								$KomisiTargetRpBeBody = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								$KomisiTargetPrBeBody = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-									if($KomisiTargetRpBeBody != "" && $KomisiTargetRpBeBody != "0"){
-										$JmlKomisiTargetRpBeBody = $KomisiTargetRpBeBody * $qty_penjualan;
-										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$be_body', '$JabatanBeBody', '$BarangKomisiBeBody', '$qtyBarangKomisiBeBody', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpBeBody', '$JmlKomisiTargetRpBeBody')");
-
-										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpBeBody WHERE id_pegawai='$be_body'");
-									}
-									if($KomisiTargetPrBeBody != "" && $KomisiTargetPrBeBody != "0"){
-										$JmlKomisiTargetPrBeBody = (($KomisiTargetPrBeBody / 100) * $subtotal_satuan);
-										$total_komisi_target_be_body = $JmlKomisiTargetPrBeBody * $qty_penjualan;
-										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$be_body', '$JabatanBeBody', '$BarangKomisiBeBody', '$qtyBarangKomisiBeBody', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrBeBody', '$total_komisi_target_be_body')");
-
-										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrBeBody WHERE id_pegawai='$be_body'");
-									}						
-
-								// Get Transaksi Komisi Be Body
-								$sql_transaksi_komisi_be_body = Execute("SELECT * FROM transaksi_komisi WHERE id_barang = '$BarangKomisiBeBody' AND id_pegawai = '$be_body' AND id_jabatan = '$JabatanBeBody' AND (tgl BETWEEN '$TglAwalBeBody' AND '$TglAkhirBeBody') AND jenis_komisi='Kinerja'");
-
-									// If Transaksi Komisi Be Body != NULL
-									if($sql_transaksi_komisi_be_body != NULL OR $sql_transaksi_komisi_be_body != FALSE){
-										if($sql_transaksi_komisi_be_body -> RecordCount() > 0){
-											$sql_transaksi_komisi_be_body->MoveFirst();
-											while(!$sql_transaksi_komisi_be_body->EOF) {
-												$id_transaksi = $sql_transaksi_komisi_be_body->fields['id'];
-												$id_pegawai_transaksi = $sql_transaksi_komisi_be_body->fields['id_pegawai'];
-												$id_jabatan_transaksi = $sql_transaksi_komisi_be_body->fields['id_jabatan'];
-												$kode_penjualan = $sql_transaksi_komisi_be_body->fields['kode_penjualan'];
-												$id_barang_transaksi = $sql_transaksi_komisi_be_body->fields['id_barang'];
-												$subtotal_transaksi = $sql_transaksi_komisi_be_body->fields['subtotal'];
-												$qty_transaksi = $sql_transaksi_komisi_be_body->fields['qty'];
-												$harga_jual_transaksi = $subtotal_transaksi / $qty_transaksi;
-												var_dump($harga_jual_transaksi);
-
-													// If Komisi Target Rupiah != 0
-													if($KomisiTargetRpBeBody != "" && $KomisiTargetRpBeBody != "0"){
-
-														// Insert into transaksi komisi
-														//Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$be_body', '$JabatanBeBody', '$BarangKomisiBeBody', '$qtyBarangKomisiBeBody', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpBeBody', '$KomisiTargetRpBeBody')");
-
-														$JmlKomisiTargetRpBeBody = $KomisiTargetRpBeBody * $qty_transaksi;
-
-														// Update data sebelumnya
-														Execute("UPDATE transaksi_komisi SET komisi=$KomisiTargetRpBeBody, total_komisi=$JmlKomisiTargetRpBeBody WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
-
-														//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpBeBody WHERE id_pegawai='$be_body'");
-													}
-
-													// If Komisi Target Persen != 0
-													if($KomisiTargetPrBeBody != "" && $KomisiTargetPrBeBody != "0"){
-														$JmlKomisiTargetPrBeBody = (($KomisiTargetPrBeBody / 100) * $harga_jual_transaksi);
-														$total_komisi_target_be_body = $JmlKomisiTargetPrBeBody * $qty_transaksi;
-														Execute("UPDATE transaksi_komisi SET komisi=$JmlKomisiTargetPrBeBody, total_komisi=$total_komisi_target_be_body WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
-
-														//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrBeBody WHERE id_pegawai='$be_body'");
-													}
-											$sql_transaksi_komisi_be_body->MoveNext();
-											}
-										$sql_transaksi_komisi_be_body->Close();	
-										}
-									} else {
-										$KomisiTargetRpBeBody = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-										$KomisiTargetPrBeBody = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+								//$Periode = ExecuteScalar("SELECT '$date' - INTERVAL '1' MONTH");
+								$JmlPenjualanBeBody = ExecuteScalar("SELECT SUM(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE detailpenjualan.id_barang = '$id_barang_penjualan' AND penjualan.be_body = '$be_body' AND (penjualan.waktu BETWEEN '$TglAwalBeBody' AND '$TglAkhirBeBody')");
+								if($JmlPenjualanBeBody >= $TargetBarangBeBody){
+									$KomisiTargetRpBeBody = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									$KomisiTargetPrBeBody = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
 										if($KomisiTargetRpBeBody != "" && $KomisiTargetRpBeBody != "0"){
-											$JmlKomisiTargetRpBeBody =  $KomisiTargetRpBeBody * $qty_penjualan;
+											$JmlKomisiTargetRpBeBody = $KomisiTargetRpBeBody * $qty_penjualan;
 											Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$be_body', '$JabatanBeBody', '$BarangKomisiBeBody', '$qtyBarangKomisiBeBody', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpBeBody', '$JmlKomisiTargetRpBeBody')");
 
 											//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpBeBody WHERE id_pegawai='$be_body'");
@@ -3841,122 +3778,122 @@ class penjualan extends DbTable
 											Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$be_body', '$JabatanBeBody', '$BarangKomisiBeBody', '$qtyBarangKomisiBeBody', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrBeBody', '$total_komisi_target_be_body')");
 
 											//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrBeBody WHERE id_pegawai='$be_body'");
+										}						
+
+									// Get Transaksi Komisi Be Body
+									$sql_transaksi_komisi_be_body = Execute("SELECT * FROM transaksi_komisi WHERE id_barang = '$BarangKomisiBeBody' AND id_pegawai = '$be_body' AND id_jabatan = '$JabatanBeBody' AND (tgl BETWEEN '$TglAwalBeBody' AND '$TglAkhirBeBody') AND jenis_komisi='Kinerja'");
+
+										// If Transaksi Komisi Be Body != NULL
+										if($sql_transaksi_komisi_be_body != NULL OR $sql_transaksi_komisi_be_body != FALSE){
+											if($sql_transaksi_komisi_be_body -> RecordCount() > 0){
+												$sql_transaksi_komisi_be_body->MoveFirst();
+												while(!$sql_transaksi_komisi_be_body->EOF) {
+													$id_transaksi = $sql_transaksi_komisi_be_body->fields['id'];
+													$id_pegawai_transaksi = $sql_transaksi_komisi_be_body->fields['id_pegawai'];
+													$id_jabatan_transaksi = $sql_transaksi_komisi_be_body->fields['id_jabatan'];
+													$kode_penjualan = $sql_transaksi_komisi_be_body->fields['kode_penjualan'];
+													$id_barang_transaksi = $sql_transaksi_komisi_be_body->fields['id_barang'];
+													$subtotal_transaksi = $sql_transaksi_komisi_be_body->fields['subtotal'];
+													$qty_transaksi = $sql_transaksi_komisi_be_body->fields['qty'];
+													$harga_jual_transaksi = $subtotal_transaksi / $qty_transaksi;
+													var_dump($harga_jual_transaksi);
+
+														// If Komisi Target Rupiah != 0
+														if($KomisiTargetRpBeBody != "" && $KomisiTargetRpBeBody != "0"){
+
+															// Insert into transaksi komisi
+															//Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$be_body', '$JabatanBeBody', '$BarangKomisiBeBody', '$qtyBarangKomisiBeBody', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpBeBody', '$KomisiTargetRpBeBody')");
+
+															$JmlKomisiTargetRpBeBody = $KomisiTargetRpBeBody * $qty_transaksi;
+
+															// Update data sebelumnya
+															Execute("UPDATE transaksi_komisi SET komisi=$KomisiTargetRpBeBody, total_komisi=$JmlKomisiTargetRpBeBody WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+
+															//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpBeBody WHERE id_pegawai='$be_body'");
+														}
+
+														// If Komisi Target Persen != 0
+														if($KomisiTargetPrBeBody != "" && $KomisiTargetPrBeBody != "0"){
+															$JmlKomisiTargetPrBeBody = (($KomisiTargetPrBeBody / 100) * $harga_jual_transaksi);
+															$total_komisi_target_be_body = $JmlKomisiTargetPrBeBody * $qty_transaksi;
+															Execute("UPDATE transaksi_komisi SET komisi=$JmlKomisiTargetPrBeBody, total_komisi=$total_komisi_target_be_body WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+
+															//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrBeBody WHERE id_pegawai='$be_body'");
+														}
+												$sql_transaksi_komisi_be_body->MoveNext();
+												}
+											$sql_transaksi_komisi_be_body->Close();	
+											}
+										} else {
+											$KomisiTargetRpBeBody = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+											$KomisiTargetPrBeBody = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+											if($KomisiTargetRpBeBody != "" && $KomisiTargetRpBeBody != "0"){
+												$JmlKomisiTargetRpBeBody =  $KomisiTargetRpBeBody * $qty_penjualan;
+												Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$be_body', '$JabatanBeBody', '$BarangKomisiBeBody', '$qtyBarangKomisiBeBody', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpBeBody', '$JmlKomisiTargetRpBeBody')");
+
+												//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpBeBody WHERE id_pegawai='$be_body'");
+											}
+											if($KomisiTargetPrBeBody != "" && $KomisiTargetPrBeBody != "0"){
+												$JmlKomisiTargetPrBeBody = (($KomisiTargetPrBeBody / 100) * $subtotal_satuan);
+												$total_komisi_target_be_body = $JmlKomisiTargetPrBeBody * $qty_penjualan;
+												Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$be_body', '$JabatanBeBody', '$BarangKomisiBeBody', '$qtyBarangKomisiBeBody', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrBeBody', '$total_komisi_target_be_body')");
+
+												//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrBeBody WHERE id_pegawai='$be_body'");
+											}
 										}
+								} else {
+									$KomisiDefaultRpBeBody = ExecuteScalar("SELECT kinerja_default_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									$KomisiDefaultPrBeBody = ExecuteScalar("SELECT kinerja_default_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									if($KomisiDefaultRpBeBody != "" && $KomisiDefaultRpBeBody != "0"){
+										$JmlKomisiDefaultRpBeBody = $KomisiDefaultRpBeBody * $qty_penjualan;
+										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$be_body', '$JabatanBeBody', '$BarangKomisiBeBody', '$qtyBarangKomisiBeBody', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiDefaultRpBeBody', '$JmlKomisiDefaultRpBeBody')");
+
+										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultRpBeBody WHERE id_pegawai='$be_body'");	
 									}
-							} else {
-								$KomisiDefaultRpBeBody = ExecuteScalar("SELECT kinerja_default_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								$KomisiDefaultPrBeBody = ExecuteScalar("SELECT kinerja_default_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanBeBody' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								if($KomisiDefaultRpBeBody != "" && $KomisiDefaultRpBeBody != "0"){
-									$JmlKomisiDefaultRpBeBody = $KomisiDefaultRpBeBody * $qty_penjualan;
-									Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$be_body', '$JabatanBeBody', '$BarangKomisiBeBody', '$qtyBarangKomisiBeBody', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiDefaultRpBeBody', '$JmlKomisiDefaultRpBeBody')");
+									if($KomisiDefaultPrBeBody != "" && $KomisiDefaultPrBeBody != "0"){
+										$JmlKomisiDefaultPrBeBody = (($KomisiDefaultPrBeBody / 100) * $subtotal_satuan);
+										$total_komisi_default_be_body = $JmlKomisiDefaultPrBeBody * $qty_penjualan;
+										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$be_body', '$JabatanBeBody', '$BarangKomisiBeBody', '$qtyBarangKomisiBeBody', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiDefaultPrBeBody', '$total_komisi_default_be_body')");
 
-									//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultRpBeBody WHERE id_pegawai='$be_body'");	
-								}
-								if($KomisiDefaultPrBeBody != "" && $KomisiDefaultPrBeBody != "0"){
-									$JmlKomisiDefaultPrBeBody = (($KomisiDefaultPrBeBody / 100) * $subtotal_satuan);
-									$total_komisi_default_be_body = $JmlKomisiDefaultPrBeBody * $qty_penjualan;
-									Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$be_body', '$JabatanBeBody', '$BarangKomisiBeBody', '$qtyBarangKomisiBeBody', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiDefaultPrBeBody', '$total_komisi_default_be_body')");
-
-									//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultPrBeBody WHERE id_pegawai='$be_body'");
+										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultPrBeBody WHERE id_pegawai='$be_body'");
+									}
 								}
 							}
+						$sql_be_body->MoveNext();	
 						}
-					$sql_be_body->MoveNext();	
+					$sql_be_body->Close();
 					}
-				$sql_be_body->Close();
 				}
-			}
 
-			//KOMISI KINERJA MEDIS
-			if($medis != "") {
-			$JabatanMedis = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai=$medis");
-			$sql_medis = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
-				if($sql_medis -> RecordCount() > 0){
-					$sql_medis->MoveFirst();
-					while(!$sql_medis->EOF) {
-						$id_barang_penjualan = $sql_medis->fields['id_barang'];
-						$subtotal_penjualan = $sql_medis->fields['subtotal'];
+				//KOMISI KINERJA MEDIS
+				if($medis != "") {
+				$JabatanMedis = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai=$medis");
+				$sql_medis = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
+					if($sql_medis -> RecordCount() > 0){
+						$sql_medis->MoveFirst();
+						while(!$sql_medis->EOF) {
+							$id_barang_penjualan = $sql_medis->fields['id_barang'];
+							$subtotal_penjualan = $sql_medis->fields['subtotal'];
 
-						//$harga_jual = $sql_medis->fields['harga_jual'];
-						$qty_penjualan = $sql_medis->fields['qty'];
-						$subtotal_satuan = $subtotal_penjualan / $qty_penjualan;
+							//$harga_jual = $sql_medis->fields['harga_jual'];
+							$qty_penjualan = $sql_medis->fields['qty'];
+							$subtotal_satuan = $subtotal_penjualan / $qty_penjualan;
 
-						//$KomisiPegawaiBe Body = ExecuteScalar("SELECT nilai_komisi FROM transaksi_komisi WHERE id_pegawai='$medis'");
-						$BarangKomisiMedis = ExecuteScalar("SELECT id_barang FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi_kinerja_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");					
-						$qtyBarangKomisiMedis = ExecuteScalar("SELECT qty FROM detailpenjualan WHERE id_barang = '$BarangKomisiMedis' AND id_penjualan = '$idpenjualan'");
-						if($BarangKomisiMedis != ""){ 
-							$TargetBarangMedis = ExecuteScalar("SELECT target FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-							$TglAwalMedis = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-							$TglAkhirMedis = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+							//$KomisiPegawaiBe Body = ExecuteScalar("SELECT nilai_komisi FROM transaksi_komisi WHERE id_pegawai='$medis'");
+							$BarangKomisiMedis = ExecuteScalar("SELECT id_barang FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi_kinerja_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");					
+							$qtyBarangKomisiMedis = ExecuteScalar("SELECT qty FROM detailpenjualan WHERE id_barang = '$BarangKomisiMedis' AND id_penjualan = '$idpenjualan'");
+							if($BarangKomisiMedis != ""){ 
+								$TargetBarangMedis = ExecuteScalar("SELECT target FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+								$TglAwalMedis = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+								$TglAkhirMedis = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
 
-							//$Periode = ExecuteScalar("SELECT '$date' - INTERVAL '1' MONTH");
-							$JmlPenjualanMedis = ExecuteScalar("SELECT SUM(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE detailpenjualan.id_barang = '$id_barang_penjualan' AND penjualan.medis = '$medis' AND (penjualan.waktu BETWEEN '$TglAwalMedis' AND '$TglAkhirMedis')");
-							if($JmlPenjualanMedis >= $TargetBarangMedis){
-								$KomisiTargetRpMedis = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								$KomisiTargetPrMedis = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-									if($KomisiTargetRpMedis != "" && $KomisiTargetRpMedis != "0"){
-										$JmlKomisiTargetRpMedis = $KomisiTargetRpMedis * $qty_penjualan;
-										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$medis', '$JabatanMedis', '$BarangKomisiMedis', '$qtyBarangKomisiMedis', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpMedis', '$JmlKomisiTargetRpMedis')");
-
-										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpMedis WHERE id_pegawai='$medis'");
-									}
-									if($KomisiTargetPrMedis != "" && $KomisiTargetPrMedis != "0"){
-										$JmlKomisiTargetPrMedis = (($KomisiTargetPrMedis / 100) * $subtotal_satuan);
-										$total_komisi_target_medis = $JmlKomisiTargetPrMedis * $qty_penjualan;
-										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$medis', '$JabatanMedis', '$BarangKomisiMedis', '$qtyBarangKomisiMedis', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrMedis', '$total_komisi_target_medis')");
-
-										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrMedis WHERE id_pegawai='$medis'");
-									}						
-
-								// Get Transaksi Komisi Be Body
-								$sql_transaksi_komisi_medis = Execute("SELECT * FROM transaksi_komisi WHERE id_barang = '$BarangKomisiMedis' AND id_pegawai = '$medis' AND id_jabatan = '$JabatanMedis' AND (tgl BETWEEN '$TglAwalMedis' AND '$TglAkhirMedis') AND jenis_komisi='Kinerja'");
-
-									// If Transaksi Komisi Be Body != NULL
-									if($sql_transaksi_komisi_medis != NULL OR $sql_transaksi_komisi_medis != FALSE){
-										if($sql_transaksi_komisi_medis -> RecordCount() > 0){
-											$sql_transaksi_komisi_medis->MoveFirst();
-											while(!$sql_transaksi_komisi_medis->EOF) {
-												$id_transaksi = $sql_transaksi_komisi_medis->fields['id'];
-												$id_pegawai_transaksi = $sql_transaksi_komisi_medis->fields['id_pegawai'];
-												$id_jabatan_transaksi = $sql_transaksi_komisi_medis->fields['id_jabatan'];
-												$kode_penjualan = $sql_transaksi_komisi_medis->fields['kode_penjualan'];
-												$id_barang_transaksi = $sql_transaksi_komisi_medis->fields['id_barang'];
-												$subtotal_transaksi = $sql_transaksi_komisi_medis->fields['subtotal'];
-												$qty_transaksi = $sql_transaksi_komisi_medis->fields['qty'];
-												$harga_jual_transaksi = $subtotal_transaksi / $qty_transaksi;
-												var_dump($harga_jual_transaksi);
-
-													// If Komisi Target Rupiah != 0
-													if($KomisiTargetRpMedis != "" && $KomisiTargetRpMedis != "0"){
-
-														// Insert into transaksi komisi
-														//Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$medis', '$JabatanMedis', '$BarangKomisiMedis', '$qtyBarangKomisiMedis', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpMedis', '$KomisiTargetRpMedis')");
-
-														$JmlKomisiTargetRpMedis = $KomisiTargetRpMedis * $qty_transaksi;
-
-														// Update data sebelumnya
-														Execute("UPDATE transaksi_komisi SET komisi=$KomisiTargetRpMedis, total_komisi=$JmlKomisiTargetRpMedis WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
-
-														//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpMedis WHERE id_pegawai='$medis'");
-													}
-
-													// If Komisi Target Persen != 0
-													if($KomisiTargetPrMedis != "" && $KomisiTargetPrMedis != "0"){
-														$JmlKomisiTargetPrMedis = (($KomisiTargetPrMedis / 100) * $harga_jual_transaksi);
-														$total_komisi_target_medis = $JmlKomisiTargetPrMedis * $qty_transaksi;
-														Execute("UPDATE transaksi_komisi SET komisi=$JmlKomisiTargetPrMedis, total_komisi=$total_komisi_target_medis WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
-
-														//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrMedis WHERE id_pegawai='$medis'");
-													}
-											$sql_transaksi_komisi_medis->MoveNext();
-											}
-										$sql_transaksi_komisi_medis->Close();	
-										}
-									} else {
-										$KomisiTargetRpMedis = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-										$KomisiTargetPrMedis = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+								//$Periode = ExecuteScalar("SELECT '$date' - INTERVAL '1' MONTH");
+								$JmlPenjualanMedis = ExecuteScalar("SELECT SUM(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE detailpenjualan.id_barang = '$id_barang_penjualan' AND penjualan.medis = '$medis' AND (penjualan.waktu BETWEEN '$TglAwalMedis' AND '$TglAkhirMedis')");
+								if($JmlPenjualanMedis >= $TargetBarangMedis){
+									$KomisiTargetRpMedis = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									$KomisiTargetPrMedis = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
 										if($KomisiTargetRpMedis != "" && $KomisiTargetRpMedis != "0"){
-											$JmlKomisiTargetRpMedis =  $KomisiTargetRpMedis * $qty_penjualan;
+											$JmlKomisiTargetRpMedis = $KomisiTargetRpMedis * $qty_penjualan;
 											Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$medis', '$JabatanMedis', '$BarangKomisiMedis', '$qtyBarangKomisiMedis', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpMedis', '$JmlKomisiTargetRpMedis')");
 
 											//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpMedis WHERE id_pegawai='$medis'");
@@ -3967,122 +3904,122 @@ class penjualan extends DbTable
 											Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$medis', '$JabatanMedis', '$BarangKomisiMedis', '$qtyBarangKomisiMedis', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrMedis', '$total_komisi_target_medis')");
 
 											//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrMedis WHERE id_pegawai='$medis'");
+										}						
+
+									// Get Transaksi Komisi Be Body
+									$sql_transaksi_komisi_medis = Execute("SELECT * FROM transaksi_komisi WHERE id_barang = '$BarangKomisiMedis' AND id_pegawai = '$medis' AND id_jabatan = '$JabatanMedis' AND (tgl BETWEEN '$TglAwalMedis' AND '$TglAkhirMedis') AND jenis_komisi='Kinerja'");
+
+										// If Transaksi Komisi Be Body != NULL
+										if($sql_transaksi_komisi_medis != NULL OR $sql_transaksi_komisi_medis != FALSE){
+											if($sql_transaksi_komisi_medis -> RecordCount() > 0){
+												$sql_transaksi_komisi_medis->MoveFirst();
+												while(!$sql_transaksi_komisi_medis->EOF) {
+													$id_transaksi = $sql_transaksi_komisi_medis->fields['id'];
+													$id_pegawai_transaksi = $sql_transaksi_komisi_medis->fields['id_pegawai'];
+													$id_jabatan_transaksi = $sql_transaksi_komisi_medis->fields['id_jabatan'];
+													$kode_penjualan = $sql_transaksi_komisi_medis->fields['kode_penjualan'];
+													$id_barang_transaksi = $sql_transaksi_komisi_medis->fields['id_barang'];
+													$subtotal_transaksi = $sql_transaksi_komisi_medis->fields['subtotal'];
+													$qty_transaksi = $sql_transaksi_komisi_medis->fields['qty'];
+													$harga_jual_transaksi = $subtotal_transaksi / $qty_transaksi;
+													var_dump($harga_jual_transaksi);
+
+														// If Komisi Target Rupiah != 0
+														if($KomisiTargetRpMedis != "" && $KomisiTargetRpMedis != "0"){
+
+															// Insert into transaksi komisi
+															//Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$medis', '$JabatanMedis', '$BarangKomisiMedis', '$qtyBarangKomisiMedis', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpMedis', '$KomisiTargetRpMedis')");
+
+															$JmlKomisiTargetRpMedis = $KomisiTargetRpMedis * $qty_transaksi;
+
+															// Update data sebelumnya
+															Execute("UPDATE transaksi_komisi SET komisi=$KomisiTargetRpMedis, total_komisi=$JmlKomisiTargetRpMedis WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+
+															//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpMedis WHERE id_pegawai='$medis'");
+														}
+
+														// If Komisi Target Persen != 0
+														if($KomisiTargetPrMedis != "" && $KomisiTargetPrMedis != "0"){
+															$JmlKomisiTargetPrMedis = (($KomisiTargetPrMedis / 100) * $harga_jual_transaksi);
+															$total_komisi_target_medis = $JmlKomisiTargetPrMedis * $qty_transaksi;
+															Execute("UPDATE transaksi_komisi SET komisi=$JmlKomisiTargetPrMedis, total_komisi=$total_komisi_target_medis WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+
+															//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrMedis WHERE id_pegawai='$medis'");
+														}
+												$sql_transaksi_komisi_medis->MoveNext();
+												}
+											$sql_transaksi_komisi_medis->Close();	
+											}
+										} else {
+											$KomisiTargetRpMedis = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+											$KomisiTargetPrMedis = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+											if($KomisiTargetRpMedis != "" && $KomisiTargetRpMedis != "0"){
+												$JmlKomisiTargetRpMedis =  $KomisiTargetRpMedis * $qty_penjualan;
+												Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$medis', '$JabatanMedis', '$BarangKomisiMedis', '$qtyBarangKomisiMedis', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpMedis', '$JmlKomisiTargetRpMedis')");
+
+												//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpMedis WHERE id_pegawai='$medis'");
+											}
+											if($KomisiTargetPrMedis != "" && $KomisiTargetPrMedis != "0"){
+												$JmlKomisiTargetPrMedis = (($KomisiTargetPrMedis / 100) * $subtotal_satuan);
+												$total_komisi_target_medis = $JmlKomisiTargetPrMedis * $qty_penjualan;
+												Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$medis', '$JabatanMedis', '$BarangKomisiMedis', '$qtyBarangKomisiMedis', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrMedis', '$total_komisi_target_medis')");
+
+												//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrMedis WHERE id_pegawai='$medis'");
+											}
 										}
+								} else {
+									$KomisiDefaultRpMedis = ExecuteScalar("SELECT kinerja_default_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									$KomisiDefaultPrMedis = ExecuteScalar("SELECT kinerja_default_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									if($KomisiDefaultRpMedis != "" && $KomisiDefaultRpMedis != "0"){
+										$JmlKomisiDefaultRpMedis = $KomisiDefaultRpMedis * $qty_penjualan;
+										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$medis', '$JabatanMedis', '$BarangKomisiMedis', '$qtyBarangKomisiMedis', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiDefaultRpMedis', '$JmlKomisiDefaultRpMedis')");
+
+										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultRpMedis WHERE id_pegawai='$medis'");	
 									}
-							} else {
-								$KomisiDefaultRpMedis = ExecuteScalar("SELECT kinerja_default_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								$KomisiDefaultPrMedis = ExecuteScalar("SELECT kinerja_default_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanMedis' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								if($KomisiDefaultRpMedis != "" && $KomisiDefaultRpMedis != "0"){
-									$JmlKomisiDefaultRpMedis = $KomisiDefaultRpMedis * $qty_penjualan;
-									Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$medis', '$JabatanMedis', '$BarangKomisiMedis', '$qtyBarangKomisiMedis', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiDefaultRpMedis', '$JmlKomisiDefaultRpMedis')");
+									if($KomisiDefaultPrMedis != "" && $KomisiDefaultPrMedis != "0"){
+										$JmlKomisiDefaultPrMedis = (($KomisiDefaultPrMedis / 100) * $subtotal_satuan);
+										$total_komisi_default_medis = $JmlKomisiDefaultPrMedis * $qty_penjualan;
+										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$medis', '$JabatanMedis', '$BarangKomisiMedis', '$qtyBarangKomisiMedis', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiDefaultPrMedis', '$total_komisi_default_medis')");
 
-									//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultRpMedis WHERE id_pegawai='$medis'");	
-								}
-								if($KomisiDefaultPrMedis != "" && $KomisiDefaultPrMedis != "0"){
-									$JmlKomisiDefaultPrMedis = (($KomisiDefaultPrMedis / 100) * $subtotal_satuan);
-									$total_komisi_default_medis = $JmlKomisiDefaultPrMedis * $qty_penjualan;
-									Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$medis', '$JabatanMedis', '$BarangKomisiMedis', '$qtyBarangKomisiMedis', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiDefaultPrMedis', '$total_komisi_default_medis')");
-
-									//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultPrMedis WHERE id_pegawai='$medis'");
+										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultPrMedis WHERE id_pegawai='$medis'");
+									}
 								}
 							}
+						$sql_medis->MoveNext();	
 						}
-					$sql_medis->MoveNext();	
+					$sql_medis->Close();
 					}
-				$sql_medis->Close();
 				}
-			}
 
-			//KOMISI KINERJA DOKTER
-			if($dokter != "") {
-			$JabatanDokter = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai=$dokter");
-			$sql_dokter = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
-				if($sql_dokter -> RecordCount() > 0){
-					$sql_dokter->MoveFirst();
-					while(!$sql_dokter->EOF) {
-						$id_barang_penjualan = $sql_dokter->fields['id_barang'];
-						$subtotal_penjualan = $sql_dokter->fields['subtotal'];
+				//KOMISI KINERJA DOKTER
+				if($dokter != "") {
+				$JabatanDokter = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai=$dokter");
+				$sql_dokter = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
+					if($sql_dokter -> RecordCount() > 0){
+						$sql_dokter->MoveFirst();
+						while(!$sql_dokter->EOF) {
+							$id_barang_penjualan = $sql_dokter->fields['id_barang'];
+							$subtotal_penjualan = $sql_dokter->fields['subtotal'];
 
-						//$harga_jual = $sql_dokter->fields['harga_jual'];
-						$qty_penjualan = $sql_dokter->fields['qty'];
-						$subtotal_satuan = $subtotal_penjualan / $qty_penjualan;
+							//$harga_jual = $sql_dokter->fields['harga_jual'];
+							$qty_penjualan = $sql_dokter->fields['qty'];
+							$subtotal_satuan = $subtotal_penjualan / $qty_penjualan;
 
-						//$KomisiPegawaiBe Body = ExecuteScalar("SELECT nilai_komisi FROM transaksi_komisi WHERE id_pegawai='$dokter'");
-						$BarangKomisiDokter = ExecuteScalar("SELECT id_barang FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi_kinerja_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");					
-						$qtyBarangKomisiDokter = ExecuteScalar("SELECT qty FROM detailpenjualan WHERE id_barang = '$BarangKomisiDokter' AND id_penjualan = '$idpenjualan'");
-						if($BarangKomisiDokter != ""){  
-							$TargetBarangDokter = ExecuteScalar("SELECT target FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-							$TglAwalDokter = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-							$TglAkhirDokter = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+							//$KomisiPegawaiBe Body = ExecuteScalar("SELECT nilai_komisi FROM transaksi_komisi WHERE id_pegawai='$dokter'");
+							$BarangKomisiDokter = ExecuteScalar("SELECT id_barang FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi_kinerja_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");					
+							$qtyBarangKomisiDokter = ExecuteScalar("SELECT qty FROM detailpenjualan WHERE id_barang = '$BarangKomisiDokter' AND id_penjualan = '$idpenjualan'");
+							if($BarangKomisiDokter != ""){  
+								$TargetBarangDokter = ExecuteScalar("SELECT target FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+								$TglAwalDokter = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+								$TglAkhirDokter = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
 
-							//$Periode = ExecuteScalar("SELECT '$date' - INTERVAL '1' MONTH");
-							$JmlPenjualanDokter = ExecuteScalar("SELECT SUM(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE detailpenjualan.id_barang = '$id_barang_penjualan' AND penjualan.dokter = '$dokter' AND (penjualan.waktu BETWEEN '$TglAwalDokter' AND '$TglAkhirDokter')");
-							if($JmlPenjualanDokter >= $TargetBarangDokter){
-								$KomisiTargetRpDokter = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								$KomisiTargetPrDokter = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-									if($KomisiTargetRpDokter != "" && $KomisiTargetRpDokter != "0"){
-										$JmlKomisiTargetRpDokter = $KomisiTargetRpDokter * $qty_penjualan;
-										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$dokter', '$JabatanDokter', '$BarangKomisiDokter', '$qtyBarangKomisiDokter', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpDokter', '$JmlKomisiTargetRpDokter')");
-
-										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpDokter WHERE id_pegawai='$dokter'");
-									}
-									if($KomisiTargetPrDokter != "" && $KomisiTargetPrDokter != "0"){
-										$JmlKomisiTargetPrDokter = (($KomisiTargetPrDokter / 100) * $subtotal_satuan);
-										$total_komisi_target_dokter = $JmlKomisiTargetPrDokter * $qty_penjualan;
-										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dokter', '$JabatanDokter', '$BarangKomisiDokter', '$qtyBarangKomisiDokter', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrDokter', '$total_komisi_target_dokter')");
-
-										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrDokter WHERE id_pegawai='$dokter'");
-									}						
-
-								// Get Transaksi Komisi Be Body
-								$sql_transaksi_komisi_dokter = Execute("SELECT * FROM transaksi_komisi WHERE id_barang = '$BarangKomisiDokter' AND id_pegawai = '$dokter' AND id_jabatan = '$JabatanDokter' AND (tgl BETWEEN '$TglAwalDokter' AND '$TglAkhirDokter') AND jenis_komisi='Kinerja'");
-
-									// If Transaksi Komisi Be Body != NULL
-									if($sql_transaksi_komisi_dokter != NULL OR $sql_transaksi_komisi_dokter != FALSE){
-										if($sql_transaksi_komisi_dokter -> RecordCount() > 0){
-											$sql_transaksi_komisi_dokter->MoveFirst();
-											while(!$sql_transaksi_komisi_dokter->EOF) {
-												$id_transaksi = $sql_transaksi_komisi_dokter->fields['id'];
-												$id_pegawai_transaksi = $sql_transaksi_komisi_dokter->fields['id_pegawai'];
-												$id_jabatan_transaksi = $sql_transaksi_komisi_dokter->fields['id_jabatan'];
-												$kode_penjualan = $sql_transaksi_komisi_dokter->fields['kode_penjualan'];
-												$id_barang_transaksi = $sql_transaksi_komisi_dokter->fields['id_barang'];
-												$subtotal_transaksi = $sql_transaksi_komisi_dokter->fields['subtotal'];
-												$qty_transaksi = $sql_transaksi_komisi_dokter->fields['qty'];
-												$harga_jual_transaksi = $subtotal_transaksi / $qty_transaksi;
-												var_dump($harga_jual_transaksi);
-
-													// If Komisi Target Rupiah != 0
-													if($KomisiTargetRpDokter != "" && $KomisiTargetRpDokter != "0"){
-
-														// Insert into transaksi komisi
-														//Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$dokter', '$JabatanDokter', '$BarangKomisiDokter', '$qtyBarangKomisiDokter', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpDokter', '$KomisiTargetRpDokter')");
-
-														$JmlKomisiTargetRpDokter = $KomisiTargetRpDokter * $qty_transaksi;
-
-														// Update data sebelumnya
-														Execute("UPDATE transaksi_komisi SET komisi=$KomisiTargetRpDokter, total_komisi=$JmlKomisiTargetRpDokter WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
-
-														//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpDokter WHERE id_pegawai='$dokter'");
-													}
-
-													// If Komisi Target Persen != 0
-													if($KomisiTargetPrDokter != "" && $KomisiTargetPrDokter != "0"){
-														$JmlKomisiTargetPrDokter = (($KomisiTargetPrDokter / 100) * $harga_jual_transaksi);
-														$total_komisi_target_dokter = $JmlKomisiTargetPrDokter * $qty_transaksi;
-														Execute("UPDATE transaksi_komisi SET komisi=$JmlKomisiTargetPrDokter, total_komisi=$total_komisi_target_dokter WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
-
-														//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrDokter WHERE id_pegawai='$dokter'");
-													}
-											$sql_transaksi_komisi_dokter->MoveNext();
-											}
-										$sql_transaksi_komisi_dokter->Close();	
-										}
-									} else {
-										$KomisiTargetRpDokter = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-										$KomisiTargetPrDokter = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+								//$Periode = ExecuteScalar("SELECT '$date' - INTERVAL '1' MONTH");
+								$JmlPenjualanDokter = ExecuteScalar("SELECT SUM(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE detailpenjualan.id_barang = '$id_barang_penjualan' AND penjualan.dokter = '$dokter' AND (penjualan.waktu BETWEEN '$TglAwalDokter' AND '$TglAkhirDokter')");
+								if($JmlPenjualanDokter >= $TargetBarangDokter){
+									$KomisiTargetRpDokter = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									$KomisiTargetPrDokter = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
 										if($KomisiTargetRpDokter != "" && $KomisiTargetRpDokter != "0"){
-											$JmlKomisiTargetRpDokter =  $KomisiTargetRpDokter * $qty_penjualan;
+											$JmlKomisiTargetRpDokter = $KomisiTargetRpDokter * $qty_penjualan;
 											Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$dokter', '$JabatanDokter', '$BarangKomisiDokter', '$qtyBarangKomisiDokter', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpDokter', '$JmlKomisiTargetRpDokter')");
 
 											//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpDokter WHERE id_pegawai='$dokter'");
@@ -4093,190 +4030,251 @@ class penjualan extends DbTable
 											Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dokter', '$JabatanDokter', '$BarangKomisiDokter', '$qtyBarangKomisiDokter', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrDokter', '$total_komisi_target_dokter')");
 
 											//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrDokter WHERE id_pegawai='$dokter'");
-										}
-									}
-							} else {
-								$KomisiDefaultRpDokter = ExecuteScalar("SELECT kinerja_default_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								$KomisiDefaultPrDokter = ExecuteScalar("SELECT kinerja_default_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								if($KomisiDefaultRpDokter != "" && $KomisiDefaultRpDokter != "0"){
-									$JmlKomisiDefaultRpDokter = $KomisiDefaultRpDokter * $qty_penjualan;
-									Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dokter', '$JabatanDokter', '$BarangKomisiDokter', '$qtyBarangKomisiDokter', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiDefaultRpDokter', '$JmlKomisiDefaultRpDokter')");
+										}						
 
-									//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultRpDokter WHERE id_pegawai='$dokter'");	
-								}
-								if($KomisiDefaultPrDokter != "" && $KomisiDefaultPrDokter != "0"){
-									$JmlKomisiDefaultPrDokter = (($KomisiDefaultPrDokter / 100) * $subtotal_satuan);
-									$total_komisi_default_dokter = $JmlKomisiDefaultPrDokter * $qty_penjualan;
-									Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dokter', '$JabatanDokter', '$BarangKomisiDokter', '$qtyBarangKomisiDokter', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiDefaultPrDokter', '$total_komisi_default_dokter')");
+									// Get Transaksi Komisi Be Body
+									$sql_transaksi_komisi_dokter = Execute("SELECT * FROM transaksi_komisi WHERE id_barang = '$BarangKomisiDokter' AND id_pegawai = '$dokter' AND id_jabatan = '$JabatanDokter' AND (tgl BETWEEN '$TglAwalDokter' AND '$TglAkhirDokter') AND jenis_komisi='Kinerja'");
 
-									//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultPrDokter WHERE id_pegawai='$dokter'");
-								}
-							}
-						}
-					$sql_dokter->MoveNext();	
-					}
-				$sql_dokter->Close();
-				}
-			}
+										// If Transaksi Komisi Be Body != NULL
+										if($sql_transaksi_komisi_dokter != NULL OR $sql_transaksi_komisi_dokter != FALSE){
+											if($sql_transaksi_komisi_dokter -> RecordCount() > 0){
+												$sql_transaksi_komisi_dokter->MoveFirst();
+												while(!$sql_transaksi_komisi_dokter->EOF) {
+													$id_transaksi = $sql_transaksi_komisi_dokter->fields['id'];
+													$id_pegawai_transaksi = $sql_transaksi_komisi_dokter->fields['id_pegawai'];
+													$id_jabatan_transaksi = $sql_transaksi_komisi_dokter->fields['id_jabatan'];
+													$kode_penjualan = $sql_transaksi_komisi_dokter->fields['kode_penjualan'];
+													$id_barang_transaksi = $sql_transaksi_komisi_dokter->fields['id_barang'];
+													$subtotal_transaksi = $sql_transaksi_komisi_dokter->fields['subtotal'];
+													$qty_transaksi = $sql_transaksi_komisi_dokter->fields['qty'];
+													$harga_jual_transaksi = $subtotal_transaksi / $qty_transaksi;
+													var_dump($harga_jual_transaksi);
 
-			// KOMISI PEGAWAI RECALL
-			$sql_komisi_recall = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
-					if($sql_komisi_recall -> RecordCount() > 0){
-						$sql_komisi_recall->MoveFirst();
-						while(!$sql_komisi_recall->EOF) {
-							$id_barang_penjualan = $sql_komisi_recall->fields['id_barang'];
-							$id_pegawai_recall = $sql_komisi_recall->fields['komisi_recall'];
-							$qty_penjualan = $sql_komisi_recall->fields['qty'];
-							$subtotal_penjualan = $sql_komisi_recall->fields['subtotal'];
-							$harga_jual = $sql_komisi_recall->fields['harga_jual'];
-							if($id_pegawai_recall != ''){
-								$JabatanPegawai = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai=$id_pegawai_recall");
-								$BarangKomisiRecall = ExecuteScalar("SELECT id_barang FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi_recall_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
-								$TglAwalRecall = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanPegawai' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								$TglAkhirRecall = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanPegawai' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
-								if($BarangKomisiRecall != '') {
-									$TargetBarangRecall = ExecuteScalar("SELECT target FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
-									$Periode = ExecuteScalar("SELECT '$date' - INTERVAL '1' MONTH");
-									$JmlPenjualan = ExecuteScalar("SELECT SUM(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE detailpenjualan.id_barang = '$id_barang_penjualan' AND detailpenjualan.komisi_recall = '$id_pegawai_recall' AND (penjualan.waktu BETWEEN '$Periode' AND '$date')");
-										if($JmlPenjualan >= $TargetBarangRecall) {
-											$KomisiTargetRpRecall = ExecuteScalar("SELECT recall_target_rupiah FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
-											$KomisiTargetPrRecall = ExecuteScalar("SELECT recall_target_persen FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");									
-												if($KomisiTargetRpRecall != "" && $KomisiTargetRpRecall != "0"){
-													$total_komisi_target_rp = $KomisiTargetRpRecall * $qty_penjualan;
-													Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, jenis_komisi, kode_penjualan,tgl, komisi, id_barang, qty, subtotal, total_komisi) VALUES ('$id_pegawai_recall', '$JabatanPegawai', 'Recall', '$kode_penjualan', '$waktu', '$KomisiTargetRpRecall', '$id_barang_penjualan', '$qty_penjualan', '$subtotal_penjualan', '$total_komisi_target_rp')");								
+														// If Komisi Target Rupiah != 0
+														if($KomisiTargetRpDokter != "" && $KomisiTargetRpDokter != "0"){
 
-													//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpDokter WHERE id_pegawai='$dokter'");
-												}
-												if($KomisiTargetPrRecall != "" && $KomisiTargetPrRecall != "0"){
-													$JmlKomisiTargetPrRecall = (($KomisiTargetPrRecall / 100) * $harga_jual);
-													$total_komisi_target_pr = (($KomisiTargetPrRecall / 100) * $subtotal_penjualan);
-													Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, jenis_komisi, kode_penjualan,tgl, komisi, id_barang, qty, subtotal, total_komisi) VALUES ('$id_pegawai_recall', '$JabatanPegawai', 'Recall', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrRecall', '$id_barang_penjualan', '$qty_penjualan', '$subtotal_penjualan', '$total_komisi_target_pr')");								
+															// Insert into transaksi komisi
+															//Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$dokter', '$JabatanDokter', '$BarangKomisiDokter', '$qtyBarangKomisiDokter', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpDokter', '$KomisiTargetRpDokter')");
 
-													//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrDokter WHERE id_pegawai='$dokter'");
-												}
+															$JmlKomisiTargetRpDokter = $KomisiTargetRpDokter * $qty_transaksi;
 
-												// Get Transaksi Komisi Recall
-												$sql_transaksi_komisi_recall = Execute("SELECT * FROM transaksi_komisi WHERE id_barang = '$BarangKomisiRecall' AND id_pegawai = '$id_pegawai_recall' AND id_jabatan = '$JabatanPegawai' AND (tgl BETWEEN '$TglAwalRecall' AND '$TglAkhirRecall') AND jenis_komisi='Recall'");
+															// Update data sebelumnya
+															Execute("UPDATE transaksi_komisi SET komisi=$KomisiTargetRpDokter, total_komisi=$JmlKomisiTargetRpDokter WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
 
-													// If Transaksi Komisi Be Body != NULL
-													if($sql_transaksi_komisi_recall != NULL OR $sql_transaksi_komisi_recall != FALSE) {
-														if($sql_transaksi_komisi_recall -> RecordCount() > 0){
-															$sql_transaksi_komisi_recall->MoveFirst();
-															while(!$sql_transaksi_komisi_recall->EOF) {
-																$id_transaksi = $sql_transaksi_komisi_recall->fields['id'];
-																$id_pegawai_transaksi = $sql_transaksi_komisi_recall->fields['id_pegawai'];
-																$id_jabatan_transaksi = $sql_transaksi_komisi_recall->fields['id_jabatan'];
-																$kode_penjualan = $sql_transaksi_komisi_recall->fields['kode_penjualan'];
-																$id_barang_transaksi = $sql_transaksi_komisi_recall->fields['id_barang'];
-																$subtotal_transaksi = $sql_transaksi_komisi_recall->fields['subtotal'];
-																$qty_transaksi = $sql_transaksi_komisi_recall->fields['qty'];
-																$harga_jual_transaksi = $subtotal_transaksi / $qty_transaksi;
-																var_dump($harga_jual_transaksi);
-
-																	// If Komisi Target Rupiah != 0
-																	if($KomisiTargetRpRecall != "" && $KomisiTargetRpRecall != "0"){
-																		$JmlKomisiTargetRpRecall = $KomisiTargetRpRecall * $qty_transaksi;
-
-																		// Update data sebelumnya
-																		Execute("UPDATE transaksi_komisi SET komisi=$KomisiTargetRpRecall, total_komisi=$JmlKomisiTargetRpRecall WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
-																	}
-
-																	// If Komisi Target Persen != 0
-																	if($KomisiTargetPrRecall != "" && $KomisiTargetPrRecall != "0"){
-																		$JmlKomisiTargetPrRecall = (($KomisiTargetPrRecall / 100) * $harga_jual_transaksi);
-																		$total_komisi_target_recall = $JmlKomisiTargetPrRecall * $qty_transaksi;
-																		Execute("UPDATE transaksi_komisi SET komisi=$JmlKomisiTargetPrRecall, total_komisi=$total_komisi_target_recall WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
-																	}
-															$sql_transaksi_komisi_recall->MoveNext();
-															}
-														$sql_transaksi_komisi_recall->Close();	
+															//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpDokter WHERE id_pegawai='$dokter'");
 														}
-													} else {
-															$KomisiTargetRpRecall = ExecuteScalar("SELECT recall_target_rupiah FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
-															$KomisiTargetPrRecall = ExecuteScalar("SELECT recall_target_persen FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");									
-																if($KomisiTargetRpRecall != "" && $KomisiTargetRpRecall != "0"){
-																	$total_komisi_target_rp = $KomisiTargetRpRecall * $qty_penjualan;
-																	Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, jenis_komisi, kode_penjualan,tgl, komisi, id_barang, qty, subtotal, total_komisi) VALUES ('$id_pegawai_recall', '$JabatanPegawai', 'Recall', '$kode_penjualan', '$waktu', '$KomisiTargetRpRecall', '$id_barang_penjualan', '$qty_penjualan', '$subtotal_penjualan', '$total_komisi_target_rp')");								
-																}
-																if($KomisiTargetPrRecall != "" && $KomisiTargetPrRecall != "0"){
-																	$JmlKomisiTargetPrRecall = (($KomisiTargetPrRecall / 100) * $harga_jual);
-																	$total_komisi_target_pr = (($KomisiTargetPrRecall / 100) * $subtotal_penjualan);
-																	Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, jenis_komisi, kode_penjualan,tgl, komisi, id_barang, qty, subtotal, total_komisi) VALUES ('$id_pegawai_recall', '$JabatanPegawai', 'Recall', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrRecall', '$id_barang_penjualan', '$qty_penjualan', '$subtotal_penjualan', '$total_komisi_target_pr')");								
-																}
-													}
+
+														// If Komisi Target Persen != 0
+														if($KomisiTargetPrDokter != "" && $KomisiTargetPrDokter != "0"){
+															$JmlKomisiTargetPrDokter = (($KomisiTargetPrDokter / 100) * $harga_jual_transaksi);
+															$total_komisi_target_dokter = $JmlKomisiTargetPrDokter * $qty_transaksi;
+															Execute("UPDATE transaksi_komisi SET komisi=$JmlKomisiTargetPrDokter, total_komisi=$total_komisi_target_dokter WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+
+															//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrDokter WHERE id_pegawai='$dokter'");
+														}
+												$sql_transaksi_komisi_dokter->MoveNext();
+												}
+											$sql_transaksi_komisi_dokter->Close();	
+											}
 										} else {
-											$KomisiDefaultRpRecall = ExecuteScalar("SELECT recall_default_rupiah FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
-											$KomisiDefaultPrRecall = ExecuteScalar("SELECT recall_default_persen FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
-												if($KomisiDefaultRpRecall != "" && $KomisiDefaultRpRecall != "0"){
-													$total_komisi_default_rp = $KomisiDefaultRpRecall * $qty_penjualan;
-													Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, jenis_komisi, kode_penjualan,tgl, komisi, id_barang, qty, subtotal, total_komisi) VALUES ('$id_pegawai_recall', '$JabatanPegawai', 'Recall', '$kode_penjualan', '$waktu', '$KomisiDefaultRpRecall', '$id_barang_penjualan', '$qty_penjualan', '$subtotal_penjualan', '$total_komisi_default_rp')");								
-												}
-												if($KomisiDefaultPrRecall != "" && $KomisiDefaultPrRecall != "0"){
-													$JmlKomisiDefaultPrRecall = (($KomisiDefaultPrRecall / 100) * $harga_jual);
-													$total_komisi_default_pr = (($KomisiDefaultPrRecall / 100) * $subtotal_penjualan);
-													Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, jenis_komisi, kode_penjualan,tgl, komisi, id_barang, qty, subtotal, total_komisi) VALUES ('$id_pegawai_recall', '$JabatanPegawai', 'Recall', '$kode_penjualan', '$waktu', '$JmlKomisiDefaultPrRecall', '$id_barang_penjualan', '$qty_penjualan', '$subtotal_penjualan', '$total_komisi_default_pr')");								                                
-												}
+											$KomisiTargetRpDokter = ExecuteScalar("SELECT kinerja_target_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+											$KomisiTargetPrDokter = ExecuteScalar("SELECT kinerja_target_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+											if($KomisiTargetRpDokter != "" && $KomisiTargetRpDokter != "0"){
+												$JmlKomisiTargetRpDokter =  $KomisiTargetRpDokter * $qty_penjualan;
+												Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan, tgl, komisi, total_komisi) VALUES ('$dokter', '$JabatanDokter', '$BarangKomisiDokter', '$qtyBarangKomisiDokter', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiTargetRpDokter', '$JmlKomisiTargetRpDokter')");
+
+												//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpDokter WHERE id_pegawai='$dokter'");
+											}
+											if($KomisiTargetPrDokter != "" && $KomisiTargetPrDokter != "0"){
+												$JmlKomisiTargetPrDokter = (($KomisiTargetPrDokter / 100) * $subtotal_satuan);
+												$total_komisi_target_dokter = $JmlKomisiTargetPrDokter * $qty_penjualan;
+												Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dokter', '$JabatanDokter', '$BarangKomisiDokter', '$qtyBarangKomisiDokter', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrDokter', '$total_komisi_target_dokter')");
+
+												//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrDokter WHERE id_pegawai='$dokter'");
+											}
 										}
+								} else {
+									$KomisiDefaultRpDokter = ExecuteScalar("SELECT kinerja_default_rupiah FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									$KomisiDefaultPrDokter = ExecuteScalar("SELECT kinerja_default_persen FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanDokter' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									if($KomisiDefaultRpDokter != "" && $KomisiDefaultRpDokter != "0"){
+										$JmlKomisiDefaultRpDokter = $KomisiDefaultRpDokter * $qty_penjualan;
+										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dokter', '$JabatanDokter', '$BarangKomisiDokter', '$qtyBarangKomisiDokter', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$KomisiDefaultRpDokter', '$JmlKomisiDefaultRpDokter')");
+
+										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultRpDokter WHERE id_pegawai='$dokter'");	
+									}
+									if($KomisiDefaultPrDokter != "" && $KomisiDefaultPrDokter != "0"){
+										$JmlKomisiDefaultPrDokter = (($KomisiDefaultPrDokter / 100) * $subtotal_satuan);
+										$total_komisi_default_dokter = $JmlKomisiDefaultPrDokter * $qty_penjualan;
+										Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, id_barang, qty, subtotal, jenis_komisi, kode_penjualan,tgl, komisi, total_komisi) VALUES ('$dokter', '$JabatanDokter', '$BarangKomisiDokter', '$qtyBarangKomisiDokter', '$subtotal_penjualan', 'Kinerja', '$kode_penjualan', '$waktu', '$JmlKomisiDefaultPrDokter', '$total_komisi_default_dokter')");
+
+										//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiDefaultPrDokter WHERE id_pegawai='$dokter'");
+									}
 								}
 							}
-						$sql_komisi_recall->MoveNext();	
+						$sql_dokter->MoveNext();	
 						}
-					$sql_komisi_recall->Close();
+					$sql_dokter->Close();
 					}
-			if($idpelanggan != FALSE) {
-
-				//INSERT TGL AWAL TRANSAKSI && JML AKUMULASI
-				$total_akumulasi = ExecuteScalar("SELECT total_akumulasi FROM m_member WHERE id_pelanggan=$idpelanggan");
-				$tglmulai = ExecuteScalar("SELECT tgl_mulai FROM m_member WHERE id_pelanggan=$idpelanggan");
-				if($total_akumulasi == '' OR $total_akumulasi == '0' OR $total_akumulasi == NULL){
-					$tglawaltransaksi = ExecuteScalar("SELECT tgl_awal_transaksi FROM m_member WHERE id_pelanggan=$idpelanggan");
-						if($tglawaltransaksi == '') {
-							$date = date("Y-m-d");
-							date_default_timezone_set("Indonesia/Jakarta");
-							$tgltransaksiawal = ExecuteScalar("SELECT waktu FROM penjualan WHERE waktu >= '$tglmulai' ORDER BY waktu ASC LIMIT 1");
-							$jmlakumulasi = ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE id_pelanggan=$idpelanggan AND (waktu BETWEEN '$tgltransaksiawal' AND '$date')");
-							Execute("UPDATE m_member SET tgl_awal_transaksi='$tgltransaksiawal', total_akumulasi=$jmlakumulasi WHERE id_pelanggan=$idpelanggan");
-						}
-				} else {
-					$date = date("Y-m-d");
-					$tgltransaksiawal = ExecuteScalar("SELECT waktu FROM penjualan WHERE waktu >= '$tglmulai' ORDER BY waktu ASC LIMIT 1");
-					$jmlakumulasi = ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE id_pelanggan=$idpelanggan AND (waktu BETWEEN '$tgltransaksiawal' AND '$date')");
-					Execute("UPDATE m_member SET total_akumulasi=$jmlakumulasi WHERE id_pelanggan=$idpelanggan");
 				}
 
-				//UPGRADE MEMBER
-				$firstdate = date("Y-n-j", strtotime("first day of this month"));
-				$lastdate = date("Y-n-j", strtotime("last day of this month"));
-				$KedatanganBlnIni = ExecuteScalar("SELECT COUNT(id) FROM penjualan WHERE id_pelanggan = $idpelanggan AND (waktu BETWEEN '$firstdate' AND '$lastdate')");
-				if($KedatanganBlnIni > '1') {
-				} else {
-					$firstdateprevmonth = date("Y-n-j", strtotime("first day of previous month"));
-					$lastdateprevmonth = date("Y-n-j", strtotime("last day of previous month"));
-					$KedatanganBlnLalu = ExecuteScalar("SELECT COUNT(id) FROM penjualan WHERE id_pelanggan = $idpelanggan AND (waktu BETWEEN '$firstdateprevmonth' AND '$lastdateprevmonth')");
-					$min_kedatangan = ExecuteSCalar("SELECT min_kedatangan FROM m_jenis_member WHERE id_jenis_member=$jenismember");
-					if($KedatanganBlnLalu >= $min_kedatangan){
-						$TglAwal = ExecuteScalar("SELECT tgl_awal_transaksi FROM m_member WHERE id_pelanggan=$idpelanggan");
-						$CountDay = ExecuteScalar("SELECT DATEDIFF('$date', '$TglAwal')");
-						$JangkaWaktu = ExecuteScalar("SELECT jangka_waktu FROM m_jenis_member WHERE id_jenis_member='$jenismember'");
-							if($CountDay >= $JangkaWaktu){
-								$nominalbwh_reguler = ExecuteScalar("SELECT nominal_bawah FROM m_jenis_member WHERE nama_member='Reguler'");
-								$nominalats_reguler = ExecuteScalar("SELECT nominal_atas FROM m_jenis_member WHERE nama_member='Reguler'");
-								$nominalbwh_vip = ExecuteScalar("SELECT nominal_bawah FROM m_jenis_member WHERE nama_member='VIP'");
-								$level_selanjutnya = ExecuteScalar("SELECT member_selanjutnya FROM m_jenis_member WHERE id_jenis_member=$jenismember");
-								$id_vvip = ExecuteScalar("SELECT id FROM m_jenis_member WHERE nama_member='VVIP'");
-									if($total_akumulasi >= $nominalbwh_reguler || $total_akumulasi <= $nominalats_reguler) {
-										Execute("UPDATE m_member SET jenis_member=$level_selanjutnya WHERE id_pelanggan=$idpelanggan");
+				// KOMISI PEGAWAI RECALL
+				$sql_komisi_recall = Execute("SELECT * FROM detailpenjualan WHERE id_penjualan = '$idpenjualan'");
+						if($sql_komisi_recall -> RecordCount() > 0){
+							$sql_komisi_recall->MoveFirst();
+							while(!$sql_komisi_recall->EOF) {
+								$id_barang_penjualan = $sql_komisi_recall->fields['id_barang'];
+								$id_pegawai_recall = $sql_komisi_recall->fields['komisi_recall'];
+								$qty_penjualan = $sql_komisi_recall->fields['qty'];
+								$subtotal_penjualan = $sql_komisi_recall->fields['subtotal'];
+								$harga_jual = $sql_komisi_recall->fields['harga_jual'];
+								if($id_pegawai_recall != ''){
+									$JabatanPegawai = ExecuteScalar("SELECT jabatan_pegawai FROM m_pegawai WHERE id_pegawai=$id_pegawai_recall");
+									$BarangKomisiRecall = ExecuteScalar("SELECT id_barang FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi_recall_detail.id_komisi = m_komisi.id_komisi WHERE m_komisi.id_jabatan = '$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
+									$TglAwalRecall = ExecuteScalar("SELECT tgl_mulai FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanPegawai' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									$TglAkhirRecall = ExecuteScalar("SELECT tgl_akhir FROM m_komisi_kinerja_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_kinerja_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanPegawai' AND m_komisi_kinerja_detail.id_barang = '$id_barang_penjualan'");
+									if($BarangKomisiRecall != '') {
+										$TargetBarangRecall = ExecuteScalar("SELECT target FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan = '$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
+										$Periode = ExecuteScalar("SELECT '$date' - INTERVAL '1' MONTH");
+										$JmlPenjualan = ExecuteScalar("SELECT SUM(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE detailpenjualan.id_barang = '$id_barang_penjualan' AND detailpenjualan.komisi_recall = '$id_pegawai_recall' AND (penjualan.waktu BETWEEN '$Periode' AND '$date')");
+											if($JmlPenjualan >= $TargetBarangRecall) {
+												$KomisiTargetRpRecall = ExecuteScalar("SELECT recall_target_rupiah FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
+												$KomisiTargetPrRecall = ExecuteScalar("SELECT recall_target_persen FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");									
+													if($KomisiTargetRpRecall != "" && $KomisiTargetRpRecall != "0"){
+														$total_komisi_target_rp = $KomisiTargetRpRecall * $qty_penjualan;
+														Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, jenis_komisi, kode_penjualan,tgl, komisi, id_barang, qty, subtotal, total_komisi) VALUES ('$id_pegawai_recall', '$JabatanPegawai', 'Recall', '$kode_penjualan', '$waktu', '$KomisiTargetRpRecall', '$id_barang_penjualan', '$qty_penjualan', '$subtotal_penjualan', '$total_komisi_target_rp')");								
+
+														//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetRpDokter WHERE id_pegawai='$dokter'");
+													}
+													if($KomisiTargetPrRecall != "" && $KomisiTargetPrRecall != "0"){
+														$JmlKomisiTargetPrRecall = (($KomisiTargetPrRecall / 100) * $harga_jual);
+														$total_komisi_target_pr = (($KomisiTargetPrRecall / 100) * $subtotal_penjualan);
+														Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, jenis_komisi, kode_penjualan,tgl, komisi, id_barang, qty, subtotal, total_komisi) VALUES ('$id_pegawai_recall', '$JabatanPegawai', 'Recall', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrRecall', '$id_barang_penjualan', '$qty_penjualan', '$subtotal_penjualan', '$total_komisi_target_pr')");								
+
+														//Execute("UPDATE m_pegawai SET nilai_komisi=$JmlKomisiTargetPrDokter WHERE id_pegawai='$dokter'");
+													}
+
+													// Get Transaksi Komisi Recall
+													$sql_transaksi_komisi_recall = Execute("SELECT * FROM transaksi_komisi WHERE id_barang = '$BarangKomisiRecall' AND id_pegawai = '$id_pegawai_recall' AND id_jabatan = '$JabatanPegawai' AND (tgl BETWEEN '$TglAwalRecall' AND '$TglAkhirRecall') AND jenis_komisi='Recall'");
+
+														// If Transaksi Komisi Be Body != NULL
+														if($sql_transaksi_komisi_recall != NULL OR $sql_transaksi_komisi_recall != FALSE) {
+															if($sql_transaksi_komisi_recall -> RecordCount() > 0){
+																$sql_transaksi_komisi_recall->MoveFirst();
+																while(!$sql_transaksi_komisi_recall->EOF) {
+																	$id_transaksi = $sql_transaksi_komisi_recall->fields['id'];
+																	$id_pegawai_transaksi = $sql_transaksi_komisi_recall->fields['id_pegawai'];
+																	$id_jabatan_transaksi = $sql_transaksi_komisi_recall->fields['id_jabatan'];
+																	$kode_penjualan = $sql_transaksi_komisi_recall->fields['kode_penjualan'];
+																	$id_barang_transaksi = $sql_transaksi_komisi_recall->fields['id_barang'];
+																	$subtotal_transaksi = $sql_transaksi_komisi_recall->fields['subtotal'];
+																	$qty_transaksi = $sql_transaksi_komisi_recall->fields['qty'];
+																	$harga_jual_transaksi = $subtotal_transaksi / $qty_transaksi;
+																	var_dump($harga_jual_transaksi);
+
+																		// If Komisi Target Rupiah != 0
+																		if($KomisiTargetRpRecall != "" && $KomisiTargetRpRecall != "0"){
+																			$JmlKomisiTargetRpRecall = $KomisiTargetRpRecall * $qty_transaksi;
+
+																			// Update data sebelumnya
+																			Execute("UPDATE transaksi_komisi SET komisi=$KomisiTargetRpRecall, total_komisi=$JmlKomisiTargetRpRecall WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+																		}
+
+																		// If Komisi Target Persen != 0
+																		if($KomisiTargetPrRecall != "" && $KomisiTargetPrRecall != "0"){
+																			$JmlKomisiTargetPrRecall = (($KomisiTargetPrRecall / 100) * $harga_jual_transaksi);
+																			$total_komisi_target_recall = $JmlKomisiTargetPrRecall * $qty_transaksi;
+																			Execute("UPDATE transaksi_komisi SET komisi=$JmlKomisiTargetPrRecall, total_komisi=$total_komisi_target_recall WHERE id_pegawai='$id_pegawai_transaksi' AND id_jabatan = '$id_jabatan_transaksi' AND id = '$id_transaksi'");													
+																		}
+																$sql_transaksi_komisi_recall->MoveNext();
+																}
+															$sql_transaksi_komisi_recall->Close();	
+															}
+														} else {
+																$KomisiTargetRpRecall = ExecuteScalar("SELECT recall_target_rupiah FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
+																$KomisiTargetPrRecall = ExecuteScalar("SELECT recall_target_persen FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");									
+																	if($KomisiTargetRpRecall != "" && $KomisiTargetRpRecall != "0"){
+																		$total_komisi_target_rp = $KomisiTargetRpRecall * $qty_penjualan;
+																		Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, jenis_komisi, kode_penjualan,tgl, komisi, id_barang, qty, subtotal, total_komisi) VALUES ('$id_pegawai_recall', '$JabatanPegawai', 'Recall', '$kode_penjualan', '$waktu', '$KomisiTargetRpRecall', '$id_barang_penjualan', '$qty_penjualan', '$subtotal_penjualan', '$total_komisi_target_rp')");								
+																	}
+																	if($KomisiTargetPrRecall != "" && $KomisiTargetPrRecall != "0"){
+																		$JmlKomisiTargetPrRecall = (($KomisiTargetPrRecall / 100) * $harga_jual);
+																		$total_komisi_target_pr = (($KomisiTargetPrRecall / 100) * $subtotal_penjualan);
+																		Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, jenis_komisi, kode_penjualan,tgl, komisi, id_barang, qty, subtotal, total_komisi) VALUES ('$id_pegawai_recall', '$JabatanPegawai', 'Recall', '$kode_penjualan', '$waktu', '$JmlKomisiTargetPrRecall', '$id_barang_penjualan', '$qty_penjualan', '$subtotal_penjualan', '$total_komisi_target_pr')");								
+																	}
+														}
+											} else {
+												$KomisiDefaultRpRecall = ExecuteScalar("SELECT recall_default_rupiah FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
+												$KomisiDefaultPrRecall = ExecuteScalar("SELECT recall_default_persen FROM m_komisi_recall_detail JOIN m_komisi ON m_komisi.id_komisi = m_komisi_recall_detail.id_komisi WHERE m_komisi.id_jabatan ='$JabatanPegawai' AND m_komisi_recall_detail.id_barang = '$id_barang_penjualan'");
+													if($KomisiDefaultRpRecall != "" && $KomisiDefaultRpRecall != "0"){
+														$total_komisi_default_rp = $KomisiDefaultRpRecall * $qty_penjualan;
+														Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, jenis_komisi, kode_penjualan,tgl, komisi, id_barang, qty, subtotal, total_komisi) VALUES ('$id_pegawai_recall', '$JabatanPegawai', 'Recall', '$kode_penjualan', '$waktu', '$KomisiDefaultRpRecall', '$id_barang_penjualan', '$qty_penjualan', '$subtotal_penjualan', '$total_komisi_default_rp')");								
+													}
+													if($KomisiDefaultPrRecall != "" && $KomisiDefaultPrRecall != "0"){
+														$JmlKomisiDefaultPrRecall = (($KomisiDefaultPrRecall / 100) * $harga_jual);
+														$total_komisi_default_pr = (($KomisiDefaultPrRecall / 100) * $subtotal_penjualan);
+														Execute("INSERT INTO transaksi_komisi (id_pegawai, id_jabatan, jenis_komisi, kode_penjualan,tgl, komisi, id_barang, qty, subtotal, total_komisi) VALUES ('$id_pegawai_recall', '$JabatanPegawai', 'Recall', '$kode_penjualan', '$waktu', '$JmlKomisiDefaultPrRecall', '$id_barang_penjualan', '$qty_penjualan', '$subtotal_penjualan', '$total_komisi_default_pr')");								                                
+													}
+											}
 									}
-									if($total_akumulasi >= $nominalbwh_vip){
-										Execute("UPDATE m_member SET jenis_member=$id_vvip WHERE id_pelanggan=$idpelanggan");
-									}
+								}
+							$sql_komisi_recall->MoveNext();	
 							}
+						$sql_komisi_recall->Close();
+						}
+				if($idpelanggan != FALSE) {
+
+					//INSERT TGL AWAL TRANSAKSI && JML AKUMULASI
+					$total_akumulasi = ExecuteScalar("SELECT total_akumulasi FROM m_member WHERE id_pelanggan=$idpelanggan");
+					$tglmulai = ExecuteScalar("SELECT tgl_mulai FROM m_member WHERE id_pelanggan=$idpelanggan");
+					if($total_akumulasi == '' OR $total_akumulasi == '0' OR $total_akumulasi == NULL){
+						$tglawaltransaksi = ExecuteScalar("SELECT tgl_awal_transaksi FROM m_member WHERE id_pelanggan=$idpelanggan");
+							if($tglawaltransaksi == '') {
+								$date = date("Y-m-d");
+								date_default_timezone_set("Indonesia/Jakarta");
+								$tgltransaksiawal = ExecuteScalar("SELECT waktu FROM penjualan WHERE waktu >= '$tglmulai' ORDER BY waktu ASC LIMIT 1");
+								$jmlakumulasi = ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE id_pelanggan=$idpelanggan AND (waktu BETWEEN '$tgltransaksiawal' AND '$date')");
+								Execute("UPDATE m_member SET tgl_awal_transaksi='$tgltransaksiawal', total_akumulasi=$jmlakumulasi WHERE id_pelanggan=$idpelanggan");
+							}
+					} else {
+						$date = date("Y-m-d");
+						$tgltransaksiawal = ExecuteScalar("SELECT waktu FROM penjualan WHERE waktu >= '$tglmulai' ORDER BY waktu ASC LIMIT 1");
+						$jmlakumulasi = ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE id_pelanggan=$idpelanggan AND (waktu BETWEEN '$tgltransaksiawal' AND '$date')");
+						Execute("UPDATE m_member SET total_akumulasi=$jmlakumulasi WHERE id_pelanggan=$idpelanggan");
+					}
+
+					//UPGRADE MEMBER
+					$firstdate = date("Y-n-j", strtotime("first day of this month"));
+					$lastdate = date("Y-n-j", strtotime("last day of this month"));
+					$KedatanganBlnIni = ExecuteScalar("SELECT COUNT(id) FROM penjualan WHERE id_pelanggan = $idpelanggan AND (waktu BETWEEN '$firstdate' AND '$lastdate')");
+					if($KedatanganBlnIni > '1') {
+					} else {
+						$firstdateprevmonth = date("Y-n-j", strtotime("first day of previous month"));
+						$lastdateprevmonth = date("Y-n-j", strtotime("last day of previous month"));
+						$KedatanganBlnLalu = ExecuteScalar("SELECT COUNT(id) FROM penjualan WHERE id_pelanggan = $idpelanggan AND (waktu BETWEEN '$firstdateprevmonth' AND '$lastdateprevmonth')");
+						$min_kedatangan = ExecuteSCalar("SELECT min_kedatangan FROM m_jenis_member WHERE id_jenis_member=$jenismember");
+						if($KedatanganBlnLalu >= $min_kedatangan){
+							$TglAwal = ExecuteScalar("SELECT tgl_awal_transaksi FROM m_member WHERE id_pelanggan=$idpelanggan");
+							$CountDay = ExecuteScalar("SELECT DATEDIFF('$date', '$TglAwal')");
+							$JangkaWaktu = ExecuteScalar("SELECT jangka_waktu FROM m_jenis_member WHERE id_jenis_member='$jenismember'");
+								if($CountDay >= $JangkaWaktu){
+									$nominalbwh_reguler = ExecuteScalar("SELECT nominal_bawah FROM m_jenis_member WHERE nama_member='Reguler'");
+									$nominalats_reguler = ExecuteScalar("SELECT nominal_atas FROM m_jenis_member WHERE nama_member='Reguler'");
+									$nominalbwh_vip = ExecuteScalar("SELECT nominal_bawah FROM m_jenis_member WHERE nama_member='VIP'");
+									$level_selanjutnya = ExecuteScalar("SELECT member_selanjutnya FROM m_jenis_member WHERE id_jenis_member=$jenismember");
+									$id_vvip = ExecuteScalar("SELECT id FROM m_jenis_member WHERE nama_member='VVIP'");
+										if($total_akumulasi >= $nominalbwh_reguler || $total_akumulasi <= $nominalats_reguler) {
+											Execute("UPDATE m_member SET jenis_member=$level_selanjutnya WHERE id_pelanggan=$idpelanggan");
+										}
+										if($total_akumulasi >= $nominalbwh_vip){
+											Execute("UPDATE m_member SET jenis_member=$id_vvip WHERE id_pelanggan=$idpelanggan");
+										}
+								}
+						}
 					}
 				}
-			}
-			$tgl_terakhir_transaksi = date("Y-m-d H:i:s");
-			Execute("UPDATE m_pelanggan SET tgl_terakhir_transaksi = '".$tgl_terakhir_transaksi."' WHERE id_pelanggan='".$id_pelanggan."'");
-		} //End of if(status == printed)
+				$tgl_terakhir_transaksi = date("Y-m-d H:i:s");
+				Execute("UPDATE m_pelanggan SET tgl_terakhir_transaksi = '".$tgl_terakhir_transaksi."' WHERE id_pelanggan='".$id_pelanggan."'");
+			} //End of if(status == printed)
 	}
 
 	// Row Update Conflict event

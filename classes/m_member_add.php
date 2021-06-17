@@ -862,7 +862,7 @@ class m_member_add extends m_member
 		// Check field name 'kode_member' first before field var 'x_kode_member'
 		$val = $CurrentForm->hasValue("kode_member") ? $CurrentForm->getValue("kode_member") : $CurrentForm->getValue("x_kode_member");
 		if (!$this->kode_member->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kode_member->Visible = FALSE; // Disable update for API request
 			else
 				$this->kode_member->setFormValue($val);
@@ -871,7 +871,7 @@ class m_member_add extends m_member
 		// Check field name 'id_klinik' first before field var 'x_id_klinik'
 		$val = $CurrentForm->hasValue("id_klinik") ? $CurrentForm->getValue("id_klinik") : $CurrentForm->getValue("x_id_klinik");
 		if (!$this->id_klinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_klinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_klinik->setFormValue($val);
@@ -880,7 +880,7 @@ class m_member_add extends m_member
 		// Check field name 'id_pelanggan' first before field var 'x_id_pelanggan'
 		$val = $CurrentForm->hasValue("id_pelanggan") ? $CurrentForm->getValue("id_pelanggan") : $CurrentForm->getValue("x_id_pelanggan");
 		if (!$this->id_pelanggan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_pelanggan->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_pelanggan->setFormValue($val);
@@ -889,7 +889,7 @@ class m_member_add extends m_member
 		// Check field name 'jenis_member' first before field var 'x_jenis_member'
 		$val = $CurrentForm->hasValue("jenis_member") ? $CurrentForm->getValue("jenis_member") : $CurrentForm->getValue("x_jenis_member");
 		if (!$this->jenis_member->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->jenis_member->Visible = FALSE; // Disable update for API request
 			else
 				$this->jenis_member->setFormValue($val);
@@ -898,7 +898,7 @@ class m_member_add extends m_member
 		// Check field name 'tgl_mulai' first before field var 'x_tgl_mulai'
 		$val = $CurrentForm->hasValue("tgl_mulai") ? $CurrentForm->getValue("tgl_mulai") : $CurrentForm->getValue("x_tgl_mulai");
 		if (!$this->tgl_mulai->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tgl_mulai->Visible = FALSE; // Disable update for API request
 			else
 				$this->tgl_mulai->setFormValue($val);
@@ -908,7 +908,7 @@ class m_member_add extends m_member
 		// Check field name 'tgl_akhir' first before field var 'x_tgl_akhir'
 		$val = $CurrentForm->hasValue("tgl_akhir") ? $CurrentForm->getValue("tgl_akhir") : $CurrentForm->getValue("x_tgl_akhir");
 		if (!$this->tgl_akhir->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tgl_akhir->Visible = FALSE; // Disable update for API request
 			else
 				$this->tgl_akhir->setFormValue($val);

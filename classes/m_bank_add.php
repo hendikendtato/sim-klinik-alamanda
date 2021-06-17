@@ -830,7 +830,7 @@ class m_bank_add extends m_bank
 		// Check field name 'nama_bank' first before field var 'x_nama_bank'
 		$val = $CurrentForm->hasValue("nama_bank") ? $CurrentForm->getValue("nama_bank") : $CurrentForm->getValue("x_nama_bank");
 		if (!$this->nama_bank->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama_bank->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama_bank->setFormValue($val);

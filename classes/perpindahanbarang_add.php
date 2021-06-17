@@ -853,7 +853,7 @@ class perpindahanbarang_add extends perpindahanbarang
 		// Check field name 'tanggal' first before field var 'x_tanggal'
 		$val = $CurrentForm->hasValue("tanggal") ? $CurrentForm->getValue("tanggal") : $CurrentForm->getValue("x_tanggal");
 		if (!$this->tanggal->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tanggal->Visible = FALSE; // Disable update for API request
 			else
 				$this->tanggal->setFormValue($val);
@@ -863,7 +863,7 @@ class perpindahanbarang_add extends perpindahanbarang
 		// Check field name 'asal' first before field var 'x_asal'
 		$val = $CurrentForm->hasValue("asal") ? $CurrentForm->getValue("asal") : $CurrentForm->getValue("x_asal");
 		if (!$this->asal->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->asal->Visible = FALSE; // Disable update for API request
 			else
 				$this->asal->setFormValue($val);
@@ -872,7 +872,7 @@ class perpindahanbarang_add extends perpindahanbarang
 		// Check field name 'tujuan' first before field var 'x_tujuan'
 		$val = $CurrentForm->hasValue("tujuan") ? $CurrentForm->getValue("tujuan") : $CurrentForm->getValue("x_tujuan");
 		if (!$this->tujuan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tujuan->Visible = FALSE; // Disable update for API request
 			else
 				$this->tujuan->setFormValue($val);
@@ -881,7 +881,7 @@ class perpindahanbarang_add extends perpindahanbarang
 		// Check field name 'keterangan' first before field var 'x_keterangan'
 		$val = $CurrentForm->hasValue("keterangan") ? $CurrentForm->getValue("keterangan") : $CurrentForm->getValue("x_keterangan");
 		if (!$this->keterangan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->keterangan->Visible = FALSE; // Disable update for API request
 			else
 				$this->keterangan->setFormValue($val);

@@ -856,7 +856,7 @@ class detailmutasibank_add extends detailmutasibank
 		// Check field name 'pid' first before field var 'x_pid'
 		$val = $CurrentForm->hasValue("pid") ? $CurrentForm->getValue("pid") : $CurrentForm->getValue("x_pid");
 		if (!$this->pid->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->pid->Visible = FALSE; // Disable update for API request
 			else
 				$this->pid->setFormValue($val);
@@ -865,7 +865,7 @@ class detailmutasibank_add extends detailmutasibank
 		// Check field name 'akun_id' first before field var 'x_akun_id'
 		$val = $CurrentForm->hasValue("akun_id") ? $CurrentForm->getValue("akun_id") : $CurrentForm->getValue("x_akun_id");
 		if (!$this->akun_id->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->akun_id->Visible = FALSE; // Disable update for API request
 			else
 				$this->akun_id->setFormValue($val);
@@ -874,7 +874,7 @@ class detailmutasibank_add extends detailmutasibank
 		// Check field name 'nama_akun' first before field var 'x_nama_akun'
 		$val = $CurrentForm->hasValue("nama_akun") ? $CurrentForm->getValue("nama_akun") : $CurrentForm->getValue("x_nama_akun");
 		if (!$this->nama_akun->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama_akun->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama_akun->setFormValue($val);
@@ -883,7 +883,7 @@ class detailmutasibank_add extends detailmutasibank
 		// Check field name 'jumlah' first before field var 'x_jumlah'
 		$val = $CurrentForm->hasValue("jumlah") ? $CurrentForm->getValue("jumlah") : $CurrentForm->getValue("x_jumlah");
 		if (!$this->jumlah->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->jumlah->Visible = FALSE; // Disable update for API request
 			else
 				$this->jumlah->setFormValue($val);
@@ -892,7 +892,7 @@ class detailmutasibank_add extends detailmutasibank
 		// Check field name 'keterangan' first before field var 'x_keterangan'
 		$val = $CurrentForm->hasValue("keterangan") ? $CurrentForm->getValue("keterangan") : $CurrentForm->getValue("x_keterangan");
 		if (!$this->keterangan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->keterangan->Visible = FALSE; // Disable update for API request
 			else
 				$this->keterangan->setFormValue($val);
@@ -901,7 +901,7 @@ class detailmutasibank_add extends detailmutasibank
 		// Check field name 'tipe_mutasi' first before field var 'x_tipe_mutasi'
 		$val = $CurrentForm->hasValue("tipe_mutasi") ? $CurrentForm->getValue("tipe_mutasi") : $CurrentForm->getValue("x_tipe_mutasi");
 		if (!$this->tipe_mutasi->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tipe_mutasi->Visible = FALSE; // Disable update for API request
 			else
 				$this->tipe_mutasi->setFormValue($val);

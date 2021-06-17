@@ -842,6 +842,7 @@ class penjualan_list extends penjualan
 		$this->metode_pembayaran->setVisibility();
 		$this->id_bank->Visible = FALSE;
 		$this->id_kartu->Visible = FALSE;
+		$this->jumlah_voucher->setVisibility();
 		$this->sales->Visible = FALSE;
 		$this->dok_be_wajah->Visible = FALSE;
 		$this->be_body->Visible = FALSE;
@@ -856,7 +857,6 @@ class penjualan_list extends penjualan
 		$this->_action->Visible = FALSE;
 		$this->status->setVisibility();
 		$this->status_void->Visible = FALSE;
-		$this->jumlah_voucher->Visible = FALSE;
 		$this->hideFieldsForAddEdit();
 
 		// Global Page Loading event (in userfn*.php)
@@ -1199,6 +1199,7 @@ class penjualan_list extends penjualan
 		$filterList = Concat($filterList, $this->metode_pembayaran->AdvancedSearch->toJson(), ","); // Field metode_pembayaran
 		$filterList = Concat($filterList, $this->id_bank->AdvancedSearch->toJson(), ","); // Field id_bank
 		$filterList = Concat($filterList, $this->id_kartu->AdvancedSearch->toJson(), ","); // Field id_kartu
+		$filterList = Concat($filterList, $this->jumlah_voucher->AdvancedSearch->toJson(), ","); // Field jumlah_voucher
 		$filterList = Concat($filterList, $this->sales->AdvancedSearch->toJson(), ","); // Field sales
 		$filterList = Concat($filterList, $this->dok_be_wajah->AdvancedSearch->toJson(), ","); // Field dok_be_wajah
 		$filterList = Concat($filterList, $this->be_body->AdvancedSearch->toJson(), ","); // Field be_body
@@ -1213,7 +1214,6 @@ class penjualan_list extends penjualan
 		$filterList = Concat($filterList, $this->_action->AdvancedSearch->toJson(), ","); // Field action
 		$filterList = Concat($filterList, $this->status->AdvancedSearch->toJson(), ","); // Field status
 		$filterList = Concat($filterList, $this->status_void->AdvancedSearch->toJson(), ","); // Field status_void
-		$filterList = Concat($filterList, $this->jumlah_voucher->AdvancedSearch->toJson(), ","); // Field jumlah_voucher
 		if ($this->BasicSearch->Keyword != "") {
 			$wrk = "\"" . Config("TABLE_BASIC_SEARCH") . "\":\"" . JsEncode($this->BasicSearch->Keyword) . "\",\"" . Config("TABLE_BASIC_SEARCH_TYPE") . "\":\"" . JsEncode($this->BasicSearch->Type) . "\"";
 			$filterList = Concat($filterList, $wrk, ",");
@@ -1396,6 +1396,14 @@ class penjualan_list extends penjualan
 		$this->id_kartu->AdvancedSearch->SearchOperator2 = @$filter["w_id_kartu"];
 		$this->id_kartu->AdvancedSearch->save();
 
+		// Field jumlah_voucher
+		$this->jumlah_voucher->AdvancedSearch->SearchValue = @$filter["x_jumlah_voucher"];
+		$this->jumlah_voucher->AdvancedSearch->SearchOperator = @$filter["z_jumlah_voucher"];
+		$this->jumlah_voucher->AdvancedSearch->SearchCondition = @$filter["v_jumlah_voucher"];
+		$this->jumlah_voucher->AdvancedSearch->SearchValue2 = @$filter["y_jumlah_voucher"];
+		$this->jumlah_voucher->AdvancedSearch->SearchOperator2 = @$filter["w_jumlah_voucher"];
+		$this->jumlah_voucher->AdvancedSearch->save();
+
 		// Field sales
 		$this->sales->AdvancedSearch->SearchValue = @$filter["x_sales"];
 		$this->sales->AdvancedSearch->SearchOperator = @$filter["z_sales"];
@@ -1507,14 +1515,6 @@ class penjualan_list extends penjualan
 		$this->status_void->AdvancedSearch->SearchValue2 = @$filter["y_status_void"];
 		$this->status_void->AdvancedSearch->SearchOperator2 = @$filter["w_status_void"];
 		$this->status_void->AdvancedSearch->save();
-
-		// Field jumlah_voucher
-		$this->jumlah_voucher->AdvancedSearch->SearchValue = @$filter["x_jumlah_voucher"];
-		$this->jumlah_voucher->AdvancedSearch->SearchOperator = @$filter["z_jumlah_voucher"];
-		$this->jumlah_voucher->AdvancedSearch->SearchCondition = @$filter["v_jumlah_voucher"];
-		$this->jumlah_voucher->AdvancedSearch->SearchValue2 = @$filter["y_jumlah_voucher"];
-		$this->jumlah_voucher->AdvancedSearch->SearchOperator2 = @$filter["w_jumlah_voucher"];
-		$this->jumlah_voucher->AdvancedSearch->save();
 		$this->BasicSearch->setKeyword(@$filter[Config("TABLE_BASIC_SEARCH")]);
 		$this->BasicSearch->setType(@$filter[Config("TABLE_BASIC_SEARCH_TYPE")]);
 	}
@@ -1544,6 +1544,7 @@ class penjualan_list extends penjualan
 		$this->buildSearchSql($where, $this->metode_pembayaran, $default, FALSE); // metode_pembayaran
 		$this->buildSearchSql($where, $this->id_bank, $default, FALSE); // id_bank
 		$this->buildSearchSql($where, $this->id_kartu, $default, FALSE); // id_kartu
+		$this->buildSearchSql($where, $this->jumlah_voucher, $default, FALSE); // jumlah_voucher
 		$this->buildSearchSql($where, $this->sales, $default, FALSE); // sales
 		$this->buildSearchSql($where, $this->dok_be_wajah, $default, FALSE); // dok_be_wajah
 		$this->buildSearchSql($where, $this->be_body, $default, FALSE); // be_body
@@ -1558,7 +1559,6 @@ class penjualan_list extends penjualan
 		$this->buildSearchSql($where, $this->_action, $default, FALSE); // action
 		$this->buildSearchSql($where, $this->status, $default, FALSE); // status
 		$this->buildSearchSql($where, $this->status_void, $default, FALSE); // status_void
-		$this->buildSearchSql($where, $this->jumlah_voucher, $default, FALSE); // jumlah_voucher
 
 		// Set up search parm
 		if (!$default && $where != "" && in_array($this->Command, ["", "reset", "resetall"])) {
@@ -1583,6 +1583,7 @@ class penjualan_list extends penjualan
 			$this->metode_pembayaran->AdvancedSearch->save(); // metode_pembayaran
 			$this->id_bank->AdvancedSearch->save(); // id_bank
 			$this->id_kartu->AdvancedSearch->save(); // id_kartu
+			$this->jumlah_voucher->AdvancedSearch->save(); // jumlah_voucher
 			$this->sales->AdvancedSearch->save(); // sales
 			$this->dok_be_wajah->AdvancedSearch->save(); // dok_be_wajah
 			$this->be_body->AdvancedSearch->save(); // be_body
@@ -1597,7 +1598,6 @@ class penjualan_list extends penjualan
 			$this->_action->AdvancedSearch->save(); // action
 			$this->status->AdvancedSearch->save(); // status
 			$this->status_void->AdvancedSearch->save(); // status_void
-			$this->jumlah_voucher->AdvancedSearch->save(); // jumlah_voucher
 		}
 		return $where;
 	}
@@ -1663,6 +1663,7 @@ class penjualan_list extends penjualan
 		$this->buildBasicSearchSql($where, $this->id_member, $arKeywords, $type);
 		$this->buildBasicSearchSql($where, $this->keterangan, $arKeywords, $type);
 		$this->buildBasicSearchSql($where, $this->metode_pembayaran, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->jumlah_voucher, $arKeywords, $type);
 		$this->buildBasicSearchSql($where, $this->sales, $arKeywords, $type);
 		$this->buildBasicSearchSql($where, $this->dok_be_wajah, $arKeywords, $type);
 		$this->buildBasicSearchSql($where, $this->be_body, $arKeywords, $type);
@@ -1819,6 +1820,8 @@ class penjualan_list extends penjualan
 			return TRUE;
 		if ($this->id_kartu->AdvancedSearch->issetSession())
 			return TRUE;
+		if ($this->jumlah_voucher->AdvancedSearch->issetSession())
+			return TRUE;
 		if ($this->sales->AdvancedSearch->issetSession())
 			return TRUE;
 		if ($this->dok_be_wajah->AdvancedSearch->issetSession())
@@ -1846,8 +1849,6 @@ class penjualan_list extends penjualan
 		if ($this->status->AdvancedSearch->issetSession())
 			return TRUE;
 		if ($this->status_void->AdvancedSearch->issetSession())
-			return TRUE;
-		if ($this->jumlah_voucher->AdvancedSearch->issetSession())
 			return TRUE;
 		return FALSE;
 	}
@@ -1900,6 +1901,7 @@ class penjualan_list extends penjualan
 		$this->metode_pembayaran->AdvancedSearch->unsetSession();
 		$this->id_bank->AdvancedSearch->unsetSession();
 		$this->id_kartu->AdvancedSearch->unsetSession();
+		$this->jumlah_voucher->AdvancedSearch->unsetSession();
 		$this->sales->AdvancedSearch->unsetSession();
 		$this->dok_be_wajah->AdvancedSearch->unsetSession();
 		$this->be_body->AdvancedSearch->unsetSession();
@@ -1914,7 +1916,6 @@ class penjualan_list extends penjualan
 		$this->_action->AdvancedSearch->unsetSession();
 		$this->status->AdvancedSearch->unsetSession();
 		$this->status_void->AdvancedSearch->unsetSession();
-		$this->jumlah_voucher->AdvancedSearch->unsetSession();
 	}
 
 	// Restore all search parameters
@@ -1944,6 +1945,7 @@ class penjualan_list extends penjualan
 		$this->metode_pembayaran->AdvancedSearch->load();
 		$this->id_bank->AdvancedSearch->load();
 		$this->id_kartu->AdvancedSearch->load();
+		$this->jumlah_voucher->AdvancedSearch->load();
 		$this->sales->AdvancedSearch->load();
 		$this->dok_be_wajah->AdvancedSearch->load();
 		$this->be_body->AdvancedSearch->load();
@@ -1958,7 +1960,6 @@ class penjualan_list extends penjualan
 		$this->_action->AdvancedSearch->load();
 		$this->status->AdvancedSearch->load();
 		$this->status_void->AdvancedSearch->load();
-		$this->jumlah_voucher->AdvancedSearch->load();
 	}
 
 	// Set up sort parameters
@@ -1976,6 +1977,7 @@ class penjualan_list extends penjualan
 			$this->updateSort($this->bayar); // bayar
 			$this->updateSort($this->total_non_tunai_charge); // total_non_tunai_charge
 			$this->updateSort($this->metode_pembayaran); // metode_pembayaran
+			$this->updateSort($this->jumlah_voucher); // jumlah_voucher
 			$this->updateSort($this->id_kartubank); // id_kartubank
 			$this->updateSort($this->id_kas); // id_kas
 			$this->updateSort($this->charge); // charge
@@ -2025,6 +2027,7 @@ class penjualan_list extends penjualan
 				$this->bayar->setSort("");
 				$this->total_non_tunai_charge->setSort("");
 				$this->metode_pembayaran->setSort("");
+				$this->jumlah_voucher->setSort("");
 				$this->id_kartubank->setSort("");
 				$this->id_kas->setSort("");
 				$this->charge->setSort("");
@@ -2691,6 +2694,13 @@ class penjualan_list extends penjualan
 				$this->Command = "search";
 		}
 
+		// jumlah_voucher
+		if (!$this->isAddOrEdit() && $this->jumlah_voucher->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->jumlah_voucher->AdvancedSearch->SearchValue != "" || $this->jumlah_voucher->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
 		// sales
 		if (!$this->isAddOrEdit() && $this->sales->AdvancedSearch->get()) {
 			$got = TRUE;
@@ -2788,13 +2798,6 @@ class penjualan_list extends penjualan
 			if (($this->status_void->AdvancedSearch->SearchValue != "" || $this->status_void->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
 				$this->Command = "search";
 		}
-
-		// jumlah_voucher
-		if (!$this->isAddOrEdit() && $this->jumlah_voucher->AdvancedSearch->get()) {
-			$got = TRUE;
-			if (($this->jumlah_voucher->AdvancedSearch->SearchValue != "" || $this->jumlah_voucher->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
-				$this->Command = "search";
-		}
 		return $got;
 	}
 
@@ -2883,6 +2886,7 @@ class penjualan_list extends penjualan
 		$this->metode_pembayaran->setDbValue($row['metode_pembayaran']);
 		$this->id_bank->setDbValue($row['id_bank']);
 		$this->id_kartu->setDbValue($row['id_kartu']);
+		$this->jumlah_voucher->setDbValue($row['jumlah_voucher']);
 		$this->sales->setDbValue($row['sales']);
 		$this->dok_be_wajah->setDbValue($row['dok_be_wajah']);
 		$this->be_body->setDbValue($row['be_body']);
@@ -2897,7 +2901,6 @@ class penjualan_list extends penjualan
 		$this->_action->setDbValue($row['action']);
 		$this->status->setDbValue($row['status']);
 		$this->status_void->setDbValue($row['status_void']);
-		$this->jumlah_voucher->setDbValue($row['jumlah_voucher']);
 		if (!isset($GLOBALS["detailpenjualan_grid"]))
 			$GLOBALS["detailpenjualan_grid"] = new detailpenjualan_grid();
 		$detailFilter = $GLOBALS["detailpenjualan"]->sqlDetailFilter_penjualan();
@@ -2929,6 +2932,7 @@ class penjualan_list extends penjualan
 		$row['metode_pembayaran'] = NULL;
 		$row['id_bank'] = NULL;
 		$row['id_kartu'] = NULL;
+		$row['jumlah_voucher'] = NULL;
 		$row['sales'] = NULL;
 		$row['dok_be_wajah'] = NULL;
 		$row['be_body'] = NULL;
@@ -2943,7 +2947,6 @@ class penjualan_list extends penjualan
 		$row['action'] = NULL;
 		$row['status'] = NULL;
 		$row['status_void'] = NULL;
-		$row['jumlah_voucher'] = NULL;
 		return $row;
 	}
 
@@ -3029,6 +3032,7 @@ class penjualan_list extends penjualan
 		// metode_pembayaran
 		// id_bank
 		// id_kartu
+		// jumlah_voucher
 		// sales
 
 		$this->sales->CellCssStyle = "white-space: nowrap;";
@@ -3046,7 +3050,6 @@ class penjualan_list extends penjualan
 		// action
 		// status
 		// status_void
-		// jumlah_voucher
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -3254,6 +3257,11 @@ class penjualan_list extends penjualan
 				$this->id_kartu->ViewValue = NULL;
 			}
 			$this->id_kartu->ViewCustomAttributes = "";
+
+			// jumlah_voucher
+			$this->jumlah_voucher->ViewValue = $this->jumlah_voucher->CurrentValue;
+			$this->jumlah_voucher->ViewValue = FormatNumber($this->jumlah_voucher->ViewValue, 0, -2, -2, -2);
+			$this->jumlah_voucher->ViewCustomAttributes = "";
 
 			// sales
 			$curVal = strval($this->sales->CurrentValue);
@@ -3474,11 +3482,6 @@ class penjualan_list extends penjualan
 			$this->status_void->ViewValue = $this->status_void->CurrentValue;
 			$this->status_void->ViewCustomAttributes = "";
 
-			// jumlah_voucher
-			$this->jumlah_voucher->ViewValue = $this->jumlah_voucher->CurrentValue;
-			$this->jumlah_voucher->ViewValue = FormatNumber($this->jumlah_voucher->ViewValue, 0, -2, -2, -2);
-			$this->jumlah_voucher->ViewCustomAttributes = "";
-
 			// kode_penjualan
 			$this->kode_penjualan->LinkCustomAttributes = "";
 			$this->kode_penjualan->HrefValue = "";
@@ -3513,6 +3516,11 @@ class penjualan_list extends penjualan
 			$this->metode_pembayaran->LinkCustomAttributes = "";
 			$this->metode_pembayaran->HrefValue = "";
 			$this->metode_pembayaran->TooltipValue = "";
+
+			// jumlah_voucher
+			$this->jumlah_voucher->LinkCustomAttributes = "";
+			$this->jumlah_voucher->HrefValue = "";
+			$this->jumlah_voucher->TooltipValue = "";
 
 			// id_kartubank
 			$this->id_kartubank->LinkCustomAttributes = "";
@@ -3595,6 +3603,7 @@ class penjualan_list extends penjualan
 		$this->metode_pembayaran->AdvancedSearch->load();
 		$this->id_bank->AdvancedSearch->load();
 		$this->id_kartu->AdvancedSearch->load();
+		$this->jumlah_voucher->AdvancedSearch->load();
 		$this->sales->AdvancedSearch->load();
 		$this->dok_be_wajah->AdvancedSearch->load();
 		$this->be_body->AdvancedSearch->load();
@@ -3609,7 +3618,6 @@ class penjualan_list extends penjualan
 		$this->_action->AdvancedSearch->load();
 		$this->status->AdvancedSearch->load();
 		$this->status_void->AdvancedSearch->load();
-		$this->jumlah_voucher->AdvancedSearch->load();
 	}
 
 	// Get export HTML tag

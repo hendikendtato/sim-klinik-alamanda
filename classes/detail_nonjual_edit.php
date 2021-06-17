@@ -865,7 +865,7 @@ class detail_nonjual_edit extends detail_nonjual
 		// Check field name 'id_nonjual' first before field var 'x_id_nonjual'
 		$val = $CurrentForm->hasValue("id_nonjual") ? $CurrentForm->getValue("id_nonjual") : $CurrentForm->getValue("x_id_nonjual");
 		if (!$this->id_nonjual->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_nonjual->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_nonjual->setFormValue($val);
@@ -874,7 +874,7 @@ class detail_nonjual_edit extends detail_nonjual
 		// Check field name 'id_barang' first before field var 'x_id_barang'
 		$val = $CurrentForm->hasValue("id_barang") ? $CurrentForm->getValue("id_barang") : $CurrentForm->getValue("x_id_barang");
 		if (!$this->id_barang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_barang->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_barang->setFormValue($val);
@@ -883,7 +883,7 @@ class detail_nonjual_edit extends detail_nonjual
 		// Check field name 'stok' first before field var 'x_stok'
 		$val = $CurrentForm->hasValue("stok") ? $CurrentForm->getValue("stok") : $CurrentForm->getValue("x_stok");
 		if (!$this->stok->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->stok->Visible = FALSE; // Disable update for API request
 			else
 				$this->stok->setFormValue($val);
@@ -892,7 +892,7 @@ class detail_nonjual_edit extends detail_nonjual
 		// Check field name 'qty' first before field var 'x_qty'
 		$val = $CurrentForm->hasValue("qty") ? $CurrentForm->getValue("qty") : $CurrentForm->getValue("x_qty");
 		if (!$this->qty->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->qty->Visible = FALSE; // Disable update for API request
 			else
 				$this->qty->setFormValue($val);

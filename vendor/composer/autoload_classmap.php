@@ -6,8 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+    'Cpdf' => $vendorDir . '/hkvstore/dompdf/lib/Cpdf.php',
     'Datamatrix' => $vendorDir . '/tecnickcom/tcpdf/include/barcodes/datamatrix.php',
-    'Dompdf\\Cpdf' => $vendorDir . '/hkvstore/dompdf/lib/Cpdf.php',
     'HTML5_Data' => $vendorDir . '/hkvstore/dompdf/lib/html5lib/Data.php',
     'HTML5_InputStream' => $vendorDir . '/hkvstore/dompdf/lib/html5lib/InputStream.php',
     'HTML5_Parser' => $vendorDir . '/hkvstore/dompdf/lib/html5lib/Parser.php',

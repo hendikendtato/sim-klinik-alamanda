@@ -830,7 +830,7 @@ class m_tags_add extends m_tags
 		// Check field name 'nama_tag' first before field var 'x_nama_tag'
 		$val = $CurrentForm->hasValue("nama_tag") ? $CurrentForm->getValue("nama_tag") : $CurrentForm->getValue("x_nama_tag");
 		if (!$this->nama_tag->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama_tag->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama_tag->setFormValue($val);

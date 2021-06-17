@@ -839,7 +839,7 @@ class userlevelpermissions_add extends userlevelpermissions
 		// Check field name 'userlevelid' first before field var 'x_userlevelid'
 		$val = $CurrentForm->hasValue("userlevelid") ? $CurrentForm->getValue("userlevelid") : $CurrentForm->getValue("x_userlevelid");
 		if (!$this->userlevelid->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->userlevelid->Visible = FALSE; // Disable update for API request
 			else
 				$this->userlevelid->setFormValue($val);
@@ -848,7 +848,7 @@ class userlevelpermissions_add extends userlevelpermissions
 		// Check field name 'tablename' first before field var 'x__tablename'
 		$val = $CurrentForm->hasValue("tablename") ? $CurrentForm->getValue("tablename") : $CurrentForm->getValue("x__tablename");
 		if (!$this->_tablename->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->_tablename->Visible = FALSE; // Disable update for API request
 			else
 				$this->_tablename->setFormValue($val);
@@ -857,7 +857,7 @@ class userlevelpermissions_add extends userlevelpermissions
 		// Check field name 'permission' first before field var 'x_permission'
 		$val = $CurrentForm->hasValue("permission") ? $CurrentForm->getValue("permission") : $CurrentForm->getValue("x_permission");
 		if (!$this->permission->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->permission->Visible = FALSE; // Disable update for API request
 			else
 				$this->permission->setFormValue($val);

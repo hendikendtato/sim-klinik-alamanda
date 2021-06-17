@@ -860,7 +860,7 @@ class m_fee_edit extends m_fee
 		// Check field name 'id_barang' first before field var 'x_id_barang'
 		$val = $CurrentForm->hasValue("id_barang") ? $CurrentForm->getValue("id_barang") : $CurrentForm->getValue("x_id_barang");
 		if (!$this->id_barang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_barang->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_barang->setFormValue($val);
@@ -869,7 +869,7 @@ class m_fee_edit extends m_fee
 		// Check field name 'id_pegawai' first before field var 'x_id_pegawai'
 		$val = $CurrentForm->hasValue("id_pegawai") ? $CurrentForm->getValue("id_pegawai") : $CurrentForm->getValue("x_id_pegawai");
 		if (!$this->id_pegawai->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_pegawai->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_pegawai->setFormValue($val);
@@ -878,7 +878,7 @@ class m_fee_edit extends m_fee
 		// Check field name 'prosentase' first before field var 'x_prosentase'
 		$val = $CurrentForm->hasValue("prosentase") ? $CurrentForm->getValue("prosentase") : $CurrentForm->getValue("x_prosentase");
 		if (!$this->prosentase->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->prosentase->Visible = FALSE; // Disable update for API request
 			else
 				$this->prosentase->setFormValue($val);
@@ -887,7 +887,7 @@ class m_fee_edit extends m_fee
 		// Check field name 'id_hargajual' first before field var 'x_id_hargajual'
 		$val = $CurrentForm->hasValue("id_hargajual") ? $CurrentForm->getValue("id_hargajual") : $CurrentForm->getValue("x_id_hargajual");
 		if (!$this->id_hargajual->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_hargajual->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_hargajual->setFormValue($val);
@@ -896,7 +896,7 @@ class m_fee_edit extends m_fee
 		// Check field name 'id_jenispegawai' first before field var 'x_id_jenispegawai'
 		$val = $CurrentForm->hasValue("id_jenispegawai") ? $CurrentForm->getValue("id_jenispegawai") : $CurrentForm->getValue("x_id_jenispegawai");
 		if (!$this->id_jenispegawai->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_jenispegawai->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_jenispegawai->setFormValue($val);

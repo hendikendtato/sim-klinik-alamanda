@@ -864,7 +864,7 @@ class penyesuaian_poin_edit extends penyesuaian_poin
 		// Check field name 'kode_penyesuaianpoin' first before field var 'x_kode_penyesuaianpoin'
 		$val = $CurrentForm->hasValue("kode_penyesuaianpoin") ? $CurrentForm->getValue("kode_penyesuaianpoin") : $CurrentForm->getValue("x_kode_penyesuaianpoin");
 		if (!$this->kode_penyesuaianpoin->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kode_penyesuaianpoin->Visible = FALSE; // Disable update for API request
 			else
 				$this->kode_penyesuaianpoin->setFormValue($val);
@@ -873,7 +873,7 @@ class penyesuaian_poin_edit extends penyesuaian_poin
 		// Check field name 'id_klinik' first before field var 'x_id_klinik'
 		$val = $CurrentForm->hasValue("id_klinik") ? $CurrentForm->getValue("id_klinik") : $CurrentForm->getValue("x_id_klinik");
 		if (!$this->id_klinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_klinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_klinik->setFormValue($val);
@@ -882,7 +882,7 @@ class penyesuaian_poin_edit extends penyesuaian_poin
 		// Check field name 'tgl' first before field var 'x_tgl'
 		$val = $CurrentForm->hasValue("tgl") ? $CurrentForm->getValue("tgl") : $CurrentForm->getValue("x_tgl");
 		if (!$this->tgl->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tgl->Visible = FALSE; // Disable update for API request
 			else
 				$this->tgl->setFormValue($val);

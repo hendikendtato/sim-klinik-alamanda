@@ -285,8 +285,9 @@ class ComposerStaticInit097214ac8b8f327f9ca390b9024c324f
     );
 
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Cpdf' => __DIR__ . '/..' . '/hkvstore/dompdf/lib/Cpdf.php',
         'Datamatrix' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/datamatrix.php',
-        'Dompdf\\Cpdf' => __DIR__ . '/..' . '/hkvstore/dompdf/lib/Cpdf.php',
         'HTML5_Data' => __DIR__ . '/..' . '/hkvstore/dompdf/lib/html5lib/Data.php',
         'HTML5_InputStream' => __DIR__ . '/..' . '/hkvstore/dompdf/lib/html5lib/InputStream.php',
         'HTML5_Parser' => __DIR__ . '/..' . '/hkvstore/dompdf/lib/html5lib/Parser.php',

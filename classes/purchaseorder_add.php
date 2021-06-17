@@ -860,7 +860,7 @@ class purchaseorder_add extends purchaseorder
 		// Check field name 'tgl_po' first before field var 'x_tgl_po'
 		$val = $CurrentForm->hasValue("tgl_po") ? $CurrentForm->getValue("tgl_po") : $CurrentForm->getValue("x_tgl_po");
 		if (!$this->tgl_po->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tgl_po->Visible = FALSE; // Disable update for API request
 			else
 				$this->tgl_po->setFormValue($val);
@@ -870,7 +870,7 @@ class purchaseorder_add extends purchaseorder
 		// Check field name 'idstaff_po' first before field var 'x_idstaff_po'
 		$val = $CurrentForm->hasValue("idstaff_po") ? $CurrentForm->getValue("idstaff_po") : $CurrentForm->getValue("x_idstaff_po");
 		if (!$this->idstaff_po->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->idstaff_po->Visible = FALSE; // Disable update for API request
 			else
 				$this->idstaff_po->setFormValue($val);
@@ -879,7 +879,7 @@ class purchaseorder_add extends purchaseorder
 		// Check field name 'idklinik' first before field var 'x_idklinik'
 		$val = $CurrentForm->hasValue("idklinik") ? $CurrentForm->getValue("idklinik") : $CurrentForm->getValue("x_idklinik");
 		if (!$this->idklinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->idklinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->idklinik->setFormValue($val);
@@ -888,7 +888,7 @@ class purchaseorder_add extends purchaseorder
 		// Check field name 'id_supplier' first before field var 'x_id_supplier'
 		$val = $CurrentForm->hasValue("id_supplier") ? $CurrentForm->getValue("id_supplier") : $CurrentForm->getValue("x_id_supplier");
 		if (!$this->id_supplier->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_supplier->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_supplier->setFormValue($val);
@@ -897,7 +897,7 @@ class purchaseorder_add extends purchaseorder
 		// Check field name 'keterangan' first before field var 'x_keterangan'
 		$val = $CurrentForm->hasValue("keterangan") ? $CurrentForm->getValue("keterangan") : $CurrentForm->getValue("x_keterangan");
 		if (!$this->keterangan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->keterangan->Visible = FALSE; // Disable update for API request
 			else
 				$this->keterangan->setFormValue($val);

@@ -830,7 +830,7 @@ class m_kategoripelanggan_add extends m_kategoripelanggan
 		// Check field name 'nama_kategori' first before field var 'x_nama_kategori'
 		$val = $CurrentForm->hasValue("nama_kategori") ? $CurrentForm->getValue("nama_kategori") : $CurrentForm->getValue("x_nama_kategori");
 		if (!$this->nama_kategori->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama_kategori->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama_kategori->setFormValue($val);

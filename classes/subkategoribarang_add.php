@@ -830,7 +830,7 @@ class subkategoribarang_add extends subkategoribarang
 		// Check field name 'nama' first before field var 'x_nama'
 		$val = $CurrentForm->hasValue("nama") ? $CurrentForm->getValue("nama") : $CurrentForm->getValue("x_nama");
 		if (!$this->nama->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama->setFormValue($val);

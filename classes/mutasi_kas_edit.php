@@ -875,7 +875,7 @@ class mutasi_kas_edit extends mutasi_kas
 		// Check field name 'tgl' first before field var 'x_tgl'
 		$val = $CurrentForm->hasValue("tgl") ? $CurrentForm->getValue("tgl") : $CurrentForm->getValue("x_tgl");
 		if (!$this->tgl->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tgl->Visible = FALSE; // Disable update for API request
 			else
 				$this->tgl->setFormValue($val);
@@ -885,7 +885,7 @@ class mutasi_kas_edit extends mutasi_kas
 		// Check field name 'id_klinik' first before field var 'x_id_klinik'
 		$val = $CurrentForm->hasValue("id_klinik") ? $CurrentForm->getValue("id_klinik") : $CurrentForm->getValue("x_id_klinik");
 		if (!$this->id_klinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_klinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_klinik->setFormValue($val);
@@ -894,7 +894,7 @@ class mutasi_kas_edit extends mutasi_kas
 		// Check field name 'id_kas' first before field var 'x_id_kas'
 		$val = $CurrentForm->hasValue("id_kas") ? $CurrentForm->getValue("id_kas") : $CurrentForm->getValue("x_id_kas");
 		if (!$this->id_kas->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_kas->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_kas->setFormValue($val);
@@ -903,7 +903,7 @@ class mutasi_kas_edit extends mutasi_kas
 		// Check field name 'tipe' first before field var 'x_tipe'
 		$val = $CurrentForm->hasValue("tipe") ? $CurrentForm->getValue("tipe") : $CurrentForm->getValue("x_tipe");
 		if (!$this->tipe->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tipe->Visible = FALSE; // Disable update for API request
 			else
 				$this->tipe->setFormValue($val);
@@ -912,7 +912,7 @@ class mutasi_kas_edit extends mutasi_kas
 		// Check field name 'staff' first before field var 'x_staff'
 		$val = $CurrentForm->hasValue("staff") ? $CurrentForm->getValue("staff") : $CurrentForm->getValue("x_staff");
 		if (!$this->staff->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->staff->Visible = FALSE; // Disable update for API request
 			else
 				$this->staff->setFormValue($val);
@@ -921,7 +921,7 @@ class mutasi_kas_edit extends mutasi_kas
 		// Check field name 'keterangan' first before field var 'x_keterangan'
 		$val = $CurrentForm->hasValue("keterangan") ? $CurrentForm->getValue("keterangan") : $CurrentForm->getValue("x_keterangan");
 		if (!$this->keterangan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->keterangan->Visible = FALSE; // Disable update for API request
 			else
 				$this->keterangan->setFormValue($val);

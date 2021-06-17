@@ -879,7 +879,7 @@ class permintaanpembelian_add extends permintaanpembelian
 		// Check field name 'no_pp' first before field var 'x_no_pp'
 		$val = $CurrentForm->hasValue("no_pp") ? $CurrentForm->getValue("no_pp") : $CurrentForm->getValue("x_no_pp");
 		if (!$this->no_pp->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->no_pp->Visible = FALSE; // Disable update for API request
 			else
 				$this->no_pp->setFormValue($val);
@@ -888,7 +888,7 @@ class permintaanpembelian_add extends permintaanpembelian
 		// Check field name 'namapaket_pp' first before field var 'x_namapaket_pp'
 		$val = $CurrentForm->hasValue("namapaket_pp") ? $CurrentForm->getValue("namapaket_pp") : $CurrentForm->getValue("x_namapaket_pp");
 		if (!$this->namapaket_pp->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->namapaket_pp->Visible = FALSE; // Disable update for API request
 			else
 				$this->namapaket_pp->setFormValue($val);
@@ -897,7 +897,7 @@ class permintaanpembelian_add extends permintaanpembelian
 		// Check field name 'tgl_pp' first before field var 'x_tgl_pp'
 		$val = $CurrentForm->hasValue("tgl_pp") ? $CurrentForm->getValue("tgl_pp") : $CurrentForm->getValue("x_tgl_pp");
 		if (!$this->tgl_pp->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tgl_pp->Visible = FALSE; // Disable update for API request
 			else
 				$this->tgl_pp->setFormValue($val);
@@ -907,7 +907,7 @@ class permintaanpembelian_add extends permintaanpembelian
 		// Check field name 'tgl_kebutuhan' first before field var 'x_tgl_kebutuhan'
 		$val = $CurrentForm->hasValue("tgl_kebutuhan") ? $CurrentForm->getValue("tgl_kebutuhan") : $CurrentForm->getValue("x_tgl_kebutuhan");
 		if (!$this->tgl_kebutuhan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tgl_kebutuhan->Visible = FALSE; // Disable update for API request
 			else
 				$this->tgl_kebutuhan->setFormValue($val);
@@ -917,7 +917,7 @@ class permintaanpembelian_add extends permintaanpembelian
 		// Check field name 'tgl_persetujuan' first before field var 'x_tgl_persetujuan'
 		$val = $CurrentForm->hasValue("tgl_persetujuan") ? $CurrentForm->getValue("tgl_persetujuan") : $CurrentForm->getValue("x_tgl_persetujuan");
 		if (!$this->tgl_persetujuan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tgl_persetujuan->Visible = FALSE; // Disable update for API request
 			else
 				$this->tgl_persetujuan->setFormValue($val);
@@ -927,7 +927,7 @@ class permintaanpembelian_add extends permintaanpembelian
 		// Check field name 'staf_pengajuan' first before field var 'x_staf_pengajuan'
 		$val = $CurrentForm->hasValue("staf_pengajuan") ? $CurrentForm->getValue("staf_pengajuan") : $CurrentForm->getValue("x_staf_pengajuan");
 		if (!$this->staf_pengajuan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->staf_pengajuan->Visible = FALSE; // Disable update for API request
 			else
 				$this->staf_pengajuan->setFormValue($val);
@@ -936,7 +936,7 @@ class permintaanpembelian_add extends permintaanpembelian
 		// Check field name 'staf_validasi' first before field var 'x_staf_validasi'
 		$val = $CurrentForm->hasValue("staf_validasi") ? $CurrentForm->getValue("staf_validasi") : $CurrentForm->getValue("x_staf_validasi");
 		if (!$this->staf_validasi->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->staf_validasi->Visible = FALSE; // Disable update for API request
 			else
 				$this->staf_validasi->setFormValue($val);
@@ -945,7 +945,7 @@ class permintaanpembelian_add extends permintaanpembelian
 		// Check field name 'id_suplier' first before field var 'x_id_suplier'
 		$val = $CurrentForm->hasValue("id_suplier") ? $CurrentForm->getValue("id_suplier") : $CurrentForm->getValue("x_id_suplier");
 		if (!$this->id_suplier->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_suplier->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_suplier->setFormValue($val);
@@ -954,7 +954,7 @@ class permintaanpembelian_add extends permintaanpembelian
 		// Check field name 'idklinik' first before field var 'x_idklinik'
 		$val = $CurrentForm->hasValue("idklinik") ? $CurrentForm->getValue("idklinik") : $CurrentForm->getValue("x_idklinik");
 		if (!$this->idklinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->idklinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->idklinik->setFormValue($val);
@@ -963,7 +963,7 @@ class permintaanpembelian_add extends permintaanpembelian
 		// Check field name 'validasi' first before field var 'x_validasi'
 		$val = $CurrentForm->hasValue("validasi") ? $CurrentForm->getValue("validasi") : $CurrentForm->getValue("x_validasi");
 		if (!$this->validasi->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->validasi->Visible = FALSE; // Disable update for API request
 			else
 				$this->validasi->setFormValue($val);
@@ -972,7 +972,7 @@ class permintaanpembelian_add extends permintaanpembelian
 		// Check field name 'status' first before field var 'x_status'
 		$val = $CurrentForm->hasValue("status") ? $CurrentForm->getValue("status") : $CurrentForm->getValue("x_status");
 		if (!$this->status->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->status->Visible = FALSE; // Disable update for API request
 			else
 				$this->status->setFormValue($val);
@@ -981,7 +981,7 @@ class permintaanpembelian_add extends permintaanpembelian
 		// Check field name 'email_pusat' first before field var 'x_email_pusat'
 		$val = $CurrentForm->hasValue("email_pusat") ? $CurrentForm->getValue("email_pusat") : $CurrentForm->getValue("x_email_pusat");
 		if (!$this->email_pusat->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->email_pusat->Visible = FALSE; // Disable update for API request
 			else
 				$this->email_pusat->setFormValue($val);
@@ -990,7 +990,7 @@ class permintaanpembelian_add extends permintaanpembelian
 		// Check field name 'email_cabang' first before field var 'x_email_cabang'
 		$val = $CurrentForm->hasValue("email_cabang") ? $CurrentForm->getValue("email_cabang") : $CurrentForm->getValue("x_email_cabang");
 		if (!$this->email_cabang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->email_cabang->Visible = FALSE; // Disable update for API request
 			else
 				$this->email_cabang->setFormValue($val);

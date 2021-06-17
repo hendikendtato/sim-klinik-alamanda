@@ -869,7 +869,7 @@ class m_barang_add extends m_barang
 		// Check field name 'kode_barang' first before field var 'x_kode_barang'
 		$val = $CurrentForm->hasValue("kode_barang") ? $CurrentForm->getValue("kode_barang") : $CurrentForm->getValue("x_kode_barang");
 		if (!$this->kode_barang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kode_barang->Visible = FALSE; // Disable update for API request
 			else
 				$this->kode_barang->setFormValue($val);
@@ -878,7 +878,7 @@ class m_barang_add extends m_barang
 		// Check field name 'nama_barang' first before field var 'x_nama_barang'
 		$val = $CurrentForm->hasValue("nama_barang") ? $CurrentForm->getValue("nama_barang") : $CurrentForm->getValue("x_nama_barang");
 		if (!$this->nama_barang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama_barang->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama_barang->setFormValue($val);
@@ -887,7 +887,7 @@ class m_barang_add extends m_barang
 		// Check field name 'satuan' first before field var 'x_satuan'
 		$val = $CurrentForm->hasValue("satuan") ? $CurrentForm->getValue("satuan") : $CurrentForm->getValue("x_satuan");
 		if (!$this->satuan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->satuan->Visible = FALSE; // Disable update for API request
 			else
 				$this->satuan->setFormValue($val);
@@ -896,7 +896,7 @@ class m_barang_add extends m_barang
 		// Check field name 'jenis' first before field var 'x_jenis'
 		$val = $CurrentForm->hasValue("jenis") ? $CurrentForm->getValue("jenis") : $CurrentForm->getValue("x_jenis");
 		if (!$this->jenis->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->jenis->Visible = FALSE; // Disable update for API request
 			else
 				$this->jenis->setFormValue($val);
@@ -905,7 +905,7 @@ class m_barang_add extends m_barang
 		// Check field name 'kategori' first before field var 'x_kategori'
 		$val = $CurrentForm->hasValue("kategori") ? $CurrentForm->getValue("kategori") : $CurrentForm->getValue("x_kategori");
 		if (!$this->kategori->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kategori->Visible = FALSE; // Disable update for API request
 			else
 				$this->kategori->setFormValue($val);
@@ -914,7 +914,7 @@ class m_barang_add extends m_barang
 		// Check field name 'subkategori' first before field var 'x_subkategori'
 		$val = $CurrentForm->hasValue("subkategori") ? $CurrentForm->getValue("subkategori") : $CurrentForm->getValue("x_subkategori");
 		if (!$this->subkategori->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->subkategori->Visible = FALSE; // Disable update for API request
 			else
 				$this->subkategori->setFormValue($val);
@@ -923,7 +923,7 @@ class m_barang_add extends m_barang
 		// Check field name 'komposisi' first before field var 'x_komposisi'
 		$val = $CurrentForm->hasValue("komposisi") ? $CurrentForm->getValue("komposisi") : $CurrentForm->getValue("x_komposisi");
 		if (!$this->komposisi->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->komposisi->Visible = FALSE; // Disable update for API request
 			else
 				$this->komposisi->setFormValue($val);
@@ -932,7 +932,7 @@ class m_barang_add extends m_barang
 		// Check field name 'tipe' first before field var 'x_tipe'
 		$val = $CurrentForm->hasValue("tipe") ? $CurrentForm->getValue("tipe") : $CurrentForm->getValue("x_tipe");
 		if (!$this->tipe->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tipe->Visible = FALSE; // Disable update for API request
 			else
 				$this->tipe->setFormValue($val);
@@ -941,7 +941,7 @@ class m_barang_add extends m_barang
 		// Check field name 'status' first before field var 'x_status'
 		$val = $CurrentForm->hasValue("status") ? $CurrentForm->getValue("status") : $CurrentForm->getValue("x_status");
 		if (!$this->status->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->status->Visible = FALSE; // Disable update for API request
 			else
 				$this->status->setFormValue($val);
@@ -950,7 +950,7 @@ class m_barang_add extends m_barang
 		// Check field name 'shortname_barang' first before field var 'x_shortname_barang'
 		$val = $CurrentForm->hasValue("shortname_barang") ? $CurrentForm->getValue("shortname_barang") : $CurrentForm->getValue("x_shortname_barang");
 		if (!$this->shortname_barang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->shortname_barang->Visible = FALSE; // Disable update for API request
 			else
 				$this->shortname_barang->setFormValue($val);
@@ -959,7 +959,7 @@ class m_barang_add extends m_barang
 		// Check field name 'id_tag' first before field var 'x_id_tag'
 		$val = $CurrentForm->hasValue("id_tag") ? $CurrentForm->getValue("id_tag") : $CurrentForm->getValue("x_id_tag");
 		if (!$this->id_tag->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_tag->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_tag->setFormValue($val);
@@ -968,7 +968,7 @@ class m_barang_add extends m_barang
 		// Check field name 'discontinue' first before field var 'x_discontinue'
 		$val = $CurrentForm->hasValue("discontinue") ? $CurrentForm->getValue("discontinue") : $CurrentForm->getValue("x_discontinue");
 		if (!$this->discontinue->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->discontinue->Visible = FALSE; // Disable update for API request
 			else
 				$this->discontinue->setFormValue($val);

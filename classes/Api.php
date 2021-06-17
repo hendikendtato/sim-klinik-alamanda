@@ -8,7 +8,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
  */
 class Api
 {
-	protected $SecretKey = 'l6fgGU4kiR4T3jcH';
+	protected $SecretKey = 'EzGZFvLeiyYZI3az';
 	protected $Algorithm = 'HS512';
 
 	// For some reason, the "Authorization" header is removed by IIS, changed to "X-Authorization"
@@ -224,17 +224,22 @@ class Api
 				return (array)$ar["security"];
 			}
 			catch (\Firebase\JWT\BeforeValidException $e) {
-				if (Config("DEBUG"))
-					die($e->getMessage());
 
+				//if (Config("DEBUG"))
+				//	die($e->getMessage());
 				//return ["BeforeValidException" => $e->getMessage()];
+
 				return [];
 			}
 			catch (\Firebase\JWT\ExpiredException $e) {
-				if (Config("DEBUG"))
-					die($e->getMessage());
 
+				//if (Config("DEBUG"))
+				//	die($e->getMessage());
 				//return ["ExpiredException" => $e->getMessage()];
+
+				return [];
+			}
+			catch (\Firebase\JWT\SignatureInvalidException $e) {
 				return [];
 			}
 			catch (Exception $e) {

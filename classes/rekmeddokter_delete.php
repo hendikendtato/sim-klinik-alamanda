@@ -434,6 +434,8 @@ class rekmeddokter_delete extends rekmeddokter
 		if (is_object($rs)) { // Recordset
 			while ($rs && !$rs->EOF) {
 				$this->loadRowValues($rs); // Set up DbValue/CurrentValue
+		$this->foto_perawatan->OldUploadPath = "foto_perawatan/";
+		$this->foto_perawatan->UploadPath = $this->foto_perawatan->OldUploadPath;
 				$row = $this->getRecordFromArray($rs->fields);
 				if ($current)
 					return $row;

@@ -830,7 +830,7 @@ class m_status_barang_add extends m_status_barang
 		// Check field name 'status_barang' first before field var 'x_status_barang'
 		$val = $CurrentForm->hasValue("status_barang") ? $CurrentForm->getValue("status_barang") : $CurrentForm->getValue("x_status_barang");
 		if (!$this->status_barang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->status_barang->Visible = FALSE; // Disable update for API request
 			else
 				$this->status_barang->setFormValue($val);

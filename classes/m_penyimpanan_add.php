@@ -842,7 +842,7 @@ class m_penyimpanan_add extends m_penyimpanan
 		// Check field name 'nama_barang' first before field var 'x_nama_barang'
 		$val = $CurrentForm->hasValue("nama_barang") ? $CurrentForm->getValue("nama_barang") : $CurrentForm->getValue("x_nama_barang");
 		if (!$this->nama_barang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama_barang->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama_barang->setFormValue($val);
@@ -851,7 +851,7 @@ class m_penyimpanan_add extends m_penyimpanan
 		// Check field name 'tanggal_' first before field var 'x_tanggal_'
 		$val = $CurrentForm->hasValue("tanggal_") ? $CurrentForm->getValue("tanggal_") : $CurrentForm->getValue("x_tanggal_");
 		if (!$this->tanggal_->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tanggal_->Visible = FALSE; // Disable update for API request
 			else
 				$this->tanggal_->setFormValue($val);
@@ -861,7 +861,7 @@ class m_penyimpanan_add extends m_penyimpanan
 		// Check field name 'penyimpanan' first before field var 'x_penyimpanan'
 		$val = $CurrentForm->hasValue("penyimpanan") ? $CurrentForm->getValue("penyimpanan") : $CurrentForm->getValue("x_penyimpanan");
 		if (!$this->penyimpanan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->penyimpanan->Visible = FALSE; // Disable update for API request
 			else
 				$this->penyimpanan->setFormValue($val);
@@ -870,7 +870,7 @@ class m_penyimpanan_add extends m_penyimpanan
 		// Check field name 'nomor_laci' first before field var 'x_nomor_laci'
 		$val = $CurrentForm->hasValue("nomor_laci") ? $CurrentForm->getValue("nomor_laci") : $CurrentForm->getValue("x_nomor_laci");
 		if (!$this->nomor_laci->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nomor_laci->Visible = FALSE; // Disable update for API request
 			else
 				$this->nomor_laci->setFormValue($val);
@@ -879,7 +879,7 @@ class m_penyimpanan_add extends m_penyimpanan
 		// Check field name 'Stock' first before field var 'x_Stock'
 		$val = $CurrentForm->hasValue("Stock") ? $CurrentForm->getValue("Stock") : $CurrentForm->getValue("x_Stock");
 		if (!$this->Stock->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->Stock->Visible = FALSE; // Disable update for API request
 			else
 				$this->Stock->setFormValue($val);

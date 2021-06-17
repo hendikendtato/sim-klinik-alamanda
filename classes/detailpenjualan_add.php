@@ -891,7 +891,7 @@ class detailpenjualan_add extends detailpenjualan
 		// Check field name 'id_penjualan' first before field var 'x_id_penjualan'
 		$val = $CurrentForm->hasValue("id_penjualan") ? $CurrentForm->getValue("id_penjualan") : $CurrentForm->getValue("x_id_penjualan");
 		if (!$this->id_penjualan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_penjualan->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_penjualan->setFormValue($val);
@@ -900,7 +900,7 @@ class detailpenjualan_add extends detailpenjualan
 		// Check field name 'id_barang' first before field var 'x_id_barang'
 		$val = $CurrentForm->hasValue("id_barang") ? $CurrentForm->getValue("id_barang") : $CurrentForm->getValue("x_id_barang");
 		if (!$this->id_barang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_barang->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_barang->setFormValue($val);
@@ -909,7 +909,7 @@ class detailpenjualan_add extends detailpenjualan
 		// Check field name 'kode_barang' first before field var 'x_kode_barang'
 		$val = $CurrentForm->hasValue("kode_barang") ? $CurrentForm->getValue("kode_barang") : $CurrentForm->getValue("x_kode_barang");
 		if (!$this->kode_barang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kode_barang->Visible = FALSE; // Disable update for API request
 			else
 				$this->kode_barang->setFormValue($val);
@@ -918,7 +918,7 @@ class detailpenjualan_add extends detailpenjualan
 		// Check field name 'nama_barang' first before field var 'x_nama_barang'
 		$val = $CurrentForm->hasValue("nama_barang") ? $CurrentForm->getValue("nama_barang") : $CurrentForm->getValue("x_nama_barang");
 		if (!$this->nama_barang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama_barang->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama_barang->setFormValue($val);
@@ -927,7 +927,7 @@ class detailpenjualan_add extends detailpenjualan
 		// Check field name 'harga_jual' first before field var 'x_harga_jual'
 		$val = $CurrentForm->hasValue("harga_jual") ? $CurrentForm->getValue("harga_jual") : $CurrentForm->getValue("x_harga_jual");
 		if (!$this->harga_jual->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->harga_jual->Visible = FALSE; // Disable update for API request
 			else
 				$this->harga_jual->setFormValue($val);
@@ -936,7 +936,7 @@ class detailpenjualan_add extends detailpenjualan
 		// Check field name 'stok' first before field var 'x_stok'
 		$val = $CurrentForm->hasValue("stok") ? $CurrentForm->getValue("stok") : $CurrentForm->getValue("x_stok");
 		if (!$this->stok->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->stok->Visible = FALSE; // Disable update for API request
 			else
 				$this->stok->setFormValue($val);
@@ -945,7 +945,7 @@ class detailpenjualan_add extends detailpenjualan
 		// Check field name 'qty' first before field var 'x_qty'
 		$val = $CurrentForm->hasValue("qty") ? $CurrentForm->getValue("qty") : $CurrentForm->getValue("x_qty");
 		if (!$this->qty->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->qty->Visible = FALSE; // Disable update for API request
 			else
 				$this->qty->setFormValue($val);
@@ -954,7 +954,7 @@ class detailpenjualan_add extends detailpenjualan
 		// Check field name 'disc_pr' first before field var 'x_disc_pr'
 		$val = $CurrentForm->hasValue("disc_pr") ? $CurrentForm->getValue("disc_pr") : $CurrentForm->getValue("x_disc_pr");
 		if (!$this->disc_pr->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->disc_pr->Visible = FALSE; // Disable update for API request
 			else
 				$this->disc_pr->setFormValue($val);
@@ -963,7 +963,7 @@ class detailpenjualan_add extends detailpenjualan
 		// Check field name 'disc_rp' first before field var 'x_disc_rp'
 		$val = $CurrentForm->hasValue("disc_rp") ? $CurrentForm->getValue("disc_rp") : $CurrentForm->getValue("x_disc_rp");
 		if (!$this->disc_rp->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->disc_rp->Visible = FALSE; // Disable update for API request
 			else
 				$this->disc_rp->setFormValue($val);
@@ -972,7 +972,7 @@ class detailpenjualan_add extends detailpenjualan
 		// Check field name 'komisi_recall' first before field var 'x_komisi_recall'
 		$val = $CurrentForm->hasValue("komisi_recall") ? $CurrentForm->getValue("komisi_recall") : $CurrentForm->getValue("x_komisi_recall");
 		if (!$this->komisi_recall->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->komisi_recall->Visible = FALSE; // Disable update for API request
 			else
 				$this->komisi_recall->setFormValue($val);
@@ -981,7 +981,7 @@ class detailpenjualan_add extends detailpenjualan
 		// Check field name 'subtotal' first before field var 'x_subtotal'
 		$val = $CurrentForm->hasValue("subtotal") ? $CurrentForm->getValue("subtotal") : $CurrentForm->getValue("x_subtotal");
 		if (!$this->subtotal->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->subtotal->Visible = FALSE; // Disable update for API request
 			else
 				$this->subtotal->setFormValue($val);

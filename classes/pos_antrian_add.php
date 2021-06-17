@@ -829,7 +829,7 @@ class pos_antrian_add extends pos_antrian
 		// Check field name 'nama_pos' first before field var 'x_nama_pos'
 		$val = $CurrentForm->hasValue("nama_pos") ? $CurrentForm->getValue("nama_pos") : $CurrentForm->getValue("x_nama_pos");
 		if (!$this->nama_pos->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama_pos->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama_pos->setFormValue($val);

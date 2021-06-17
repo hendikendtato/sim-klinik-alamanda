@@ -880,7 +880,7 @@ class terimagudang_edit extends terimagudang
 		// Check field name 'id_klinik' first before field var 'x_id_klinik'
 		$val = $CurrentForm->hasValue("id_klinik") ? $CurrentForm->getValue("id_klinik") : $CurrentForm->getValue("x_id_klinik");
 		if (!$this->id_klinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_klinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_klinik->setFormValue($val);
@@ -889,7 +889,7 @@ class terimagudang_edit extends terimagudang
 		// Check field name 'diterima' first before field var 'x_diterima'
 		$val = $CurrentForm->hasValue("diterima") ? $CurrentForm->getValue("diterima") : $CurrentForm->getValue("x_diterima");
 		if (!$this->diterima->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->diterima->Visible = FALSE; // Disable update for API request
 			else
 				$this->diterima->setFormValue($val);
@@ -898,7 +898,7 @@ class terimagudang_edit extends terimagudang
 		// Check field name 'tanggal_terima' first before field var 'x_tanggal_terima'
 		$val = $CurrentForm->hasValue("tanggal_terima") ? $CurrentForm->getValue("tanggal_terima") : $CurrentForm->getValue("x_tanggal_terima");
 		if (!$this->tanggal_terima->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tanggal_terima->Visible = FALSE; // Disable update for API request
 			else
 				$this->tanggal_terima->setFormValue($val);
@@ -908,7 +908,7 @@ class terimagudang_edit extends terimagudang
 		// Check field name 'keterangan' first before field var 'x_keterangan'
 		$val = $CurrentForm->hasValue("keterangan") ? $CurrentForm->getValue("keterangan") : $CurrentForm->getValue("x_keterangan");
 		if (!$this->keterangan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->keterangan->Visible = FALSE; // Disable update for API request
 			else
 				$this->keterangan->setFormValue($val);

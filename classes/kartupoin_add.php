@@ -860,7 +860,7 @@ class kartupoin_add extends kartupoin
 		// Check field name 'id_pelanggan' first before field var 'x_id_pelanggan'
 		$val = $CurrentForm->hasValue("id_pelanggan") ? $CurrentForm->getValue("id_pelanggan") : $CurrentForm->getValue("x_id_pelanggan");
 		if (!$this->id_pelanggan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_pelanggan->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_pelanggan->setFormValue($val);
@@ -869,7 +869,7 @@ class kartupoin_add extends kartupoin
 		// Check field name 'id_klinik' first before field var 'x_id_klinik'
 		$val = $CurrentForm->hasValue("id_klinik") ? $CurrentForm->getValue("id_klinik") : $CurrentForm->getValue("x_id_klinik");
 		if (!$this->id_klinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_klinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_klinik->setFormValue($val);
@@ -878,7 +878,7 @@ class kartupoin_add extends kartupoin
 		// Check field name 'kode_penjualan' first before field var 'x_kode_penjualan'
 		$val = $CurrentForm->hasValue("kode_penjualan") ? $CurrentForm->getValue("kode_penjualan") : $CurrentForm->getValue("x_kode_penjualan");
 		if (!$this->kode_penjualan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kode_penjualan->Visible = FALSE; // Disable update for API request
 			else
 				$this->kode_penjualan->setFormValue($val);
@@ -887,7 +887,7 @@ class kartupoin_add extends kartupoin
 		// Check field name 'id_penyesuaian_poin' first before field var 'x_id_penyesuaian_poin'
 		$val = $CurrentForm->hasValue("id_penyesuaian_poin") ? $CurrentForm->getValue("id_penyesuaian_poin") : $CurrentForm->getValue("x_id_penyesuaian_poin");
 		if (!$this->id_penyesuaian_poin->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_penyesuaian_poin->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_penyesuaian_poin->setFormValue($val);
@@ -896,7 +896,7 @@ class kartupoin_add extends kartupoin
 		// Check field name 'tgl' first before field var 'x_tgl'
 		$val = $CurrentForm->hasValue("tgl") ? $CurrentForm->getValue("tgl") : $CurrentForm->getValue("x_tgl");
 		if (!$this->tgl->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tgl->Visible = FALSE; // Disable update for API request
 			else
 				$this->tgl->setFormValue($val);
@@ -906,7 +906,7 @@ class kartupoin_add extends kartupoin
 		// Check field name 'masuk' first before field var 'x_masuk'
 		$val = $CurrentForm->hasValue("masuk") ? $CurrentForm->getValue("masuk") : $CurrentForm->getValue("x_masuk");
 		if (!$this->masuk->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->masuk->Visible = FALSE; // Disable update for API request
 			else
 				$this->masuk->setFormValue($val);
@@ -915,7 +915,7 @@ class kartupoin_add extends kartupoin
 		// Check field name 'masuk_penyesuaian' first before field var 'x_masuk_penyesuaian'
 		$val = $CurrentForm->hasValue("masuk_penyesuaian") ? $CurrentForm->getValue("masuk_penyesuaian") : $CurrentForm->getValue("x_masuk_penyesuaian");
 		if (!$this->masuk_penyesuaian->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->masuk_penyesuaian->Visible = FALSE; // Disable update for API request
 			else
 				$this->masuk_penyesuaian->setFormValue($val);
@@ -924,7 +924,7 @@ class kartupoin_add extends kartupoin
 		// Check field name 'keluar' first before field var 'x_keluar'
 		$val = $CurrentForm->hasValue("keluar") ? $CurrentForm->getValue("keluar") : $CurrentForm->getValue("x_keluar");
 		if (!$this->keluar->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->keluar->Visible = FALSE; // Disable update for API request
 			else
 				$this->keluar->setFormValue($val);
@@ -933,7 +933,7 @@ class kartupoin_add extends kartupoin
 		// Check field name 'keluar_penyesuaian' first before field var 'x_keluar_penyesuaian'
 		$val = $CurrentForm->hasValue("keluar_penyesuaian") ? $CurrentForm->getValue("keluar_penyesuaian") : $CurrentForm->getValue("x_keluar_penyesuaian");
 		if (!$this->keluar_penyesuaian->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->keluar_penyesuaian->Visible = FALSE; // Disable update for API request
 			else
 				$this->keluar_penyesuaian->setFormValue($val);
@@ -942,7 +942,7 @@ class kartupoin_add extends kartupoin
 		// Check field name 'saldo_poin' first before field var 'x_saldo_poin'
 		$val = $CurrentForm->hasValue("saldo_poin") ? $CurrentForm->getValue("saldo_poin") : $CurrentForm->getValue("x_saldo_poin");
 		if (!$this->saldo_poin->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->saldo_poin->Visible = FALSE; // Disable update for API request
 			else
 				$this->saldo_poin->setFormValue($val);

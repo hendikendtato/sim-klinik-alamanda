@@ -874,7 +874,7 @@ class m_pegawai_edit extends m_pegawai
 		// Check field name 'nama_pegawai' first before field var 'x_nama_pegawai'
 		$val = $CurrentForm->hasValue("nama_pegawai") ? $CurrentForm->getValue("nama_pegawai") : $CurrentForm->getValue("x_nama_pegawai");
 		if (!$this->nama_pegawai->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama_pegawai->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama_pegawai->setFormValue($val);
@@ -883,7 +883,7 @@ class m_pegawai_edit extends m_pegawai
 		// Check field name 'nama_lengkap' first before field var 'x_nama_lengkap'
 		$val = $CurrentForm->hasValue("nama_lengkap") ? $CurrentForm->getValue("nama_lengkap") : $CurrentForm->getValue("x_nama_lengkap");
 		if (!$this->nama_lengkap->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama_lengkap->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama_lengkap->setFormValue($val);
@@ -892,7 +892,7 @@ class m_pegawai_edit extends m_pegawai
 		// Check field name 'jenis_pegawai' first before field var 'x_jenis_pegawai'
 		$val = $CurrentForm->hasValue("jenis_pegawai") ? $CurrentForm->getValue("jenis_pegawai") : $CurrentForm->getValue("x_jenis_pegawai");
 		if (!$this->jenis_pegawai->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->jenis_pegawai->Visible = FALSE; // Disable update for API request
 			else
 				$this->jenis_pegawai->setFormValue($val);
@@ -901,7 +901,7 @@ class m_pegawai_edit extends m_pegawai
 		// Check field name 'nik_pegawai' first before field var 'x_nik_pegawai'
 		$val = $CurrentForm->hasValue("nik_pegawai") ? $CurrentForm->getValue("nik_pegawai") : $CurrentForm->getValue("x_nik_pegawai");
 		if (!$this->nik_pegawai->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nik_pegawai->Visible = FALSE; // Disable update for API request
 			else
 				$this->nik_pegawai->setFormValue($val);
@@ -910,7 +910,7 @@ class m_pegawai_edit extends m_pegawai
 		// Check field name 'agama_pegawai' first before field var 'x_agama_pegawai'
 		$val = $CurrentForm->hasValue("agama_pegawai") ? $CurrentForm->getValue("agama_pegawai") : $CurrentForm->getValue("x_agama_pegawai");
 		if (!$this->agama_pegawai->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->agama_pegawai->Visible = FALSE; // Disable update for API request
 			else
 				$this->agama_pegawai->setFormValue($val);
@@ -919,7 +919,7 @@ class m_pegawai_edit extends m_pegawai
 		// Check field name 'tgllahir_pegawai' first before field var 'x_tgllahir_pegawai'
 		$val = $CurrentForm->hasValue("tgllahir_pegawai") ? $CurrentForm->getValue("tgllahir_pegawai") : $CurrentForm->getValue("x_tgllahir_pegawai");
 		if (!$this->tgllahir_pegawai->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tgllahir_pegawai->Visible = FALSE; // Disable update for API request
 			else
 				$this->tgllahir_pegawai->setFormValue($val);
@@ -929,7 +929,7 @@ class m_pegawai_edit extends m_pegawai
 		// Check field name 'alamat_pegawai' first before field var 'x_alamat_pegawai'
 		$val = $CurrentForm->hasValue("alamat_pegawai") ? $CurrentForm->getValue("alamat_pegawai") : $CurrentForm->getValue("x_alamat_pegawai");
 		if (!$this->alamat_pegawai->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->alamat_pegawai->Visible = FALSE; // Disable update for API request
 			else
 				$this->alamat_pegawai->setFormValue($val);
@@ -938,7 +938,7 @@ class m_pegawai_edit extends m_pegawai
 		// Check field name 'hp_pegawai' first before field var 'x_hp_pegawai'
 		$val = $CurrentForm->hasValue("hp_pegawai") ? $CurrentForm->getValue("hp_pegawai") : $CurrentForm->getValue("x_hp_pegawai");
 		if (!$this->hp_pegawai->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->hp_pegawai->Visible = FALSE; // Disable update for API request
 			else
 				$this->hp_pegawai->setFormValue($val);
@@ -947,7 +947,7 @@ class m_pegawai_edit extends m_pegawai
 		// Check field name 'pendidikan_pegawai' first before field var 'x_pendidikan_pegawai'
 		$val = $CurrentForm->hasValue("pendidikan_pegawai") ? $CurrentForm->getValue("pendidikan_pegawai") : $CurrentForm->getValue("x_pendidikan_pegawai");
 		if (!$this->pendidikan_pegawai->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->pendidikan_pegawai->Visible = FALSE; // Disable update for API request
 			else
 				$this->pendidikan_pegawai->setFormValue($val);
@@ -956,7 +956,7 @@ class m_pegawai_edit extends m_pegawai
 		// Check field name 'jurusan_pegawai' first before field var 'x_jurusan_pegawai'
 		$val = $CurrentForm->hasValue("jurusan_pegawai") ? $CurrentForm->getValue("jurusan_pegawai") : $CurrentForm->getValue("x_jurusan_pegawai");
 		if (!$this->jurusan_pegawai->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->jurusan_pegawai->Visible = FALSE; // Disable update for API request
 			else
 				$this->jurusan_pegawai->setFormValue($val);
@@ -965,7 +965,7 @@ class m_pegawai_edit extends m_pegawai
 		// Check field name 'spesialis_pegawai' first before field var 'x_spesialis_pegawai'
 		$val = $CurrentForm->hasValue("spesialis_pegawai") ? $CurrentForm->getValue("spesialis_pegawai") : $CurrentForm->getValue("x_spesialis_pegawai");
 		if (!$this->spesialis_pegawai->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->spesialis_pegawai->Visible = FALSE; // Disable update for API request
 			else
 				$this->spesialis_pegawai->setFormValue($val);
@@ -974,7 +974,7 @@ class m_pegawai_edit extends m_pegawai
 		// Check field name 'jabatan_pegawai' first before field var 'x_jabatan_pegawai'
 		$val = $CurrentForm->hasValue("jabatan_pegawai") ? $CurrentForm->getValue("jabatan_pegawai") : $CurrentForm->getValue("x_jabatan_pegawai");
 		if (!$this->jabatan_pegawai->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->jabatan_pegawai->Visible = FALSE; // Disable update for API request
 			else
 				$this->jabatan_pegawai->setFormValue($val);
@@ -983,7 +983,7 @@ class m_pegawai_edit extends m_pegawai
 		// Check field name 'status_pegawai' first before field var 'x_status_pegawai'
 		$val = $CurrentForm->hasValue("status_pegawai") ? $CurrentForm->getValue("status_pegawai") : $CurrentForm->getValue("x_status_pegawai");
 		if (!$this->status_pegawai->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->status_pegawai->Visible = FALSE; // Disable update for API request
 			else
 				$this->status_pegawai->setFormValue($val);
@@ -992,7 +992,7 @@ class m_pegawai_edit extends m_pegawai
 		// Check field name 'tarif_pegawai' first before field var 'x_tarif_pegawai'
 		$val = $CurrentForm->hasValue("tarif_pegawai") ? $CurrentForm->getValue("tarif_pegawai") : $CurrentForm->getValue("x_tarif_pegawai");
 		if (!$this->tarif_pegawai->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tarif_pegawai->Visible = FALSE; // Disable update for API request
 			else
 				$this->tarif_pegawai->setFormValue($val);
@@ -1001,7 +1001,7 @@ class m_pegawai_edit extends m_pegawai
 		// Check field name 'id_klinik' first before field var 'x_id_klinik'
 		$val = $CurrentForm->hasValue("id_klinik") ? $CurrentForm->getValue("id_klinik") : $CurrentForm->getValue("x_id_klinik");
 		if (!$this->id_klinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_klinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_klinik->setFormValue($val);
@@ -1010,7 +1010,7 @@ class m_pegawai_edit extends m_pegawai
 		// Check field name 'status' first before field var 'x_status'
 		$val = $CurrentForm->hasValue("status") ? $CurrentForm->getValue("status") : $CurrentForm->getValue("x_status");
 		if (!$this->status->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->status->Visible = FALSE; // Disable update for API request
 			else
 				$this->status->setFormValue($val);

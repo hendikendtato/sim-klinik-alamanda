@@ -838,7 +838,7 @@ class userlevels_add extends userlevels
 		// Check field name 'userlevelid' first before field var 'x_userlevelid'
 		$val = $CurrentForm->hasValue("userlevelid") ? $CurrentForm->getValue("userlevelid") : $CurrentForm->getValue("x_userlevelid");
 		if (!$this->userlevelid->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->userlevelid->Visible = FALSE; // Disable update for API request
 			else
 				$this->userlevelid->setFormValue($val);
@@ -847,7 +847,7 @@ class userlevels_add extends userlevels
 		// Check field name 'userlevelname' first before field var 'x_userlevelname'
 		$val = $CurrentForm->hasValue("userlevelname") ? $CurrentForm->getValue("userlevelname") : $CurrentForm->getValue("x_userlevelname");
 		if (!$this->userlevelname->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->userlevelname->Visible = FALSE; // Disable update for API request
 			else
 				$this->userlevelname->setFormValue($val);

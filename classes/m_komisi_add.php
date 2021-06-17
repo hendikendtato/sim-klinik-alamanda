@@ -844,7 +844,7 @@ class m_komisi_add extends m_komisi
 		// Check field name 'id_jabatan' first before field var 'x_id_jabatan'
 		$val = $CurrentForm->hasValue("id_jabatan") ? $CurrentForm->getValue("id_jabatan") : $CurrentForm->getValue("x_id_jabatan");
 		if (!$this->id_jabatan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_jabatan->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_jabatan->setFormValue($val);

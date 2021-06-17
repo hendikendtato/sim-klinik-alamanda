@@ -859,7 +859,7 @@ class m_akun_edit extends m_akun
 		// Check field name 'id_klinik' first before field var 'x_id_klinik'
 		$val = $CurrentForm->hasValue("id_klinik") ? $CurrentForm->getValue("id_klinik") : $CurrentForm->getValue("x_id_klinik");
 		if (!$this->id_klinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_klinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_klinik->setFormValue($val);
@@ -868,7 +868,7 @@ class m_akun_edit extends m_akun
 		// Check field name 'kode_akun' first before field var 'x_kode_akun'
 		$val = $CurrentForm->hasValue("kode_akun") ? $CurrentForm->getValue("kode_akun") : $CurrentForm->getValue("x_kode_akun");
 		if (!$this->kode_akun->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kode_akun->Visible = FALSE; // Disable update for API request
 			else
 				$this->kode_akun->setFormValue($val);
@@ -877,7 +877,7 @@ class m_akun_edit extends m_akun
 		// Check field name 'nama_akun' first before field var 'x_nama_akun'
 		$val = $CurrentForm->hasValue("nama_akun") ? $CurrentForm->getValue("nama_akun") : $CurrentForm->getValue("x_nama_akun");
 		if (!$this->nama_akun->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->nama_akun->Visible = FALSE; // Disable update for API request
 			else
 				$this->nama_akun->setFormValue($val);
@@ -886,7 +886,7 @@ class m_akun_edit extends m_akun
 		// Check field name 'tipe_akun' first before field var 'x_tipe_akun'
 		$val = $CurrentForm->hasValue("tipe_akun") ? $CurrentForm->getValue("tipe_akun") : $CurrentForm->getValue("x_tipe_akun");
 		if (!$this->tipe_akun->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tipe_akun->Visible = FALSE; // Disable update for API request
 			else
 				$this->tipe_akun->setFormValue($val);
@@ -895,7 +895,7 @@ class m_akun_edit extends m_akun
 		// Check field name 'saldo' first before field var 'x_saldo'
 		$val = $CurrentForm->hasValue("saldo") ? $CurrentForm->getValue("saldo") : $CurrentForm->getValue("x_saldo");
 		if (!$this->saldo->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->saldo->Visible = FALSE; // Disable update for API request
 			else
 				$this->saldo->setFormValue($val);

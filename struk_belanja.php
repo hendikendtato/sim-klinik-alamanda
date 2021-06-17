@@ -163,7 +163,7 @@ Page_Rendering();
 			<td><?php echo $result['diskon_persen'] ?>%</td>
 		</tr>
 		<?php
-			if($metode_pembayaran == 'Debit' OR $metode_pembayaran == 'Kredit'){
+			if($metode_pembayaran == 'Debit' OR $metode_pembayaran == 'Kredit' OR $metode_pembayaran == 'E-Wallet'){
 				$charge_type = ExecuteScalar("SELECT charge_type FROM m_kartu WHERE id_kartu='$id_kartubank'");
 				$charge_price = ExecuteScalar("SELECT charge_price FROM m_kartu WHERE id_kartu='$id_kartubank'");
 				//var_dump($charge);
@@ -228,6 +228,12 @@ Page_Rendering();
 			} else if($metode_pembayaran == 'Kredit'){
 				echo "<tr>
 						<td>Kartu Kredit</td>
+						<td>".rupiah($result['total_non_tunai_charge'])."</td>
+					</tr>";					
+			} else if($metode_pembayaran == 'E-Wallet'){
+				$nama_ewallet = ExecuteScalar("SELECT nama_kartu FROM m_kartu WHERE id_kartu='$id_kartubank'");
+				echo "<tr>
+						<td>".$nama_ewallet."</td>
 						<td>".rupiah($result['total_non_tunai_charge'])."</td>
 					</tr>";					
 			} else if($metode_pembayaran == 'Tunai'){

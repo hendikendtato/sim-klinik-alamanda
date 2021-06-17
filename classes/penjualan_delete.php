@@ -602,6 +602,7 @@ class penjualan_delete extends penjualan
 		$this->metode_pembayaran->setVisibility();
 		$this->id_bank->Visible = FALSE;
 		$this->id_kartu->Visible = FALSE;
+		$this->jumlah_voucher->setVisibility();
 		$this->sales->Visible = FALSE;
 		$this->dok_be_wajah->Visible = FALSE;
 		$this->be_body->Visible = FALSE;
@@ -616,7 +617,6 @@ class penjualan_delete extends penjualan
 		$this->_action->Visible = FALSE;
 		$this->status->setVisibility();
 		$this->status_void->Visible = FALSE;
-		$this->jumlah_voucher->Visible = FALSE;
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -798,6 +798,7 @@ class penjualan_delete extends penjualan
 		$this->metode_pembayaran->setDbValue($row['metode_pembayaran']);
 		$this->id_bank->setDbValue($row['id_bank']);
 		$this->id_kartu->setDbValue($row['id_kartu']);
+		$this->jumlah_voucher->setDbValue($row['jumlah_voucher']);
 		$this->sales->setDbValue($row['sales']);
 		$this->dok_be_wajah->setDbValue($row['dok_be_wajah']);
 		$this->be_body->setDbValue($row['be_body']);
@@ -812,7 +813,6 @@ class penjualan_delete extends penjualan
 		$this->_action->setDbValue($row['action']);
 		$this->status->setDbValue($row['status']);
 		$this->status_void->setDbValue($row['status_void']);
-		$this->jumlah_voucher->setDbValue($row['jumlah_voucher']);
 	}
 
 	// Return a row with default values
@@ -837,6 +837,7 @@ class penjualan_delete extends penjualan
 		$row['metode_pembayaran'] = NULL;
 		$row['id_bank'] = NULL;
 		$row['id_kartu'] = NULL;
+		$row['jumlah_voucher'] = NULL;
 		$row['sales'] = NULL;
 		$row['dok_be_wajah'] = NULL;
 		$row['be_body'] = NULL;
@@ -851,7 +852,6 @@ class penjualan_delete extends penjualan
 		$row['action'] = NULL;
 		$row['status'] = NULL;
 		$row['status_void'] = NULL;
-		$row['jumlah_voucher'] = NULL;
 		return $row;
 	}
 
@@ -908,6 +908,7 @@ class penjualan_delete extends penjualan
 		// metode_pembayaran
 		// id_bank
 		// id_kartu
+		// jumlah_voucher
 		// sales
 
 		$this->sales->CellCssStyle = "white-space: nowrap;";
@@ -925,7 +926,6 @@ class penjualan_delete extends penjualan
 		// action
 		// status
 		// status_void
-		// jumlah_voucher
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -1133,6 +1133,11 @@ class penjualan_delete extends penjualan
 				$this->id_kartu->ViewValue = NULL;
 			}
 			$this->id_kartu->ViewCustomAttributes = "";
+
+			// jumlah_voucher
+			$this->jumlah_voucher->ViewValue = $this->jumlah_voucher->CurrentValue;
+			$this->jumlah_voucher->ViewValue = FormatNumber($this->jumlah_voucher->ViewValue, 0, -2, -2, -2);
+			$this->jumlah_voucher->ViewCustomAttributes = "";
 
 			// sales
 			$curVal = strval($this->sales->CurrentValue);
@@ -1353,11 +1358,6 @@ class penjualan_delete extends penjualan
 			$this->status_void->ViewValue = $this->status_void->CurrentValue;
 			$this->status_void->ViewCustomAttributes = "";
 
-			// jumlah_voucher
-			$this->jumlah_voucher->ViewValue = $this->jumlah_voucher->CurrentValue;
-			$this->jumlah_voucher->ViewValue = FormatNumber($this->jumlah_voucher->ViewValue, 0, -2, -2, -2);
-			$this->jumlah_voucher->ViewCustomAttributes = "";
-
 			// kode_penjualan
 			$this->kode_penjualan->LinkCustomAttributes = "";
 			$this->kode_penjualan->HrefValue = "";
@@ -1392,6 +1392,11 @@ class penjualan_delete extends penjualan
 			$this->metode_pembayaran->LinkCustomAttributes = "";
 			$this->metode_pembayaran->HrefValue = "";
 			$this->metode_pembayaran->TooltipValue = "";
+
+			// jumlah_voucher
+			$this->jumlah_voucher->LinkCustomAttributes = "";
+			$this->jumlah_voucher->HrefValue = "";
+			$this->jumlah_voucher->TooltipValue = "";
 
 			// id_kartubank
 			$this->id_kartubank->LinkCustomAttributes = "";

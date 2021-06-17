@@ -845,7 +845,7 @@ class jurnal_add extends jurnal
 		// Check field name 'tgl_jurnal' first before field var 'x_tgl_jurnal'
 		$val = $CurrentForm->hasValue("tgl_jurnal") ? $CurrentForm->getValue("tgl_jurnal") : $CurrentForm->getValue("x_tgl_jurnal");
 		if (!$this->tgl_jurnal->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tgl_jurnal->Visible = FALSE; // Disable update for API request
 			else
 				$this->tgl_jurnal->setFormValue($val);
@@ -855,7 +855,7 @@ class jurnal_add extends jurnal
 		// Check field name 'keterangan' first before field var 'x_keterangan'
 		$val = $CurrentForm->hasValue("keterangan") ? $CurrentForm->getValue("keterangan") : $CurrentForm->getValue("x_keterangan");
 		if (!$this->keterangan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->keterangan->Visible = FALSE; // Disable update for API request
 			else
 				$this->keterangan->setFormValue($val);

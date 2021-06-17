@@ -850,7 +850,7 @@ class detailrekmeddok_add extends detailrekmeddok
 		// Check field name 'id_rekmeddok' first before field var 'x_id_rekmeddok'
 		$val = $CurrentForm->hasValue("id_rekmeddok") ? $CurrentForm->getValue("id_rekmeddok") : $CurrentForm->getValue("x_id_rekmeddok");
 		if (!$this->id_rekmeddok->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_rekmeddok->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_rekmeddok->setFormValue($val);
@@ -859,7 +859,7 @@ class detailrekmeddok_add extends detailrekmeddok
 		// Check field name 'id_barang' first before field var 'x_id_barang'
 		$val = $CurrentForm->hasValue("id_barang") ? $CurrentForm->getValue("id_barang") : $CurrentForm->getValue("x_id_barang");
 		if (!$this->id_barang->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_barang->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_barang->setFormValue($val);
@@ -868,7 +868,7 @@ class detailrekmeddok_add extends detailrekmeddok
 		// Check field name 'jumlah' first before field var 'x_jumlah'
 		$val = $CurrentForm->hasValue("jumlah") ? $CurrentForm->getValue("jumlah") : $CurrentForm->getValue("x_jumlah");
 		if (!$this->jumlah->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->jumlah->Visible = FALSE; // Disable update for API request
 			else
 				$this->jumlah->setFormValue($val);
@@ -877,7 +877,7 @@ class detailrekmeddok_add extends detailrekmeddok
 		// Check field name 'satuan' first before field var 'x_satuan'
 		$val = $CurrentForm->hasValue("satuan") ? $CurrentForm->getValue("satuan") : $CurrentForm->getValue("x_satuan");
 		if (!$this->satuan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->satuan->Visible = FALSE; // Disable update for API request
 			else
 				$this->satuan->setFormValue($val);

@@ -861,7 +861,7 @@ class laporan_kas_edit extends laporan_kas
 		// Check field name 'id_klinik' first before field var 'x_id_klinik'
 		$val = $CurrentForm->hasValue("id_klinik") ? $CurrentForm->getValue("id_klinik") : $CurrentForm->getValue("x_id_klinik");
 		if (!$this->id_klinik->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_klinik->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_klinik->setFormValue($val);
@@ -870,7 +870,7 @@ class laporan_kas_edit extends laporan_kas
 		// Check field name 'id_kas' first before field var 'x_id_kas'
 		$val = $CurrentForm->hasValue("id_kas") ? $CurrentForm->getValue("id_kas") : $CurrentForm->getValue("x_id_kas");
 		if (!$this->id_kas->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_kas->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_kas->setFormValue($val);
@@ -879,7 +879,7 @@ class laporan_kas_edit extends laporan_kas
 		// Check field name 'jumlah' first before field var 'x_jumlah'
 		$val = $CurrentForm->hasValue("jumlah") ? $CurrentForm->getValue("jumlah") : $CurrentForm->getValue("x_jumlah");
 		if (!$this->jumlah->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->jumlah->Visible = FALSE; // Disable update for API request
 			else
 				$this->jumlah->setFormValue($val);
@@ -888,7 +888,7 @@ class laporan_kas_edit extends laporan_kas
 		// Check field name 'tanggal' first before field var 'x_tanggal'
 		$val = $CurrentForm->hasValue("tanggal") ? $CurrentForm->getValue("tanggal") : $CurrentForm->getValue("x_tanggal");
 		if (!$this->tanggal->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->tanggal->Visible = FALSE; // Disable update for API request
 			else
 				$this->tanggal->setFormValue($val);
@@ -898,7 +898,7 @@ class laporan_kas_edit extends laporan_kas
 		// Check field name 'kode_penjualan' first before field var 'x_kode_penjualan'
 		$val = $CurrentForm->hasValue("kode_penjualan") ? $CurrentForm->getValue("kode_penjualan") : $CurrentForm->getValue("x_kode_penjualan");
 		if (!$this->kode_penjualan->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->kode_penjualan->Visible = FALSE; // Disable update for API request
 			else
 				$this->kode_penjualan->setFormValue($val);
@@ -907,7 +907,7 @@ class laporan_kas_edit extends laporan_kas
 		// Check field name 'id_mutasi_kas' first before field var 'x_id_mutasi_kas'
 		$val = $CurrentForm->hasValue("id_mutasi_kas") ? $CurrentForm->getValue("id_mutasi_kas") : $CurrentForm->getValue("x_id_mutasi_kas");
 		if (!$this->id_mutasi_kas->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->id_mutasi_kas->Visible = FALSE; // Disable update for API request
 			else
 				$this->id_mutasi_kas->setFormValue($val);
@@ -916,7 +916,7 @@ class laporan_kas_edit extends laporan_kas
 		// Check field name 'saldo_awal' first before field var 'x_saldo_awal'
 		$val = $CurrentForm->hasValue("saldo_awal") ? $CurrentForm->getValue("saldo_awal") : $CurrentForm->getValue("x_saldo_awal");
 		if (!$this->saldo_awal->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->saldo_awal->Visible = FALSE; // Disable update for API request
 			else
 				$this->saldo_awal->setFormValue($val);
@@ -925,7 +925,7 @@ class laporan_kas_edit extends laporan_kas
 		// Check field name 'sisa_saldo' first before field var 'x_sisa_saldo'
 		$val = $CurrentForm->hasValue("sisa_saldo") ? $CurrentForm->getValue("sisa_saldo") : $CurrentForm->getValue("x_sisa_saldo");
 		if (!$this->sisa_saldo->IsDetailKey) {
-			if (IsApi() && $val == NULL)
+			if (IsApi() && $val === NULL)
 				$this->sisa_saldo->Visible = FALSE; // Disable update for API request
 			else
 				$this->sisa_saldo->setFormValue($val);
