@@ -294,7 +294,7 @@ $API_ACTIONS["dataPenjualan"] = function(Request $request, Response &$response) 
 			$data['message'] = "Tidak Ada Data!";
 		} else {
 			$data['success'] = true;
-			$data['data']    =  $data_penjualan;
+			$data['data']    =  $data_penjeualan;
 		}
 	} catch (Exception $e) {
 		$data['success'] = false;

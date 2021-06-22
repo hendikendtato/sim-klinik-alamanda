@@ -77,7 +77,7 @@ loadjs.ready("head", function() {
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $returbarang_add->tanggal->caption(), $returbarang_add->tanggal->RequiredErrorMessage)) ?>");
 			<?php } ?>
 				elm = this.getElements("x" + infix + "_tanggal");
-				if (elm && !ew.checkDateDef(elm.value))
+				if (elm && !ew.checkEuroDate(elm.value))
 					return this.onError(elm, "<?php echo JsEncode($returbarang_add->tanggal->errorMessage()) ?>");
 			<?php if ($returbarang_add->keterangan->Required) { ?>
 				elm = this.getElements("x" + infix + "_keterangan");
@@ -125,8 +125,7 @@ loadjs.ready("head", function() {
 loadjs.ready("head", function() {
 
 	// Client script
-	// Write your client script here, no need to add script tags.
-
+	var now=new Date,day=("0"+now.getDate()).slice(-2),month=("0"+(now.getMonth()+1)).slice(-2),today=day+"/"+month+"/"+now.getFullYear();$("input#x_tanggal").val(today),$("input#x_tanggal").prop("disabled",!0);
 });
 </script>
 <?php $returbarang_add->showPageHeader(); ?>
@@ -192,11 +191,11 @@ $returbarang_add->showMessage();
 		<label id="elh_returbarang_tanggal" for="x_tanggal" class="<?php echo $returbarang_add->LeftColumnClass ?>"><?php echo $returbarang_add->tanggal->caption() ?><?php echo $returbarang_add->tanggal->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $returbarang_add->RightColumnClass ?>"><div <?php echo $returbarang_add->tanggal->cellAttributes() ?>>
 <span id="el_returbarang_tanggal">
-<input type="text" data-table="returbarang" data-field="x_tanggal" name="x_tanggal" id="x_tanggal" maxlength="10" placeholder="<?php echo HtmlEncode($returbarang_add->tanggal->getPlaceHolder()) ?>" value="<?php echo $returbarang_add->tanggal->EditValue ?>"<?php echo $returbarang_add->tanggal->editAttributes() ?>>
+<input type="text" data-table="returbarang" data-field="x_tanggal" data-format="7" name="x_tanggal" id="x_tanggal" maxlength="10" placeholder="<?php echo HtmlEncode($returbarang_add->tanggal->getPlaceHolder()) ?>" value="<?php echo $returbarang_add->tanggal->EditValue ?>"<?php echo $returbarang_add->tanggal->editAttributes() ?>>
 <?php if (!$returbarang_add->tanggal->ReadOnly && !$returbarang_add->tanggal->Disabled && !isset($returbarang_add->tanggal->EditAttrs["readonly"]) && !isset($returbarang_add->tanggal->EditAttrs["disabled"])) { ?>
 <script>
 loadjs.ready(["freturbarangadd", "datetimepicker"], function() {
-	ew.createDateTimePicker("freturbarangadd", "x_tanggal", {"ignoreReadonly":true,"useCurrent":false,"format":0});
+	ew.createDateTimePicker("freturbarangadd", "x_tanggal", {"ignoreReadonly":true,"useCurrent":false,"format":7});
 });
 </script>
 <?php } ?>

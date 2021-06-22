@@ -931,7 +931,7 @@ class terimabarang_edit extends terimabarang
 				$this->tanggal_terima->Visible = FALSE; // Disable update for API request
 			else
 				$this->tanggal_terima->setFormValue($val);
-			$this->tanggal_terima->CurrentValue = UnFormatDateTime($this->tanggal_terima->CurrentValue, 0);
+			$this->tanggal_terima->CurrentValue = UnFormatDateTime($this->tanggal_terima->CurrentValue, 7);
 		}
 
 		// Check field name 'keterangan' first before field var 'x_keterangan'
@@ -961,7 +961,7 @@ class terimabarang_edit extends terimabarang
 		$this->id_klinik->CurrentValue = $this->id_klinik->FormValue;
 		$this->id_pegawai->CurrentValue = $this->id_pegawai->FormValue;
 		$this->tanggal_terima->CurrentValue = $this->tanggal_terima->FormValue;
-		$this->tanggal_terima->CurrentValue = UnFormatDateTime($this->tanggal_terima->CurrentValue, 0);
+		$this->tanggal_terima->CurrentValue = UnFormatDateTime($this->tanggal_terima->CurrentValue, 7);
 		$this->keterangan->CurrentValue = $this->keterangan->FormValue;
 	}
 
@@ -1197,7 +1197,7 @@ class terimabarang_edit extends terimabarang
 
 			// tanggal_terima
 			$this->tanggal_terima->ViewValue = $this->tanggal_terima->CurrentValue;
-			$this->tanggal_terima->ViewValue = FormatDateTime($this->tanggal_terima->ViewValue, 0);
+			$this->tanggal_terima->ViewValue = FormatDateTime($this->tanggal_terima->ViewValue, 7);
 			$this->tanggal_terima->ViewCustomAttributes = "";
 
 			// keterangan
@@ -1380,7 +1380,7 @@ class terimabarang_edit extends terimabarang
 			// tanggal_terima
 			$this->tanggal_terima->EditAttrs["class"] = "form-control";
 			$this->tanggal_terima->EditCustomAttributes = "";
-			$this->tanggal_terima->EditValue = HtmlEncode(FormatDateTime($this->tanggal_terima->CurrentValue, 8));
+			$this->tanggal_terima->EditValue = HtmlEncode(FormatDateTime($this->tanggal_terima->CurrentValue, 7));
 			$this->tanggal_terima->PlaceHolder = RemoveHtml($this->tanggal_terima->caption());
 
 			// keterangan
@@ -1477,7 +1477,7 @@ class terimabarang_edit extends terimabarang
 				AddMessage($FormError, str_replace("%s", $this->tanggal_terima->caption(), $this->tanggal_terima->RequiredErrorMessage));
 			}
 		}
-		if (!CheckDate($this->tanggal_terima->FormValue)) {
+		if (!CheckEuroDate($this->tanggal_terima->FormValue)) {
 			AddMessage($FormError, $this->tanggal_terima->errorMessage());
 		}
 		if ($this->keterangan->Required) {
@@ -1553,7 +1553,7 @@ class terimabarang_edit extends terimabarang
 			$this->id_pegawai->setDbValueDef($rsnew, $this->id_pegawai->CurrentValue, NULL, $this->id_pegawai->ReadOnly);
 
 			// tanggal_terima
-			$this->tanggal_terima->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal_terima->CurrentValue, 0), CurrentDate(), $this->tanggal_terima->ReadOnly);
+			$this->tanggal_terima->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal_terima->CurrentValue, 7), CurrentDate(), $this->tanggal_terima->ReadOnly);
 
 			// keterangan
 			$this->keterangan->setDbValueDef($rsnew, $this->keterangan->CurrentValue, NULL, $this->keterangan->ReadOnly);

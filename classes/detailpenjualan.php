@@ -1616,7 +1616,7 @@ class detailpenjualan extends DbTable
 					$status_barang = ExecuteScalar("SELECT status_barang FROM m_status_barang WHERE id_status = (SELECT status FROM m_barang WHERE id='$id_barang')");
 					$id_rmd = ExecuteScalar("SELECT id_rmd FROM penjualan WHERE id='$pid_penjualan'");
 					$sekarang = date('Y-m-d');
-					$status = ExecuteScalar("SELECT status FROM penjualan WHERE id='$pid_penjualan'");
+					$status =	 ExecuteScalar("SELECT status FROM penjualan WHERE id='$pid_penjualan'");
 						if($status == 'Printed') { //SAVE IF PRINTED
 
 							// if tanggal input < tanggal sekarang

@@ -55,7 +55,7 @@ loadjs.ready("head", function() {
 		if (elm && !ew.checkInteger(elm.value))
 			return this.onError(elm, "<?php echo JsEncode($kirimbarang_search->id->errorMessage()) ?>");
 		elm = this.getElements("x" + infix + "_tanggal");
-		if (elm && !ew.checkDateDef(elm.value))
+		if (elm && !ew.checkEuroDate(elm.value))
 			return this.onError(elm, "<?php echo JsEncode($kirimbarang_search->tanggal->errorMessage()) ?>");
 
 		// Call Form_CustomValidate event
@@ -228,11 +228,11 @@ $kirimbarang_search->showMessage();
 		</label>
 		<div class="<?php echo $kirimbarang_search->RightColumnClass ?>"><div <?php echo $kirimbarang_search->tanggal->cellAttributes() ?>>
 			<span id="el_kirimbarang_tanggal" class="ew-search-field">
-<input type="text" data-table="kirimbarang" data-field="x_tanggal" name="x_tanggal" id="x_tanggal" maxlength="19" placeholder="<?php echo HtmlEncode($kirimbarang_search->tanggal->getPlaceHolder()) ?>" value="<?php echo $kirimbarang_search->tanggal->EditValue ?>"<?php echo $kirimbarang_search->tanggal->editAttributes() ?>>
+<input type="text" data-table="kirimbarang" data-field="x_tanggal" data-format="7" name="x_tanggal" id="x_tanggal" maxlength="19" placeholder="<?php echo HtmlEncode($kirimbarang_search->tanggal->getPlaceHolder()) ?>" value="<?php echo $kirimbarang_search->tanggal->EditValue ?>"<?php echo $kirimbarang_search->tanggal->editAttributes() ?>>
 <?php if (!$kirimbarang_search->tanggal->ReadOnly && !$kirimbarang_search->tanggal->Disabled && !isset($kirimbarang_search->tanggal->EditAttrs["readonly"]) && !isset($kirimbarang_search->tanggal->EditAttrs["disabled"])) { ?>
 <script>
 loadjs.ready(["fkirimbarangsearch", "datetimepicker"], function() {
-	ew.createDateTimePicker("fkirimbarangsearch", "x_tanggal", {"ignoreReadonly":true,"useCurrent":false,"format":0});
+	ew.createDateTimePicker("fkirimbarangsearch", "x_tanggal", {"ignoreReadonly":true,"useCurrent":false,"format":7});
 });
 </script>
 <?php } ?>

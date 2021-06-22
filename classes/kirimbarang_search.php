@@ -973,7 +973,7 @@ class kirimbarang_search extends kirimbarang
 
 			// tanggal
 			$this->tanggal->ViewValue = $this->tanggal->CurrentValue;
-			$this->tanggal->ViewValue = FormatDateTime($this->tanggal->ViewValue, 0);
+			$this->tanggal->ViewValue = FormatDateTime($this->tanggal->ViewValue, 7);
 			$this->tanggal->ViewCustomAttributes = "";
 
 			// status_kirim
@@ -1155,7 +1155,7 @@ class kirimbarang_search extends kirimbarang
 			// tanggal
 			$this->tanggal->EditAttrs["class"] = "form-control";
 			$this->tanggal->EditCustomAttributes = "";
-			$this->tanggal->EditValue = HtmlEncode(FormatDateTime(UnFormatDateTime($this->tanggal->AdvancedSearch->SearchValue, 0), 8));
+			$this->tanggal->EditValue = HtmlEncode(FormatDateTime(UnFormatDateTime($this->tanggal->AdvancedSearch->SearchValue, 7), 7));
 			$this->tanggal->PlaceHolder = RemoveHtml($this->tanggal->caption());
 
 			// status_kirim
@@ -1190,7 +1190,7 @@ class kirimbarang_search extends kirimbarang
 		if (!CheckInteger($this->id->AdvancedSearch->SearchValue)) {
 			AddMessage($SearchError, $this->id->errorMessage());
 		}
-		if (!CheckDate($this->tanggal->AdvancedSearch->SearchValue)) {
+		if (!CheckEuroDate($this->tanggal->AdvancedSearch->SearchValue)) {
 			AddMessage($SearchError, $this->tanggal->errorMessage());
 		}
 

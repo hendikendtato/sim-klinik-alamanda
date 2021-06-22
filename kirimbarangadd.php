@@ -82,7 +82,7 @@ loadjs.ready("head", function() {
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $kirimbarang_add->tanggal->caption(), $kirimbarang_add->tanggal->RequiredErrorMessage)) ?>");
 			<?php } ?>
 				elm = this.getElements("x" + infix + "_tanggal");
-				if (elm && !ew.checkDateDef(elm.value))
+				if (elm && !ew.checkEuroDate(elm.value))
 					return this.onError(elm, "<?php echo JsEncode($kirimbarang_add->tanggal->errorMessage()) ?>");
 			<?php if ($kirimbarang_add->status_kirim->Required) { ?>
 				elm = this.getElements("x" + infix + "_status_kirim");
@@ -148,6 +148,14 @@ loadjs.ready("head", function() {
 		$('select[name="x_id_supplier"]').prop('readonly', true);
 		$('select[name="x_id_klinik"]').prop('readonly', true);
 	}
+
+	// insert date field as today
+	var now = new Date();
+	var day = ("0" + now.getDate()).slice(-2);
+	var month = ("0" + (now.getMonth() + 1)).slice(-2);
+	var today = day + "/" + month + "/" + now.getFullYear();
+	$("input#x_tanggal").val(today);
+	$("input#x_tanggal").prop("disabled", true);
 });
 </script>
 <?php $kirimbarang_add->showPageHeader(); ?>
@@ -228,11 +236,11 @@ $kirimbarang_add->showMessage();
 		<label id="elh_kirimbarang_tanggal" for="x_tanggal" class="<?php echo $kirimbarang_add->LeftColumnClass ?>"><?php echo $kirimbarang_add->tanggal->caption() ?><?php echo $kirimbarang_add->tanggal->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $kirimbarang_add->RightColumnClass ?>"><div <?php echo $kirimbarang_add->tanggal->cellAttributes() ?>>
 <span id="el_kirimbarang_tanggal">
-<input type="text" data-table="kirimbarang" data-field="x_tanggal" name="x_tanggal" id="x_tanggal" maxlength="19" placeholder="<?php echo HtmlEncode($kirimbarang_add->tanggal->getPlaceHolder()) ?>" value="<?php echo $kirimbarang_add->tanggal->EditValue ?>"<?php echo $kirimbarang_add->tanggal->editAttributes() ?>>
+<input type="text" data-table="kirimbarang" data-field="x_tanggal" data-format="7" name="x_tanggal" id="x_tanggal" maxlength="19" placeholder="<?php echo HtmlEncode($kirimbarang_add->tanggal->getPlaceHolder()) ?>" value="<?php echo $kirimbarang_add->tanggal->EditValue ?>"<?php echo $kirimbarang_add->tanggal->editAttributes() ?>>
 <?php if (!$kirimbarang_add->tanggal->ReadOnly && !$kirimbarang_add->tanggal->Disabled && !isset($kirimbarang_add->tanggal->EditAttrs["readonly"]) && !isset($kirimbarang_add->tanggal->EditAttrs["disabled"])) { ?>
 <script>
 loadjs.ready(["fkirimbarangadd", "datetimepicker"], function() {
-	ew.createDateTimePicker("fkirimbarangadd", "x_tanggal", {"ignoreReadonly":true,"useCurrent":false,"format":0});
+	ew.createDateTimePicker("fkirimbarangadd", "x_tanggal", {"ignoreReadonly":true,"useCurrent":false,"format":7});
 });
 </script>
 <?php } ?>

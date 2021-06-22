@@ -87,7 +87,7 @@ loadjs.ready("head", function() {
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $kirimbarang_edit->tanggal->caption(), $kirimbarang_edit->tanggal->RequiredErrorMessage)) ?>");
 			<?php } ?>
 				elm = this.getElements("x" + infix + "_tanggal");
-				if (elm && !ew.checkDateDef(elm.value))
+				if (elm && !ew.checkEuroDate(elm.value))
 					return this.onError(elm, "<?php echo JsEncode($kirimbarang_edit->tanggal->errorMessage()) ?>");
 			<?php if ($kirimbarang_edit->status_kirim->Required) { ?>
 				elm = this.getElements("x" + infix + "_status_kirim");
@@ -243,11 +243,11 @@ $kirimbarang_edit->showMessage();
 		<label id="elh_kirimbarang_tanggal" for="x_tanggal" class="<?php echo $kirimbarang_edit->LeftColumnClass ?>"><?php echo $kirimbarang_edit->tanggal->caption() ?><?php echo $kirimbarang_edit->tanggal->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $kirimbarang_edit->RightColumnClass ?>"><div <?php echo $kirimbarang_edit->tanggal->cellAttributes() ?>>
 <span id="el_kirimbarang_tanggal">
-<input type="text" data-table="kirimbarang" data-field="x_tanggal" name="x_tanggal" id="x_tanggal" maxlength="19" placeholder="<?php echo HtmlEncode($kirimbarang_edit->tanggal->getPlaceHolder()) ?>" value="<?php echo $kirimbarang_edit->tanggal->EditValue ?>"<?php echo $kirimbarang_edit->tanggal->editAttributes() ?>>
+<input type="text" data-table="kirimbarang" data-field="x_tanggal" data-format="7" name="x_tanggal" id="x_tanggal" maxlength="19" placeholder="<?php echo HtmlEncode($kirimbarang_edit->tanggal->getPlaceHolder()) ?>" value="<?php echo $kirimbarang_edit->tanggal->EditValue ?>"<?php echo $kirimbarang_edit->tanggal->editAttributes() ?>>
 <?php if (!$kirimbarang_edit->tanggal->ReadOnly && !$kirimbarang_edit->tanggal->Disabled && !isset($kirimbarang_edit->tanggal->EditAttrs["readonly"]) && !isset($kirimbarang_edit->tanggal->EditAttrs["disabled"])) { ?>
 <script>
 loadjs.ready(["fkirimbarangedit", "datetimepicker"], function() {
-	ew.createDateTimePicker("fkirimbarangedit", "x_tanggal", {"ignoreReadonly":true,"useCurrent":false,"format":0});
+	ew.createDateTimePicker("fkirimbarangedit", "x_tanggal", {"ignoreReadonly":true,"useCurrent":false,"format":7});
 });
 </script>
 <?php } ?>

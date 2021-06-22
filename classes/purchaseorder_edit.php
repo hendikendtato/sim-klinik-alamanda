@@ -883,7 +883,7 @@ class purchaseorder_edit extends purchaseorder
 				$this->tgl_po->Visible = FALSE; // Disable update for API request
 			else
 				$this->tgl_po->setFormValue($val);
-			$this->tgl_po->CurrentValue = UnFormatDateTime($this->tgl_po->CurrentValue, 0);
+			$this->tgl_po->CurrentValue = UnFormatDateTime($this->tgl_po->CurrentValue, 7);
 		}
 
 		// Check field name 'idstaff_po' first before field var 'x_idstaff_po'
@@ -944,7 +944,7 @@ class purchaseorder_edit extends purchaseorder
 		$this->id_po->CurrentValue = $this->id_po->FormValue;
 		$this->no_po->CurrentValue = $this->no_po->FormValue;
 		$this->tgl_po->CurrentValue = $this->tgl_po->FormValue;
-		$this->tgl_po->CurrentValue = UnFormatDateTime($this->tgl_po->CurrentValue, 0);
+		$this->tgl_po->CurrentValue = UnFormatDateTime($this->tgl_po->CurrentValue, 7);
 		$this->idstaff_po->CurrentValue = $this->idstaff_po->FormValue;
 		$this->idklinik->CurrentValue = $this->idklinik->FormValue;
 		$this->id_supplier->CurrentValue = $this->id_supplier->FormValue;
@@ -1067,7 +1067,7 @@ class purchaseorder_edit extends purchaseorder
 
 			// tgl_po
 			$this->tgl_po->ViewValue = $this->tgl_po->CurrentValue;
-			$this->tgl_po->ViewValue = FormatDateTime($this->tgl_po->ViewValue, 0);
+			$this->tgl_po->ViewValue = FormatDateTime($this->tgl_po->ViewValue, 7);
 			$this->tgl_po->ViewCustomAttributes = "";
 
 			// idstaff_po
@@ -1199,7 +1199,7 @@ class purchaseorder_edit extends purchaseorder
 			// tgl_po
 			$this->tgl_po->EditAttrs["class"] = "form-control";
 			$this->tgl_po->EditCustomAttributes = "";
-			$this->tgl_po->EditValue = HtmlEncode(FormatDateTime($this->tgl_po->CurrentValue, 8));
+			$this->tgl_po->EditValue = HtmlEncode(FormatDateTime($this->tgl_po->CurrentValue, 7));
 			$this->tgl_po->PlaceHolder = RemoveHtml($this->tgl_po->caption());
 
 			// idstaff_po
@@ -1347,7 +1347,7 @@ class purchaseorder_edit extends purchaseorder
 				AddMessage($FormError, str_replace("%s", $this->tgl_po->caption(), $this->tgl_po->RequiredErrorMessage));
 			}
 		}
-		if (!CheckDate($this->tgl_po->FormValue)) {
+		if (!CheckEuroDate($this->tgl_po->FormValue)) {
 			AddMessage($FormError, $this->tgl_po->errorMessage());
 		}
 		if ($this->idstaff_po->Required) {
@@ -1428,7 +1428,7 @@ class purchaseorder_edit extends purchaseorder
 			$this->no_po->setDbValueDef($rsnew, $this->no_po->CurrentValue, NULL, $this->no_po->ReadOnly);
 
 			// tgl_po
-			$this->tgl_po->setDbValueDef($rsnew, UnFormatDateTime($this->tgl_po->CurrentValue, 0), CurrentDate(), $this->tgl_po->ReadOnly);
+			$this->tgl_po->setDbValueDef($rsnew, UnFormatDateTime($this->tgl_po->CurrentValue, 7), CurrentDate(), $this->tgl_po->ReadOnly);
 
 			// idstaff_po
 			$this->idstaff_po->setDbValueDef($rsnew, $this->idstaff_po->CurrentValue, NULL, $this->idstaff_po->ReadOnly);

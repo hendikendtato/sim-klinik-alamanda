@@ -111,7 +111,7 @@ loadjs.ready("head", function() {
 loadjs.ready("head", function() {
 
 	// Client script
-	$("h4.ew-detail-caption").hide();
+	$("h4.ew-detail-caption").hide();var now=new Date,day=("0"+now.getDate()).slice(-2),month=("0"+(now.getMonth()+1)).slice(-2),today=day+"/"+month+"/"+now.getFullYear();$("input#x_tanggal").val(today),$("input#x_tanggal").prop("disabled",!0);
 });
 </script>
 <?php $nonjual_add->showPageHeader(); ?>

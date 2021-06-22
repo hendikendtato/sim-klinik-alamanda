@@ -130,11 +130,11 @@ class terimabarang extends DbTable
 		$this->fields['id_pegawai'] = &$this->id_pegawai;
 
 		// tanggal_terima
-		$this->tanggal_terima = new DbField('terimabarang', 'terimabarang', 'x_tanggal_terima', 'tanggal_terima', '`tanggal_terima`', CastDateFieldForLike("`tanggal_terima`", 0, "DB"), 133, 10, 0, FALSE, '`tanggal_terima`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->tanggal_terima = new DbField('terimabarang', 'terimabarang', 'x_tanggal_terima', 'tanggal_terima', '`tanggal_terima`', CastDateFieldForLike("`tanggal_terima`", 7, "DB"), 133, 10, 7, FALSE, '`tanggal_terima`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->tanggal_terima->Nullable = FALSE; // NOT NULL field
 		$this->tanggal_terima->Required = TRUE; // Required field
 		$this->tanggal_terima->Sortable = TRUE; // Allow sort
-		$this->tanggal_terima->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_FORMAT"], $Language->phrase("IncorrectDate"));
+		$this->tanggal_terima->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_SEPARATOR"], $Language->phrase("IncorrectDateDMY"));
 		$this->fields['tanggal_terima'] = &$this->tanggal_terima;
 
 		// keterangan
@@ -977,7 +977,7 @@ class terimabarang extends DbTable
 
 		// tanggal_terima
 		$this->tanggal_terima->ViewValue = $this->tanggal_terima->CurrentValue;
-		$this->tanggal_terima->ViewValue = FormatDateTime($this->tanggal_terima->ViewValue, 0);
+		$this->tanggal_terima->ViewValue = FormatDateTime($this->tanggal_terima->ViewValue, 7);
 		$this->tanggal_terima->ViewCustomAttributes = "";
 
 		// keterangan
@@ -1081,7 +1081,7 @@ class terimabarang extends DbTable
 		// tanggal_terima
 		$this->tanggal_terima->EditAttrs["class"] = "form-control";
 		$this->tanggal_terima->EditCustomAttributes = "";
-		$this->tanggal_terima->EditValue = FormatDateTime($this->tanggal_terima->CurrentValue, 8);
+		$this->tanggal_terima->EditValue = FormatDateTime($this->tanggal_terima->CurrentValue, 7);
 		$this->tanggal_terima->PlaceHolder = RemoveHtml($this->tanggal_terima->caption());
 
 		// keterangan

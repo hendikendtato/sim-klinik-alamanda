@@ -1216,7 +1216,7 @@ class returbarang_view extends returbarang
 
 			// tanggal
 			$this->tanggal->ViewValue = $this->tanggal->CurrentValue;
-			$this->tanggal->ViewValue = FormatDateTime($this->tanggal->ViewValue, 0);
+			$this->tanggal->ViewValue = FormatDateTime($this->tanggal->ViewValue, 7);
 			$this->tanggal->ViewCustomAttributes = "";
 
 			// status

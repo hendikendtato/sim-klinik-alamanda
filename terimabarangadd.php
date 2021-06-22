@@ -87,7 +87,7 @@ loadjs.ready("head", function() {
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $terimabarang_add->tanggal_terima->caption(), $terimabarang_add->tanggal_terima->RequiredErrorMessage)) ?>");
 			<?php } ?>
 				elm = this.getElements("x" + infix + "_tanggal_terima");
-				if (elm && !ew.checkDateDef(elm.value))
+				if (elm && !ew.checkEuroDate(elm.value))
 					return this.onError(elm, "<?php echo JsEncode($terimabarang_add->tanggal_terima->errorMessage()) ?>");
 			<?php if ($terimabarang_add->keterangan->Required) { ?>
 				elm = this.getElements("x" + infix + "_keterangan");
@@ -139,10 +139,7 @@ loadjs.ready("head", function() {
 loadjs.ready("head", function() {
 
 	// Client script
-	// Write your client script here, no need to add script tags.
-	//$('select[name="x_id_supplier"]').prop('disabled', true);
-	//$('select[name="x_id_klinik"]').prop('disabled', true);
-
+	var now=new Date,day=("0"+now.getDate()).slice(-2),month=("0"+(now.getMonth()+1)).slice(-2),today=day+"/"+month+"/"+now.getFullYear();$("input#x_tanggal_terima").val(today),$("input#x_tanggal_terima").prop("disabled",!0);
 });
 </script>
 <?php $terimabarang_add->showPageHeader(); ?>
@@ -238,11 +235,11 @@ $terimabarang_add->showMessage();
 		<label id="elh_terimabarang_tanggal_terima" for="x_tanggal_terima" class="<?php echo $terimabarang_add->LeftColumnClass ?>"><?php echo $terimabarang_add->tanggal_terima->caption() ?><?php echo $terimabarang_add->tanggal_terima->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $terimabarang_add->RightColumnClass ?>"><div <?php echo $terimabarang_add->tanggal_terima->cellAttributes() ?>>
 <span id="el_terimabarang_tanggal_terima">
-<input type="text" data-table="terimabarang" data-field="x_tanggal_terima" name="x_tanggal_terima" id="x_tanggal_terima" maxlength="10" placeholder="<?php echo HtmlEncode($terimabarang_add->tanggal_terima->getPlaceHolder()) ?>" value="<?php echo $terimabarang_add->tanggal_terima->EditValue ?>"<?php echo $terimabarang_add->tanggal_terima->editAttributes() ?>>
+<input type="text" data-table="terimabarang" data-field="x_tanggal_terima" data-format="7" name="x_tanggal_terima" id="x_tanggal_terima" maxlength="10" placeholder="<?php echo HtmlEncode($terimabarang_add->tanggal_terima->getPlaceHolder()) ?>" value="<?php echo $terimabarang_add->tanggal_terima->EditValue ?>"<?php echo $terimabarang_add->tanggal_terima->editAttributes() ?>>
 <?php if (!$terimabarang_add->tanggal_terima->ReadOnly && !$terimabarang_add->tanggal_terima->Disabled && !isset($terimabarang_add->tanggal_terima->EditAttrs["readonly"]) && !isset($terimabarang_add->tanggal_terima->EditAttrs["disabled"])) { ?>
 <script>
 loadjs.ready(["fterimabarangadd", "datetimepicker"], function() {
-	ew.createDateTimePicker("fterimabarangadd", "x_tanggal_terima", {"ignoreReadonly":true,"useCurrent":false,"format":0});
+	ew.createDateTimePicker("fterimabarangadd", "x_tanggal_terima", {"ignoreReadonly":true,"useCurrent":false,"format":7});
 });
 </script>
 <?php } ?>

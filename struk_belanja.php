@@ -154,7 +154,7 @@ Page_Rendering();
 				$nominal_voucher = ExecuteScalar("SELECT charge_price FROM m_kartu WHERE id_kartu = '$voucher'");
 				echo "<tr>
 						<td>Voucher</td>
-						<td>".rupiah($nominal_voucher)."</td>
+						<td>".$result['jumlah_voucher']." X ".rupiah($nominal_voucher)."</td>
 					</tr>";
 			}
 		?>

@@ -90,7 +90,7 @@ Page_Rendering();
 								$sql = "SELECT * FROM m_barang WHERE tipe != 'Perawatan'";
 								$res = ExecuteRows($sql);
 								foreach ($res as $rs) {
-									echo "<option id=" . $rs["id"] . "value=" . $rs["id"] . ">" . $rs["nama_barang"] . "</option>";
+									echo "<option id='{$rs["id"]}' value='{$rs["id"]}'>{$rs["nama_barang"]}</option>";
 								}
 							?>
 						</select>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<ew-language date="2021/6/17" version="16.0.1" id="ID" name="Indonesian" desc="Indonesian" author="e.World Technology Ltd.">
+<ew-language date="2021/6/22" version="16.0.1" id="ID" name="Indonesian" desc="Indonesian" author="e.World Technology Ltd.">
   <!--
 	*** Important Notes:
 	1. Language ID should follow: https://developers.google.com/recaptcha/docs/language,
@@ -856,6 +856,9 @@
   <project>
     <phrase id="bodytitle" value="Sistem Informasi Klinik" />
     <phrase id="footertext" value="&amp;copy;2020 PT. Primavisi Global Indo." />
+    <menu id="1079">
+      <phrase id="menutext" value="Upload Data" />
+    </menu>
     <menu id="1074">
       <phrase id="menutext" value="Detail Terima Barang Gudang" />
     </menu>
@@ -4002,6 +4005,9 @@
     </table>
     <table id="laporan_summary_penjualan">
       <phrase id="tblcaption" value="Laporan Summary Penjualan" />
+    </table>
+    <table id="upload_data">
+      <phrase id="tblcaption" value="Upload Data" />
     </table>
   </project>
 </ew-language>

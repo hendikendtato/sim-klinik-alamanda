@@ -3356,7 +3356,6 @@ class penjualan extends DbTable
 				$tgl_terakhir_transaksi = date("Y-m-d H:i:s");
 				Execute("UPDATE m_pelanggan SET tgl_terakhir_transaksi = '".$tgl_terakhir_transaksi."' WHERE id_pelanggan='".$id_pelanggan."'");
 			} //End of if(status == printed)
-			return TRUE;
 	}
 
 	// Row Updating event

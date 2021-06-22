@@ -92,7 +92,7 @@ loadjs.ready("head", function() {
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $terimabarang_edit->tanggal_terima->caption(), $terimabarang_edit->tanggal_terima->RequiredErrorMessage)) ?>");
 			<?php } ?>
 				elm = this.getElements("x" + infix + "_tanggal_terima");
-				if (elm && !ew.checkDateDef(elm.value))
+				if (elm && !ew.checkEuroDate(elm.value))
 					return this.onError(elm, "<?php echo JsEncode($terimabarang_edit->tanggal_terima->errorMessage()) ?>");
 			<?php if ($terimabarang_edit->keterangan->Required) { ?>
 				elm = this.getElements("x" + infix + "_keterangan");
@@ -251,11 +251,11 @@ $terimabarang_edit->showMessage();
 		<label id="elh_terimabarang_tanggal_terima" for="x_tanggal_terima" class="<?php echo $terimabarang_edit->LeftColumnClass ?>"><?php echo $terimabarang_edit->tanggal_terima->caption() ?><?php echo $terimabarang_edit->tanggal_terima->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $terimabarang_edit->RightColumnClass ?>"><div <?php echo $terimabarang_edit->tanggal_terima->cellAttributes() ?>>
 <span id="el_terimabarang_tanggal_terima">
-<input type="text" data-table="terimabarang" data-field="x_tanggal_terima" name="x_tanggal_terima" id="x_tanggal_terima" maxlength="10" placeholder="<?php echo HtmlEncode($terimabarang_edit->tanggal_terima->getPlaceHolder()) ?>" value="<?php echo $terimabarang_edit->tanggal_terima->EditValue ?>"<?php echo $terimabarang_edit->tanggal_terima->editAttributes() ?>>
+<input type="text" data-table="terimabarang" data-field="x_tanggal_terima" data-format="7" name="x_tanggal_terima" id="x_tanggal_terima" maxlength="10" placeholder="<?php echo HtmlEncode($terimabarang_edit->tanggal_terima->getPlaceHolder()) ?>" value="<?php echo $terimabarang_edit->tanggal_terima->EditValue ?>"<?php echo $terimabarang_edit->tanggal_terima->editAttributes() ?>>
 <?php if (!$terimabarang_edit->tanggal_terima->ReadOnly && !$terimabarang_edit->tanggal_terima->Disabled && !isset($terimabarang_edit->tanggal_terima->EditAttrs["readonly"]) && !isset($terimabarang_edit->tanggal_terima->EditAttrs["disabled"])) { ?>
 <script>
 loadjs.ready(["fterimabarangedit", "datetimepicker"], function() {
-	ew.createDateTimePicker("fterimabarangedit", "x_tanggal_terima", {"ignoreReadonly":true,"useCurrent":false,"format":0});
+	ew.createDateTimePicker("fterimabarangedit", "x_tanggal_terima", {"ignoreReadonly":true,"useCurrent":false,"format":7});
 });
 </script>
 <?php } ?>

@@ -2090,7 +2090,7 @@ class purchaseorder_list extends purchaseorder
 
 			// tgl_po
 			$this->tgl_po->ViewValue = $this->tgl_po->CurrentValue;
-			$this->tgl_po->ViewValue = FormatDateTime($this->tgl_po->ViewValue, 0);
+			$this->tgl_po->ViewValue = FormatDateTime($this->tgl_po->ViewValue, 7);
 			$this->tgl_po->ViewCustomAttributes = "";
 
 			// idstaff_po

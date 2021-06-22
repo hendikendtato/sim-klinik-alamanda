@@ -109,11 +109,11 @@ class returbarang extends DbTable
 		$this->fields['id_pegawai'] = &$this->id_pegawai;
 
 		// tanggal
-		$this->tanggal = new DbField('returbarang', 'returbarang', 'x_tanggal', 'tanggal', '`tanggal`', CastDateFieldForLike("`tanggal`", 0, "DB"), 133, 10, 0, FALSE, '`tanggal`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->tanggal = new DbField('returbarang', 'returbarang', 'x_tanggal', 'tanggal', '`tanggal`', CastDateFieldForLike("`tanggal`", 7, "DB"), 133, 10, 7, FALSE, '`tanggal`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->tanggal->Nullable = FALSE; // NOT NULL field
 		$this->tanggal->Required = TRUE; // Required field
 		$this->tanggal->Sortable = TRUE; // Allow sort
-		$this->tanggal->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_FORMAT"], $Language->phrase("IncorrectDate"));
+		$this->tanggal->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_SEPARATOR"], $Language->phrase("IncorrectDateDMY"));
 		$this->fields['tanggal'] = &$this->tanggal;
 
 		// status
@@ -919,7 +919,7 @@ class returbarang extends DbTable
 
 		// tanggal
 		$this->tanggal->ViewValue = $this->tanggal->CurrentValue;
-		$this->tanggal->ViewValue = FormatDateTime($this->tanggal->ViewValue, 0);
+		$this->tanggal->ViewValue = FormatDateTime($this->tanggal->ViewValue, 7);
 		$this->tanggal->ViewCustomAttributes = "";
 
 		// status
@@ -1018,7 +1018,7 @@ class returbarang extends DbTable
 		// tanggal
 		$this->tanggal->EditAttrs["class"] = "form-control";
 		$this->tanggal->EditCustomAttributes = "";
-		$this->tanggal->EditValue = FormatDateTime($this->tanggal->CurrentValue, 8);
+		$this->tanggal->EditValue = FormatDateTime($this->tanggal->CurrentValue, 7);
 		$this->tanggal->PlaceHolder = RemoveHtml($this->tanggal->caption());
 
 		// status

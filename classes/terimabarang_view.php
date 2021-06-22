@@ -1266,7 +1266,7 @@ class terimabarang_view extends terimabarang
 
 			// tanggal_terima
 			$this->tanggal_terima->ViewValue = $this->tanggal_terima->CurrentValue;
-			$this->tanggal_terima->ViewValue = FormatDateTime($this->tanggal_terima->ViewValue, 0);
+			$this->tanggal_terima->ViewValue = FormatDateTime($this->tanggal_terima->ViewValue, 7);
 			$this->tanggal_terima->ViewCustomAttributes = "";
 
 			// keterangan

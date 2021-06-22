@@ -75,7 +75,7 @@ loadjs.ready("head", function() {
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $terimagudang_add->tanggal_terima->caption(), $terimagudang_add->tanggal_terima->RequiredErrorMessage)) ?>");
 			<?php } ?>
 				elm = this.getElements("x" + infix + "_tanggal_terima");
-				if (elm && !ew.checkDateDef(elm.value))
+				if (elm && !ew.checkEuroDate(elm.value))
 					return this.onError(elm, "<?php echo JsEncode($terimagudang_add->tanggal_terima->errorMessage()) ?>");
 			<?php if ($terimagudang_add->keterangan->Required) { ?>
 				elm = this.getElements("x" + infix + "_keterangan");
@@ -122,8 +122,7 @@ loadjs.ready("head", function() {
 loadjs.ready("head", function() {
 
 	// Client script
-	// Write your client script here, no need to add script tags.
-
+	var now=new Date,day=("0"+now.getDate()).slice(-2),month=("0"+(now.getMonth()+1)).slice(-2),today=day+"/"+month+"/"+now.getFullYear();$("input#x_tanggal_terima").val(today),$("input#x_tanggal_terima").prop("disabled",!0);
 });
 </script>
 <?php $terimagudang_add->showPageHeader(); ?>
@@ -187,11 +186,11 @@ loadjs.ready(["fterimagudangadd"], function() {
 		<label id="elh_terimagudang_tanggal_terima" for="x_tanggal_terima" class="<?php echo $terimagudang_add->LeftColumnClass ?>"><?php echo $terimagudang_add->tanggal_terima->caption() ?><?php echo $terimagudang_add->tanggal_terima->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $terimagudang_add->RightColumnClass ?>"><div <?php echo $terimagudang_add->tanggal_terima->cellAttributes() ?>>
 <span id="el_terimagudang_tanggal_terima">
-<input type="text" data-table="terimagudang" data-field="x_tanggal_terima" name="x_tanggal_terima" id="x_tanggal_terima" maxlength="10" placeholder="<?php echo HtmlEncode($terimagudang_add->tanggal_terima->getPlaceHolder()) ?>" value="<?php echo $terimagudang_add->tanggal_terima->EditValue ?>"<?php echo $terimagudang_add->tanggal_terima->editAttributes() ?>>
+<input type="text" data-table="terimagudang" data-field="x_tanggal_terima" data-format="7" name="x_tanggal_terima" id="x_tanggal_terima" maxlength="10" placeholder="<?php echo HtmlEncode($terimagudang_add->tanggal_terima->getPlaceHolder()) ?>" value="<?php echo $terimagudang_add->tanggal_terima->EditValue ?>"<?php echo $terimagudang_add->tanggal_terima->editAttributes() ?>>
 <?php if (!$terimagudang_add->tanggal_terima->ReadOnly && !$terimagudang_add->tanggal_terima->Disabled && !isset($terimagudang_add->tanggal_terima->EditAttrs["readonly"]) && !isset($terimagudang_add->tanggal_terima->EditAttrs["disabled"])) { ?>
 <script>
 loadjs.ready(["fterimagudangadd", "datetimepicker"], function() {
-	ew.createDateTimePicker("fterimagudangadd", "x_tanggal_terima", {"ignoreReadonly":true,"useCurrent":false,"format":0});
+	ew.createDateTimePicker("fterimagudangadd", "x_tanggal_terima", {"ignoreReadonly":true,"useCurrent":false,"format":7});
 });
 </script>
 <?php } ?>

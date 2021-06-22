@@ -903,7 +903,7 @@ class kirimbarang_add extends kirimbarang
 				$this->tanggal->Visible = FALSE; // Disable update for API request
 			else
 				$this->tanggal->setFormValue($val);
-			$this->tanggal->CurrentValue = UnFormatDateTime($this->tanggal->CurrentValue, 0);
+			$this->tanggal->CurrentValue = UnFormatDateTime($this->tanggal->CurrentValue, 7);
 		}
 
 		// Check field name 'status_kirim' first before field var 'x_status_kirim'
@@ -937,7 +937,7 @@ class kirimbarang_add extends kirimbarang
 		$this->id_klinik->CurrentValue = $this->id_klinik->FormValue;
 		$this->id_pegawai->CurrentValue = $this->id_pegawai->FormValue;
 		$this->tanggal->CurrentValue = $this->tanggal->FormValue;
-		$this->tanggal->CurrentValue = UnFormatDateTime($this->tanggal->CurrentValue, 0);
+		$this->tanggal->CurrentValue = UnFormatDateTime($this->tanggal->CurrentValue, 7);
 		$this->status_kirim->CurrentValue = $this->status_kirim->FormValue;
 		$this->keterangan->CurrentValue = $this->keterangan->FormValue;
 	}
@@ -1157,7 +1157,7 @@ class kirimbarang_add extends kirimbarang
 
 			// tanggal
 			$this->tanggal->ViewValue = $this->tanggal->CurrentValue;
-			$this->tanggal->ViewValue = FormatDateTime($this->tanggal->ViewValue, 0);
+			$this->tanggal->ViewValue = FormatDateTime($this->tanggal->ViewValue, 7);
 			$this->tanggal->ViewCustomAttributes = "";
 
 			// status_kirim
@@ -1315,7 +1315,7 @@ class kirimbarang_add extends kirimbarang
 			// tanggal
 			$this->tanggal->EditAttrs["class"] = "form-control";
 			$this->tanggal->EditCustomAttributes = "";
-			$this->tanggal->EditValue = HtmlEncode(FormatDateTime($this->tanggal->CurrentValue, 8));
+			$this->tanggal->EditValue = HtmlEncode(FormatDateTime($this->tanggal->CurrentValue, 7));
 			$this->tanggal->PlaceHolder = RemoveHtml($this->tanggal->caption());
 
 			// status_kirim
@@ -1402,7 +1402,7 @@ class kirimbarang_add extends kirimbarang
 				AddMessage($FormError, str_replace("%s", $this->tanggal->caption(), $this->tanggal->RequiredErrorMessage));
 			}
 		}
-		if (!CheckDate($this->tanggal->FormValue)) {
+		if (!CheckEuroDate($this->tanggal->FormValue)) {
 			AddMessage($FormError, $this->tanggal->errorMessage());
 		}
 		if ($this->status_kirim->Required) {
@@ -1465,7 +1465,7 @@ class kirimbarang_add extends kirimbarang
 		$this->id_pegawai->setDbValueDef($rsnew, $this->id_pegawai->CurrentValue, NULL, FALSE);
 
 		// tanggal
-		$this->tanggal->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal->CurrentValue, 0), CurrentDate(), FALSE);
+		$this->tanggal->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal->CurrentValue, 7), CurrentDate(), FALSE);
 
 		// status_kirim
 		$this->status_kirim->setDbValueDef($rsnew, $this->status_kirim->CurrentValue, NULL, FALSE);

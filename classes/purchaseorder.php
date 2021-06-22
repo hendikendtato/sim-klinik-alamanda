@@ -82,11 +82,11 @@ class purchaseorder extends DbTable
 		$this->fields['no_po'] = &$this->no_po;
 
 		// tgl_po
-		$this->tgl_po = new DbField('purchaseorder', 'purchaseorder', 'x_tgl_po', 'tgl_po', '`tgl_po`', CastDateFieldForLike("`tgl_po`", 0, "DB"), 133, 10, 0, FALSE, '`tgl_po`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->tgl_po = new DbField('purchaseorder', 'purchaseorder', 'x_tgl_po', 'tgl_po', '`tgl_po`', CastDateFieldForLike("`tgl_po`", 7, "DB"), 133, 10, 7, FALSE, '`tgl_po`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->tgl_po->Nullable = FALSE; // NOT NULL field
 		$this->tgl_po->Required = TRUE; // Required field
 		$this->tgl_po->Sortable = TRUE; // Allow sort
-		$this->tgl_po->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_FORMAT"], $Language->phrase("IncorrectDate"));
+		$this->tgl_po->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_SEPARATOR"], $Language->phrase("IncorrectDateDMY"));
 		$this->fields['tgl_po'] = &$this->tgl_po;
 
 		// idstaff_po
@@ -789,7 +789,7 @@ class purchaseorder extends DbTable
 
 		// tgl_po
 		$this->tgl_po->ViewValue = $this->tgl_po->CurrentValue;
-		$this->tgl_po->ViewValue = FormatDateTime($this->tgl_po->ViewValue, 0);
+		$this->tgl_po->ViewValue = FormatDateTime($this->tgl_po->ViewValue, 7);
 		$this->tgl_po->ViewCustomAttributes = "";
 
 		// idstaff_po
@@ -946,7 +946,7 @@ class purchaseorder extends DbTable
 		// tgl_po
 		$this->tgl_po->EditAttrs["class"] = "form-control";
 		$this->tgl_po->EditCustomAttributes = "";
-		$this->tgl_po->EditValue = FormatDateTime($this->tgl_po->CurrentValue, 8);
+		$this->tgl_po->EditValue = FormatDateTime($this->tgl_po->CurrentValue, 7);
 		$this->tgl_po->PlaceHolder = RemoveHtml($this->tgl_po->caption());
 
 		// idstaff_po

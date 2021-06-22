@@ -87,7 +87,7 @@ loadjs.ready("head", function() {
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $returbarang_edit->tanggal->caption(), $returbarang_edit->tanggal->RequiredErrorMessage)) ?>");
 			<?php } ?>
 				elm = this.getElements("x" + infix + "_tanggal");
-				if (elm && !ew.checkDateDef(elm.value))
+				if (elm && !ew.checkEuroDate(elm.value))
 					return this.onError(elm, "<?php echo JsEncode($returbarang_edit->tanggal->errorMessage()) ?>");
 			<?php if ($returbarang_edit->status->Required) { ?>
 				elm = this.getElements("x" + infix + "_status");
@@ -230,11 +230,11 @@ $returbarang_edit->showMessage();
 		<label id="elh_returbarang_tanggal" for="x_tanggal" class="<?php echo $returbarang_edit->LeftColumnClass ?>"><?php echo $returbarang_edit->tanggal->caption() ?><?php echo $returbarang_edit->tanggal->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $returbarang_edit->RightColumnClass ?>"><div <?php echo $returbarang_edit->tanggal->cellAttributes() ?>>
 <span id="el_returbarang_tanggal">
-<input type="text" data-table="returbarang" data-field="x_tanggal" name="x_tanggal" id="x_tanggal" maxlength="10" placeholder="<?php echo HtmlEncode($returbarang_edit->tanggal->getPlaceHolder()) ?>" value="<?php echo $returbarang_edit->tanggal->EditValue ?>"<?php echo $returbarang_edit->tanggal->editAttributes() ?>>
+<input type="text" data-table="returbarang" data-field="x_tanggal" data-format="7" name="x_tanggal" id="x_tanggal" maxlength="10" placeholder="<?php echo HtmlEncode($returbarang_edit->tanggal->getPlaceHolder()) ?>" value="<?php echo $returbarang_edit->tanggal->EditValue ?>"<?php echo $returbarang_edit->tanggal->editAttributes() ?>>
 <?php if (!$returbarang_edit->tanggal->ReadOnly && !$returbarang_edit->tanggal->Disabled && !isset($returbarang_edit->tanggal->EditAttrs["readonly"]) && !isset($returbarang_edit->tanggal->EditAttrs["disabled"])) { ?>
 <script>
 loadjs.ready(["freturbarangedit", "datetimepicker"], function() {
-	ew.createDateTimePicker("freturbarangedit", "x_tanggal", {"ignoreReadonly":true,"useCurrent":false,"format":0});
+	ew.createDateTimePicker("freturbarangedit", "x_tanggal", {"ignoreReadonly":true,"useCurrent":false,"format":7});
 });
 </script>
 <?php } ?>

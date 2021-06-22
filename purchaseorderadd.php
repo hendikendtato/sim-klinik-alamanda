@@ -62,7 +62,7 @@ loadjs.ready("head", function() {
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $purchaseorder_add->tgl_po->caption(), $purchaseorder_add->tgl_po->RequiredErrorMessage)) ?>");
 			<?php } ?>
 				elm = this.getElements("x" + infix + "_tgl_po");
-				if (elm && !ew.checkDateDef(elm.value))
+				if (elm && !ew.checkEuroDate(elm.value))
 					return this.onError(elm, "<?php echo JsEncode($purchaseorder_add->tgl_po->errorMessage()) ?>");
 			<?php if ($purchaseorder_add->idstaff_po->Required) { ?>
 				elm = this.getElements("x" + infix + "_idstaff_po");
@@ -125,8 +125,7 @@ loadjs.ready("head", function() {
 loadjs.ready("head", function() {
 
 	// Client script
-	// Write your client script here, no need to add script tags.
-
+	var now=new Date,day=("0"+now.getDate()).slice(-2),month=("0"+(now.getMonth()+1)).slice(-2),today=day+"/"+month+"/"+now.getFullYear();$("input#x_tgl_po").val(today),$("input#x_tgl_po").prop("disabled",!0);
 });
 </script>
 <?php $purchaseorder_add->showPageHeader(); ?>
@@ -146,11 +145,11 @@ $purchaseorder_add->showMessage();
 		<label id="elh_purchaseorder_tgl_po" for="x_tgl_po" class="<?php echo $purchaseorder_add->LeftColumnClass ?>"><?php echo $purchaseorder_add->tgl_po->caption() ?><?php echo $purchaseorder_add->tgl_po->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $purchaseorder_add->RightColumnClass ?>"><div <?php echo $purchaseorder_add->tgl_po->cellAttributes() ?>>
 <span id="el_purchaseorder_tgl_po">
-<input type="text" data-table="purchaseorder" data-field="x_tgl_po" name="x_tgl_po" id="x_tgl_po" maxlength="10" placeholder="<?php echo HtmlEncode($purchaseorder_add->tgl_po->getPlaceHolder()) ?>" value="<?php echo $purchaseorder_add->tgl_po->EditValue ?>"<?php echo $purchaseorder_add->tgl_po->editAttributes() ?>>
+<input type="text" data-table="purchaseorder" data-field="x_tgl_po" data-format="7" name="x_tgl_po" id="x_tgl_po" maxlength="10" placeholder="<?php echo HtmlEncode($purchaseorder_add->tgl_po->getPlaceHolder()) ?>" value="<?php echo $purchaseorder_add->tgl_po->EditValue ?>"<?php echo $purchaseorder_add->tgl_po->editAttributes() ?>>
 <?php if (!$purchaseorder_add->tgl_po->ReadOnly && !$purchaseorder_add->tgl_po->Disabled && !isset($purchaseorder_add->tgl_po->EditAttrs["readonly"]) && !isset($purchaseorder_add->tgl_po->EditAttrs["disabled"])) { ?>
 <script>
 loadjs.ready(["fpurchaseorderadd", "datetimepicker"], function() {
-	ew.createDateTimePicker("fpurchaseorderadd", "x_tgl_po", {"ignoreReadonly":true,"useCurrent":false,"format":0});
+	ew.createDateTimePicker("fpurchaseorderadd", "x_tgl_po", {"ignoreReadonly":true,"useCurrent":false,"format":7});
 });
 </script>
 <?php } ?>

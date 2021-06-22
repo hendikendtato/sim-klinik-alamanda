@@ -67,7 +67,7 @@ loadjs.ready("head", function() {
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $purchaseorder_edit->tgl_po->caption(), $purchaseorder_edit->tgl_po->RequiredErrorMessage)) ?>");
 			<?php } ?>
 				elm = this.getElements("x" + infix + "_tgl_po");
-				if (elm && !ew.checkDateDef(elm.value))
+				if (elm && !ew.checkEuroDate(elm.value))
 					return this.onError(elm, "<?php echo JsEncode($purchaseorder_edit->tgl_po->errorMessage()) ?>");
 			<?php if ($purchaseorder_edit->idstaff_po->Required) { ?>
 				elm = this.getElements("x" + infix + "_idstaff_po");
@@ -168,11 +168,11 @@ $purchaseorder_edit->showMessage();
 		<label id="elh_purchaseorder_tgl_po" for="x_tgl_po" class="<?php echo $purchaseorder_edit->LeftColumnClass ?>"><?php echo $purchaseorder_edit->tgl_po->caption() ?><?php echo $purchaseorder_edit->tgl_po->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $purchaseorder_edit->RightColumnClass ?>"><div <?php echo $purchaseorder_edit->tgl_po->cellAttributes() ?>>
 <span id="el_purchaseorder_tgl_po">
-<input type="text" data-table="purchaseorder" data-field="x_tgl_po" name="x_tgl_po" id="x_tgl_po" maxlength="10" placeholder="<?php echo HtmlEncode($purchaseorder_edit->tgl_po->getPlaceHolder()) ?>" value="<?php echo $purchaseorder_edit->tgl_po->EditValue ?>"<?php echo $purchaseorder_edit->tgl_po->editAttributes() ?>>
+<input type="text" data-table="purchaseorder" data-field="x_tgl_po" data-format="7" name="x_tgl_po" id="x_tgl_po" maxlength="10" placeholder="<?php echo HtmlEncode($purchaseorder_edit->tgl_po->getPlaceHolder()) ?>" value="<?php echo $purchaseorder_edit->tgl_po->EditValue ?>"<?php echo $purchaseorder_edit->tgl_po->editAttributes() ?>>
 <?php if (!$purchaseorder_edit->tgl_po->ReadOnly && !$purchaseorder_edit->tgl_po->Disabled && !isset($purchaseorder_edit->tgl_po->EditAttrs["readonly"]) && !isset($purchaseorder_edit->tgl_po->EditAttrs["disabled"])) { ?>
 <script>
 loadjs.ready(["fpurchaseorderedit", "datetimepicker"], function() {
-	ew.createDateTimePicker("fpurchaseorderedit", "x_tgl_po", {"ignoreReadonly":true,"useCurrent":false,"format":0});
+	ew.createDateTimePicker("fpurchaseorderedit", "x_tgl_po", {"ignoreReadonly":true,"useCurrent":false,"format":7});
 });
 </script>
 <?php } ?>

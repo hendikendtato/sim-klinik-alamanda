@@ -915,7 +915,7 @@ class returbarang_edit extends returbarang
 				$this->tanggal->Visible = FALSE; // Disable update for API request
 			else
 				$this->tanggal->setFormValue($val);
-			$this->tanggal->CurrentValue = UnFormatDateTime($this->tanggal->CurrentValue, 0);
+			$this->tanggal->CurrentValue = UnFormatDateTime($this->tanggal->CurrentValue, 7);
 		}
 
 		// Check field name 'status' first before field var 'x_status'
@@ -947,7 +947,7 @@ class returbarang_edit extends returbarang
 		$this->id_supplier->CurrentValue = $this->id_supplier->FormValue;
 		$this->id_pegawai->CurrentValue = $this->id_pegawai->FormValue;
 		$this->tanggal->CurrentValue = $this->tanggal->FormValue;
-		$this->tanggal->CurrentValue = UnFormatDateTime($this->tanggal->CurrentValue, 0);
+		$this->tanggal->CurrentValue = UnFormatDateTime($this->tanggal->CurrentValue, 7);
 		$this->status->CurrentValue = $this->status->FormValue;
 		$this->keterangan->CurrentValue = $this->keterangan->FormValue;
 	}
@@ -1137,7 +1137,7 @@ class returbarang_edit extends returbarang
 
 			// tanggal
 			$this->tanggal->ViewValue = $this->tanggal->CurrentValue;
-			$this->tanggal->ViewValue = FormatDateTime($this->tanggal->ViewValue, 0);
+			$this->tanggal->ViewValue = FormatDateTime($this->tanggal->ViewValue, 7);
 			$this->tanggal->ViewCustomAttributes = "";
 
 			// status
@@ -1286,7 +1286,7 @@ class returbarang_edit extends returbarang
 			// tanggal
 			$this->tanggal->EditAttrs["class"] = "form-control";
 			$this->tanggal->EditCustomAttributes = "";
-			$this->tanggal->EditValue = HtmlEncode(FormatDateTime($this->tanggal->CurrentValue, 8));
+			$this->tanggal->EditValue = HtmlEncode(FormatDateTime($this->tanggal->CurrentValue, 7));
 			$this->tanggal->PlaceHolder = RemoveHtml($this->tanggal->caption());
 
 			// status
@@ -1383,7 +1383,7 @@ class returbarang_edit extends returbarang
 				AddMessage($FormError, str_replace("%s", $this->tanggal->caption(), $this->tanggal->RequiredErrorMessage));
 			}
 		}
-		if (!CheckDate($this->tanggal->FormValue)) {
+		if (!CheckEuroDate($this->tanggal->FormValue)) {
 			AddMessage($FormError, $this->tanggal->errorMessage());
 		}
 		if ($this->status->Required) {
@@ -1458,7 +1458,7 @@ class returbarang_edit extends returbarang
 			$this->id_pegawai->setDbValueDef($rsnew, $this->id_pegawai->CurrentValue, NULL, $this->id_pegawai->ReadOnly);
 
 			// tanggal
-			$this->tanggal->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal->CurrentValue, 0), CurrentDate(), $this->tanggal->ReadOnly);
+			$this->tanggal->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal->CurrentValue, 7), CurrentDate(), $this->tanggal->ReadOnly);
 
 			// status
 			$this->status->setDbValueDef($rsnew, $this->status->CurrentValue, NULL, $this->status->ReadOnly);
