@@ -825,7 +825,7 @@ class penggunaan_kartu_list extends penggunaan_kartu
 		$this->total->setVisibility();
 		$this->charge->setVisibility();
 		$this->total_charge->setVisibility();
-		$this->jumlah_pemakaian->setVisibility();
+		$this->jumlah_pemakaian->Visible = FALSE;
 		$this->hideFieldsForAddEdit();
 
 		// Global Page Loading event (in userfn*.php)
@@ -1381,7 +1381,6 @@ class penggunaan_kartu_list extends penggunaan_kartu
 			$this->updateSort($this->total); // total
 			$this->updateSort($this->charge); // charge
 			$this->updateSort($this->total_charge); // total_charge
-			$this->updateSort($this->jumlah_pemakaian); // jumlah_pemakaian
 			$this->setStartRecordNumber(1); // Reset start position
 		}
 	}
@@ -1424,7 +1423,6 @@ class penggunaan_kartu_list extends penggunaan_kartu
 				$this->total->setSort("");
 				$this->charge->setSort("");
 				$this->total_charge->setSort("");
-				$this->jumlah_pemakaian->setSort("");
 			}
 
 			// Reset start position
@@ -2026,11 +2024,6 @@ class penggunaan_kartu_list extends penggunaan_kartu
 			$this->total_charge->LinkCustomAttributes = "";
 			$this->total_charge->HrefValue = "";
 			$this->total_charge->TooltipValue = "";
-
-			// jumlah_pemakaian
-			$this->jumlah_pemakaian->LinkCustomAttributes = "";
-			$this->jumlah_pemakaian->HrefValue = "";
-			$this->jumlah_pemakaian->TooltipValue = "";
 		}
 
 		// Call Row Rendered event

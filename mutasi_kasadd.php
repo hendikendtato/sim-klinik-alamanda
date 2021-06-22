@@ -132,7 +132,7 @@ loadjs.ready("head", function() {
 loadjs.ready("head", function() {
 
 	// Client script
-	$("th[data-name=tipe_mutasi]").css({display:"none"}),$("td[data-name=tipe_mutasi]").css({display:"none"}),$('input:radio[name="x_tipe"]').change(function(){var a=$(this).val();$("[data-field=x_tipe_mutasi]").val(a)}),$("[data-field=x_nama_akun]").change(function(){var a=$(this).attr("id");console.log(a);var t="#"+a.split("_")[0];console.log(t);var n=t+"_nama_akun",o=t+"_jumlah",i=$("[data-field=x_id_kas]").val(),l=$(n).val().includes("Setor");console.log(l),1==l?axios.get(`api/?action=view&object=m_kas&id=${i}`).then(function(a){console.log(a.data);var t=a.data.m_kas.saldo;console.log(t),$(o).val(t)}).catch(function(a){console.log(a)}):$(o).val("0")});
+	$("th[data-name=tipe_mutasi]").css({display:"none"}),$("td[data-name=tipe_mutasi]").css({display:"none"}),$('input:radio[name="x_tipe"]').change(function(){var a=$(this).val();$("[data-field=x_tipe_mutasi]").val(a)}),$("[data-field=x_nama_akun]").change(function(){var a=$(this).attr("id");console.log(a);var t="#"+a.split("_")[0];console.log(t);var n=t+"_nama_akun",o=t+"_jumlah",e=$("[data-field=x_id_kas]").val(),l=$(n).val().includes("Setor");console.log(l),1==l?axios.get(`api/?action=view&object=m_kas&id=${e}`).then(function(a){console.log(a.data);var t=a.data.m_kas.saldo;console.log(t),$(o).val(t)}).catch(function(a){console.log(a)}):$(o).val("0")});var now=new Date,day=("0"+now.getDate()).slice(-2),month=("0"+(now.getMonth()+1)).slice(-2),today=day+"/"+month+"/"+now.getFullYear();$("input#x_tgl").val(today),$("input#x_tgl").prop("disabled",!0);
 });
 </script>
 <?php $mutasi_kas_add->showPageHeader(); ?>
