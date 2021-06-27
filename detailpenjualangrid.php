@@ -593,7 +593,7 @@ $onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
 $detailpenjualan_grid->nama_barang->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x<?php echo $detailpenjualan_grid->RowIndex ?>_nama_barang">
-	<input type="text" class="form-control" name="sv_x<?php echo $detailpenjualan_grid->RowIndex ?>_nama_barang" id="sv_x<?php echo $detailpenjualan_grid->RowIndex ?>_nama_barang" value="<?php echo RemoveHtml($detailpenjualan_grid->nama_barang->EditValue) ?>" size="30" maxlength="255" placeholder="<?php echo HtmlEncode($detailpenjualan_grid->nama_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailpenjualan_grid->nama_barang->getPlaceHolder()) ?>"<?php echo $detailpenjualan_grid->nama_barang->editAttributes() ?>>
+	<input type="text" class="form-control" name="sv_x<?php echo $detailpenjualan_grid->RowIndex ?>_nama_barang" id="sv_x<?php echo $detailpenjualan_grid->RowIndex ?>_nama_barang" value="<?php echo RemoveHtml($detailpenjualan_grid->nama_barang->EditValue) ?>" size="45" maxlength="255" placeholder="<?php echo HtmlEncode($detailpenjualan_grid->nama_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailpenjualan_grid->nama_barang->getPlaceHolder()) ?>"<?php echo $detailpenjualan_grid->nama_barang->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="detailpenjualan" data-field="x_nama_barang" data-value-separator="<?php echo $detailpenjualan_grid->nama_barang->displayValueSeparatorAttribute() ?>" name="x<?php echo $detailpenjualan_grid->RowIndex ?>_nama_barang" id="x<?php echo $detailpenjualan_grid->RowIndex ?>_nama_barang" value="<?php echo HtmlEncode($detailpenjualan_grid->nama_barang->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
@@ -613,7 +613,7 @@ $onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
 $detailpenjualan_grid->nama_barang->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x<?php echo $detailpenjualan_grid->RowIndex ?>_nama_barang">
-	<input type="text" class="form-control" name="sv_x<?php echo $detailpenjualan_grid->RowIndex ?>_nama_barang" id="sv_x<?php echo $detailpenjualan_grid->RowIndex ?>_nama_barang" value="<?php echo RemoveHtml($detailpenjualan_grid->nama_barang->EditValue) ?>" size="30" maxlength="255" placeholder="<?php echo HtmlEncode($detailpenjualan_grid->nama_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailpenjualan_grid->nama_barang->getPlaceHolder()) ?>"<?php echo $detailpenjualan_grid->nama_barang->editAttributes() ?>>
+	<input type="text" class="form-control" name="sv_x<?php echo $detailpenjualan_grid->RowIndex ?>_nama_barang" id="sv_x<?php echo $detailpenjualan_grid->RowIndex ?>_nama_barang" value="<?php echo RemoveHtml($detailpenjualan_grid->nama_barang->EditValue) ?>" size="45" maxlength="255" placeholder="<?php echo HtmlEncode($detailpenjualan_grid->nama_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailpenjualan_grid->nama_barang->getPlaceHolder()) ?>"<?php echo $detailpenjualan_grid->nama_barang->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="detailpenjualan" data-field="x_nama_barang" data-value-separator="<?php echo $detailpenjualan_grid->nama_barang->displayValueSeparatorAttribute() ?>" name="x<?php echo $detailpenjualan_grid->RowIndex ?>_nama_barang" id="x<?php echo $detailpenjualan_grid->RowIndex ?>_nama_barang" value="<?php echo HtmlEncode($detailpenjualan_grid->nama_barang->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
@@ -697,13 +697,13 @@ loadjs.ready(["fdetailpenjualangrid"], function() {
 		<td data-name="qty" <?php echo $detailpenjualan_grid->qty->cellAttributes() ?>>
 <?php if ($detailpenjualan->RowType == ROWTYPE_ADD) { // Add record ?>
 <span id="el<?php echo $detailpenjualan_grid->RowCount ?>_detailpenjualan_qty" class="form-group">
-<input type="text" data-table="detailpenjualan" data-field="x_qty" name="x<?php echo $detailpenjualan_grid->RowIndex ?>_qty" id="x<?php echo $detailpenjualan_grid->RowIndex ?>_qty" size="5" maxlength="22" placeholder="<?php echo HtmlEncode($detailpenjualan_grid->qty->getPlaceHolder()) ?>" value="<?php echo $detailpenjualan_grid->qty->EditValue ?>"<?php echo $detailpenjualan_grid->qty->editAttributes() ?>>
+<input type="text" data-table="detailpenjualan" data-field="x_qty" name="x<?php echo $detailpenjualan_grid->RowIndex ?>_qty" id="x<?php echo $detailpenjualan_grid->RowIndex ?>_qty" size="4" maxlength="22" placeholder="<?php echo HtmlEncode($detailpenjualan_grid->qty->getPlaceHolder()) ?>" value="<?php echo $detailpenjualan_grid->qty->EditValue ?>"<?php echo $detailpenjualan_grid->qty->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="detailpenjualan" data-field="x_qty" name="o<?php echo $detailpenjualan_grid->RowIndex ?>_qty" id="o<?php echo $detailpenjualan_grid->RowIndex ?>_qty" value="<?php echo HtmlEncode($detailpenjualan_grid->qty->OldValue) ?>">
 <?php } ?>
 <?php if ($detailpenjualan->RowType == ROWTYPE_EDIT) { // Edit record ?>
 <span id="el<?php echo $detailpenjualan_grid->RowCount ?>_detailpenjualan_qty" class="form-group">
-<input type="text" data-table="detailpenjualan" data-field="x_qty" name="x<?php echo $detailpenjualan_grid->RowIndex ?>_qty" id="x<?php echo $detailpenjualan_grid->RowIndex ?>_qty" size="5" maxlength="22" placeholder="<?php echo HtmlEncode($detailpenjualan_grid->qty->getPlaceHolder()) ?>" value="<?php echo $detailpenjualan_grid->qty->EditValue ?>"<?php echo $detailpenjualan_grid->qty->editAttributes() ?>>
+<input type="text" data-table="detailpenjualan" data-field="x_qty" name="x<?php echo $detailpenjualan_grid->RowIndex ?>_qty" id="x<?php echo $detailpenjualan_grid->RowIndex ?>_qty" size="4" maxlength="22" placeholder="<?php echo HtmlEncode($detailpenjualan_grid->qty->getPlaceHolder()) ?>" value="<?php echo $detailpenjualan_grid->qty->EditValue ?>"<?php echo $detailpenjualan_grid->qty->editAttributes() ?>>
 </span>
 <?php } ?>
 <?php if ($detailpenjualan->RowType == ROWTYPE_VIEW) { // View record ?>
@@ -978,7 +978,7 @@ $onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
 $detailpenjualan_grid->nama_barang->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x<?php echo $detailpenjualan_grid->RowIndex ?>_nama_barang">
-	<input type="text" class="form-control" name="sv_x<?php echo $detailpenjualan_grid->RowIndex ?>_nama_barang" id="sv_x<?php echo $detailpenjualan_grid->RowIndex ?>_nama_barang" value="<?php echo RemoveHtml($detailpenjualan_grid->nama_barang->EditValue) ?>" size="30" maxlength="255" placeholder="<?php echo HtmlEncode($detailpenjualan_grid->nama_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailpenjualan_grid->nama_barang->getPlaceHolder()) ?>"<?php echo $detailpenjualan_grid->nama_barang->editAttributes() ?>>
+	<input type="text" class="form-control" name="sv_x<?php echo $detailpenjualan_grid->RowIndex ?>_nama_barang" id="sv_x<?php echo $detailpenjualan_grid->RowIndex ?>_nama_barang" value="<?php echo RemoveHtml($detailpenjualan_grid->nama_barang->EditValue) ?>" size="45" maxlength="255" placeholder="<?php echo HtmlEncode($detailpenjualan_grid->nama_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailpenjualan_grid->nama_barang->getPlaceHolder()) ?>"<?php echo $detailpenjualan_grid->nama_barang->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="detailpenjualan" data-field="x_nama_barang" data-value-separator="<?php echo $detailpenjualan_grid->nama_barang->displayValueSeparatorAttribute() ?>" name="x<?php echo $detailpenjualan_grid->RowIndex ?>_nama_barang" id="x<?php echo $detailpenjualan_grid->RowIndex ?>_nama_barang" value="<?php echo HtmlEncode($detailpenjualan_grid->nama_barang->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
@@ -1031,7 +1031,7 @@ loadjs.ready(["fdetailpenjualangrid"], function() {
 		<td data-name="qty">
 <?php if (!$detailpenjualan->isConfirm()) { ?>
 <span id="el$rowindex$_detailpenjualan_qty" class="form-group detailpenjualan_qty">
-<input type="text" data-table="detailpenjualan" data-field="x_qty" name="x<?php echo $detailpenjualan_grid->RowIndex ?>_qty" id="x<?php echo $detailpenjualan_grid->RowIndex ?>_qty" size="5" maxlength="22" placeholder="<?php echo HtmlEncode($detailpenjualan_grid->qty->getPlaceHolder()) ?>" value="<?php echo $detailpenjualan_grid->qty->EditValue ?>"<?php echo $detailpenjualan_grid->qty->editAttributes() ?>>
+<input type="text" data-table="detailpenjualan" data-field="x_qty" name="x<?php echo $detailpenjualan_grid->RowIndex ?>_qty" id="x<?php echo $detailpenjualan_grid->RowIndex ?>_qty" size="4" maxlength="22" placeholder="<?php echo HtmlEncode($detailpenjualan_grid->qty->getPlaceHolder()) ?>" value="<?php echo $detailpenjualan_grid->qty->EditValue ?>"<?php echo $detailpenjualan_grid->qty->editAttributes() ?>>
 </span>
 <?php } else { ?>
 <span id="el$rowindex$_detailpenjualan_qty" class="form-group detailpenjualan_qty">

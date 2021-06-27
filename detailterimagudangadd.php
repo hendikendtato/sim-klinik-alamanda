@@ -178,7 +178,7 @@ $detailterimagudang_add->id_barang->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x_id_barang">
 	<div class="input-group">
-		<input type="text" class="form-control" name="sv_x_id_barang" id="sv_x_id_barang" value="<?php echo RemoveHtml($detailterimagudang_add->id_barang->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($detailterimagudang_add->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailterimagudang_add->id_barang->getPlaceHolder()) ?>"<?php echo $detailterimagudang_add->id_barang->editAttributes() ?>>
+		<input type="text" class="form-control" name="sv_x_id_barang" id="sv_x_id_barang" value="<?php echo RemoveHtml($detailterimagudang_add->id_barang->EditValue) ?>" size="55" maxlength="50" placeholder="<?php echo HtmlEncode($detailterimagudang_add->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailterimagudang_add->id_barang->getPlaceHolder()) ?>"<?php echo $detailterimagudang_add->id_barang->editAttributes() ?>>
 		<div class="input-group-append">
 			<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($detailterimagudang_add->id_barang->caption()), $Language->phrase("LookupLink", TRUE))) ?>" onclick="ew.modalLookupShow({lnk:this,el:'x_id_barang',m:0,n:10,srch:false});" class="ew-lookup-btn btn btn-default"<?php echo ($detailterimagudang_add->id_barang->ReadOnly || $detailterimagudang_add->id_barang->Disabled) ? " disabled" : "" ?>><i class="fas fa-search ew-icon"></i></button>
 		</div>
@@ -200,7 +200,7 @@ loadjs.ready(["fdetailterimagudangadd"], function() {
 		<label id="elh_detailterimagudang_qty" for="x_qty" class="<?php echo $detailterimagudang_add->LeftColumnClass ?>"><?php echo $detailterimagudang_add->qty->caption() ?><?php echo $detailterimagudang_add->qty->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $detailterimagudang_add->RightColumnClass ?>"><div <?php echo $detailterimagudang_add->qty->cellAttributes() ?>>
 <span id="el_detailterimagudang_qty">
-<input type="text" data-table="detailterimagudang" data-field="x_qty" name="x_qty" id="x_qty" size="30" maxlength="22" placeholder="<?php echo HtmlEncode($detailterimagudang_add->qty->getPlaceHolder()) ?>" value="<?php echo $detailterimagudang_add->qty->EditValue ?>"<?php echo $detailterimagudang_add->qty->editAttributes() ?>>
+<input type="text" data-table="detailterimagudang" data-field="x_qty" name="x_qty" id="x_qty" size="6" maxlength="22" placeholder="<?php echo HtmlEncode($detailterimagudang_add->qty->getPlaceHolder()) ?>" value="<?php echo $detailterimagudang_add->qty->EditValue ?>"<?php echo $detailterimagudang_add->qty->editAttributes() ?>>
 </span>
 <?php echo $detailterimagudang_add->qty->CustomMsg ?></div></div>
 	</div>

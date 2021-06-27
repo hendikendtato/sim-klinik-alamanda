@@ -677,6 +677,7 @@ class m_hargajual_search extends m_hargajual
 		$this->tgl_exp->setVisibility();
 		$this->kategori->setVisibility();
 		$this->subkategori->setVisibility();
+		$this->tipe->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -757,6 +758,7 @@ class m_hargajual_search extends m_hargajual
 		$this->buildSearchUrl($srchUrl, $this->tgl_exp); // tgl_exp
 		$this->buildSearchUrl($srchUrl, $this->kategori); // kategori
 		$this->buildSearchUrl($srchUrl, $this->subkategori); // subkategori
+		$this->buildSearchUrl($srchUrl, $this->tipe); // tipe
 		if ($srchUrl != "")
 			$srchUrl .= "&";
 		$srchUrl .= "cmd=search";
@@ -849,6 +851,8 @@ class m_hargajual_search extends m_hargajual
 			$got = TRUE;
 		if ($this->subkategori->AdvancedSearch->post())
 			$got = TRUE;
+		if ($this->tipe->AdvancedSearch->post())
+			$got = TRUE;
 		return $got;
 	}
 
@@ -884,6 +888,7 @@ class m_hargajual_search extends m_hargajual
 		// tgl_exp
 		// kategori
 		// subkategori
+		// tipe
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -1036,6 +1041,14 @@ class m_hargajual_search extends m_hargajual
 			}
 			$this->subkategori->ViewCustomAttributes = "";
 
+			// tipe
+			if (strval($this->tipe->CurrentValue) != "") {
+				$this->tipe->ViewValue = $this->tipe->optionCaption($this->tipe->CurrentValue);
+			} else {
+				$this->tipe->ViewValue = NULL;
+			}
+			$this->tipe->ViewCustomAttributes = "";
+
 			// id_barang
 			$this->id_barang->LinkCustomAttributes = "";
 			$this->id_barang->HrefValue = "";
@@ -1085,6 +1098,11 @@ class m_hargajual_search extends m_hargajual
 			$this->subkategori->LinkCustomAttributes = "";
 			$this->subkategori->HrefValue = "";
 			$this->subkategori->TooltipValue = "";
+
+			// tipe
+			$this->tipe->LinkCustomAttributes = "";
+			$this->tipe->HrefValue = "";
+			$this->tipe->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_SEARCH) { // Search row
 
 			// id_barang
@@ -1244,6 +1262,10 @@ class m_hargajual_search extends m_hargajual
 					$rswrk->close();
 				$this->subkategori->EditValue = $arwrk;
 			}
+
+			// tipe
+			$this->tipe->EditCustomAttributes = "";
+			$this->tipe->EditValue = $this->tipe->options(FALSE);
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -1305,6 +1327,7 @@ class m_hargajual_search extends m_hargajual
 		$this->tgl_exp->AdvancedSearch->load();
 		$this->kategori->AdvancedSearch->load();
 		$this->subkategori->AdvancedSearch->load();
+		$this->tipe->AdvancedSearch->load();
 	}
 
 	// Set up Breadcrumb
@@ -1341,6 +1364,8 @@ class m_hargajual_search extends m_hargajual
 				case "x_kategori":
 					break;
 				case "x_subkategori":
+					break;
+				case "x_tipe":
 					break;
 				default:
 					$lookupFilter = "";

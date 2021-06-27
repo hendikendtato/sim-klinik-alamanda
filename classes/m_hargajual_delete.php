@@ -589,6 +589,7 @@ class m_hargajual_delete extends m_hargajual
 		$this->tgl_exp->setVisibility();
 		$this->kategori->Visible = FALSE;
 		$this->subkategori->Visible = FALSE;
+		$this->tipe->Visible = FALSE;
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -752,6 +753,7 @@ class m_hargajual_delete extends m_hargajual
 		$this->tgl_exp->setDbValue($row['tgl_exp']);
 		$this->kategori->setDbValue($row['kategori']);
 		$this->subkategori->setDbValue($row['subkategori']);
+		$this->tipe->setDbValue($row['tipe']);
 	}
 
 	// Return a row with default values
@@ -771,6 +773,7 @@ class m_hargajual_delete extends m_hargajual
 		$row['tgl_exp'] = NULL;
 		$row['kategori'] = NULL;
 		$row['subkategori'] = NULL;
+		$row['tipe'] = NULL;
 		return $row;
 	}
 
@@ -814,6 +817,7 @@ class m_hargajual_delete extends m_hargajual
 		// tgl_exp
 		// kategori
 		// subkategori
+		// tipe
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -965,6 +969,14 @@ class m_hargajual_delete extends m_hargajual
 				$this->subkategori->ViewValue = NULL;
 			}
 			$this->subkategori->ViewCustomAttributes = "";
+
+			// tipe
+			if (strval($this->tipe->CurrentValue) != "") {
+				$this->tipe->ViewValue = $this->tipe->optionCaption($this->tipe->CurrentValue);
+			} else {
+				$this->tipe->ViewValue = NULL;
+			}
+			$this->tipe->ViewCustomAttributes = "";
 
 			// id_barang
 			$this->id_barang->LinkCustomAttributes = "";
@@ -1146,6 +1158,8 @@ class m_hargajual_delete extends m_hargajual
 				case "x_kategori":
 					break;
 				case "x_subkategori":
+					break;
+				case "x_tipe":
 					break;
 				default:
 					$lookupFilter = "";

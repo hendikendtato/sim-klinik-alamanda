@@ -782,6 +782,7 @@ class detail_nonjual_delete extends detail_nonjual
 			$this->id_nonjual->ViewCustomAttributes = "";
 
 			// id_barang
+			$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
 			$curVal = strval($this->id_barang->CurrentValue);
 			if ($curVal != "") {
 				$this->id_barang->ViewValue = $this->id_barang->lookupCacheOption($curVal);

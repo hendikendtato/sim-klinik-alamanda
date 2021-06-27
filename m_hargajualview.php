@@ -191,6 +191,16 @@ $m_hargajual_view->showMessage();
 </td>
 	</tr>
 <?php } ?>
+<?php if ($m_hargajual_view->tipe->Visible) { // tipe ?>
+	<tr id="r_tipe">
+		<td class="<?php echo $m_hargajual_view->TableLeftColumnClass ?>"><span id="elh_m_hargajual_tipe"><?php echo $m_hargajual_view->tipe->caption() ?></span></td>
+		<td data-name="tipe" <?php echo $m_hargajual_view->tipe->cellAttributes() ?>>
+<span id="el_m_hargajual_tipe">
+<span<?php echo $m_hargajual_view->tipe->viewAttributes() ?>><?php echo $m_hargajual_view->tipe->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
 </table>
 </form>
 <?php

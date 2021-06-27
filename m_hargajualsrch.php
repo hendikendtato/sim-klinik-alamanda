@@ -94,6 +94,8 @@ loadjs.ready("head", function() {
 	fm_hargajualsearch.lists["x_kategori"].options = <?php echo JsonEncode($m_hargajual_search->kategori->lookupOptions()) ?>;
 	fm_hargajualsearch.lists["x_subkategori"] = <?php echo $m_hargajual_search->subkategori->Lookup->toClientList($m_hargajual_search) ?>;
 	fm_hargajualsearch.lists["x_subkategori"].options = <?php echo JsonEncode($m_hargajual_search->subkategori->lookupOptions()) ?>;
+	fm_hargajualsearch.lists["x_tipe"] = <?php echo $m_hargajual_search->tipe->Lookup->toClientList($m_hargajual_search) ?>;
+	fm_hargajualsearch.lists["x_tipe"].options = <?php echo JsonEncode($m_hargajual_search->tipe->options(FALSE, TRUE)) ?>;
 	loadjs.done("fm_hargajualsearch");
 });
 </script>
@@ -304,6 +306,24 @@ loadjs.ready(["fm_hargajualsearch", "datetimepicker"], function() {
 		</select>
 </div>
 <?php echo $m_hargajual_search->subkategori->Lookup->getParamTag($m_hargajual_search, "p_x_subkategori") ?>
+</span>
+		</div></div>
+	</div>
+<?php } ?>
+<?php if ($m_hargajual_search->tipe->Visible) { // tipe ?>
+	<div id="r_tipe" class="form-group row">
+		<label class="<?php echo $m_hargajual_search->LeftColumnClass ?>"><span id="elh_m_hargajual_tipe"><?php echo $m_hargajual_search->tipe->caption() ?></span>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_tipe" id="z_tipe" value="=">
+</span>
+		</label>
+		<div class="<?php echo $m_hargajual_search->RightColumnClass ?>"><div <?php echo $m_hargajual_search->tipe->cellAttributes() ?>>
+			<span id="el_m_hargajual_tipe" class="ew-search-field">
+<div id="tp_x_tipe" class="ew-template"><input type="radio" class="custom-control-input" data-table="m_hargajual" data-field="x_tipe" data-value-separator="<?php echo $m_hargajual_search->tipe->displayValueSeparatorAttribute() ?>" name="x_tipe" id="x_tipe" value="{value}"<?php echo $m_hargajual_search->tipe->editAttributes() ?>></div>
+<div id="dsl_x_tipe" data-repeatcolumn="5" class="ew-item-list d-none"><div>
+<?php echo $m_hargajual_search->tipe->radioButtonListHtml(FALSE, "x_tipe") ?>
+</div></div>
 </span>
 		</div></div>
 	</div>

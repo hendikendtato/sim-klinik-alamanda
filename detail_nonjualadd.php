@@ -69,6 +69,9 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $detail_nonjual_add->id_barang->caption(), $detail_nonjual_add->id_barang->RequiredErrorMessage)) ?>");
 			<?php } ?>
+				elm = this.getElements("x" + infix + "_id_barang");
+				if (elm && !ew.checkInteger(elm.value))
+					return this.onError(elm, "<?php echo JsEncode($detail_nonjual_add->id_barang->errorMessage()) ?>");
 			<?php if ($detail_nonjual_add->stok->Required) { ?>
 				elm = this.getElements("x" + infix + "_stok");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
@@ -115,6 +118,7 @@ loadjs.ready("head", function() {
 	// Dynamic selection lists
 	fdetail_nonjualadd.lists["x_id_barang"] = <?php echo $detail_nonjual_add->id_barang->Lookup->toClientList($detail_nonjual_add) ?>;
 	fdetail_nonjualadd.lists["x_id_barang"].options = <?php echo JsonEncode($detail_nonjual_add->id_barang->lookupOptions()) ?>;
+	fdetail_nonjualadd.autoSuggests["x_id_barang"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
 	loadjs.done("fdetail_nonjualadd");
 });
 </script>
@@ -161,15 +165,23 @@ $detail_nonjual_add->showMessage();
 <?php } ?>
 <?php if ($detail_nonjual_add->id_barang->Visible) { // id_barang ?>
 	<div id="r_id_barang" class="form-group row">
-		<label id="elh_detail_nonjual_id_barang" for="x_id_barang" class="<?php echo $detail_nonjual_add->LeftColumnClass ?>"><?php echo $detail_nonjual_add->id_barang->caption() ?><?php echo $detail_nonjual_add->id_barang->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<label id="elh_detail_nonjual_id_barang" class="<?php echo $detail_nonjual_add->LeftColumnClass ?>"><?php echo $detail_nonjual_add->id_barang->caption() ?><?php echo $detail_nonjual_add->id_barang->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $detail_nonjual_add->RightColumnClass ?>"><div <?php echo $detail_nonjual_add->id_barang->cellAttributes() ?>>
 <span id="el_detail_nonjual_id_barang">
-<?php $detail_nonjual_add->id_barang->EditAttrs->prepend("onchange", "ew.autoFill(this);"); ?>
-<div class="input-group">
-	<select class="custom-select ew-custom-select" data-table="detail_nonjual" data-field="x_id_barang" data-value-separator="<?php echo $detail_nonjual_add->id_barang->displayValueSeparatorAttribute() ?>" id="x_id_barang" name="x_id_barang"<?php echo $detail_nonjual_add->id_barang->editAttributes() ?>>
-			<?php echo $detail_nonjual_add->id_barang->selectOptionListHtml("x_id_barang") ?>
-		</select>
-</div>
+<?php
+$onchange = $detail_nonjual_add->id_barang->EditAttrs->prepend("onchange", "ew.autoFill(this);");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$detail_nonjual_add->id_barang->EditAttrs["onchange"] = "";
+?>
+<span id="as_x_id_barang">
+	<input type="text" class="form-control" name="sv_x_id_barang" id="sv_x_id_barang" value="<?php echo RemoveHtml($detail_nonjual_add->id_barang->EditValue) ?>" size="60" maxlength="255" placeholder="<?php echo HtmlEncode($detail_nonjual_add->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detail_nonjual_add->id_barang->getPlaceHolder()) ?>"<?php echo $detail_nonjual_add->id_barang->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="detail_nonjual" data-field="x_id_barang" data-value-separator="<?php echo $detail_nonjual_add->id_barang->displayValueSeparatorAttribute() ?>" name="x_id_barang" id="x_id_barang" value="<?php echo HtmlEncode($detail_nonjual_add->id_barang->CurrentValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fdetail_nonjualadd"], function() {
+	fdetail_nonjualadd.createAutoSuggest({"id":"x_id_barang","forceSelect":true});
+});
+</script>
 <?php echo $detail_nonjual_add->id_barang->Lookup->getParamTag($detail_nonjual_add, "p_x_id_barang") ?>
 </span>
 <?php echo $detail_nonjual_add->id_barang->CustomMsg ?></div></div>
@@ -180,7 +192,7 @@ $detail_nonjual_add->showMessage();
 		<label id="elh_detail_nonjual_stok" for="x_stok" class="<?php echo $detail_nonjual_add->LeftColumnClass ?>"><?php echo $detail_nonjual_add->stok->caption() ?><?php echo $detail_nonjual_add->stok->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $detail_nonjual_add->RightColumnClass ?>"><div <?php echo $detail_nonjual_add->stok->cellAttributes() ?>>
 <span id="el_detail_nonjual_stok">
-<input type="text" data-table="detail_nonjual" data-field="x_stok" name="x_stok" id="x_stok" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($detail_nonjual_add->stok->getPlaceHolder()) ?>" value="<?php echo $detail_nonjual_add->stok->EditValue ?>"<?php echo $detail_nonjual_add->stok->editAttributes() ?>>
+<input type="text" data-table="detail_nonjual" data-field="x_stok" name="x_stok" id="x_stok" size="6" maxlength="11" placeholder="<?php echo HtmlEncode($detail_nonjual_add->stok->getPlaceHolder()) ?>" value="<?php echo $detail_nonjual_add->stok->EditValue ?>"<?php echo $detail_nonjual_add->stok->editAttributes() ?>>
 </span>
 <?php echo $detail_nonjual_add->stok->CustomMsg ?></div></div>
 	</div>
@@ -190,7 +202,7 @@ $detail_nonjual_add->showMessage();
 		<label id="elh_detail_nonjual_qty" for="x_qty" class="<?php echo $detail_nonjual_add->LeftColumnClass ?>"><?php echo $detail_nonjual_add->qty->caption() ?><?php echo $detail_nonjual_add->qty->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $detail_nonjual_add->RightColumnClass ?>"><div <?php echo $detail_nonjual_add->qty->cellAttributes() ?>>
 <span id="el_detail_nonjual_qty">
-<input type="text" data-table="detail_nonjual" data-field="x_qty" name="x_qty" id="x_qty" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($detail_nonjual_add->qty->getPlaceHolder()) ?>" value="<?php echo $detail_nonjual_add->qty->EditValue ?>"<?php echo $detail_nonjual_add->qty->editAttributes() ?>>
+<input type="text" data-table="detail_nonjual" data-field="x_qty" name="x_qty" id="x_qty" size="6" maxlength="11" placeholder="<?php echo HtmlEncode($detail_nonjual_add->qty->getPlaceHolder()) ?>" value="<?php echo $detail_nonjual_add->qty->EditValue ?>"<?php echo $detail_nonjual_add->qty->editAttributes() ?>>
 </span>
 <?php echo $detail_nonjual_add->qty->CustomMsg ?></div></div>
 	</div>

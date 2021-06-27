@@ -287,7 +287,7 @@ $onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
 $detailpenjualan_add->nama_barang->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x_nama_barang">
-	<input type="text" class="form-control" name="sv_x_nama_barang" id="sv_x_nama_barang" value="<?php echo RemoveHtml($detailpenjualan_add->nama_barang->EditValue) ?>" size="30" maxlength="255" placeholder="<?php echo HtmlEncode($detailpenjualan_add->nama_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailpenjualan_add->nama_barang->getPlaceHolder()) ?>"<?php echo $detailpenjualan_add->nama_barang->editAttributes() ?>>
+	<input type="text" class="form-control" name="sv_x_nama_barang" id="sv_x_nama_barang" value="<?php echo RemoveHtml($detailpenjualan_add->nama_barang->EditValue) ?>" size="45" maxlength="255" placeholder="<?php echo HtmlEncode($detailpenjualan_add->nama_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailpenjualan_add->nama_barang->getPlaceHolder()) ?>"<?php echo $detailpenjualan_add->nama_barang->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="detailpenjualan" data-field="x_nama_barang" data-value-separator="<?php echo $detailpenjualan_add->nama_barang->displayValueSeparatorAttribute() ?>" name="x_nama_barang" id="x_nama_barang" value="<?php echo HtmlEncode($detailpenjualan_add->nama_barang->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
@@ -325,7 +325,7 @@ loadjs.ready(["fdetailpenjualanadd"], function() {
 		<label id="elh_detailpenjualan_qty" for="x_qty" class="<?php echo $detailpenjualan_add->LeftColumnClass ?>"><?php echo $detailpenjualan_add->qty->caption() ?><?php echo $detailpenjualan_add->qty->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $detailpenjualan_add->RightColumnClass ?>"><div <?php echo $detailpenjualan_add->qty->cellAttributes() ?>>
 <span id="el_detailpenjualan_qty">
-<input type="text" data-table="detailpenjualan" data-field="x_qty" name="x_qty" id="x_qty" size="5" maxlength="22" placeholder="<?php echo HtmlEncode($detailpenjualan_add->qty->getPlaceHolder()) ?>" value="<?php echo $detailpenjualan_add->qty->EditValue ?>"<?php echo $detailpenjualan_add->qty->editAttributes() ?>>
+<input type="text" data-table="detailpenjualan" data-field="x_qty" name="x_qty" id="x_qty" size="4" maxlength="22" placeholder="<?php echo HtmlEncode($detailpenjualan_add->qty->getPlaceHolder()) ?>" value="<?php echo $detailpenjualan_add->qty->EditValue ?>"<?php echo $detailpenjualan_add->qty->editAttributes() ?>>
 </span>
 <?php echo $detailpenjualan_add->qty->CustomMsg ?></div></div>
 	</div>

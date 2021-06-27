@@ -61,6 +61,9 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $detail_nonjual_grid->id_barang->caption(), $detail_nonjual_grid->id_barang->RequiredErrorMessage)) ?>");
 			<?php } ?>
+				elm = this.getElements("x" + infix + "_id_barang");
+				if (elm && !ew.checkInteger(elm.value))
+					return this.onError(elm, "<?php echo JsEncode($detail_nonjual_grid->id_barang->errorMessage()) ?>");
 			<?php if ($detail_nonjual_grid->stok->Required) { ?>
 				elm = this.getElements("x" + infix + "_stok");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
@@ -109,6 +112,7 @@ loadjs.ready("head", function() {
 	// Dynamic selection lists
 	fdetail_nonjualgrid.lists["x_id_barang"] = <?php echo $detail_nonjual_grid->id_barang->Lookup->toClientList($detail_nonjual_grid) ?>;
 	fdetail_nonjualgrid.lists["x_id_barang"].options = <?php echo JsonEncode($detail_nonjual_grid->id_barang->lookupOptions()) ?>;
+	fdetail_nonjualgrid.autoSuggests["x_id_barang"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
 	loadjs.done("fdetail_nonjualgrid");
 });
 </script>
@@ -336,24 +340,40 @@ $detail_nonjual_grid->ListOptions->render("body", "left", $detail_nonjual_grid->
 		<td data-name="id_barang" <?php echo $detail_nonjual_grid->id_barang->cellAttributes() ?>>
 <?php if ($detail_nonjual->RowType == ROWTYPE_ADD) { // Add record ?>
 <span id="el<?php echo $detail_nonjual_grid->RowCount ?>_detail_nonjual_id_barang" class="form-group">
-<?php $detail_nonjual_grid->id_barang->EditAttrs->prepend("onchange", "ew.autoFill(this);"); ?>
-<div class="input-group">
-	<select class="custom-select ew-custom-select" data-table="detail_nonjual" data-field="x_id_barang" data-value-separator="<?php echo $detail_nonjual_grid->id_barang->displayValueSeparatorAttribute() ?>" id="x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" name="x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang"<?php echo $detail_nonjual_grid->id_barang->editAttributes() ?>>
-			<?php echo $detail_nonjual_grid->id_barang->selectOptionListHtml("x{$detail_nonjual_grid->RowIndex}_id_barang") ?>
-		</select>
-</div>
+<?php
+$onchange = $detail_nonjual_grid->id_barang->EditAttrs->prepend("onchange", "ew.autoFill(this);");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$detail_nonjual_grid->id_barang->EditAttrs["onchange"] = "";
+?>
+<span id="as_x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang">
+	<input type="text" class="form-control" name="sv_x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" id="sv_x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" value="<?php echo RemoveHtml($detail_nonjual_grid->id_barang->EditValue) ?>" size="60" maxlength="255" placeholder="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->getPlaceHolder()) ?>"<?php echo $detail_nonjual_grid->id_barang->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="detail_nonjual" data-field="x_id_barang" data-value-separator="<?php echo $detail_nonjual_grid->id_barang->displayValueSeparatorAttribute() ?>" name="x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" id="x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" value="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->CurrentValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fdetail_nonjualgrid"], function() {
+	fdetail_nonjualgrid.createAutoSuggest({"id":"x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang","forceSelect":true});
+});
+</script>
 <?php echo $detail_nonjual_grid->id_barang->Lookup->getParamTag($detail_nonjual_grid, "p_x" . $detail_nonjual_grid->RowIndex . "_id_barang") ?>
 </span>
 <input type="hidden" data-table="detail_nonjual" data-field="x_id_barang" name="o<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" id="o<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" value="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->OldValue) ?>">
 <?php } ?>
 <?php if ($detail_nonjual->RowType == ROWTYPE_EDIT) { // Edit record ?>
 <span id="el<?php echo $detail_nonjual_grid->RowCount ?>_detail_nonjual_id_barang" class="form-group">
-<?php $detail_nonjual_grid->id_barang->EditAttrs->prepend("onchange", "ew.autoFill(this);"); ?>
-<div class="input-group">
-	<select class="custom-select ew-custom-select" data-table="detail_nonjual" data-field="x_id_barang" data-value-separator="<?php echo $detail_nonjual_grid->id_barang->displayValueSeparatorAttribute() ?>" id="x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" name="x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang"<?php echo $detail_nonjual_grid->id_barang->editAttributes() ?>>
-			<?php echo $detail_nonjual_grid->id_barang->selectOptionListHtml("x{$detail_nonjual_grid->RowIndex}_id_barang") ?>
-		</select>
-</div>
+<?php
+$onchange = $detail_nonjual_grid->id_barang->EditAttrs->prepend("onchange", "ew.autoFill(this);");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$detail_nonjual_grid->id_barang->EditAttrs["onchange"] = "";
+?>
+<span id="as_x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang">
+	<input type="text" class="form-control" name="sv_x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" id="sv_x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" value="<?php echo RemoveHtml($detail_nonjual_grid->id_barang->EditValue) ?>" size="60" maxlength="255" placeholder="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->getPlaceHolder()) ?>"<?php echo $detail_nonjual_grid->id_barang->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="detail_nonjual" data-field="x_id_barang" data-value-separator="<?php echo $detail_nonjual_grid->id_barang->displayValueSeparatorAttribute() ?>" name="x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" id="x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" value="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->CurrentValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fdetail_nonjualgrid"], function() {
+	fdetail_nonjualgrid.createAutoSuggest({"id":"x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang","forceSelect":true});
+});
+</script>
 <?php echo $detail_nonjual_grid->id_barang->Lookup->getParamTag($detail_nonjual_grid, "p_x" . $detail_nonjual_grid->RowIndex . "_id_barang") ?>
 </span>
 <?php } ?>
@@ -375,13 +395,13 @@ $detail_nonjual_grid->ListOptions->render("body", "left", $detail_nonjual_grid->
 		<td data-name="stok" <?php echo $detail_nonjual_grid->stok->cellAttributes() ?>>
 <?php if ($detail_nonjual->RowType == ROWTYPE_ADD) { // Add record ?>
 <span id="el<?php echo $detail_nonjual_grid->RowCount ?>_detail_nonjual_stok" class="form-group">
-<input type="text" data-table="detail_nonjual" data-field="x_stok" name="x<?php echo $detail_nonjual_grid->RowIndex ?>_stok" id="x<?php echo $detail_nonjual_grid->RowIndex ?>_stok" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($detail_nonjual_grid->stok->getPlaceHolder()) ?>" value="<?php echo $detail_nonjual_grid->stok->EditValue ?>"<?php echo $detail_nonjual_grid->stok->editAttributes() ?>>
+<input type="text" data-table="detail_nonjual" data-field="x_stok" name="x<?php echo $detail_nonjual_grid->RowIndex ?>_stok" id="x<?php echo $detail_nonjual_grid->RowIndex ?>_stok" size="6" maxlength="11" placeholder="<?php echo HtmlEncode($detail_nonjual_grid->stok->getPlaceHolder()) ?>" value="<?php echo $detail_nonjual_grid->stok->EditValue ?>"<?php echo $detail_nonjual_grid->stok->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="detail_nonjual" data-field="x_stok" name="o<?php echo $detail_nonjual_grid->RowIndex ?>_stok" id="o<?php echo $detail_nonjual_grid->RowIndex ?>_stok" value="<?php echo HtmlEncode($detail_nonjual_grid->stok->OldValue) ?>">
 <?php } ?>
 <?php if ($detail_nonjual->RowType == ROWTYPE_EDIT) { // Edit record ?>
 <span id="el<?php echo $detail_nonjual_grid->RowCount ?>_detail_nonjual_stok" class="form-group">
-<input type="text" data-table="detail_nonjual" data-field="x_stok" name="x<?php echo $detail_nonjual_grid->RowIndex ?>_stok" id="x<?php echo $detail_nonjual_grid->RowIndex ?>_stok" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($detail_nonjual_grid->stok->getPlaceHolder()) ?>" value="<?php echo $detail_nonjual_grid->stok->EditValue ?>"<?php echo $detail_nonjual_grid->stok->editAttributes() ?>>
+<input type="text" data-table="detail_nonjual" data-field="x_stok" name="x<?php echo $detail_nonjual_grid->RowIndex ?>_stok" id="x<?php echo $detail_nonjual_grid->RowIndex ?>_stok" size="6" maxlength="11" placeholder="<?php echo HtmlEncode($detail_nonjual_grid->stok->getPlaceHolder()) ?>" value="<?php echo $detail_nonjual_grid->stok->EditValue ?>"<?php echo $detail_nonjual_grid->stok->editAttributes() ?>>
 </span>
 <?php } ?>
 <?php if ($detail_nonjual->RowType == ROWTYPE_VIEW) { // View record ?>
@@ -402,13 +422,13 @@ $detail_nonjual_grid->ListOptions->render("body", "left", $detail_nonjual_grid->
 		<td data-name="qty" <?php echo $detail_nonjual_grid->qty->cellAttributes() ?>>
 <?php if ($detail_nonjual->RowType == ROWTYPE_ADD) { // Add record ?>
 <span id="el<?php echo $detail_nonjual_grid->RowCount ?>_detail_nonjual_qty" class="form-group">
-<input type="text" data-table="detail_nonjual" data-field="x_qty" name="x<?php echo $detail_nonjual_grid->RowIndex ?>_qty" id="x<?php echo $detail_nonjual_grid->RowIndex ?>_qty" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($detail_nonjual_grid->qty->getPlaceHolder()) ?>" value="<?php echo $detail_nonjual_grid->qty->EditValue ?>"<?php echo $detail_nonjual_grid->qty->editAttributes() ?>>
+<input type="text" data-table="detail_nonjual" data-field="x_qty" name="x<?php echo $detail_nonjual_grid->RowIndex ?>_qty" id="x<?php echo $detail_nonjual_grid->RowIndex ?>_qty" size="6" maxlength="11" placeholder="<?php echo HtmlEncode($detail_nonjual_grid->qty->getPlaceHolder()) ?>" value="<?php echo $detail_nonjual_grid->qty->EditValue ?>"<?php echo $detail_nonjual_grid->qty->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="detail_nonjual" data-field="x_qty" name="o<?php echo $detail_nonjual_grid->RowIndex ?>_qty" id="o<?php echo $detail_nonjual_grid->RowIndex ?>_qty" value="<?php echo HtmlEncode($detail_nonjual_grid->qty->OldValue) ?>">
 <?php } ?>
 <?php if ($detail_nonjual->RowType == ROWTYPE_EDIT) { // Edit record ?>
 <span id="el<?php echo $detail_nonjual_grid->RowCount ?>_detail_nonjual_qty" class="form-group">
-<input type="text" data-table="detail_nonjual" data-field="x_qty" name="x<?php echo $detail_nonjual_grid->RowIndex ?>_qty" id="x<?php echo $detail_nonjual_grid->RowIndex ?>_qty" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($detail_nonjual_grid->qty->getPlaceHolder()) ?>" value="<?php echo $detail_nonjual_grid->qty->EditValue ?>"<?php echo $detail_nonjual_grid->qty->editAttributes() ?>>
+<input type="text" data-table="detail_nonjual" data-field="x_qty" name="x<?php echo $detail_nonjual_grid->RowIndex ?>_qty" id="x<?php echo $detail_nonjual_grid->RowIndex ?>_qty" size="6" maxlength="11" placeholder="<?php echo HtmlEncode($detail_nonjual_grid->qty->getPlaceHolder()) ?>" value="<?php echo $detail_nonjual_grid->qty->EditValue ?>"<?php echo $detail_nonjual_grid->qty->editAttributes() ?>>
 </span>
 <?php } ?>
 <?php if ($detail_nonjual->RowType == ROWTYPE_VIEW) { // View record ?>
@@ -496,12 +516,20 @@ $detail_nonjual_grid->ListOptions->render("body", "left", $detail_nonjual_grid->
 		<td data-name="id_barang">
 <?php if (!$detail_nonjual->isConfirm()) { ?>
 <span id="el$rowindex$_detail_nonjual_id_barang" class="form-group detail_nonjual_id_barang">
-<?php $detail_nonjual_grid->id_barang->EditAttrs->prepend("onchange", "ew.autoFill(this);"); ?>
-<div class="input-group">
-	<select class="custom-select ew-custom-select" data-table="detail_nonjual" data-field="x_id_barang" data-value-separator="<?php echo $detail_nonjual_grid->id_barang->displayValueSeparatorAttribute() ?>" id="x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" name="x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang"<?php echo $detail_nonjual_grid->id_barang->editAttributes() ?>>
-			<?php echo $detail_nonjual_grid->id_barang->selectOptionListHtml("x{$detail_nonjual_grid->RowIndex}_id_barang") ?>
-		</select>
-</div>
+<?php
+$onchange = $detail_nonjual_grid->id_barang->EditAttrs->prepend("onchange", "ew.autoFill(this);");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$detail_nonjual_grid->id_barang->EditAttrs["onchange"] = "";
+?>
+<span id="as_x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang">
+	<input type="text" class="form-control" name="sv_x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" id="sv_x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" value="<?php echo RemoveHtml($detail_nonjual_grid->id_barang->EditValue) ?>" size="60" maxlength="255" placeholder="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->getPlaceHolder()) ?>"<?php echo $detail_nonjual_grid->id_barang->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="detail_nonjual" data-field="x_id_barang" data-value-separator="<?php echo $detail_nonjual_grid->id_barang->displayValueSeparatorAttribute() ?>" name="x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" id="x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" value="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->CurrentValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fdetail_nonjualgrid"], function() {
+	fdetail_nonjualgrid.createAutoSuggest({"id":"x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang","forceSelect":true});
+});
+</script>
 <?php echo $detail_nonjual_grid->id_barang->Lookup->getParamTag($detail_nonjual_grid, "p_x" . $detail_nonjual_grid->RowIndex . "_id_barang") ?>
 </span>
 <?php } else { ?>
@@ -517,7 +545,7 @@ $detail_nonjual_grid->ListOptions->render("body", "left", $detail_nonjual_grid->
 		<td data-name="stok">
 <?php if (!$detail_nonjual->isConfirm()) { ?>
 <span id="el$rowindex$_detail_nonjual_stok" class="form-group detail_nonjual_stok">
-<input type="text" data-table="detail_nonjual" data-field="x_stok" name="x<?php echo $detail_nonjual_grid->RowIndex ?>_stok" id="x<?php echo $detail_nonjual_grid->RowIndex ?>_stok" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($detail_nonjual_grid->stok->getPlaceHolder()) ?>" value="<?php echo $detail_nonjual_grid->stok->EditValue ?>"<?php echo $detail_nonjual_grid->stok->editAttributes() ?>>
+<input type="text" data-table="detail_nonjual" data-field="x_stok" name="x<?php echo $detail_nonjual_grid->RowIndex ?>_stok" id="x<?php echo $detail_nonjual_grid->RowIndex ?>_stok" size="6" maxlength="11" placeholder="<?php echo HtmlEncode($detail_nonjual_grid->stok->getPlaceHolder()) ?>" value="<?php echo $detail_nonjual_grid->stok->EditValue ?>"<?php echo $detail_nonjual_grid->stok->editAttributes() ?>>
 </span>
 <?php } else { ?>
 <span id="el$rowindex$_detail_nonjual_stok" class="form-group detail_nonjual_stok">
@@ -532,7 +560,7 @@ $detail_nonjual_grid->ListOptions->render("body", "left", $detail_nonjual_grid->
 		<td data-name="qty">
 <?php if (!$detail_nonjual->isConfirm()) { ?>
 <span id="el$rowindex$_detail_nonjual_qty" class="form-group detail_nonjual_qty">
-<input type="text" data-table="detail_nonjual" data-field="x_qty" name="x<?php echo $detail_nonjual_grid->RowIndex ?>_qty" id="x<?php echo $detail_nonjual_grid->RowIndex ?>_qty" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($detail_nonjual_grid->qty->getPlaceHolder()) ?>" value="<?php echo $detail_nonjual_grid->qty->EditValue ?>"<?php echo $detail_nonjual_grid->qty->editAttributes() ?>>
+<input type="text" data-table="detail_nonjual" data-field="x_qty" name="x<?php echo $detail_nonjual_grid->RowIndex ?>_qty" id="x<?php echo $detail_nonjual_grid->RowIndex ?>_qty" size="6" maxlength="11" placeholder="<?php echo HtmlEncode($detail_nonjual_grid->qty->getPlaceHolder()) ?>" value="<?php echo $detail_nonjual_grid->qty->EditValue ?>"<?php echo $detail_nonjual_grid->qty->editAttributes() ?>>
 </span>
 <?php } else { ?>
 <span id="el$rowindex$_detail_nonjual_qty" class="form-group detail_nonjual_qty">

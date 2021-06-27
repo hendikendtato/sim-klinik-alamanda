@@ -80,10 +80,8 @@ class detail_nonjual extends DbTable
 		$this->fields['id_nonjual'] = &$this->id_nonjual;
 
 		// id_barang
-		$this->id_barang = new DbField('detail_nonjual', 'detail_nonjual', 'x_id_barang', 'id_barang', '`id_barang`', '`id_barang`', 3, 255, -1, FALSE, '`id_barang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->id_barang = new DbField('detail_nonjual', 'detail_nonjual', 'x_id_barang', 'id_barang', '`id_barang`', '`id_barang`', 3, 255, -1, FALSE, '`id_barang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->id_barang->Sortable = TRUE; // Allow sort
-		$this->id_barang->UsePleaseSelect = TRUE; // Use PleaseSelect by default
-		$this->id_barang->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
 		$this->id_barang->Lookup = new Lookup('id_barang', 'view_hargajual', FALSE, 'id_barang', ["nama_barang","","",""], ["nonjual x_id_klinik"], [], ["id_klinik"], ["x_id_klinik"], ["stok"], ["x_stok"], '', '');
 		$this->id_barang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id_barang'] = &$this->id_barang;
@@ -777,6 +775,7 @@ class detail_nonjual extends DbTable
 		$this->id_nonjual->ViewCustomAttributes = "";
 
 		// id_barang
+		$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
 		$curVal = strval($this->id_barang->CurrentValue);
 		if ($curVal != "") {
 			$this->id_barang->ViewValue = $this->id_barang->lookupCacheOption($curVal);
@@ -870,6 +869,8 @@ class detail_nonjual extends DbTable
 		// id_barang
 		$this->id_barang->EditAttrs["class"] = "form-control";
 		$this->id_barang->EditCustomAttributes = "";
+		$this->id_barang->EditValue = $this->id_barang->CurrentValue;
+		$this->id_barang->PlaceHolder = RemoveHtml($this->id_barang->caption());
 
 		// stok
 		$this->stok->EditAttrs["class"] = "form-control";

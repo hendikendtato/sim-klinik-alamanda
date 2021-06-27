@@ -137,6 +137,11 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $m_hargajual_add->subkategori->caption(), $m_hargajual_add->subkategori->RequiredErrorMessage)) ?>");
 			<?php } ?>
+			<?php if ($m_hargajual_add->tipe->Required) { ?>
+				elm = this.getElements("x" + infix + "_tipe");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $m_hargajual_add->tipe->caption(), $m_hargajual_add->tipe->RequiredErrorMessage)) ?>");
+			<?php } ?>
 
 				// Call Form_CustomValidate event
 				if (!this.Form_CustomValidate(fobj))
@@ -175,6 +180,8 @@ loadjs.ready("head", function() {
 	fm_hargajualadd.lists["x_kategori"].options = <?php echo JsonEncode($m_hargajual_add->kategori->lookupOptions()) ?>;
 	fm_hargajualadd.lists["x_subkategori"] = <?php echo $m_hargajual_add->subkategori->Lookup->toClientList($m_hargajual_add) ?>;
 	fm_hargajualadd.lists["x_subkategori"].options = <?php echo JsonEncode($m_hargajual_add->subkategori->lookupOptions()) ?>;
+	fm_hargajualadd.lists["x_tipe"] = <?php echo $m_hargajual_add->tipe->Lookup->toClientList($m_hargajual_add) ?>;
+	fm_hargajualadd.lists["x_tipe"].options = <?php echo JsonEncode($m_hargajual_add->tipe->options(FALSE, TRUE)) ?>;
 	loadjs.done("fm_hargajualadd");
 });
 </script>
@@ -357,6 +364,19 @@ loadjs.ready(["fm_hargajualadd", "datetimepicker"], function() {
 <?php echo $m_hargajual_add->subkategori->Lookup->getParamTag($m_hargajual_add, "p_x_subkategori") ?>
 </span>
 <?php echo $m_hargajual_add->subkategori->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
+<?php if ($m_hargajual_add->tipe->Visible) { // tipe ?>
+	<div id="r_tipe" class="form-group row">
+		<label id="elh_m_hargajual_tipe" class="<?php echo $m_hargajual_add->LeftColumnClass ?>"><?php echo $m_hargajual_add->tipe->caption() ?><?php echo $m_hargajual_add->tipe->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $m_hargajual_add->RightColumnClass ?>"><div <?php echo $m_hargajual_add->tipe->cellAttributes() ?>>
+<span id="el_m_hargajual_tipe">
+<div id="tp_x_tipe" class="ew-template"><input type="radio" class="custom-control-input" data-table="m_hargajual" data-field="x_tipe" data-value-separator="<?php echo $m_hargajual_add->tipe->displayValueSeparatorAttribute() ?>" name="x_tipe" id="x_tipe" value="{value}"<?php echo $m_hargajual_add->tipe->editAttributes() ?>></div>
+<div id="dsl_x_tipe" data-repeatcolumn="5" class="ew-item-list d-none"><div>
+<?php echo $m_hargajual_add->tipe->radioButtonListHtml(FALSE, "x_tipe") ?>
+</div></div>
+</span>
+<?php echo $m_hargajual_add->tipe->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 </div><!-- /page* -->

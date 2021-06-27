@@ -284,7 +284,7 @@ $detailterimagudang_grid->id_barang->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x<?php echo $detailterimagudang_grid->RowIndex ?>_id_barang">
 	<div class="input-group">
-		<input type="text" class="form-control" name="sv_x<?php echo $detailterimagudang_grid->RowIndex ?>_id_barang" id="sv_x<?php echo $detailterimagudang_grid->RowIndex ?>_id_barang" value="<?php echo RemoveHtml($detailterimagudang_grid->id_barang->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($detailterimagudang_grid->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailterimagudang_grid->id_barang->getPlaceHolder()) ?>"<?php echo $detailterimagudang_grid->id_barang->editAttributes() ?>>
+		<input type="text" class="form-control" name="sv_x<?php echo $detailterimagudang_grid->RowIndex ?>_id_barang" id="sv_x<?php echo $detailterimagudang_grid->RowIndex ?>_id_barang" value="<?php echo RemoveHtml($detailterimagudang_grid->id_barang->EditValue) ?>" size="55" maxlength="50" placeholder="<?php echo HtmlEncode($detailterimagudang_grid->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailterimagudang_grid->id_barang->getPlaceHolder()) ?>"<?php echo $detailterimagudang_grid->id_barang->editAttributes() ?>>
 		<div class="input-group-append">
 			<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($detailterimagudang_grid->id_barang->caption()), $Language->phrase("LookupLink", TRUE))) ?>" onclick="ew.modalLookupShow({lnk:this,el:'x<?php echo $detailterimagudang_grid->RowIndex ?>_id_barang',m:0,n:10,srch:false});" class="ew-lookup-btn btn btn-default"<?php echo ($detailterimagudang_grid->id_barang->ReadOnly || $detailterimagudang_grid->id_barang->Disabled) ? " disabled" : "" ?>><i class="fas fa-search ew-icon"></i></button>
 		</div>
@@ -309,7 +309,7 @@ $detailterimagudang_grid->id_barang->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x<?php echo $detailterimagudang_grid->RowIndex ?>_id_barang">
 	<div class="input-group">
-		<input type="text" class="form-control" name="sv_x<?php echo $detailterimagudang_grid->RowIndex ?>_id_barang" id="sv_x<?php echo $detailterimagudang_grid->RowIndex ?>_id_barang" value="<?php echo RemoveHtml($detailterimagudang_grid->id_barang->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($detailterimagudang_grid->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailterimagudang_grid->id_barang->getPlaceHolder()) ?>"<?php echo $detailterimagudang_grid->id_barang->editAttributes() ?>>
+		<input type="text" class="form-control" name="sv_x<?php echo $detailterimagudang_grid->RowIndex ?>_id_barang" id="sv_x<?php echo $detailterimagudang_grid->RowIndex ?>_id_barang" value="<?php echo RemoveHtml($detailterimagudang_grid->id_barang->EditValue) ?>" size="55" maxlength="50" placeholder="<?php echo HtmlEncode($detailterimagudang_grid->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailterimagudang_grid->id_barang->getPlaceHolder()) ?>"<?php echo $detailterimagudang_grid->id_barang->editAttributes() ?>>
 		<div class="input-group-append">
 			<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($detailterimagudang_grid->id_barang->caption()), $Language->phrase("LookupLink", TRUE))) ?>" onclick="ew.modalLookupShow({lnk:this,el:'x<?php echo $detailterimagudang_grid->RowIndex ?>_id_barang',m:0,n:10,srch:false});" class="ew-lookup-btn btn btn-default"<?php echo ($detailterimagudang_grid->id_barang->ReadOnly || $detailterimagudang_grid->id_barang->Disabled) ? " disabled" : "" ?>><i class="fas fa-search ew-icon"></i></button>
 		</div>
@@ -349,13 +349,13 @@ loadjs.ready(["fdetailterimagudanggrid"], function() {
 		<td data-name="qty" <?php echo $detailterimagudang_grid->qty->cellAttributes() ?>>
 <?php if ($detailterimagudang->RowType == ROWTYPE_ADD) { // Add record ?>
 <span id="el<?php echo $detailterimagudang_grid->RowCount ?>_detailterimagudang_qty" class="form-group">
-<input type="text" data-table="detailterimagudang" data-field="x_qty" name="x<?php echo $detailterimagudang_grid->RowIndex ?>_qty" id="x<?php echo $detailterimagudang_grid->RowIndex ?>_qty" size="30" maxlength="22" placeholder="<?php echo HtmlEncode($detailterimagudang_grid->qty->getPlaceHolder()) ?>" value="<?php echo $detailterimagudang_grid->qty->EditValue ?>"<?php echo $detailterimagudang_grid->qty->editAttributes() ?>>
+<input type="text" data-table="detailterimagudang" data-field="x_qty" name="x<?php echo $detailterimagudang_grid->RowIndex ?>_qty" id="x<?php echo $detailterimagudang_grid->RowIndex ?>_qty" size="6" maxlength="22" placeholder="<?php echo HtmlEncode($detailterimagudang_grid->qty->getPlaceHolder()) ?>" value="<?php echo $detailterimagudang_grid->qty->EditValue ?>"<?php echo $detailterimagudang_grid->qty->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="detailterimagudang" data-field="x_qty" name="o<?php echo $detailterimagudang_grid->RowIndex ?>_qty" id="o<?php echo $detailterimagudang_grid->RowIndex ?>_qty" value="<?php echo HtmlEncode($detailterimagudang_grid->qty->OldValue) ?>">
 <?php } ?>
 <?php if ($detailterimagudang->RowType == ROWTYPE_EDIT) { // Edit record ?>
 <span id="el<?php echo $detailterimagudang_grid->RowCount ?>_detailterimagudang_qty" class="form-group">
-<input type="text" data-table="detailterimagudang" data-field="x_qty" name="x<?php echo $detailterimagudang_grid->RowIndex ?>_qty" id="x<?php echo $detailterimagudang_grid->RowIndex ?>_qty" size="30" maxlength="22" placeholder="<?php echo HtmlEncode($detailterimagudang_grid->qty->getPlaceHolder()) ?>" value="<?php echo $detailterimagudang_grid->qty->EditValue ?>"<?php echo $detailterimagudang_grid->qty->editAttributes() ?>>
+<input type="text" data-table="detailterimagudang" data-field="x_qty" name="x<?php echo $detailterimagudang_grid->RowIndex ?>_qty" id="x<?php echo $detailterimagudang_grid->RowIndex ?>_qty" size="6" maxlength="22" placeholder="<?php echo HtmlEncode($detailterimagudang_grid->qty->getPlaceHolder()) ?>" value="<?php echo $detailterimagudang_grid->qty->EditValue ?>"<?php echo $detailterimagudang_grid->qty->editAttributes() ?>>
 </span>
 <?php } ?>
 <?php if ($detailterimagudang->RowType == ROWTYPE_VIEW) { // View record ?>
@@ -483,7 +483,7 @@ $detailterimagudang_grid->id_barang->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x<?php echo $detailterimagudang_grid->RowIndex ?>_id_barang">
 	<div class="input-group">
-		<input type="text" class="form-control" name="sv_x<?php echo $detailterimagudang_grid->RowIndex ?>_id_barang" id="sv_x<?php echo $detailterimagudang_grid->RowIndex ?>_id_barang" value="<?php echo RemoveHtml($detailterimagudang_grid->id_barang->EditValue) ?>" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($detailterimagudang_grid->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailterimagudang_grid->id_barang->getPlaceHolder()) ?>"<?php echo $detailterimagudang_grid->id_barang->editAttributes() ?>>
+		<input type="text" class="form-control" name="sv_x<?php echo $detailterimagudang_grid->RowIndex ?>_id_barang" id="sv_x<?php echo $detailterimagudang_grid->RowIndex ?>_id_barang" value="<?php echo RemoveHtml($detailterimagudang_grid->id_barang->EditValue) ?>" size="55" maxlength="50" placeholder="<?php echo HtmlEncode($detailterimagudang_grid->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailterimagudang_grid->id_barang->getPlaceHolder()) ?>"<?php echo $detailterimagudang_grid->id_barang->editAttributes() ?>>
 		<div class="input-group-append">
 			<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($detailterimagudang_grid->id_barang->caption()), $Language->phrase("LookupLink", TRUE))) ?>" onclick="ew.modalLookupShow({lnk:this,el:'x<?php echo $detailterimagudang_grid->RowIndex ?>_id_barang',m:0,n:10,srch:false});" class="ew-lookup-btn btn btn-default"<?php echo ($detailterimagudang_grid->id_barang->ReadOnly || $detailterimagudang_grid->id_barang->Disabled) ? " disabled" : "" ?>><i class="fas fa-search ew-icon"></i></button>
 		</div>
@@ -510,7 +510,7 @@ loadjs.ready(["fdetailterimagudanggrid"], function() {
 		<td data-name="qty">
 <?php if (!$detailterimagudang->isConfirm()) { ?>
 <span id="el$rowindex$_detailterimagudang_qty" class="form-group detailterimagudang_qty">
-<input type="text" data-table="detailterimagudang" data-field="x_qty" name="x<?php echo $detailterimagudang_grid->RowIndex ?>_qty" id="x<?php echo $detailterimagudang_grid->RowIndex ?>_qty" size="30" maxlength="22" placeholder="<?php echo HtmlEncode($detailterimagudang_grid->qty->getPlaceHolder()) ?>" value="<?php echo $detailterimagudang_grid->qty->EditValue ?>"<?php echo $detailterimagudang_grid->qty->editAttributes() ?>>
+<input type="text" data-table="detailterimagudang" data-field="x_qty" name="x<?php echo $detailterimagudang_grid->RowIndex ?>_qty" id="x<?php echo $detailterimagudang_grid->RowIndex ?>_qty" size="6" maxlength="22" placeholder="<?php echo HtmlEncode($detailterimagudang_grid->qty->getPlaceHolder()) ?>" value="<?php echo $detailterimagudang_grid->qty->EditValue ?>"<?php echo $detailterimagudang_grid->qty->editAttributes() ?>>
 </span>
 <?php } else { ?>
 <span id="el$rowindex$_detailterimagudang_qty" class="form-group detailterimagudang_qty">

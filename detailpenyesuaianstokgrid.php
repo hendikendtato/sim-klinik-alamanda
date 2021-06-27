@@ -397,7 +397,7 @@ $detailpenyesuaianstok_grid->id_barang->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_id_barang">
 	<div class="input-group">
-		<input type="text" class="form-control" name="sv_x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_id_barang" id="sv_x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_id_barang" value="<?php echo RemoveHtml($detailpenyesuaianstok_grid->id_barang->EditValue) ?>" size="40" maxlength="40" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_grid->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_grid->id_barang->getPlaceHolder()) ?>"<?php echo $detailpenyesuaianstok_grid->id_barang->editAttributes() ?>>
+		<input type="text" class="form-control" name="sv_x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_id_barang" id="sv_x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_id_barang" value="<?php echo RemoveHtml($detailpenyesuaianstok_grid->id_barang->EditValue) ?>" size="55" maxlength="40" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_grid->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_grid->id_barang->getPlaceHolder()) ?>"<?php echo $detailpenyesuaianstok_grid->id_barang->editAttributes() ?>>
 		<div class="input-group-append">
 			<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($detailpenyesuaianstok_grid->id_barang->caption()), $Language->phrase("LookupLink", TRUE))) ?>" onclick="ew.modalLookupShow({lnk:this,el:'x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_id_barang',m:0,n:10,srch:false});" class="ew-lookup-btn btn btn-default"<?php echo ($detailpenyesuaianstok_grid->id_barang->ReadOnly || $detailpenyesuaianstok_grid->id_barang->Disabled) ? " disabled" : "" ?>><i class="fas fa-search ew-icon"></i></button>
 		</div>
@@ -422,7 +422,7 @@ $detailpenyesuaianstok_grid->id_barang->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_id_barang">
 	<div class="input-group">
-		<input type="text" class="form-control" name="sv_x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_id_barang" id="sv_x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_id_barang" value="<?php echo RemoveHtml($detailpenyesuaianstok_grid->id_barang->EditValue) ?>" size="40" maxlength="40" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_grid->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_grid->id_barang->getPlaceHolder()) ?>"<?php echo $detailpenyesuaianstok_grid->id_barang->editAttributes() ?>>
+		<input type="text" class="form-control" name="sv_x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_id_barang" id="sv_x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_id_barang" value="<?php echo RemoveHtml($detailpenyesuaianstok_grid->id_barang->EditValue) ?>" size="55" maxlength="40" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_grid->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_grid->id_barang->getPlaceHolder()) ?>"<?php echo $detailpenyesuaianstok_grid->id_barang->editAttributes() ?>>
 		<div class="input-group-append">
 			<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($detailpenyesuaianstok_grid->id_barang->caption()), $Language->phrase("LookupLink", TRUE))) ?>" onclick="ew.modalLookupShow({lnk:this,el:'x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_id_barang',m:0,n:10,srch:false});" class="ew-lookup-btn btn btn-default"<?php echo ($detailpenyesuaianstok_grid->id_barang->ReadOnly || $detailpenyesuaianstok_grid->id_barang->Disabled) ? " disabled" : "" ?>><i class="fas fa-search ew-icon"></i></button>
 		</div>
@@ -482,13 +482,13 @@ loadjs.ready(["fdetailpenyesuaianstokgrid"], function() {
 		<td data-name="jumlah" <?php echo $detailpenyesuaianstok_grid->jumlah->cellAttributes() ?>>
 <?php if ($detailpenyesuaianstok->RowType == ROWTYPE_ADD) { // Add record ?>
 <span id="el<?php echo $detailpenyesuaianstok_grid->RowCount ?>_detailpenyesuaianstok_jumlah" class="form-group">
-<input type="text" data-table="detailpenyesuaianstok" data-field="x_jumlah" name="x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_jumlah" id="x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_jumlah" size="15" maxlength="22" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_grid->jumlah->getPlaceHolder()) ?>" value="<?php echo $detailpenyesuaianstok_grid->jumlah->EditValue ?>"<?php echo $detailpenyesuaianstok_grid->jumlah->editAttributes() ?>>
+<input type="text" data-table="detailpenyesuaianstok" data-field="x_jumlah" name="x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_jumlah" id="x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_jumlah" size="5" maxlength="22" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_grid->jumlah->getPlaceHolder()) ?>" value="<?php echo $detailpenyesuaianstok_grid->jumlah->EditValue ?>"<?php echo $detailpenyesuaianstok_grid->jumlah->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="detailpenyesuaianstok" data-field="x_jumlah" name="o<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_jumlah" id="o<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_jumlah" value="<?php echo HtmlEncode($detailpenyesuaianstok_grid->jumlah->OldValue) ?>">
 <?php } ?>
 <?php if ($detailpenyesuaianstok->RowType == ROWTYPE_EDIT) { // Edit record ?>
 <span id="el<?php echo $detailpenyesuaianstok_grid->RowCount ?>_detailpenyesuaianstok_jumlah" class="form-group">
-<input type="text" data-table="detailpenyesuaianstok" data-field="x_jumlah" name="x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_jumlah" id="x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_jumlah" size="15" maxlength="22" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_grid->jumlah->getPlaceHolder()) ?>" value="<?php echo $detailpenyesuaianstok_grid->jumlah->EditValue ?>"<?php echo $detailpenyesuaianstok_grid->jumlah->editAttributes() ?>>
+<input type="text" data-table="detailpenyesuaianstok" data-field="x_jumlah" name="x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_jumlah" id="x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_jumlah" size="5" maxlength="22" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_grid->jumlah->getPlaceHolder()) ?>" value="<?php echo $detailpenyesuaianstok_grid->jumlah->EditValue ?>"<?php echo $detailpenyesuaianstok_grid->jumlah->editAttributes() ?>>
 </span>
 <?php } ?>
 <?php if ($detailpenyesuaianstok->RowType == ROWTYPE_VIEW) { // View record ?>
@@ -509,13 +509,13 @@ loadjs.ready(["fdetailpenyesuaianstokgrid"], function() {
 		<td data-name="selisih" <?php echo $detailpenyesuaianstok_grid->selisih->cellAttributes() ?>>
 <?php if ($detailpenyesuaianstok->RowType == ROWTYPE_ADD) { // Add record ?>
 <span id="el<?php echo $detailpenyesuaianstok_grid->RowCount ?>_detailpenyesuaianstok_selisih" class="form-group">
-<input type="text" data-table="detailpenyesuaianstok" data-field="x_selisih" name="x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_selisih" id="x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_selisih" size="30" maxlength="12" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_grid->selisih->getPlaceHolder()) ?>" value="<?php echo $detailpenyesuaianstok_grid->selisih->EditValue ?>"<?php echo $detailpenyesuaianstok_grid->selisih->editAttributes() ?>>
+<input type="text" data-table="detailpenyesuaianstok" data-field="x_selisih" name="x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_selisih" id="x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_selisih" size="5" maxlength="12" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_grid->selisih->getPlaceHolder()) ?>" value="<?php echo $detailpenyesuaianstok_grid->selisih->EditValue ?>"<?php echo $detailpenyesuaianstok_grid->selisih->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="detailpenyesuaianstok" data-field="x_selisih" name="o<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_selisih" id="o<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_selisih" value="<?php echo HtmlEncode($detailpenyesuaianstok_grid->selisih->OldValue) ?>">
 <?php } ?>
 <?php if ($detailpenyesuaianstok->RowType == ROWTYPE_EDIT) { // Edit record ?>
 <span id="el<?php echo $detailpenyesuaianstok_grid->RowCount ?>_detailpenyesuaianstok_selisih" class="form-group">
-<input type="text" data-table="detailpenyesuaianstok" data-field="x_selisih" name="x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_selisih" id="x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_selisih" size="30" maxlength="12" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_grid->selisih->getPlaceHolder()) ?>" value="<?php echo $detailpenyesuaianstok_grid->selisih->EditValue ?>"<?php echo $detailpenyesuaianstok_grid->selisih->editAttributes() ?>>
+<input type="text" data-table="detailpenyesuaianstok" data-field="x_selisih" name="x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_selisih" id="x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_selisih" size="5" maxlength="12" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_grid->selisih->getPlaceHolder()) ?>" value="<?php echo $detailpenyesuaianstok_grid->selisih->EditValue ?>"<?php echo $detailpenyesuaianstok_grid->selisih->editAttributes() ?>>
 </span>
 <?php } ?>
 <?php if ($detailpenyesuaianstok->RowType == ROWTYPE_VIEW) { // View record ?>
@@ -644,7 +644,7 @@ $detailpenyesuaianstok_grid->id_barang->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_id_barang">
 	<div class="input-group">
-		<input type="text" class="form-control" name="sv_x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_id_barang" id="sv_x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_id_barang" value="<?php echo RemoveHtml($detailpenyesuaianstok_grid->id_barang->EditValue) ?>" size="40" maxlength="40" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_grid->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_grid->id_barang->getPlaceHolder()) ?>"<?php echo $detailpenyesuaianstok_grid->id_barang->editAttributes() ?>>
+		<input type="text" class="form-control" name="sv_x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_id_barang" id="sv_x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_id_barang" value="<?php echo RemoveHtml($detailpenyesuaianstok_grid->id_barang->EditValue) ?>" size="55" maxlength="40" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_grid->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_grid->id_barang->getPlaceHolder()) ?>"<?php echo $detailpenyesuaianstok_grid->id_barang->editAttributes() ?>>
 		<div class="input-group-append">
 			<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($detailpenyesuaianstok_grid->id_barang->caption()), $Language->phrase("LookupLink", TRUE))) ?>" onclick="ew.modalLookupShow({lnk:this,el:'x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_id_barang',m:0,n:10,srch:false});" class="ew-lookup-btn btn btn-default"<?php echo ($detailpenyesuaianstok_grid->id_barang->ReadOnly || $detailpenyesuaianstok_grid->id_barang->Disabled) ? " disabled" : "" ?>><i class="fas fa-search ew-icon"></i></button>
 		</div>
@@ -686,7 +686,7 @@ loadjs.ready(["fdetailpenyesuaianstokgrid"], function() {
 		<td data-name="jumlah">
 <?php if (!$detailpenyesuaianstok->isConfirm()) { ?>
 <span id="el$rowindex$_detailpenyesuaianstok_jumlah" class="form-group detailpenyesuaianstok_jumlah">
-<input type="text" data-table="detailpenyesuaianstok" data-field="x_jumlah" name="x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_jumlah" id="x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_jumlah" size="15" maxlength="22" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_grid->jumlah->getPlaceHolder()) ?>" value="<?php echo $detailpenyesuaianstok_grid->jumlah->EditValue ?>"<?php echo $detailpenyesuaianstok_grid->jumlah->editAttributes() ?>>
+<input type="text" data-table="detailpenyesuaianstok" data-field="x_jumlah" name="x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_jumlah" id="x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_jumlah" size="5" maxlength="22" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_grid->jumlah->getPlaceHolder()) ?>" value="<?php echo $detailpenyesuaianstok_grid->jumlah->EditValue ?>"<?php echo $detailpenyesuaianstok_grid->jumlah->editAttributes() ?>>
 </span>
 <?php } else { ?>
 <span id="el$rowindex$_detailpenyesuaianstok_jumlah" class="form-group detailpenyesuaianstok_jumlah">
@@ -701,7 +701,7 @@ loadjs.ready(["fdetailpenyesuaianstokgrid"], function() {
 		<td data-name="selisih">
 <?php if (!$detailpenyesuaianstok->isConfirm()) { ?>
 <span id="el$rowindex$_detailpenyesuaianstok_selisih" class="form-group detailpenyesuaianstok_selisih">
-<input type="text" data-table="detailpenyesuaianstok" data-field="x_selisih" name="x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_selisih" id="x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_selisih" size="30" maxlength="12" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_grid->selisih->getPlaceHolder()) ?>" value="<?php echo $detailpenyesuaianstok_grid->selisih->EditValue ?>"<?php echo $detailpenyesuaianstok_grid->selisih->editAttributes() ?>>
+<input type="text" data-table="detailpenyesuaianstok" data-field="x_selisih" name="x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_selisih" id="x<?php echo $detailpenyesuaianstok_grid->RowIndex ?>_selisih" size="5" maxlength="12" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_grid->selisih->getPlaceHolder()) ?>" value="<?php echo $detailpenyesuaianstok_grid->selisih->EditValue ?>"<?php echo $detailpenyesuaianstok_grid->selisih->editAttributes() ?>>
 </span>
 <?php } else { ?>
 <span id="el$rowindex$_detailpenyesuaianstok_selisih" class="form-group detailpenyesuaianstok_selisih">

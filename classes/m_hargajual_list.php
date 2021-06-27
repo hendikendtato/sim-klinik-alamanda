@@ -828,6 +828,7 @@ class m_hargajual_list extends m_hargajual
 		$this->tgl_exp->setVisibility();
 		$this->kategori->Visible = FALSE;
 		$this->subkategori->Visible = FALSE;
+		$this->tipe->Visible = FALSE;
 		$this->hideFieldsForAddEdit();
 
 		// Global Page Loading event (in userfn*.php)
@@ -1147,6 +1148,7 @@ class m_hargajual_list extends m_hargajual
 		$filterList = Concat($filterList, $this->tgl_exp->AdvancedSearch->toJson(), ","); // Field tgl_exp
 		$filterList = Concat($filterList, $this->kategori->AdvancedSearch->toJson(), ","); // Field kategori
 		$filterList = Concat($filterList, $this->subkategori->AdvancedSearch->toJson(), ","); // Field subkategori
+		$filterList = Concat($filterList, $this->tipe->AdvancedSearch->toJson(), ","); // Field tipe
 		if ($this->BasicSearch->Keyword != "") {
 			$wrk = "\"" . Config("TABLE_BASIC_SEARCH") . "\":\"" . JsEncode($this->BasicSearch->Keyword) . "\",\"" . Config("TABLE_BASIC_SEARCH_TYPE") . "\":\"" . JsEncode($this->BasicSearch->Type) . "\"";
 			$filterList = Concat($filterList, $wrk, ",");
@@ -1264,6 +1266,14 @@ class m_hargajual_list extends m_hargajual
 		$this->subkategori->AdvancedSearch->SearchValue2 = @$filter["y_subkategori"];
 		$this->subkategori->AdvancedSearch->SearchOperator2 = @$filter["w_subkategori"];
 		$this->subkategori->AdvancedSearch->save();
+
+		// Field tipe
+		$this->tipe->AdvancedSearch->SearchValue = @$filter["x_tipe"];
+		$this->tipe->AdvancedSearch->SearchOperator = @$filter["z_tipe"];
+		$this->tipe->AdvancedSearch->SearchCondition = @$filter["v_tipe"];
+		$this->tipe->AdvancedSearch->SearchValue2 = @$filter["y_tipe"];
+		$this->tipe->AdvancedSearch->SearchOperator2 = @$filter["w_tipe"];
+		$this->tipe->AdvancedSearch->save();
 		$this->BasicSearch->setKeyword(@$filter[Config("TABLE_BASIC_SEARCH")]);
 		$this->BasicSearch->setType(@$filter[Config("TABLE_BASIC_SEARCH_TYPE")]);
 	}
@@ -1285,6 +1295,7 @@ class m_hargajual_list extends m_hargajual
 		$this->buildSearchSql($where, $this->tgl_exp, $default, FALSE); // tgl_exp
 		$this->buildSearchSql($where, $this->kategori, $default, FALSE); // kategori
 		$this->buildSearchSql($where, $this->subkategori, $default, FALSE); // subkategori
+		$this->buildSearchSql($where, $this->tipe, $default, FALSE); // tipe
 
 		// Set up search parm
 		if (!$default && $where != "" && in_array($this->Command, ["", "reset", "resetall"])) {
@@ -1301,6 +1312,7 @@ class m_hargajual_list extends m_hargajual
 			$this->tgl_exp->AdvancedSearch->save(); // tgl_exp
 			$this->kategori->AdvancedSearch->save(); // kategori
 			$this->subkategori->AdvancedSearch->save(); // subkategori
+			$this->tipe->AdvancedSearch->save(); // tipe
 		}
 		return $where;
 	}
@@ -1505,6 +1517,8 @@ class m_hargajual_list extends m_hargajual
 			return TRUE;
 		if ($this->subkategori->AdvancedSearch->issetSession())
 			return TRUE;
+		if ($this->tipe->AdvancedSearch->issetSession())
+			return TRUE;
 		return FALSE;
 	}
 
@@ -1548,6 +1562,7 @@ class m_hargajual_list extends m_hargajual
 		$this->tgl_exp->AdvancedSearch->unsetSession();
 		$this->kategori->AdvancedSearch->unsetSession();
 		$this->subkategori->AdvancedSearch->unsetSession();
+		$this->tipe->AdvancedSearch->unsetSession();
 	}
 
 	// Restore all search parameters
@@ -1569,6 +1584,7 @@ class m_hargajual_list extends m_hargajual
 		$this->tgl_exp->AdvancedSearch->load();
 		$this->kategori->AdvancedSearch->load();
 		$this->subkategori->AdvancedSearch->load();
+		$this->tipe->AdvancedSearch->load();
 	}
 
 	// Set up sort parameters
@@ -2044,6 +2060,13 @@ class m_hargajual_list extends m_hargajual
 			if (($this->subkategori->AdvancedSearch->SearchValue != "" || $this->subkategori->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
 				$this->Command = "search";
 		}
+
+		// tipe
+		if (!$this->isAddOrEdit() && $this->tipe->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->tipe->AdvancedSearch->SearchValue != "" || $this->tipe->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
 		return $got;
 	}
 
@@ -2122,6 +2145,7 @@ class m_hargajual_list extends m_hargajual
 		$this->tgl_exp->setDbValue($row['tgl_exp']);
 		$this->kategori->setDbValue($row['kategori']);
 		$this->subkategori->setDbValue($row['subkategori']);
+		$this->tipe->setDbValue($row['tipe']);
 	}
 
 	// Return a row with default values
@@ -2141,6 +2165,7 @@ class m_hargajual_list extends m_hargajual
 		$row['tgl_exp'] = NULL;
 		$row['kategori'] = NULL;
 		$row['subkategori'] = NULL;
+		$row['tipe'] = NULL;
 		return $row;
 	}
 
@@ -2213,6 +2238,7 @@ class m_hargajual_list extends m_hargajual
 		// tgl_exp
 		// kategori
 		// subkategori
+		// tipe
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -2364,6 +2390,14 @@ class m_hargajual_list extends m_hargajual
 				$this->subkategori->ViewValue = NULL;
 			}
 			$this->subkategori->ViewCustomAttributes = "";
+
+			// tipe
+			if (strval($this->tipe->CurrentValue) != "") {
+				$this->tipe->ViewValue = $this->tipe->optionCaption($this->tipe->CurrentValue);
+			} else {
+				$this->tipe->ViewValue = NULL;
+			}
+			$this->tipe->ViewCustomAttributes = "";
 
 			// id_barang
 			$this->id_barang->LinkCustomAttributes = "";
@@ -2543,6 +2577,7 @@ class m_hargajual_list extends m_hargajual
 		$this->tgl_exp->AdvancedSearch->load();
 		$this->kategori->AdvancedSearch->load();
 		$this->subkategori->AdvancedSearch->load();
+		$this->tipe->AdvancedSearch->load();
 	}
 
 	// Get export HTML tag
@@ -2818,6 +2853,8 @@ class m_hargajual_list extends m_hargajual
 				case "x_kategori":
 					break;
 				case "x_subkategori":
+					break;
+				case "x_tipe":
 					break;
 				default:
 					$lookupFilter = "";

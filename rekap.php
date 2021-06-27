@@ -31,7 +31,6 @@ Page_Rendering();
 ?>
 <?php include_once "header.php"; ?>
 <?php
-
 	// Function Tanggal Format Indonesia
 	function tgl_indo($tanggal){
 		$bulan = array (
@@ -138,19 +137,14 @@ Page_Rendering();
 		
 			<!-- Input Barang -->
 			<li class="d-inline-block">
-				<label class="d-block">Input Barang</label>
-				<select class="form-control product-select" name="Inputbarang">
-					<option value="All">All</option>
-					<?php
-					$sql = "SELECT * FROM m_barang WHERE komposisi = 'No'";
-					$res = ExecuteRows($sql);
-
-					foreach ($res as $rs) {
-						echo "<option value=" . $rs["id"] . ">" . $rs["nama_barang"] . "</option>";
-					}
-					?>
-				</select>
-		  	</li>
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="Barang" id='barang'>
+					<div class="input-group-append">
+						<button class="btn btn-outline-info" type="button" id="button-addon2" data-toggle="modal" data-target="#modal"><i class="fas fa-search ew-icon"></i></button>
+					</div>
+					<input type="hidden" class="form-control" placeholder="Barang" id='id_barang' name="Inputbarang">
+				</div>		
+			</li>
 
 			<!-- Input Jenis barang -->
 			<li class="d-inline-block">
@@ -404,7 +398,59 @@ Page_Rendering();
 				</tbody>
 			</table>
 	<?php endif; ?>
-	<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
+			<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css" />
+			<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css" />
+
+			<div id="modal" class="modal fade" role="dialog">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<form role="form" id="form-tambah" method="post" action="input.php">
+						<div class="modal-header text-center">
+							<h3 class="modal-title">Pilih Produk</h3>
+						</div>
+							<div class="modal-body">
+							
+									<table width="100%" class="table table-hover"  id="example">
+										<thead>
+											<tr>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr id="barang" data-kode="All" name='All'>
+												<td>All</td> 
+											</tr>
+											<?php
+												$sql = "SELECT * FROM m_barang WHERE tipe != 'Perawatan' ORDER BY id ASC";
+												$res = ExecuteRows($sql);
+												foreach ($res as $rs) {
+													echo "<tr id='barang' data-kode='".$rs['id']."' name='".$rs['nama_barang']."'>
+																<td>".$rs['nama_barang']."</td>
+														</tr>";
+												}
+											?>
+
+										</tbody>
+									</table>
+							
+							</div> 
+						
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+							</div>
+					</div>
+				</div>
+			</div>
+					
+			<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+			<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+			<script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+			<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+			<script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
+
+	<!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> -->
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/i18n/id.js" type="text/javascript"></script>
@@ -442,6 +488,7 @@ Page_Rendering();
 				}
 			}
 	</script>
+
 	<script>
 		$(document).ready(function() {
 			$('.selectpicker').select2({
@@ -451,6 +498,18 @@ Page_Rendering();
 			});
 		});
 	</script>
+
+	<script>
+		$(document).ready(function(){
+			$('#example').DataTable();
+
+			$(document).on('click', '#barang', function (e) {
+				document.getElementById("barang").value = $(this).attr('name');
+				document.getElementById("id_barang").value = $(this).attr('data-kode');
+				$('#modal').modal('hide');
+			});
+		});
+	</script>	
   </div>
 </div>
 

@@ -135,17 +135,13 @@ Page_Rendering();
 					<ul class="list-unstyled">
 						<!-- Input barang -->
 						<li class="d-inline-block">
-							<label class="d-block">Input Barang</label>
-							<select class="form-control product-select" name="Inputbarang">
-									<option value="All">All</option>
-								<?php
-									$sql = "SELECT * FROM m_barang WHERE tipe != 'Perawatan'";
-									$res = ExecuteRows($sql);
-									foreach ($res as $rs) {
-										echo "<option id=" . $rs["id"] . "value=" . $rs["id"] . ">" . $rs["nama_barang"] . "</option>";
-									}
-								?>
-							</select>
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="Barang" id='barang' name="Inputbarang">
+								<div class="input-group-append">
+									<button class="btn btn-outline-info" type="button" id="button-addon2" data-toggle="modal" data-target="#modal"><i class="fas fa-search ew-icon"></i></button>
+								</div>
+								<input type="hidden" class="form-control" placeholder="Barang" id='id_barang'>
+							</div>		
 						</li>
 
 						<!-- Input Klinik -->
@@ -287,31 +283,31 @@ Page_Rendering();
 												<td align='center'>"; 	if(is_null($rs["no_terima"])){
 																		echo "-----:-----";
 																		}else{
-																		echo $rs["no_terima"];
+																			echo $rs["no_terima"];
 																		}echo "</td>
 												<td align='center'>"; 	if(is_null($rs["kode_terimagudang"])){
 																		echo "-----:-----";
 																		}else{
-																		echo $rs["kode_terimagudang"];
+																			echo $rs["kode_terimagudang"];
 																		}echo "</td>
 												<td align='center'>" ; 	if(is_null($rs["kode_penjualan"])){
 																		echo "-----:-----";
-																		}else{
+																	}else{
 																		echo $rs["kode_penjualan"];
 																		}echo  "</td>
-												<td align='center'>" ; 	if(is_null($rs["no_kirimbarang"])){
+																		<td align='center'>" ; 	if(is_null($rs["no_kirimbarang"])){
 																		echo "-----:-----";
 																		}else{
 																		echo $rs["no_kirimbarang"];
 																		}echo  "</td>
-												<td align='center'>" ; 	if(is_null($rs["kode"])){
+																		<td align='center'>" ; 	if(is_null($rs["kode"])){
 																		echo "-----:-----";
 																		}else{
-																		echo $rs["kode"];
+																			echo $rs["kode"];
 																		}echo "</td>
 												<td align='center'>" ; 	if(is_null($rs["kode_penyesuaian"])){
 																		echo "-----:-----";
-																		}else{
+																	}else{
 																		echo $rs["kode_penyesuaian"];
 																		}echo "</td>
 												<td align='center'>" . $rs["stok_awal"] . "</td>								
@@ -319,49 +315,102 @@ Page_Rendering();
 																		echo "0.00";
 																		}else{
 																		echo $rs["masuk"];
-																		}echo  "</td>
+																	}echo  "</td>
 												<td align='center'>" ; 	if(is_null($rs["masuk_penyesuaian"])){
 																		echo "0.00";
 																		}else{
-																		echo $rs["masuk_penyesuaian"];
+																			echo $rs["masuk_penyesuaian"];
 																		}echo  "</td>
 												<td align='center'>" ; 	if(is_null($rs["keluar"])){
 																		echo "0.00";
 																		}else{
 																		echo $rs["keluar"];
-																		}echo  "</td>																
+																	}echo  "</td>																
 												<td align='center'>" ; 	if(is_null($rs["keluar_nonjual"])){
 																		echo "0.00";
 																		}else{
 																		echo $rs["keluar_nonjual"];
-																		}echo  "</td>
+																	}echo  "</td>
 												<td align='center'>" ; 	if(is_null($rs["keluar_penyesuaian"])){
 																		echo "0.00";
-																		}else{
+																	}else{
 																		echo $rs["keluar_penyesuaian"];
 																		}echo  "</td>
-												<td align='center'>" ; 	if(is_null($rs["keluar_kirim"])){
+																		<td align='center'>" ; 	if(is_null($rs["keluar_kirim"])){
 																		echo "0.00";
 																		}else{
 																		echo $rs["keluar_kirim"];
-																		}echo  "</td>
+																	}echo  "</td>
 												<td align='center'>" ; 	if(is_null($rs["retur"])){
 																		echo "0.00";
 																		}else{
-																		echo $rs["retur"];
+																			echo $rs["retur"];
 																		}echo  "</td>
 												<td align='center'>" . $rs["stok_akhir"] . "</td>
 											</tr>" ;
-										$no++;
+											$no++;
 									}
 								}						
 							?>
 						</tbody>
 					</table>
 
+
 			<?php endif; ?>
 
-			<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
+			<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css" />
+			<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css" />
+
+			<div id="modal" class="modal fade" role="dialog">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<form role="form" id="form-tambah" method="post" action="input.php">
+						<div class="modal-header text-center">
+							<h3 class="modal-title">Pilih Produk</h3>
+						</div>
+							<div class="modal-body">
+							
+									<table width="100%" class="table table-hover"  id="example">
+										<thead>
+											<tr>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr id="barang" data-kode="All" name='All'>
+												<td>All</td> 
+											</tr>
+											<?php
+												$sql = "SELECT * FROM m_barang WHERE tipe != 'Perawatan' ORDER BY id ASC";
+												$res = ExecuteRows($sql);
+												foreach ($res as $rs) {
+													echo "<tr id='barang' data-kode='".$rs['id']."' name='".$rs['nama_barang']."'>
+																<td>".$rs['nama_barang']."</td>
+														</tr>";
+												}
+											?>
+
+										</tbody>
+									</table>
+							
+							
+							</div> 
+						
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+							</div>
+					</div>
+				</div>
+			</div>
+					
+			<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+			<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+			<script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+			<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+			<script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
+
+			<!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> -->
 			<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet" />
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/i18n/id.js" type="text/javascript"></script>
@@ -410,6 +459,17 @@ Page_Rendering();
 				
 
 			//$('.selectpicker').selectpicker();
+			</script>
+			<script>
+				$(document).ready(function(){
+					$('#example').DataTable();
+
+					$(document).on('click', '#barang', function (e) {
+						document.getElementById("barang").value = $(this).attr('name');
+						document.getElementById("id_barang").value = $(this).attr('data-kode');
+						$('#modal').modal('hide');
+					});
+				});
 			</script>
 		</div>
 	</div>

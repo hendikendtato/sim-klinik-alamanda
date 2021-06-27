@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<ew-language date="2021/6/22" version="16.0.1" id="ID" name="Indonesian" desc="Indonesian" author="e.World Technology Ltd.">
+<ew-language date="2021/6/27" version="16.0.1" id="ID" name="Indonesian" desc="Indonesian" author="e.World Technology Ltd.">
   <!--
 	*** Important Notes:
 	1. Language ID should follow: https://developers.google.com/recaptcha/docs/language,
@@ -1204,6 +1204,9 @@
     <menu id="1077">
       <phrase id="menutext" value="Best Seller" />
     </menu>
+    <menu id="1080">
+      <phrase id="menutext" value="Barang Terjual" />
+    </menu>
     <menu id="226">
       <phrase id="menutext" value="Pengguna" />
     </menu>
@@ -2040,6 +2043,17 @@
       </field>
       <field id="subkategori">
         <phrase id="fldcaption" value="Subkategori" />
+      </field>
+      <field id="tipe">
+        <phrase id="fldcaption" value="Tipe" />
+        <phrase id="fldtagvalue1" value="Perawatan" />
+        <phrase id="fldtagcaption1" value="Perawatan" />
+        <phrase id="fldtagvalue2" value="Bahan" />
+        <phrase id="fldtagcaption2" value="Bahan" />
+        <phrase id="fldtagvalue3" value="Jual" />
+        <phrase id="fldtagcaption3" value="Jual" />
+        <phrase id="fldtagvalue4" value="Non Jual" />
+        <phrase id="fldtagcaption4" value="Non Jual" />
       </field>
     </table>
     <table id="m_hargajual_detail">
@@ -4008,6 +4022,9 @@
     </table>
     <table id="upload_data">
       <phrase id="tblcaption" value="Upload Data" />
+    </table>
+    <table id="laporan_barang_terjual">
+      <phrase id="tblcaption" value="Laporan Barang Terjual" />
     </table>
   </project>
 </ew-language>

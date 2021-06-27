@@ -1016,6 +1016,7 @@ class detail_nonjual_edit extends detail_nonjual
 			$this->id_nonjual->ViewCustomAttributes = "";
 
 			// id_barang
+			$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
 			$curVal = strval($this->id_barang->CurrentValue);
 			if ($curVal != "") {
 				$this->id_barang->ViewValue = $this->id_barang->lookupCacheOption($curVal);
@@ -1095,26 +1096,27 @@ class detail_nonjual_edit extends detail_nonjual
 			// id_barang
 			$this->id_barang->EditAttrs["class"] = "form-control";
 			$this->id_barang->EditCustomAttributes = "";
-			$curVal = trim(strval($this->id_barang->CurrentValue));
-			if ($curVal != "")
-				$this->id_barang->ViewValue = $this->id_barang->lookupCacheOption($curVal);
-			else
-				$this->id_barang->ViewValue = $this->id_barang->Lookup !== NULL && is_array($this->id_barang->Lookup->Options) ? $curVal : NULL;
-			if ($this->id_barang->ViewValue !== NULL) { // Load from cache
-				$this->id_barang->EditValue = array_values($this->id_barang->Lookup->Options);
-			} else { // Lookup from database
-				if ($curVal == "") {
-					$filterWrk = "0=1";
-				} else {
-					$filterWrk = "`id_barang`" . SearchString("=", $this->id_barang->CurrentValue, DATATYPE_NUMBER, "");
+			$this->id_barang->EditValue = HtmlEncode($this->id_barang->CurrentValue);
+			$curVal = strval($this->id_barang->CurrentValue);
+			if ($curVal != "") {
+				$this->id_barang->EditValue = $this->id_barang->lookupCacheOption($curVal);
+				if ($this->id_barang->EditValue === NULL) { // Lookup from database
+					$filterWrk = "`id_barang`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->id_barang->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+						$this->id_barang->EditValue = $this->id_barang->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->id_barang->EditValue = HtmlEncode($this->id_barang->CurrentValue);
+					}
 				}
-				$sqlWrk = $this->id_barang->Lookup->getSql(TRUE, $filterWrk, '', $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				$arwrk = $rswrk ? $rswrk->getRows() : [];
-				if ($rswrk)
-					$rswrk->close();
-				$this->id_barang->EditValue = $arwrk;
+			} else {
+				$this->id_barang->EditValue = NULL;
 			}
+			$this->id_barang->PlaceHolder = RemoveHtml($this->id_barang->caption());
 
 			// stok
 			$this->stok->EditAttrs["class"] = "form-control";
@@ -1186,6 +1188,9 @@ class detail_nonjual_edit extends detail_nonjual
 			if (!$this->id_barang->IsDetailKey && $this->id_barang->FormValue != NULL && $this->id_barang->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->id_barang->caption(), $this->id_barang->RequiredErrorMessage));
 			}
+		}
+		if (!CheckInteger($this->id_barang->FormValue)) {
+			AddMessage($FormError, $this->id_barang->errorMessage());
 		}
 		if ($this->stok->Required) {
 			if (!$this->stok->IsDetailKey && $this->stok->FormValue != NULL && $this->stok->FormValue == "") {

@@ -38,6 +38,7 @@ class m_hargajual extends DbTable
 	public $tgl_exp;
 	public $kategori;
 	public $subkategori;
+	public $tipe;
 
 	// Constructor
 	public function __construct()
@@ -85,7 +86,7 @@ class m_hargajual extends DbTable
 		$this->id_barang->Sortable = TRUE; // Allow sort
 		$this->id_barang->UsePleaseSelect = TRUE; // Use PleaseSelect by default
 		$this->id_barang->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->id_barang->Lookup = new Lookup('id_barang', 'm_barang', FALSE, 'id', ["nama_barang","","",""], [], [], [], [], ["kategori","subkategori"], ["x_kategori","x_subkategori"], '', '');
+		$this->id_barang->Lookup = new Lookup('id_barang', 'm_barang', FALSE, 'id', ["nama_barang","","",""], [], [], [], [], ["kategori","subkategori","tipe"], ["x_kategori","x_subkategori","x_tipe"], '', '');
 		$this->id_barang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id_barang'] = &$this->id_barang;
 
@@ -166,6 +167,13 @@ class m_hargajual extends DbTable
 		$this->subkategori->Lookup = new Lookup('subkategori', 'subkategoribarang', FALSE, 'id', ["nama","","",""], [], [], [], [], [], [], '', '');
 		$this->subkategori->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['subkategori'] = &$this->subkategori;
+
+		// tipe
+		$this->tipe = new DbField('m_hargajual', 'm_hargajual', 'x_tipe', 'tipe', '`tipe`', '`tipe`', 202, 9, -1, FALSE, '`tipe`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'RADIO');
+		$this->tipe->Sortable = TRUE; // Allow sort
+		$this->tipe->Lookup = new Lookup('tipe', 'm_hargajual', FALSE, '', ["","","",""], [], [], [], [], [], [], '', '');
+		$this->tipe->OptionCount = 4;
+		$this->fields['tipe'] = &$this->tipe;
 	}
 
 	// Field Visibility
@@ -534,6 +542,7 @@ class m_hargajual extends DbTable
 		$this->tgl_exp->DbValue = $row['tgl_exp'];
 		$this->kategori->DbValue = $row['kategori'];
 		$this->subkategori->DbValue = $row['subkategori'];
+		$this->tipe->DbValue = $row['tipe'];
 	}
 
 	// Delete uploaded files
@@ -777,6 +786,7 @@ class m_hargajual extends DbTable
 		$this->tgl_exp->setDbValue($rs->fields('tgl_exp'));
 		$this->kategori->setDbValue($rs->fields('kategori'));
 		$this->subkategori->setDbValue($rs->fields('subkategori'));
+		$this->tipe->setDbValue($rs->fields('tipe'));
 	}
 
 	// Render list row values
@@ -801,6 +811,7 @@ class m_hargajual extends DbTable
 		// tgl_exp
 		// kategori
 		// subkategori
+		// tipe
 		// id_hargajual
 
 		$this->id_hargajual->ViewValue = $this->id_hargajual->CurrentValue;
@@ -951,6 +962,14 @@ class m_hargajual extends DbTable
 		}
 		$this->subkategori->ViewCustomAttributes = "";
 
+		// tipe
+		if (strval($this->tipe->CurrentValue) != "") {
+			$this->tipe->ViewValue = $this->tipe->optionCaption($this->tipe->CurrentValue);
+		} else {
+			$this->tipe->ViewValue = NULL;
+		}
+		$this->tipe->ViewCustomAttributes = "";
+
 		// id_hargajual
 		$this->id_hargajual->LinkCustomAttributes = "";
 		$this->id_hargajual->HrefValue = "";
@@ -1015,6 +1034,11 @@ class m_hargajual extends DbTable
 		$this->subkategori->LinkCustomAttributes = "";
 		$this->subkategori->HrefValue = "";
 		$this->subkategori->TooltipValue = "";
+
+		// tipe
+		$this->tipe->LinkCustomAttributes = "";
+		$this->tipe->HrefValue = "";
+		$this->tipe->TooltipValue = "";
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -1111,6 +1135,10 @@ class m_hargajual extends DbTable
 		$this->subkategori->EditAttrs["class"] = "form-control";
 		$this->subkategori->EditCustomAttributes = "";
 
+		// tipe
+		$this->tipe->EditCustomAttributes = "";
+		$this->tipe->EditValue = $this->tipe->options(FALSE);
+
 		// Call Row Rendered event
 		$this->Row_Rendered();
 	}
@@ -1152,6 +1180,7 @@ class m_hargajual extends DbTable
 					$doc->exportCaption($this->tgl_exp);
 					$doc->exportCaption($this->kategori);
 					$doc->exportCaption($this->subkategori);
+					$doc->exportCaption($this->tipe);
 				} else {
 					$doc->exportCaption($this->id_hargajual);
 					$doc->exportCaption($this->id_barang);
@@ -1166,6 +1195,7 @@ class m_hargajual extends DbTable
 					$doc->exportCaption($this->tgl_exp);
 					$doc->exportCaption($this->kategori);
 					$doc->exportCaption($this->subkategori);
+					$doc->exportCaption($this->tipe);
 				}
 				$doc->endExportRow();
 			}
@@ -1209,6 +1239,7 @@ class m_hargajual extends DbTable
 						$doc->exportField($this->tgl_exp);
 						$doc->exportField($this->kategori);
 						$doc->exportField($this->subkategori);
+						$doc->exportField($this->tipe);
 					} else {
 						$doc->exportField($this->id_hargajual);
 						$doc->exportField($this->id_barang);
@@ -1223,6 +1254,7 @@ class m_hargajual extends DbTable
 						$doc->exportField($this->tgl_exp);
 						$doc->exportField($this->kategori);
 						$doc->exportField($this->subkategori);
+						$doc->exportField($this->tipe);
 					}
 					$doc->endExportRow($rowCnt);
 				}
