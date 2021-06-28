@@ -178,7 +178,7 @@ $detailterimagudang_add->id_barang->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x_id_barang">
 	<div class="input-group">
-		<input type="text" class="form-control" name="sv_x_id_barang" id="sv_x_id_barang" value="<?php echo RemoveHtml($detailterimagudang_add->id_barang->EditValue) ?>" size="55" maxlength="50" placeholder="<?php echo HtmlEncode($detailterimagudang_add->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailterimagudang_add->id_barang->getPlaceHolder()) ?>"<?php echo $detailterimagudang_add->id_barang->editAttributes() ?>>
+		<input type="text" class="form-control" name="sv_x_id_barang" id="sv_x_id_barang" value="<?php echo RemoveHtml($detailterimagudang_add->id_barang->EditValue) ?>" size="50" maxlength="50" placeholder="<?php echo HtmlEncode($detailterimagudang_add->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailterimagudang_add->id_barang->getPlaceHolder()) ?>"<?php echo $detailterimagudang_add->id_barang->editAttributes() ?>>
 		<div class="input-group-append">
 			<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($detailterimagudang_add->id_barang->caption()), $Language->phrase("LookupLink", TRUE))) ?>" onclick="ew.modalLookupShow({lnk:this,el:'x_id_barang',m:0,n:10,srch:false});" class="ew-lookup-btn btn btn-default"<?php echo ($detailterimagudang_add->id_barang->ReadOnly || $detailterimagudang_add->id_barang->Disabled) ? " disabled" : "" ?>><i class="fas fa-search ew-icon"></i></button>
 		</div>

@@ -72,7 +72,7 @@ Page_Rendering();
 				JOIN (
 					SELECT id, kode_barang, nama_barang
 					FROM m_barang
-					WHERE  1=1 {Inputkategori} {$Inputsubkategori}
+					WHERE  1=1 {$Inputsubkategori}
 				) m_barang ON m_barang.id = kartustok.id_barang				
 				GROUP BY id_barang			
 				ORDER BY jumlah DESC
@@ -228,9 +228,8 @@ Page_Rendering();
 			</table>
 		<?php endif; ?>
 		
-			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
-			<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css" />
-			<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css" />
+			<link rel="stylesheet" type="text/css" href="plugins/datatables/datatables.min.css"/>
+			<script src="jquery/jquery.js"></script>
 
 			<div id="modal" class="modal fade" role="dialog">
 				<div class="modal-dialog modal-lg">
@@ -273,11 +272,7 @@ Page_Rendering();
 				</div>
 			</div>
 					
-			<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-			<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
-			<script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
-			<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
-			<script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>		
+			<script type="text/javascript" src="plugins/datatables/datatables.min.js"></script>
 
 		<script>
 			function exportTableToExcel(tableID, filename = '') {
@@ -323,17 +318,28 @@ Page_Rendering();
 			}
 		</script>
 
-		<script>
-			$(document).ready(function(){
-				$('#example').DataTable();
+			<script>
+				$(document).ready(function(){
+					$('#example').DataTable({
+						"ordering": false
+					});
 
-				$(document).on('click', '#barang', function (e) {
-					document.getElementById("barang").value = $(this).attr('name');
-					document.getElementById("id_barang").value = $(this).attr('data-kode');
-					$('#modal').modal('hide');
+					$(document).on('click', '#barang', function (e) {
+						document.getElementById("barang").value = $(this).attr('name');
+						document.getElementById("id_barang").value = $(this).attr('data-kode');
+						$('#modal').modal('hide');
+					});
 				});
-			});
-		</script>		
+			</script>
+			<script>
+				$(document).ready(function(){
+					$(document).on('click', '#barang', function (e) {
+						document.getElementById("barang").value = $(this).attr('name');
+						document.getElementById("id_barang").value = $(this).attr('data-kode');
+						$('#modal').modal('hide');
+					});
+				});
+			</script>		
 	</div>
 </div>
 

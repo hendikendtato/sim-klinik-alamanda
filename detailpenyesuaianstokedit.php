@@ -239,7 +239,7 @@ $detailpenyesuaianstok_edit->id_barang->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x_id_barang">
 	<div class="input-group">
-		<input type="text" class="form-control" name="sv_x_id_barang" id="sv_x_id_barang" value="<?php echo RemoveHtml($detailpenyesuaianstok_edit->id_barang->EditValue) ?>" size="55" maxlength="40" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_edit->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_edit->id_barang->getPlaceHolder()) ?>"<?php echo $detailpenyesuaianstok_edit->id_barang->editAttributes() ?>>
+		<input type="text" class="form-control" name="sv_x_id_barang" id="sv_x_id_barang" value="<?php echo RemoveHtml($detailpenyesuaianstok_edit->id_barang->EditValue) ?>" size="50" maxlength="40" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_edit->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_edit->id_barang->getPlaceHolder()) ?>"<?php echo $detailpenyesuaianstok_edit->id_barang->editAttributes() ?>>
 		<div class="input-group-append">
 			<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($detailpenyesuaianstok_edit->id_barang->caption()), $Language->phrase("LookupLink", TRUE))) ?>" onclick="ew.modalLookupShow({lnk:this,el:'x_id_barang',m:0,n:10,srch:false});" class="ew-lookup-btn btn btn-default"<?php echo ($detailpenyesuaianstok_edit->id_barang->ReadOnly || $detailpenyesuaianstok_edit->id_barang->Disabled) ? " disabled" : "" ?>><i class="fas fa-search ew-icon"></i></button>
 		</div>
@@ -271,7 +271,7 @@ loadjs.ready(["fdetailpenyesuaianstokedit"], function() {
 		<label id="elh_detailpenyesuaianstok_jumlah" for="x_jumlah" class="<?php echo $detailpenyesuaianstok_edit->LeftColumnClass ?>"><?php echo $detailpenyesuaianstok_edit->jumlah->caption() ?><?php echo $detailpenyesuaianstok_edit->jumlah->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $detailpenyesuaianstok_edit->RightColumnClass ?>"><div <?php echo $detailpenyesuaianstok_edit->jumlah->cellAttributes() ?>>
 <span id="el_detailpenyesuaianstok_jumlah">
-<input type="text" data-table="detailpenyesuaianstok" data-field="x_jumlah" name="x_jumlah" id="x_jumlah" size="5" maxlength="22" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_edit->jumlah->getPlaceHolder()) ?>" value="<?php echo $detailpenyesuaianstok_edit->jumlah->EditValue ?>"<?php echo $detailpenyesuaianstok_edit->jumlah->editAttributes() ?>>
+<input type="text" data-table="detailpenyesuaianstok" data-field="x_jumlah" name="x_jumlah" id="x_jumlah" size="15" maxlength="22" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_edit->jumlah->getPlaceHolder()) ?>" value="<?php echo $detailpenyesuaianstok_edit->jumlah->EditValue ?>"<?php echo $detailpenyesuaianstok_edit->jumlah->editAttributes() ?>>
 </span>
 <?php echo $detailpenyesuaianstok_edit->jumlah->CustomMsg ?></div></div>
 	</div>
@@ -281,7 +281,7 @@ loadjs.ready(["fdetailpenyesuaianstokedit"], function() {
 		<label id="elh_detailpenyesuaianstok_selisih" for="x_selisih" class="<?php echo $detailpenyesuaianstok_edit->LeftColumnClass ?>"><?php echo $detailpenyesuaianstok_edit->selisih->caption() ?><?php echo $detailpenyesuaianstok_edit->selisih->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $detailpenyesuaianstok_edit->RightColumnClass ?>"><div <?php echo $detailpenyesuaianstok_edit->selisih->cellAttributes() ?>>
 <span id="el_detailpenyesuaianstok_selisih">
-<input type="text" data-table="detailpenyesuaianstok" data-field="x_selisih" name="x_selisih" id="x_selisih" size="5" maxlength="12" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_edit->selisih->getPlaceHolder()) ?>" value="<?php echo $detailpenyesuaianstok_edit->selisih->EditValue ?>"<?php echo $detailpenyesuaianstok_edit->selisih->editAttributes() ?>>
+<input type="text" data-table="detailpenyesuaianstok" data-field="x_selisih" name="x_selisih" id="x_selisih" size="30" maxlength="12" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_edit->selisih->getPlaceHolder()) ?>" value="<?php echo $detailpenyesuaianstok_edit->selisih->EditValue ?>"<?php echo $detailpenyesuaianstok_edit->selisih->editAttributes() ?>>
 </span>
 <?php echo $detailpenyesuaianstok_edit->selisih->CustomMsg ?></div></div>
 	</div>

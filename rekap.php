@@ -399,9 +399,8 @@ Page_Rendering();
 			</table>
 	<?php endif; ?>
 
-			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
-			<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css" />
-			<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css" />
+			<link rel="stylesheet" type="text/css" href="plugins/datatables/datatables.min.css"/>
+			<script src="jquery/jquery.js"></script>
 
 			<div id="modal" class="modal fade" role="dialog">
 				<div class="modal-dialog modal-lg">
@@ -444,16 +443,13 @@ Page_Rendering();
 				</div>
 			</div>
 					
-			<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-			<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
-			<script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
-			<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
-			<script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
+			<script type="text/javascript" src="plugins/datatables/datatables.min.js"></script>
+
 
 	<!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> -->
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/i18n/id.js" type="text/javascript"></script>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/i18n/id.js" type="text/javascript"></script> -->
 			
 	<script>
 			function exportTableToExcel(tableID, filename = '') {
@@ -499,17 +495,28 @@ Page_Rendering();
 		});
 	</script>
 
-	<script>
-		$(document).ready(function(){
-			$('#example').DataTable();
+			<script>
+				$(document).ready(function(){
+					$('#example').DataTable({
+						"ordering": false
+					});
 
-			$(document).on('click', '#barang', function (e) {
-				document.getElementById("barang").value = $(this).attr('name');
-				document.getElementById("id_barang").value = $(this).attr('data-kode');
-				$('#modal').modal('hide');
-			});
-		});
-	</script>	
+					$(document).on('click', '#barang', function (e) {
+						document.getElementById("barang").value = $(this).attr('name');
+						document.getElementById("id_barang").value = $(this).attr('data-kode');
+						$('#modal').modal('hide');
+					});
+				});
+			</script>
+			<script>
+				$(document).ready(function(){
+					$(document).on('click', '#barang', function (e) {
+						document.getElementById("barang").value = $(this).attr('name');
+						document.getElementById("id_barang").value = $(this).attr('data-kode');
+						$('#modal').modal('hide');
+					});
+				});
+			</script>	
   </div>
 </div>
 

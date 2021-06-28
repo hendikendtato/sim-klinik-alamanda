@@ -346,9 +346,14 @@ $onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
 $detail_nonjual_grid->id_barang->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang">
-	<input type="text" class="form-control" name="sv_x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" id="sv_x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" value="<?php echo RemoveHtml($detail_nonjual_grid->id_barang->EditValue) ?>" size="60" maxlength="255" placeholder="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->getPlaceHolder()) ?>"<?php echo $detail_nonjual_grid->id_barang->editAttributes() ?>>
+	<div class="input-group">
+		<input type="text" class="form-control" name="sv_x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" id="sv_x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" value="<?php echo RemoveHtml($detail_nonjual_grid->id_barang->EditValue) ?>" size="55" maxlength="255" placeholder="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->getPlaceHolder()) ?>"<?php echo $detail_nonjual_grid->id_barang->editAttributes() ?>>
+		<div class="input-group-append">
+			<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($detail_nonjual_grid->id_barang->caption()), $Language->phrase("LookupLink", TRUE))) ?>" onclick="ew.modalLookupShow({lnk:this,el:'x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang',m:0,n:10,srch:false});" class="ew-lookup-btn btn btn-default"<?php echo ($detail_nonjual_grid->id_barang->ReadOnly || $detail_nonjual_grid->id_barang->Disabled) ? " disabled" : "" ?>><i class="fas fa-search ew-icon"></i></button>
+		</div>
+	</div>
 </span>
-<input type="hidden" data-table="detail_nonjual" data-field="x_id_barang" data-value-separator="<?php echo $detail_nonjual_grid->id_barang->displayValueSeparatorAttribute() ?>" name="x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" id="x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" value="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->CurrentValue) ?>"<?php echo $onchange ?>>
+<input type="hidden" data-table="detail_nonjual" data-field="x_id_barang" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $detail_nonjual_grid->id_barang->displayValueSeparatorAttribute() ?>" name="x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" id="x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" value="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fdetail_nonjualgrid"], function() {
 	fdetail_nonjualgrid.createAutoSuggest({"id":"x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang","forceSelect":true});
@@ -366,9 +371,14 @@ $onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
 $detail_nonjual_grid->id_barang->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang">
-	<input type="text" class="form-control" name="sv_x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" id="sv_x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" value="<?php echo RemoveHtml($detail_nonjual_grid->id_barang->EditValue) ?>" size="60" maxlength="255" placeholder="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->getPlaceHolder()) ?>"<?php echo $detail_nonjual_grid->id_barang->editAttributes() ?>>
+	<div class="input-group">
+		<input type="text" class="form-control" name="sv_x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" id="sv_x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" value="<?php echo RemoveHtml($detail_nonjual_grid->id_barang->EditValue) ?>" size="55" maxlength="255" placeholder="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->getPlaceHolder()) ?>"<?php echo $detail_nonjual_grid->id_barang->editAttributes() ?>>
+		<div class="input-group-append">
+			<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($detail_nonjual_grid->id_barang->caption()), $Language->phrase("LookupLink", TRUE))) ?>" onclick="ew.modalLookupShow({lnk:this,el:'x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang',m:0,n:10,srch:false});" class="ew-lookup-btn btn btn-default"<?php echo ($detail_nonjual_grid->id_barang->ReadOnly || $detail_nonjual_grid->id_barang->Disabled) ? " disabled" : "" ?>><i class="fas fa-search ew-icon"></i></button>
+		</div>
+	</div>
 </span>
-<input type="hidden" data-table="detail_nonjual" data-field="x_id_barang" data-value-separator="<?php echo $detail_nonjual_grid->id_barang->displayValueSeparatorAttribute() ?>" name="x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" id="x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" value="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->CurrentValue) ?>"<?php echo $onchange ?>>
+<input type="hidden" data-table="detail_nonjual" data-field="x_id_barang" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $detail_nonjual_grid->id_barang->displayValueSeparatorAttribute() ?>" name="x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" id="x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" value="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fdetail_nonjualgrid"], function() {
 	fdetail_nonjualgrid.createAutoSuggest({"id":"x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang","forceSelect":true});
@@ -522,9 +532,14 @@ $onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
 $detail_nonjual_grid->id_barang->EditAttrs["onchange"] = "";
 ?>
 <span id="as_x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang">
-	<input type="text" class="form-control" name="sv_x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" id="sv_x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" value="<?php echo RemoveHtml($detail_nonjual_grid->id_barang->EditValue) ?>" size="60" maxlength="255" placeholder="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->getPlaceHolder()) ?>"<?php echo $detail_nonjual_grid->id_barang->editAttributes() ?>>
+	<div class="input-group">
+		<input type="text" class="form-control" name="sv_x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" id="sv_x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" value="<?php echo RemoveHtml($detail_nonjual_grid->id_barang->EditValue) ?>" size="55" maxlength="255" placeholder="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->getPlaceHolder()) ?>"<?php echo $detail_nonjual_grid->id_barang->editAttributes() ?>>
+		<div class="input-group-append">
+			<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($detail_nonjual_grid->id_barang->caption()), $Language->phrase("LookupLink", TRUE))) ?>" onclick="ew.modalLookupShow({lnk:this,el:'x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang',m:0,n:10,srch:false});" class="ew-lookup-btn btn btn-default"<?php echo ($detail_nonjual_grid->id_barang->ReadOnly || $detail_nonjual_grid->id_barang->Disabled) ? " disabled" : "" ?>><i class="fas fa-search ew-icon"></i></button>
+		</div>
+	</div>
 </span>
-<input type="hidden" data-table="detail_nonjual" data-field="x_id_barang" data-value-separator="<?php echo $detail_nonjual_grid->id_barang->displayValueSeparatorAttribute() ?>" name="x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" id="x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" value="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->CurrentValue) ?>"<?php echo $onchange ?>>
+<input type="hidden" data-table="detail_nonjual" data-field="x_id_barang" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $detail_nonjual_grid->id_barang->displayValueSeparatorAttribute() ?>" name="x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" id="x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang" value="<?php echo HtmlEncode($detail_nonjual_grid->id_barang->CurrentValue) ?>"<?php echo $onchange ?>>
 <script>
 loadjs.ready(["fdetail_nonjualgrid"], function() {
 	fdetail_nonjualgrid.createAutoSuggest({"id":"x<?php echo $detail_nonjual_grid->RowIndex ?>_id_barang","forceSelect":true});

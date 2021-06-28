@@ -51,13 +51,35 @@ Page_Rendering();
 		// variabel pecahkan 0 = tanggal
 		// variabel pecahkan 1 = bulan
 		// variabel pecahkan 2 = tahun
-		return $pecahkan[2] . ' ' . $bulan[ (int)$pecahkan[1] ] . ' ' . $pecahkan[0];
+		return $pecahkan[2] . ' ' .  $bulan[ (int)$pecahkan[1] ] . ' ' . $pecahkan[0];
 	}
 
   if(isset($_POST['srhDate'])){
 		$cabang = $_POST['cabang'];
 		$dateFrom = $_POST['dateFrom'];
 		$dateTo = $_POST['dateTo'];
+		$Inputkategori = $_POST['Inputkategori'];
+		$Inputsubkategori = $_POST['Inputsubkategori'];
+		$and_kategori="";
+		$and_subkategori="";		
+
+		if ($_POST['Inputkategori'] != null) {
+			if($_POST['Inputkategori'] == 'All'){
+				$and_kategori .= "";
+			} else {
+				$kategori = $_POST['Inputkategori'];
+				$and_kategori .= "AND m_barang.kategori = '$kategori'";
+			}
+		}
+
+		if ($_POST['Inputsubkategori'] != null) {
+			if($_POST['Inputsubkategori'] == 'All'){
+				$and_subkategori .= "";
+			} else {
+				$subkategori = $_POST['Inputsubkategori'];
+				$and_subkategori .= "AND m_barang.subkategori = '$subkategori'";
+			}
+		}
 
 		$query = "SELECT detailpenjualan.id AS id, detailpenjualan.id_penjualan AS id_penjualan,
 			penjualan.waktu AS waktu, penjualan.id_klinik AS id_klinik,
@@ -71,10 +93,10 @@ Page_Rendering();
 			subtotal, detailpenjualan.hna AS hna, detailpenjualan.disc_rp AS disc_rp,
 			detailpenjualan.disc_pr AS disc_pr, m_klinik.nama_klinik AS nama_klinik
 		FROM ((detailpenjualan JOIN
-					penjualan ON penjualan.id = detailpenjualan.id_penjualan) JOIN
-				m_barang ON detailpenjualan.id_barang = m_barang.id) JOIN
+			penjualan ON penjualan.id = detailpenjualan.id_penjualan) JOIN
+			m_barang ON detailpenjualan.id_barang = m_barang.id) JOIN
 			m_klinik ON m_klinik.id_klinik = penjualan.id_klinik
-		WHERE m_klinik.id_klinik = '$cabang' AND (penjualan.waktu BETWEEN '$dateFrom' AND '$dateTo') AND m_barang.tipe = 'Perawatan'
+		WHERE m_klinik.id_klinik = '$cabang' AND (penjualan.waktu BETWEEN '$dateFrom' AND '$dateTo') AND m_barang.tipe = 'Perawatan' $and_kategori $and_subkategori
 		GROUP BY detailpenjualan.id_barang
 		ORDER BY m_barang.nama_barang";
 
@@ -116,6 +138,35 @@ Page_Rendering();
 			?>
 		  </select>
 		  </li>
+		<!-- Input Kategori -->
+		<li class="d-inline-block">
+			<label class="d-block">Input Kategori</label>
+			<select class="form-control product-select" name="Inputkategori">
+				<option value="All">All</option>
+				<?php
+					$sql = "SELECT * FROM kategoribarang";
+					$res = ExecuteRows($sql);
+					foreach ($res as $rs) {
+						echo "<option value=" . $rs["id"] . ">" . $rs["nama"] . "</option>";
+					}
+				?>
+			</select>
+		</li>
+
+			<!-- Input Subkategori -->
+			<li class="d-inline-block">
+				<label class="d-block">Input Subkategori</label>
+				<select class="form-control product-select" name="Inputsubkategori">
+					<option value="All">All</option>
+					<?php
+						$sql = "SELECT * FROM subkategoribarang";
+						$res = ExecuteRows($sql);
+						foreach ($res as $rs) {
+							echo "<option value=" . $rs["id"] . ">" . $rs["nama"] . "</option>";
+						}
+					?>
+				</select>
+			</li>		  
 		  <li class="d-inline-block">
 			<label class="d-block">Date Range</label>
 			<input type="date" class="form-control input-md" name="dateFrom">
@@ -252,12 +303,6 @@ Page_Rendering();
 	</script>
   </div>
 </div>
-
-<?php if (Config("DEBUG")) echo GetDebugMessage(); ?>
-<?php include_once "footer.php"; ?>
-<?php
-$laporan_penjualan_perawatan->terminate();
-?>
 
 <?php if (Config("DEBUG")) echo GetDebugMessage(); ?>
 <?php include_once "footer.php"; ?>
