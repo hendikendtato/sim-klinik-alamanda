@@ -63,12 +63,18 @@ Page_Rendering();
 		$multi_klinik = "";
 		$nama_cabang = "";
 		$and="";
+		$and_barang="";
 		$and_kategori="";
 		$and_subkategori="";
 
 		foreach($Inputklinik AS $in_klinik) {
 			$multi_klinik .= "m_hargajual.id_klinik = '" .$in_klinik. "' OR ";
 			$nama_cabang .= "id_klinik= '" .$in_klinik. "' OR ";
+		}
+
+		if (is_null($_POST['Inputbarang'])) {
+			$barang = $_POST['Inputbarang'];
+			$and_barang .= "AND m_hargajual.id_barang = '$barang'";
 		}
 
 		if ($_POST['Inputkategori'] != null) {
@@ -116,7 +122,7 @@ Page_Rendering();
 				JOIN m_barang ON m_hargajual.id_barang = m_barang.id
 				JOIN m_klinik ON m_hargajual.id_klinik = m_klinik.id_klinik
 				JOIN m_satuan_barang ON m_hargajual.satuan = m_satuan_barang.id_satuan 
-				WHERE ($multi_klinik) $and_kategori $and_subkategori $and AND m_hargajual.id_barang = '$Input'";
+				WHERE ($multi_klinik) $and_kategori $and_subkategori $and $and_barang";
 				$result = ExecuteRows($query);
 				//print_r($query);
 			}

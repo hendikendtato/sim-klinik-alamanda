@@ -55,9 +55,10 @@ Page_Rendering();
 	}
 
 	if(isset($_POST['srhDate'])){
+		$best = ($_POST['best'] == "All") ? "" : "LIMIT ".$_POST['best'];
 		$Inputkategori = ($_POST['Inputkategori'] == "All") ? "" : "AND m_barang.kategori = ".$_POST['Inputkategori'];
 		$Inputsubkategori = ($_POST['Inputsubkategori'] == "All") ? "" : "AND m_barang.subkategori = ".$_POST['Inputsubkategori'];
-		$Input  = ($_POST['Inputbarang'] == "All") ? "" : "AND detailpenjualan.id_barang = ".$_POST['Inputbarang'];
+		$Input  = ($_POST['Inputbarang'] == "All" OR empty($_POST['Inputbarang'])) ? "" : "AND detailpenjualan.id_barang = ".$_POST['Inputbarang'];
 		$dateFrom = !empty($_POST['dateFrom']) ? $_POST['dateFrom'] : date('Y-m-01');
 		$dateTo = !empty($_POST['dateTo']) ? $_POST['dateTo'] : date('Y-m-t');
 
@@ -73,7 +74,7 @@ Page_Rendering();
 				WHERE penjualan.waktu BETWEEN '$dateFrom' AND '$dateTo' $Input
 				GROUP BY detailpenjualan.id_barang
 				ORDER BY jumlah DESC
-				LIMIT 10";
+				$best";
 
 		$result = ExecuteRows($query);
 	}
@@ -87,6 +88,29 @@ Page_Rendering();
 			<?php } ?>
 			<div class="col-md-12">
 				<ul class="list-unstyled">
+					<!-- Input Barang -->
+					<li class="d-inline-block">
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="Barang" id='barang'>
+							<div class="input-group-append">
+								<button class="btn btn-outline-info" type="button" id="button-addon2" data-toggle="modal" data-target="#modal"><i class="fas fa-search ew-icon"></i></button>
+							</div>
+							<input type="hidden" class="form-control" placeholder="Barang" id='id_barang' name="Inputbarang">
+						</div>		
+					</li>
+					
+					<!-- Input Range Best -->
+					<li class="d-inline-block">
+						<label class="d-block">Best</label>
+						<select class="form-control product-select" name="best">
+							<option value="">Please Select</option>					
+							<option value="10">10</option>					
+							<option value="10">10</option>					
+							<option value="20">20</option>					
+							<option value="50">50</option>					
+							<option value="All">All</option>					
+						</select>
+					</li>						
 					<li class="d-inline-block">
 						<label class="d-block">Kategori</label>
 						<select class="form-control product-select" name="Inputkategori">
@@ -97,7 +121,7 @@ Page_Rendering();
 								foreach ($kat as $rs) {
 									echo "<option value='{$rs["id"]}'>" . $rs["nama"] . "</option>";
 								}
-							?>
+								?>
 						</select>
 					</li>
 					<li class="d-inline-block">
@@ -110,7 +134,7 @@ Page_Rendering();
 								foreach ($sub as $rs) {
 									echo "<option value='{$rs["id"]}'>" . $rs["nama"] . "</option>";
 								}
-							?>
+								?>
 						</select>
 					</li>
 					<li class="d-inline-block">
@@ -121,19 +145,10 @@ Page_Rendering();
 					<li class="d-inline-block">
 						<input type="date" class="form-control input-md" name="dateTo">
 					</li>
-					<!-- Input Barang -->
-					<li class="d-inline-block">
-						<div class="input-group">
-							<input type="text" class="form-control" placeholder="Barang" id='barang'>
-							<div class="input-group-append">
-								<button class="btn btn-outline-info" type="button" id="button-addon2" data-toggle="modal" data-target="#modal"><i class="fas fa-search ew-icon"></i></button>
-							</div>
-							<input type="hidden" class="form-control" placeholder="Barang" id='id_barang' name="Inputbarang">
-						</div>		
-					</li>
 					<li class="d-inline-block">
 						<button class="btn btn-primary btn-md p-2" type="submit" name="srhDate"> Search <i class="fa fa-search h-3"></i></button>
 					</li>
+
 				</ul>
 			</div>
 		</form>
@@ -158,7 +173,7 @@ Page_Rendering();
 									$subkategori = ($_POST['Inputsubkategori'] == "All") ? "" : "AND id = ".$_POST['Inputsubkategori'];
 									$ressubkategori=ExecuteRows("SELECT * FROM subkategoribarang WHERE 1=1 {$subkategori}");
 
-									$barang = ($_POST['Inputbarang'] == "All") ? "" : "AND id = ".$_POST['Inputbarang'];
+									$barang = ($_POST['Inputbarang'] == "All" OR empty($_POST['Inputbarang'])) ? "" : "AND id = ".$_POST['Inputbarang'];
 									$resBarang=ExecuteRows("SELECT kode_barang, nama_barang FROM m_barang WHERE 1=1 {$barang}");
 									
 									if(!empty($barang)) {

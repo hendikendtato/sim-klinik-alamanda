@@ -62,6 +62,7 @@ Page_Rendering();
 	$Inputklinik = $_POST['Inputklinik'];
 
 	$and = "";
+	$and_barang = "";
 	$order = "";
 	$ascdesc = "";
 
@@ -73,6 +74,11 @@ Page_Rendering();
 			$nama_cabang .= "id_klinik= '" .$in_klinik. "' OR ";
 			//var_dump($multi_klinik); die();
 			//echo $in_klinik;
+	}
+	
+	if (is_null($_POST['Inputbarang'])) {
+		$barang = $_POST['Inputbarang'];
+		$and_barang .= "AND m_hargajual.id_barang = '$barang'";
 	}
 	
 	if (isset($_POST['Inputjenis'])) {
@@ -107,11 +113,13 @@ Page_Rendering();
 		JOIN m_klinik ON m_klinik.id_klinik = m_hargajual.id_klinik 
 		JOIN m_barang ON m_barang.id = m_hargajual.id_barang 
 		WHERE ($multi_klinik) AND m_barang.komposisi = 'No' $and $order $ascdesc");
+
 	} else {
 		$query = ExecuteRows("SELECT * FROM m_hargajual 
 		JOIN m_klinik ON m_klinik.id_klinik = m_hargajual.id_klinik 
 		JOIN m_barang ON m_barang.id = m_hargajual.id_barang 
-		WHERE ($multi_klinik) AND m_barang.komposisi = 'No' $and AND m_hargajual.id_barang = '$Input' $order $ascdesc");
+		WHERE ($multi_klinik) AND m_barang.komposisi = 'No' $and $and_barang $order $ascdesc");
+
 	}
 	
 	// Stok Akhir per barang

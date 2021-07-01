@@ -3373,7 +3373,9 @@ class penjualan extends DbTable
 		if($status == "Draft") {
 			$rsnew["action"] = "Drafted by " .$pegawai. " at " .$action_date. " [". date("h:i"). "]";
 		} else {
-			$rsnew["action"] = "Created by " .$pegawai. " at " .$action_date. " [". date("h:i"). "]";
+			$str = $rsold["action"];
+			$str_out = explode(' ', $str, 3);
+			$rsnew["action"] = "Created By ".$str_out[2].", Printed by " .$pegawai. " at " .$action_date. " [". date("h:i"). "]";
 		}
 		return TRUE;
 	}

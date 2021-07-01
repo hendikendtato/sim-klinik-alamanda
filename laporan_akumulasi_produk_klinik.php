@@ -72,11 +72,11 @@ Page_Rendering();
 				JOIN (
 					SELECT id, kode_barang, nama_barang
 					FROM m_barang
-					WHERE  1=1 {$Inputsubkategori}
-				) m_barang ON m_barang.id = kartustok.id_barang				
+					WHERE  1=1 {$Inputkategori} {$Inputsubkategori}
+				) m_barang ON m_barang.id = kartustok.id_barang
+		WHERE kartustok.stok_akhir > 0				
 				GROUP BY id_barang			
-				ORDER BY jumlah DESC
-				LIMIT 10";
+				ORDER BY jumlah DESC";
 
 		$result = ExecuteRows($query);
 	}
@@ -188,7 +188,7 @@ Page_Rendering();
 								<td>".$rs['kode_barang']."</td>
 								<td>".$rs['nama_barang']."</td>
 								<td style='text-align: right;'>
-									<button class='btn btn-link' onclick='showDetails(".$rs["id_barang"].");'>".$rs['jumlah']."</button>
+									<button class='btn btn-link' onclick='showDetails(".$rs["id_barang"].");'>".number_format($rs['jumlah'], 1, ",", ".")."</button>
 								</td>
 							</tr>
 							<tr id='".$rs['id_barang']."_detil' class='collapse'>
@@ -214,7 +214,7 @@ Page_Rendering();
 										foreach ($queryDetail as $row) {
 											echo "<tr>
 												<td>".$row['nama_klinik']."</td>
-												<td>".$row['stok_akhir']."</td>
+												<td>".number_format($row['stok_akhir'], 1, ",", ".")."</td>
 											</tr>";
 										}
 									echo "</tbody>
