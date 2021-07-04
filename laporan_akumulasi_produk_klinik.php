@@ -55,7 +55,7 @@ Page_Rendering();
 	}
 
 	if(isset($_POST['srhDate'])){
-		$Inputbarang = ($_POST['Inputbarang'] == "All") ? "" : "AND kartustok.id_barang = ".$_POST['Inputbarang'];
+		$Inputbarang = ($_POST['Inputbarang'] == "All" OR empty($_POST['Inputbarang'])) ? "" : "AND kartustok.id_barang = ".$_POST['Inputbarang'];
 		$Inputkategori = ($_POST['Inputkategori'] == "All") ? "" : "AND m_barang.kategori = ".$_POST['Inputkategori'];
 		$Inputsubkategori = ($_POST['Inputsubkategori'] == "All") ? "" : "AND m_barang.subkategori = ".$_POST['Inputsubkategori'];
 
@@ -153,7 +153,7 @@ Page_Rendering();
 									$subkategori = ($_POST['Inputsubkategori'] == "All") ? "" : "AND id = ".$_POST['Inputsubkategori'];
 									$ressubkategori=ExecuteRows("SELECT * FROM subkategoribarang WHERE 1=1 {$subkategori}");
 
-									$barang = ($_POST['Inputbarang'] == "All") ? "" : "AND id = ".$_POST['Inputbarang'];
+									$barang = ($_POST['Inputbarang'] == "All" OR empty($_POST['Inputbarang'])) ? "" : "AND id = ".$_POST['Inputbarang'];
 									$resBarang=ExecuteRows("SELECT kode_barang, nama_barang FROM m_barang WHERE 1=1 {$barang}");
 									
 									if(!empty($barang)) {

@@ -72,9 +72,13 @@ Page_Rendering();
 			$nama_cabang .= "id_klinik= '" .$in_klinik. "' OR ";
 		}
 
-		if (is_null($_POST['Inputbarang'])) {
+		if ($_POST['Inputbarang'] != null) {
 			$barang = $_POST['Inputbarang'];
-			$and_barang .= "AND m_hargajual.id_barang = '$barang'";
+			if($barang == 'All') {
+				$and_barang = '';
+			} else {
+				$and_barang .= "AND m_hargajual.id_barang = '$barang'";	
+			}
 		}
 
 		if ($_POST['Inputkategori'] != null) {
@@ -109,15 +113,6 @@ Page_Rendering();
 			$multi_klinik = substr($multi_klinik, 0, -4);
 			//var_dump($multi_klinik); die();
 
-			if ($Input == "All") {
-				$query = "SELECT * FROM m_hargajual 
-				JOIN m_barang ON m_hargajual.id_barang = m_barang.id
-				JOIN m_klinik ON m_hargajual.id_klinik = m_klinik.id_klinik
-				JOIN m_satuan_barang ON m_hargajual.satuan = m_satuan_barang.id_satuan 
-				WHERE ($multi_klinik) $and_kategori $and_subkategori $and";
-				$result = ExecuteRows($query);
-				//print_r($query);
-			} else {
 				$query = "SELECT * FROM m_hargajual 
 				JOIN m_barang ON m_hargajual.id_barang = m_barang.id
 				JOIN m_klinik ON m_hargajual.id_klinik = m_klinik.id_klinik
@@ -125,7 +120,6 @@ Page_Rendering();
 				WHERE ($multi_klinik) $and_kategori $and_subkategori $and $and_barang";
 				$result = ExecuteRows($query);
 				//print_r($query);
-			}
 		}
 
 	}

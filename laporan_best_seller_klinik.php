@@ -103,8 +103,7 @@ Page_Rendering();
 					<li class="d-inline-block">
 						<label class="d-block">Best</label>
 						<select class="form-control product-select" name="best">
-							<option value="">Please Select</option>					
-							<option value="10">10</option>					
+							<option value="">Please Select</option>										
 							<option value="10">10</option>					
 							<option value="20">20</option>					
 							<option value="50">50</option>					
