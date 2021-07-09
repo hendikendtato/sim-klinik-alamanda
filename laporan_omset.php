@@ -62,6 +62,27 @@ Page_Rendering();
 
 		$multi_cabang = "";
 		$nama_cabang = "";
+		$and_nominal = "";
+		
+		if(isset($_POST['nominal'])){
+			$nominal = $_POST['nominal'];
+			if($nominal == '0-200000'){
+				$explode = explode("-", $nominal);
+				$and_nominal = 'AND (penjualan.total >= '.$explode[0].' AND penjualan.total <= '.$explode[1].')';
+			}
+			else if($nominal == '201000-500000'){
+				$explode = explode("-", $nominal);
+				$and_nominal = 'AND (penjualan.total >= '.$explode[0].' AND penjualan.total <= '.$explode[1].')';
+			}
+			else if($nominal == '501000-1000000'){
+				$explode = explode("-", $nominal);
+				$and_nominal = 'AND (penjualan.total >= '.$explode[0].' AND penjualan.total <= '.$explode[1].')';
+			}
+			else if($nominal == '1000000-2000000'){
+				$explode = explode("-", $nominal);
+				$and_nominal = 'AND (penjualan.total >= '.$explode[0].' AND penjualan.total <= '.$explode[1].')';
+			}
+		}
 
 		foreach($cabang AS $in_cabang) {
 			$multi_cabang .= "m_klinik.id_klinik = '" .$in_cabang. "' OR ";
@@ -73,10 +94,13 @@ Page_Rendering();
 		if($multi_cabang){
 			$multi_cabang = substr($multi_cabang, 0, -4);		
 		
-			$query = "SELECT * FROM penjualan
+			$query = "SELECT penjualan.id AS id_penjualan, penjualan.waktu, m_pelanggan.*, m_tipepelanggan.nama_tipe, m_jenis_member.nama_member FROM penjualan
 			JOIN m_klinik ON m_klinik.id_klinik = penjualan.id_klinik
 			JOIN m_pelanggan ON m_pelanggan.id_pelanggan = penjualan.id_pelanggan
-			WHERE (penjualan.waktu BETWEEN '$dateFrom' AND '$dateTo') AND ($multi_cabang) GROUP BY penjualan.id_pelanggan";
+			LEFT JOIN m_tipepelanggan ON m_pelanggan.tipe = m_tipepelanggan.id_tipe 
+			LEFT JOIN m_member ON m_member.id_pelanggan = m_pelanggan.id_pelanggan 
+			LEFT JOIN m_jenis_member ON m_member.jenis_member = m_jenis_member.id_jenis_member
+			WHERE (penjualan.waktu BETWEEN '$dateFrom' AND '$dateTo') AND ($multi_cabang)  $and_nominal GROUP BY penjualan.id_pelanggan";
 			$result = ExecuteRows($query);
 		}
 	}
@@ -117,6 +141,16 @@ Page_Rendering();
 						</select>
 					</li>
 					<li class="d-inline-block">
+						<label class="d-block">Nominal</label>
+						<select class="custom-select" name="nominal">
+							<option selected>Please Select</option>
+							<option value="0-200000">0 - 200k</option>
+							<option value="201000-500000">201k - 500k</option>
+							<option value="501000-1000000">501k - 1m</option>
+							<option value="1000000-2000000">1m - 2m</option>
+						</select>
+					</li>
+					<li class="d-inline-block">
 						<label class="d-block">Date Range</label>
 						<input type="date" class="form-control input-md" name="dateFrom">
 					</li>
@@ -144,7 +178,7 @@ Page_Rendering();
 		<table class="table table-bordered table-hover table-striped" id="printTable">
 			<thead>
 				<tr>
-					<td colspan="3" style="text-align: center;">
+					<td colspan="6" style="text-align: center;">
 						<div class="col">
 							<h5>Laporan Omset per Customer</h5>
 							<h5>Cabang 
@@ -171,6 +205,9 @@ Page_Rendering();
 				</tr>
 				<tr style="background-color:#b7d8dc;">
 					<th>Pelanggan</th>
+					<th>Nomor Hp</th>
+					<th>Status Pelanggan</th>
+					<th>Jenis Member</th>
 					<th>Jumlah Total</th>
 					<th></th>
 				</tr>
@@ -181,10 +218,12 @@ Page_Rendering();
 				if (is_null($result) OR $result == false) {
 					echo '<tr><td  colspan="12" align="center">Kosong</td></tr>';							
 				}else{
-					$mso='"\@"';	
+					$mso='"\@"';
+					// $jumlah_total = 0;	
 					foreach ($result as $rs) {
+					
 
-					$jumlah_total = ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE id_pelanggan = ".$rs['id_pelanggan']." ORDER BY id_pelanggan");
+					$jumlah_total = ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE id_pelanggan = '".$rs['id_pelanggan']."' AND id = '".$rs['id_penjualan']."'");
 					
 					echo "<tr id=".$rs["id_pelanggan"].">
 						<td>"; 
@@ -192,6 +231,27 @@ Page_Rendering();
 							echo "Tidak Ada Nilai";
 							}else{
 							echo $rs["nama_pelanggan"];
+							}echo
+						"</td>
+						<td>"; 
+							if(is_null($rs["hp_pelanggan"])){
+							echo "-";
+							}else{
+							echo $rs["hp_pelanggan"];
+							}echo
+						"</td>
+						<td>"; 
+							if(is_null($rs["nama_tipe"])){
+							echo "-";
+							}else{
+							echo $rs["nama_tipe"];
+							}echo
+						"</td>
+						<td>"; 
+							if(is_null($rs["nama_member"])){
+							echo "-";
+							}else{
+							echo $rs["nama_member"];
 							}echo
 						"</td>
 						<td style='mso-number-format:".$mso."'>"; 
@@ -208,24 +268,56 @@ Page_Rendering();
 							</td>
 						</tr>
 						<tr id='".$rs["id_pelanggan"]."_detil' class='collapse'>
-							<td class='ew-table-last-col' colspan=8>
+							<td colspan='5'>
 								<div>
-									<table>
+									<table class='table table-bordered'>
 										<thead>
 											<tr>
 												<th>Kode Penjualan</th>
 												<th>Tanggal</th>
 												<th>Total</th>		
+												<th></th>		
 											</tr>
 										</thead>
 										<tbody>";
-										$details = ExecuteRows("SELECT * FROM penjualan WHERE id_pelanggan = '".$rs["id_pelanggan"]."'");
-										foreach ($details as $row) {
-											echo "<tr>
-												<td>".$row["kode_penjualan"]."</td>
-												<td>".$row["waktu"]."</td>
-												<td style='mso-number-format:".$mso."'>".rupiah($row["total"])."</td>
-											</tr>";
+										$details = ExecuteRows("SELECT * FROM penjualan WHERE id_pelanggan = '".$rs['id_pelanggan']."' AND id = '".$rs['id_penjualan']."'");
+										// print_r($details);
+										if(is_null($details) OR $details == FALSE){
+											echo '<tr><td  colspan="5" align="center">Kosong</td></tr>';							
+										} else {
+											foreach ($details as $row) {
+												echo "<tr id=".$row["id"].">
+													<td>".$row["kode_penjualan"]."</td>
+													<td>".$row["waktu"]."</td>
+													<td style='mso-number-format:".$mso."'>".rupiah($row["total"])."</td>
+													<td align='center'>
+														<button class='btn btn-link' onclick='subDetails(".$row["id"].");'>
+															detail
+														</button>
+													</td>
+												</tr>
+												<tr id='".$row["id"]."_subdetil' class='collapse'>
+													<td colspan='5'>
+														<div>
+															<table class='table table-bordered'>
+																<thead>
+																	<tr>
+																		<th>Nama Barang</th>	
+																	</tr>
+																</thead>
+																<tbody>";
+																	$detail_barang = ExecuteRows("SELECT * FROM detailpenjualan JOIN m_barang ON m_barang.id = detailpenjualan.id_barang WHERE id_penjualan = '".$row['id']."'");
+																		foreach ($detail_barang as $barang) {
+																			echo "<tr>
+																				<td>".$barang['nama_barang']."</td>
+																			</tr>";
+																		}
+																	echo "</tbody>
+															</table>
+														</div>
+													</td>
+												</tr>";
+											}
 										}
 										echo "</tbody>
 									</table>
@@ -286,6 +378,16 @@ Page_Rendering();
 					$(`#${id}_detil`).addClass('show')
 				} else {
 					$(`#${id}_detil`).removeClass('show')
+				}
+			}
+
+			// hide and show subdetail
+			function subDetails(id) {
+				var classes = $(`#${id}_subdetil`).attr("class").split(/\s+/);
+				if (!classes[1]) {
+					$(`#${id}_subdetil`).addClass('show')
+				} else {
+					$(`#${id}_subdetil`).removeClass('show')
 				}
 			}
 		</script>

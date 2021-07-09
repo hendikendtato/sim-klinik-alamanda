@@ -201,6 +201,16 @@ $m_hargajual_view->showMessage();
 </td>
 	</tr>
 <?php } ?>
+<?php if ($m_hargajual_view->status->Visible) { // status ?>
+	<tr id="r_status">
+		<td class="<?php echo $m_hargajual_view->TableLeftColumnClass ?>"><span id="elh_m_hargajual_status"><?php echo $m_hargajual_view->status->caption() ?></span></td>
+		<td data-name="status" <?php echo $m_hargajual_view->status->cellAttributes() ?>>
+<span id="el_m_hargajual_status">
+<span<?php echo $m_hargajual_view->status->viewAttributes() ?>><?php echo $m_hargajual_view->status->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
 </table>
 </form>
 <?php

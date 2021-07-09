@@ -61,7 +61,9 @@ Page_Rendering();
 		$Inputkategori = $_POST['Inputkategori'];
 		$Inputsubkategori = $_POST['Inputsubkategori'];
 		$and_kategori="";
-		$and_subkategori="";		
+		$and_subkategori="";
+		$and_status="";
+		$and_jenis="";				
 
 		if ($_POST['Inputkategori'] != null) {
 			if($_POST['Inputkategori'] == 'All'){
@@ -81,12 +83,30 @@ Page_Rendering();
 			}
 		}
 
+		if ($_POST['Inputstatus'] != null) {
+			if($_POST['Inputstatus'] == 'All'){
+				$and_status .= "";
+			} else {
+				$status = $_POST['Inputstatus'];
+				$and_status .= "AND m_hargajual.status = '$status'";
+			}
+		}	
+
+		if ($_POST['Inputjenis'] != null) {
+			if($_POST['Inputjenis'] == 'All'){
+				$and_jenis .= "";
+			} else {
+				$jenis = $_POST['Inputjenis'];
+				$and_jenis .= "AND m_barang.jenis = '$jenis'";
+			}
+		}			
+
 		$query = "SELECT detailpenjualan.id AS id, detailpenjualan.id_penjualan AS id_penjualan,
 			penjualan.waktu AS waktu, penjualan.id_klinik AS id_klinik,
 			detailpenjualan.id_barang AS id_barang, m_barang.nama_barang AS nama_barang,
 			m_barang.satuan AS satuan, m_barang.jenis AS jenis, m_barang.kategori AS
 			kategori, m_barang.subkategori AS subkategori, m_barang.komposisi AS
-			komposisi, m_barang.tipe AS tipe, m_barang.status AS status,
+			komposisi, m_barang.tipe AS tipe, m_hargajual.status AS status,
 			detailpenjualan.id_kemasan AS id_kemasan, detailpenjualan.harga_jual
 			AS harga_jual, detailpenjualan.stok AS stok, detailpenjualan.expired
 			AS expired, Sum(detailpenjualan.qty) AS qty, Sum(detailpenjualan.subtotal) AS
@@ -95,8 +115,11 @@ Page_Rendering();
 		FROM ((detailpenjualan JOIN
 			penjualan ON penjualan.id = detailpenjualan.id_penjualan) JOIN
 			m_barang ON detailpenjualan.id_barang = m_barang.id) JOIN
-			m_klinik ON m_klinik.id_klinik = penjualan.id_klinik
-		WHERE m_klinik.id_klinik = '$cabang' AND (penjualan.waktu BETWEEN '$dateFrom' AND '$dateTo') AND m_barang.tipe = 'Perawatan' $and_kategori $and_subkategori
+			m_klinik ON m_klinik.id_klinik = penjualan.id_klinik LEFT JOIN
+			m_hargajual ON m_barang.id = m_hargajual.id_barang LEFT JOIN
+			m_status_barang ON m_hargajual.status = m_status_barang.id_status LEFT JOIN
+			jenisbarang ON jenisbarang.id = m_barang.jenis
+		WHERE m_klinik.id_klinik = '$cabang' AND (penjualan.waktu BETWEEN '$dateFrom' AND '$dateTo') AND m_barang.tipe = 'Perawatan' $and_kategori $and_subkategori $and_status $and_jenis
 		GROUP BY detailpenjualan.id_barang
 		ORDER BY m_barang.nama_barang";
 
@@ -138,6 +161,37 @@ Page_Rendering();
 			?>
 		  </select>
 		  </li>
+
+		<!-- Input Status -->
+		<li class="d-inline-block">
+			<label class="d-block">Input Status</label>
+			<select class="form-control product-select" name="Inputstatus">
+				<option value="All">All</option>
+				<?php
+					$sql = "SELECT * FROM m_status_barang";
+					$res = ExecuteRows($sql);
+					foreach ($res as $rs) {
+						echo "<option value=" . $rs["id_status"] . ">" . $rs["status_barang"] . "</option>";
+					}
+				?>
+			</select>
+		</li>
+
+		<!-- Input Jenis -->
+		<li class="d-inline-block">
+			<label class="d-block">Input Jenis</label>
+			<select class="form-control product-select" name="Inputjenis">
+				<option value="All">All</option>
+				<?php
+					$sql = "SELECT * FROM jenisbarang";
+					$res = ExecuteRows($sql);
+					foreach ($res as $rs) {
+						echo "<option value=" . $rs["id"] . ">" . $rs["jenis"] . "</option>";
+					}
+				?>
+			</select>
+		</li>
+
 		<!-- Input Kategori -->
 		<li class="d-inline-block">
 			<label class="d-block">Input Kategori</label>
@@ -228,9 +282,11 @@ Page_Rendering();
 				echo '<tr><td  colspan="3" align="center">Kosong</td></tr>';	
 				// print("<pre>".print_r($result,true)."</pre>");						
 		  }else{
+				$total_jumlah = 0;
 				$totalcabang = 0;
 				$mso='"\@"';
 				foreach ($result as $rs) {
+					$total_jumlah += $rs['qty'];
 					$totalcabang += $rs['subtotal'];
 					echo "<tr>
 						<td>".$rs['nama_barang']."</td>
@@ -243,7 +299,15 @@ Page_Rendering();
 			<br>
 		  <tr>
 			  	<td align="right"><b>Total per Cabang</b></td>
-			  	<td></td>
+			  	<td align="right">
+					<b>
+						<?php if(isset($total_jumlah)) {
+								echo $total_jumlah;
+							}
+							$total_jumlah = isset($total_jumlah) ? $total_jumlah : '0';
+						?>
+					</b>
+				</td>
 				<td align="right" style="mso-number-format:'\@'">
 				<b>
 					<?php if(isset($totalcabang)) {

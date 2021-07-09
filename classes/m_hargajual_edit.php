@@ -684,6 +684,7 @@ class m_hargajual_edit extends m_hargajual
 		$this->kategori->setVisibility();
 		$this->subkategori->setVisibility();
 		$this->tipe->setVisibility();
+		$this->status->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -710,6 +711,7 @@ class m_hargajual_edit extends m_hargajual
 		$this->setupLookupOptions($this->satuan);
 		$this->setupLookupOptions($this->kategori);
 		$this->setupLookupOptions($this->subkategori);
+		$this->setupLookupOptions($this->status);
 
 		// Check permission
 		if (!$Security->canEdit()) {
@@ -982,6 +984,15 @@ class m_hargajual_edit extends m_hargajual
 				$this->tipe->setFormValue($val);
 		}
 
+		// Check field name 'status' first before field var 'x_status'
+		$val = $CurrentForm->hasValue("status") ? $CurrentForm->getValue("status") : $CurrentForm->getValue("x_status");
+		if (!$this->status->IsDetailKey) {
+			if (IsApi() && $val === NULL)
+				$this->status->Visible = FALSE; // Disable update for API request
+			else
+				$this->status->setFormValue($val);
+		}
+
 		// Check field name 'id_hargajual' first before field var 'x_id_hargajual'
 		$val = $CurrentForm->hasValue("id_hargajual") ? $CurrentForm->getValue("id_hargajual") : $CurrentForm->getValue("x_id_hargajual");
 		if (!$this->id_hargajual->IsDetailKey)
@@ -1008,6 +1019,7 @@ class m_hargajual_edit extends m_hargajual
 		$this->kategori->CurrentValue = $this->kategori->FormValue;
 		$this->subkategori->CurrentValue = $this->subkategori->FormValue;
 		$this->tipe->CurrentValue = $this->tipe->FormValue;
+		$this->status->CurrentValue = $this->status->FormValue;
 	}
 
 	// Load row based on key values
@@ -1059,6 +1071,7 @@ class m_hargajual_edit extends m_hargajual
 		$this->kategori->setDbValue($row['kategori']);
 		$this->subkategori->setDbValue($row['subkategori']);
 		$this->tipe->setDbValue($row['tipe']);
+		$this->status->setDbValue($row['status']);
 	}
 
 	// Return a row with default values
@@ -1079,6 +1092,7 @@ class m_hargajual_edit extends m_hargajual
 		$row['kategori'] = NULL;
 		$row['subkategori'] = NULL;
 		$row['tipe'] = NULL;
+		$row['status'] = NULL;
 		return $row;
 	}
 
@@ -1146,6 +1160,7 @@ class m_hargajual_edit extends m_hargajual
 		// kategori
 		// subkategori
 		// tipe
+		// status
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -1300,11 +1315,37 @@ class m_hargajual_edit extends m_hargajual
 
 			// tipe
 			if (strval($this->tipe->CurrentValue) != "") {
-				$this->tipe->ViewValue = $this->tipe->optionCaption($this->tipe->CurrentValue);
+				$this->tipe->ViewValue = new OptionValues();
+				$arwrk = explode(",", strval($this->tipe->CurrentValue));
+				$cnt = count($arwrk);
+				for ($ari = 0; $ari < $cnt; $ari++)
+					$this->tipe->ViewValue->add($this->tipe->optionCaption(trim($arwrk[$ari])));
 			} else {
 				$this->tipe->ViewValue = NULL;
 			}
 			$this->tipe->ViewCustomAttributes = "";
+
+			// status
+			$curVal = strval($this->status->CurrentValue);
+			if ($curVal != "") {
+				$this->status->ViewValue = $this->status->lookupCacheOption($curVal);
+				if ($this->status->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id_status`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->status->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->status->ViewValue = $this->status->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->status->ViewValue = $this->status->CurrentValue;
+					}
+				}
+			} else {
+				$this->status->ViewValue = NULL;
+			}
+			$this->status->ViewCustomAttributes = "";
 
 			// id_barang
 			$this->id_barang->LinkCustomAttributes = "";
@@ -1370,6 +1411,11 @@ class m_hargajual_edit extends m_hargajual
 			$this->tipe->LinkCustomAttributes = "";
 			$this->tipe->HrefValue = "";
 			$this->tipe->TooltipValue = "";
+
+			// status
+			$this->status->LinkCustomAttributes = "";
+			$this->status->HrefValue = "";
+			$this->status->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_EDIT) { // Edit row
 
 			// id_barang
@@ -1558,6 +1604,30 @@ class m_hargajual_edit extends m_hargajual
 			$this->tipe->EditCustomAttributes = "";
 			$this->tipe->EditValue = $this->tipe->options(FALSE);
 
+			// status
+			$this->status->EditAttrs["class"] = "form-control";
+			$this->status->EditCustomAttributes = "";
+			$curVal = trim(strval($this->status->CurrentValue));
+			if ($curVal != "")
+				$this->status->ViewValue = $this->status->lookupCacheOption($curVal);
+			else
+				$this->status->ViewValue = $this->status->Lookup !== NULL && is_array($this->status->Lookup->Options) ? $curVal : NULL;
+			if ($this->status->ViewValue !== NULL) { // Load from cache
+				$this->status->EditValue = array_values($this->status->Lookup->Options);
+			} else { // Lookup from database
+				if ($curVal == "") {
+					$filterWrk = "0=1";
+				} else {
+					$filterWrk = "`id_status`" . SearchString("=", $this->status->CurrentValue, DATATYPE_NUMBER, "");
+				}
+				$sqlWrk = $this->status->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				$arwrk = $rswrk ? $rswrk->getRows() : [];
+				if ($rswrk)
+					$rswrk->close();
+				$this->status->EditValue = $arwrk;
+			}
+
 			// Edit refer script
 			// id_barang
 
@@ -1611,6 +1681,10 @@ class m_hargajual_edit extends m_hargajual
 			// tipe
 			$this->tipe->LinkCustomAttributes = "";
 			$this->tipe->HrefValue = "";
+
+			// status
+			$this->status->LinkCustomAttributes = "";
+			$this->status->HrefValue = "";
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -1717,6 +1791,11 @@ class m_hargajual_edit extends m_hargajual
 				AddMessage($FormError, str_replace("%s", $this->tipe->caption(), $this->tipe->RequiredErrorMessage));
 			}
 		}
+		if ($this->status->Required) {
+			if (!$this->status->IsDetailKey && $this->status->FormValue != NULL && $this->status->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->status->caption(), $this->status->RequiredErrorMessage));
+			}
+		}
 
 		// Return validate result
 		$validateForm = ($FormError == "");
@@ -1792,6 +1871,9 @@ class m_hargajual_edit extends m_hargajual
 
 			// tipe
 			$this->tipe->setDbValueDef($rsnew, $this->tipe->CurrentValue, NULL, $this->tipe->ReadOnly);
+
+			// status
+			$this->status->setDbValueDef($rsnew, $this->status->CurrentValue, NULL, $this->status->ReadOnly);
 
 			// Call Row Updating event
 			$updateRow = $this->Row_Updating($rsold, $rsnew);
@@ -1886,6 +1968,8 @@ class m_hargajual_edit extends m_hargajual
 					break;
 				case "x_tipe":
 					break;
+				case "x_status":
+					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -1915,6 +1999,8 @@ class m_hargajual_edit extends m_hargajual
 						case "x_kategori":
 							break;
 						case "x_subkategori":
+							break;
+						case "x_status":
 							break;
 					}
 					$ar[strval($row[0])] = $row;

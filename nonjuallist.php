@@ -186,6 +186,15 @@ $nonjual_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
+<?php if ($nonjual_list->id_staff->Visible) { // id_staff ?>
+	<?php if ($nonjual_list->SortUrl($nonjual_list->id_staff) == "") { ?>
+		<th data-name="id_staff" class="<?php echo $nonjual_list->id_staff->headerCellClass() ?>"><div id="elh_nonjual_id_staff" class="nonjual_id_staff"><div class="ew-table-header-caption"><?php echo $nonjual_list->id_staff->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="id_staff" class="<?php echo $nonjual_list->id_staff->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $nonjual_list->SortUrl($nonjual_list->id_staff) ?>', 1);"><div id="elh_nonjual_id_staff" class="nonjual_id_staff">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $nonjual_list->id_staff->caption() ?></span><span class="ew-table-header-sort"><?php if ($nonjual_list->id_staff->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($nonjual_list->id_staff->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
 <?php if ($nonjual_list->tanggal->Visible) { // tanggal ?>
 	<?php if ($nonjual_list->SortUrl($nonjual_list->tanggal) == "") { ?>
 		<th data-name="tanggal" class="<?php echo $nonjual_list->tanggal->headerCellClass() ?>"><div id="elh_nonjual_tanggal" class="nonjual_tanggal"><div class="ew-table-header-caption"><?php echo $nonjual_list->tanggal->caption() ?></div></div></th>
@@ -273,6 +282,13 @@ $nonjual_list->ListOptions->render("body", "left", $nonjual_list->RowCount);
 		<td data-name="id_klinik" <?php echo $nonjual_list->id_klinik->cellAttributes() ?>>
 <span id="el<?php echo $nonjual_list->RowCount ?>_nonjual_id_klinik">
 <span<?php echo $nonjual_list->id_klinik->viewAttributes() ?>><?php echo $nonjual_list->id_klinik->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
+	<?php if ($nonjual_list->id_staff->Visible) { // id_staff ?>
+		<td data-name="id_staff" <?php echo $nonjual_list->id_staff->cellAttributes() ?>>
+<span id="el<?php echo $nonjual_list->RowCount ?>_nonjual_id_staff">
+<span<?php echo $nonjual_list->id_staff->viewAttributes() ?>><?php echo $nonjual_list->id_staff->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>

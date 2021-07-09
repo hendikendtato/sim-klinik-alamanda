@@ -1570,10 +1570,12 @@ class purchaseorder_add extends purchaseorder
 	function Page_Render() {
 
 		//echo "Page Render";
-		$id_klinik = CurrentUserInfo("id_klinik");
-		if($id_klinik != '' OR $id_klinik != FALSE){
-			$this->idklinik->CurrentValue = $id_klinik ;
-			$this->idklinik->ReadOnly = TRUE; 
+		if(CurrentUserLevel() != '-1') {
+			$id_klinik = CurrentUserInfo("id_klinik");
+			if($id_klinik != '' OR $id_klinik != FALSE){
+				$this->idklinik->CurrentValue = $id_klinik ;
+				$this->idklinik->ReadOnly = TRUE; 
+			}	
 		}	
 		$default_support = ExecuteScalar("SELECT id_klinik FROM m_klinik WHERE nama_klinik LIKE '%Support%'");
 		$this->id_supplier->CurrentValue = $default_support;

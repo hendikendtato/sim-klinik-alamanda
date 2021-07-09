@@ -683,7 +683,6 @@ class m_barang_add extends m_barang
 		$this->subkategori->setVisibility();
 		$this->komposisi->setVisibility();
 		$this->tipe->setVisibility();
-		$this->status->setVisibility();
 		$this->shortname_barang->setVisibility();
 		$this->id_tag->setVisibility();
 		$this->discontinue->setVisibility();
@@ -712,7 +711,6 @@ class m_barang_add extends m_barang
 		$this->setupLookupOptions($this->jenis);
 		$this->setupLookupOptions($this->kategori);
 		$this->setupLookupOptions($this->subkategori);
-		$this->setupLookupOptions($this->status);
 		$this->setupLookupOptions($this->id_tag);
 
 		// Check permission
@@ -849,8 +847,6 @@ class m_barang_add extends m_barang
 		$this->komposisi->OldValue = $this->komposisi->CurrentValue;
 		$this->tipe->CurrentValue = NULL;
 		$this->tipe->OldValue = $this->tipe->CurrentValue;
-		$this->status->CurrentValue = NULL;
-		$this->status->OldValue = $this->status->CurrentValue;
 		$this->shortname_barang->CurrentValue = NULL;
 		$this->shortname_barang->OldValue = $this->shortname_barang->CurrentValue;
 		$this->id_tag->CurrentValue = NULL;
@@ -938,15 +934,6 @@ class m_barang_add extends m_barang
 				$this->tipe->setFormValue($val);
 		}
 
-		// Check field name 'status' first before field var 'x_status'
-		$val = $CurrentForm->hasValue("status") ? $CurrentForm->getValue("status") : $CurrentForm->getValue("x_status");
-		if (!$this->status->IsDetailKey) {
-			if (IsApi() && $val === NULL)
-				$this->status->Visible = FALSE; // Disable update for API request
-			else
-				$this->status->setFormValue($val);
-		}
-
 		// Check field name 'shortname_barang' first before field var 'x_shortname_barang'
 		$val = $CurrentForm->hasValue("shortname_barang") ? $CurrentForm->getValue("shortname_barang") : $CurrentForm->getValue("x_shortname_barang");
 		if (!$this->shortname_barang->IsDetailKey) {
@@ -990,7 +977,6 @@ class m_barang_add extends m_barang
 		$this->subkategori->CurrentValue = $this->subkategori->FormValue;
 		$this->komposisi->CurrentValue = $this->komposisi->FormValue;
 		$this->tipe->CurrentValue = $this->tipe->FormValue;
-		$this->status->CurrentValue = $this->status->FormValue;
 		$this->shortname_barang->CurrentValue = $this->shortname_barang->FormValue;
 		$this->id_tag->CurrentValue = $this->id_tag->FormValue;
 		$this->discontinue->CurrentValue = $this->discontinue->FormValue;
@@ -1040,7 +1026,6 @@ class m_barang_add extends m_barang
 		$this->subkategori->setDbValue($row['subkategori']);
 		$this->komposisi->setDbValue($row['komposisi']);
 		$this->tipe->setDbValue($row['tipe']);
-		$this->status->setDbValue($row['status']);
 		$this->shortname_barang->setDbValue($row['shortname_barang']);
 		$this->id_tag->setDbValue($row['id_tag']);
 		$this->discontinue->setDbValue($row['discontinue']);
@@ -1060,7 +1045,6 @@ class m_barang_add extends m_barang
 		$row['subkategori'] = $this->subkategori->CurrentValue;
 		$row['komposisi'] = $this->komposisi->CurrentValue;
 		$row['tipe'] = $this->tipe->CurrentValue;
-		$row['status'] = $this->status->CurrentValue;
 		$row['shortname_barang'] = $this->shortname_barang->CurrentValue;
 		$row['id_tag'] = $this->id_tag->CurrentValue;
 		$row['discontinue'] = $this->discontinue->CurrentValue;
@@ -1110,7 +1094,6 @@ class m_barang_add extends m_barang
 		// subkategori
 		// komposisi
 		// tipe
-		// status
 		// shortname_barang
 		// id_tag
 		// discontinue
@@ -1233,28 +1216,6 @@ class m_barang_add extends m_barang
 			}
 			$this->tipe->ViewCustomAttributes = "";
 
-			// status
-			$curVal = strval($this->status->CurrentValue);
-			if ($curVal != "") {
-				$this->status->ViewValue = $this->status->lookupCacheOption($curVal);
-				if ($this->status->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id_status`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->status->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->status->ViewValue = $this->status->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->status->ViewValue = $this->status->CurrentValue;
-					}
-				}
-			} else {
-				$this->status->ViewValue = NULL;
-			}
-			$this->status->ViewCustomAttributes = "";
-
 			// shortname_barang
 			$this->shortname_barang->ViewValue = $this->shortname_barang->CurrentValue;
 			$this->shortname_barang->ViewCustomAttributes = "";
@@ -1328,11 +1289,6 @@ class m_barang_add extends m_barang
 			$this->tipe->LinkCustomAttributes = "";
 			$this->tipe->HrefValue = "";
 			$this->tipe->TooltipValue = "";
-
-			// status
-			$this->status->LinkCustomAttributes = "";
-			$this->status->HrefValue = "";
-			$this->status->TooltipValue = "";
 
 			// shortname_barang
 			$this->shortname_barang->LinkCustomAttributes = "";
@@ -1470,30 +1426,6 @@ class m_barang_add extends m_barang
 			$this->tipe->EditCustomAttributes = "";
 			$this->tipe->EditValue = $this->tipe->options(FALSE);
 
-			// status
-			$this->status->EditAttrs["class"] = "form-control";
-			$this->status->EditCustomAttributes = "";
-			$curVal = trim(strval($this->status->CurrentValue));
-			if ($curVal != "")
-				$this->status->ViewValue = $this->status->lookupCacheOption($curVal);
-			else
-				$this->status->ViewValue = $this->status->Lookup !== NULL && is_array($this->status->Lookup->Options) ? $curVal : NULL;
-			if ($this->status->ViewValue !== NULL) { // Load from cache
-				$this->status->EditValue = array_values($this->status->Lookup->Options);
-			} else { // Lookup from database
-				if ($curVal == "") {
-					$filterWrk = "0=1";
-				} else {
-					$filterWrk = "`id_status`" . SearchString("=", $this->status->CurrentValue, DATATYPE_NUMBER, "");
-				}
-				$sqlWrk = $this->status->Lookup->getSql(TRUE, $filterWrk, '', $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				$arwrk = $rswrk ? $rswrk->getRows() : [];
-				if ($rswrk)
-					$rswrk->close();
-				$this->status->EditValue = $arwrk;
-			}
-
 			// shortname_barang
 			$this->shortname_barang->EditAttrs["class"] = "form-control";
 			$this->shortname_barang->EditCustomAttributes = "";
@@ -1563,10 +1495,6 @@ class m_barang_add extends m_barang
 			// tipe
 			$this->tipe->LinkCustomAttributes = "";
 			$this->tipe->HrefValue = "";
-
-			// status
-			$this->status->LinkCustomAttributes = "";
-			$this->status->HrefValue = "";
 
 			// shortname_barang
 			$this->shortname_barang->LinkCustomAttributes = "";
@@ -1639,11 +1567,6 @@ class m_barang_add extends m_barang
 				AddMessage($FormError, str_replace("%s", $this->tipe->caption(), $this->tipe->RequiredErrorMessage));
 			}
 		}
-		if ($this->status->Required) {
-			if (!$this->status->IsDetailKey && $this->status->FormValue != NULL && $this->status->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->status->caption(), $this->status->RequiredErrorMessage));
-			}
-		}
 		if ($this->shortname_barang->Required) {
 			if (!$this->shortname_barang->IsDetailKey && $this->shortname_barang->FormValue != NULL && $this->shortname_barang->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->shortname_barang->caption(), $this->shortname_barang->RequiredErrorMessage));
@@ -1707,9 +1630,6 @@ class m_barang_add extends m_barang
 
 		// tipe
 		$this->tipe->setDbValueDef($rsnew, $this->tipe->CurrentValue, NULL, FALSE);
-
-		// status
-		$this->status->setDbValueDef($rsnew, $this->status->CurrentValue, NULL, FALSE);
 
 		// shortname_barang
 		$this->shortname_barang->setDbValueDef($rsnew, $this->shortname_barang->CurrentValue, NULL, FALSE);
@@ -1797,8 +1717,6 @@ class m_barang_add extends m_barang
 					break;
 				case "x_tipe":
 					break;
-				case "x_status":
-					break;
 				case "x_id_tag":
 					break;
 				case "x_discontinue":
@@ -1830,8 +1748,6 @@ class m_barang_add extends m_barang
 						case "x_kategori":
 							break;
 						case "x_subkategori":
-							break;
-						case "x_status":
 							break;
 						case "x_id_tag":
 							break;

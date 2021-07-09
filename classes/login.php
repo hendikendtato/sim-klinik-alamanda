@@ -687,7 +687,17 @@ class login extends users
 		// Enter your code here
 		// To cancel, set return value to FALSE
 
-		return TRUE;
+		$status = ExecuteScalar("SELECT status FROM users WHERE username = '".$usr."' AND userpwd = '".$pwd."'");	
+		$level = ExecuteScalar("SELECT level FROM users WHERE username = '".$usr."' AND userpwd = '".$pwd."'");
+		if($level != '-1'){
+			if($status == 'Aktif'){
+				return TRUE;
+			} else {
+				return FALSE;
+			}
+		} else {
+			return TRUE;
+		}
 	}
 
 	// User Logged In event

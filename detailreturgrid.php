@@ -66,6 +66,9 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $detailretur_grid->id_barang->caption(), $detailretur_grid->id_barang->RequiredErrorMessage)) ?>");
 			<?php } ?>
+				elm = this.getElements("x" + infix + "_id_barang");
+				if (elm && !ew.checkInteger(elm.value))
+					return this.onError(elm, "<?php echo JsEncode($detailretur_grid->id_barang->errorMessage()) ?>");
 			<?php if ($detailretur_grid->jumlah->Required) { ?>
 				elm = this.getElements("x" + infix + "_jumlah");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
@@ -109,8 +112,6 @@ loadjs.ready("head", function() {
 	fdetailreturgrid.validateRequired = <?php echo Config("CLIENT_VALIDATE") ? "true" : "false" ?>;
 
 	// Dynamic selection lists
-	fdetailreturgrid.lists["x_id_barang"] = <?php echo $detailretur_grid->id_barang->Lookup->toClientList($detailretur_grid) ?>;
-	fdetailreturgrid.lists["x_id_barang"].options = <?php echo JsonEncode($detailretur_grid->id_barang->lookupOptions()) ?>;
 	fdetailreturgrid.lists["x_id_satuan"] = <?php echo $detailretur_grid->id_satuan->Lookup->toClientList($detailretur_grid) ?>;
 	fdetailreturgrid.lists["x_id_satuan"].options = <?php echo JsonEncode($detailretur_grid->id_satuan->lookupOptions()) ?>;
 	loadjs.done("fdetailreturgrid");
@@ -368,29 +369,13 @@ $detailretur_grid->ListOptions->render("body", "left", $detailretur_grid->RowCou
 		<td data-name="id_barang" <?php echo $detailretur_grid->id_barang->cellAttributes() ?>>
 <?php if ($detailretur->RowType == ROWTYPE_ADD) { // Add record ?>
 <span id="el<?php echo $detailretur_grid->RowCount ?>_detailretur_id_barang" class="form-group">
-<?php $detailretur_grid->id_barang->EditAttrs->prepend("onchange", "ew.autoFill(this);"); ?>
-<div class="input-group ew-lookup-list">
-	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x<?php echo $detailretur_grid->RowIndex ?>_id_barang"><?php echo EmptyValue(strval($detailretur_grid->id_barang->ViewValue)) ? $Language->phrase("PleaseSelect") : $detailretur_grid->id_barang->ViewValue ?></div>
-	<div class="input-group-append">
-		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($detailretur_grid->id_barang->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($detailretur_grid->id_barang->ReadOnly || $detailretur_grid->id_barang->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x<?php echo $detailretur_grid->RowIndex ?>_id_barang',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
-	</div>
-</div>
-<?php echo $detailretur_grid->id_barang->Lookup->getParamTag($detailretur_grid, "p_x" . $detailretur_grid->RowIndex . "_id_barang") ?>
-<input type="hidden" data-table="detailretur" data-field="x_id_barang" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $detailretur_grid->id_barang->displayValueSeparatorAttribute() ?>" name="x<?php echo $detailretur_grid->RowIndex ?>_id_barang" id="x<?php echo $detailretur_grid->RowIndex ?>_id_barang" value="<?php echo $detailretur_grid->id_barang->CurrentValue ?>"<?php echo $detailretur_grid->id_barang->editAttributes() ?>>
+<input type="text" data-table="detailretur" data-field="x_id_barang" name="x<?php echo $detailretur_grid->RowIndex ?>_id_barang" id="x<?php echo $detailretur_grid->RowIndex ?>_id_barang" size="40" maxlength="40" placeholder="<?php echo HtmlEncode($detailretur_grid->id_barang->getPlaceHolder()) ?>" value="<?php echo $detailretur_grid->id_barang->EditValue ?>"<?php echo $detailretur_grid->id_barang->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="detailretur" data-field="x_id_barang" name="o<?php echo $detailretur_grid->RowIndex ?>_id_barang" id="o<?php echo $detailretur_grid->RowIndex ?>_id_barang" value="<?php echo HtmlEncode($detailretur_grid->id_barang->OldValue) ?>">
 <?php } ?>
 <?php if ($detailretur->RowType == ROWTYPE_EDIT) { // Edit record ?>
 <span id="el<?php echo $detailretur_grid->RowCount ?>_detailretur_id_barang" class="form-group">
-<?php $detailretur_grid->id_barang->EditAttrs->prepend("onchange", "ew.autoFill(this);"); ?>
-<div class="input-group ew-lookup-list">
-	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x<?php echo $detailretur_grid->RowIndex ?>_id_barang"><?php echo EmptyValue(strval($detailretur_grid->id_barang->ViewValue)) ? $Language->phrase("PleaseSelect") : $detailretur_grid->id_barang->ViewValue ?></div>
-	<div class="input-group-append">
-		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($detailretur_grid->id_barang->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($detailretur_grid->id_barang->ReadOnly || $detailretur_grid->id_barang->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x<?php echo $detailretur_grid->RowIndex ?>_id_barang',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
-	</div>
-</div>
-<?php echo $detailretur_grid->id_barang->Lookup->getParamTag($detailretur_grid, "p_x" . $detailretur_grid->RowIndex . "_id_barang") ?>
-<input type="hidden" data-table="detailretur" data-field="x_id_barang" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $detailretur_grid->id_barang->displayValueSeparatorAttribute() ?>" name="x<?php echo $detailretur_grid->RowIndex ?>_id_barang" id="x<?php echo $detailretur_grid->RowIndex ?>_id_barang" value="<?php echo $detailretur_grid->id_barang->CurrentValue ?>"<?php echo $detailretur_grid->id_barang->editAttributes() ?>>
+<input type="text" data-table="detailretur" data-field="x_id_barang" name="x<?php echo $detailretur_grid->RowIndex ?>_id_barang" id="x<?php echo $detailretur_grid->RowIndex ?>_id_barang" size="40" maxlength="40" placeholder="<?php echo HtmlEncode($detailretur_grid->id_barang->getPlaceHolder()) ?>" value="<?php echo $detailretur_grid->id_barang->EditValue ?>"<?php echo $detailretur_grid->id_barang->editAttributes() ?>>
 </span>
 <?php } ?>
 <?php if ($detailretur->RowType == ROWTYPE_VIEW) { // View record ?>
@@ -555,15 +540,7 @@ $detailretur_grid->ListOptions->render("body", "left", $detailretur_grid->RowInd
 		<td data-name="id_barang">
 <?php if (!$detailretur->isConfirm()) { ?>
 <span id="el$rowindex$_detailretur_id_barang" class="form-group detailretur_id_barang">
-<?php $detailretur_grid->id_barang->EditAttrs->prepend("onchange", "ew.autoFill(this);"); ?>
-<div class="input-group ew-lookup-list">
-	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x<?php echo $detailretur_grid->RowIndex ?>_id_barang"><?php echo EmptyValue(strval($detailretur_grid->id_barang->ViewValue)) ? $Language->phrase("PleaseSelect") : $detailretur_grid->id_barang->ViewValue ?></div>
-	<div class="input-group-append">
-		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($detailretur_grid->id_barang->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($detailretur_grid->id_barang->ReadOnly || $detailretur_grid->id_barang->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x<?php echo $detailretur_grid->RowIndex ?>_id_barang',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
-	</div>
-</div>
-<?php echo $detailretur_grid->id_barang->Lookup->getParamTag($detailretur_grid, "p_x" . $detailretur_grid->RowIndex . "_id_barang") ?>
-<input type="hidden" data-table="detailretur" data-field="x_id_barang" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $detailretur_grid->id_barang->displayValueSeparatorAttribute() ?>" name="x<?php echo $detailretur_grid->RowIndex ?>_id_barang" id="x<?php echo $detailretur_grid->RowIndex ?>_id_barang" value="<?php echo $detailretur_grid->id_barang->CurrentValue ?>"<?php echo $detailretur_grid->id_barang->editAttributes() ?>>
+<input type="text" data-table="detailretur" data-field="x_id_barang" name="x<?php echo $detailretur_grid->RowIndex ?>_id_barang" id="x<?php echo $detailretur_grid->RowIndex ?>_id_barang" size="40" maxlength="40" placeholder="<?php echo HtmlEncode($detailretur_grid->id_barang->getPlaceHolder()) ?>" value="<?php echo $detailretur_grid->id_barang->EditValue ?>"<?php echo $detailretur_grid->id_barang->editAttributes() ?>>
 </span>
 <?php } else { ?>
 <span id="el$rowindex$_detailretur_id_barang" class="form-group detailretur_id_barang">

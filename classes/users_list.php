@@ -817,6 +817,7 @@ class users_list extends users
 		$this->username->setVisibility();
 		$this->userpwd->Visible = FALSE;
 		$this->level->setVisibility();
+		$this->status->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Global Page Loading event (in userfn*.php)
@@ -1111,6 +1112,7 @@ class users_list extends users
 		$filterList = Concat($filterList, $this->username->AdvancedSearch->toJson(), ","); // Field username
 		$filterList = Concat($filterList, $this->userpwd->AdvancedSearch->toJson(), ","); // Field userpwd
 		$filterList = Concat($filterList, $this->level->AdvancedSearch->toJson(), ","); // Field level
+		$filterList = Concat($filterList, $this->status->AdvancedSearch->toJson(), ","); // Field status
 		if ($this->BasicSearch->Keyword != "") {
 			$wrk = "\"" . Config("TABLE_BASIC_SEARCH") . "\":\"" . JsEncode($this->BasicSearch->Keyword) . "\",\"" . Config("TABLE_BASIC_SEARCH_TYPE") . "\":\"" . JsEncode($this->BasicSearch->Type) . "\"";
 			$filterList = Concat($filterList, $wrk, ",");
@@ -1196,6 +1198,14 @@ class users_list extends users
 		$this->level->AdvancedSearch->SearchValue2 = @$filter["y_level"];
 		$this->level->AdvancedSearch->SearchOperator2 = @$filter["w_level"];
 		$this->level->AdvancedSearch->save();
+
+		// Field status
+		$this->status->AdvancedSearch->SearchValue = @$filter["x_status"];
+		$this->status->AdvancedSearch->SearchOperator = @$filter["z_status"];
+		$this->status->AdvancedSearch->SearchCondition = @$filter["v_status"];
+		$this->status->AdvancedSearch->SearchValue2 = @$filter["y_status"];
+		$this->status->AdvancedSearch->SearchOperator2 = @$filter["w_status"];
+		$this->status->AdvancedSearch->save();
 		$this->BasicSearch->setKeyword(@$filter[Config("TABLE_BASIC_SEARCH")]);
 		$this->BasicSearch->setType(@$filter[Config("TABLE_BASIC_SEARCH_TYPE")]);
 	}
@@ -1207,6 +1217,7 @@ class users_list extends users
 		$this->buildBasicSearchSql($where, $this->id_klinik, $arKeywords, $type);
 		$this->buildBasicSearchSql($where, $this->username, $arKeywords, $type);
 		$this->buildBasicSearchSql($where, $this->userpwd, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->status, $arKeywords, $type);
 		return $where;
 	}
 
@@ -1369,6 +1380,7 @@ class users_list extends users
 			$this->updateSort($this->id_pegawai); // id_pegawai
 			$this->updateSort($this->username); // username
 			$this->updateSort($this->level); // level
+			$this->updateSort($this->status); // status
 			$this->setStartRecordNumber(1); // Reset start position
 		}
 	}
@@ -1408,6 +1420,7 @@ class users_list extends users
 				$this->id_pegawai->setSort("");
 				$this->username->setSort("");
 				$this->level->setSort("");
+				$this->status->setSort("");
 			}
 
 			// Reset start position
@@ -1835,6 +1848,7 @@ class users_list extends users
 		$this->username->setDbValue($row['username']);
 		$this->userpwd->setDbValue($row['userpwd']);
 		$this->level->setDbValue($row['level']);
+		$this->status->setDbValue($row['status']);
 	}
 
 	// Return a row with default values
@@ -1847,6 +1861,7 @@ class users_list extends users
 		$row['username'] = NULL;
 		$row['userpwd'] = NULL;
 		$row['level'] = NULL;
+		$row['status'] = NULL;
 		return $row;
 	}
 
@@ -1896,6 +1911,7 @@ class users_list extends users
 		// username
 		// userpwd
 		// level
+		// status
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -1982,6 +1998,14 @@ class users_list extends users
 			}
 			$this->level->ViewCustomAttributes = "";
 
+			// status
+			if (strval($this->status->CurrentValue) != "") {
+				$this->status->ViewValue = $this->status->optionCaption($this->status->CurrentValue);
+			} else {
+				$this->status->ViewValue = NULL;
+			}
+			$this->status->ViewCustomAttributes = "";
+
 			// id_klinik
 			$this->id_klinik->LinkCustomAttributes = "";
 			$this->id_klinik->HrefValue = "";
@@ -2001,6 +2025,11 @@ class users_list extends users
 			$this->level->LinkCustomAttributes = "";
 			$this->level->HrefValue = "";
 			$this->level->TooltipValue = "";
+
+			// status
+			$this->status->LinkCustomAttributes = "";
+			$this->status->HrefValue = "";
+			$this->status->TooltipValue = "";
 		}
 
 		// Call Row Rendered event
@@ -2269,6 +2298,8 @@ class users_list extends users
 				case "x_id_pegawai":
 					break;
 				case "x_level":
+					break;
+				case "x_status":
 					break;
 				default:
 					$lookupFilter = "";

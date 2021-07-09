@@ -145,7 +145,6 @@ $returbarang_add->showMessage();
 		<label id="elh_returbarang_id_klinik" for="x_id_klinik" class="<?php echo $returbarang_add->LeftColumnClass ?>"><?php echo $returbarang_add->id_klinik->caption() ?><?php echo $returbarang_add->id_klinik->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $returbarang_add->RightColumnClass ?>"><div <?php echo $returbarang_add->id_klinik->cellAttributes() ?>>
 <span id="el_returbarang_id_klinik">
-<?php $returbarang_add->id_klinik->EditAttrs->prepend("onchange", "ew.updateOptions.call(this);"); ?>
 <div class="input-group">
 	<select class="custom-select ew-custom-select" data-table="returbarang" data-field="x_id_klinik" data-value-separator="<?php echo $returbarang_add->id_klinik->displayValueSeparatorAttribute() ?>" id="x_id_klinik" name="x_id_klinik"<?php echo $returbarang_add->id_klinik->editAttributes() ?>>
 			<?php echo $returbarang_add->id_klinik->selectOptionListHtml("x_id_klinik") ?>

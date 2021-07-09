@@ -666,12 +666,13 @@ class users_edit extends users
 		// Create form object
 		$CurrentForm = new HttpForm();
 		$this->CurrentAction = Param("action"); // Set up current action
-		$this->_userid->setVisibility();
+		$this->_userid->Visible = FALSE;
 		$this->id_klinik->setVisibility();
 		$this->id_pegawai->setVisibility();
 		$this->username->setVisibility();
 		$this->userpwd->setVisibility();
 		$this->level->setVisibility();
+		$this->status->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -849,11 +850,6 @@ class users_edit extends users
 		// Load from form
 		global $CurrentForm;
 
-		// Check field name 'userid' first before field var 'x__userid'
-		$val = $CurrentForm->hasValue("userid") ? $CurrentForm->getValue("userid") : $CurrentForm->getValue("x__userid");
-		if (!$this->_userid->IsDetailKey)
-			$this->_userid->setFormValue($val);
-
 		// Check field name 'id_klinik' first before field var 'x_id_klinik'
 		$val = $CurrentForm->hasValue("id_klinik") ? $CurrentForm->getValue("id_klinik") : $CurrentForm->getValue("x_id_klinik");
 		if (!$this->id_klinik->IsDetailKey) {
@@ -901,6 +897,20 @@ class users_edit extends users
 			else
 				$this->level->setFormValue($val);
 		}
+
+		// Check field name 'status' first before field var 'x_status'
+		$val = $CurrentForm->hasValue("status") ? $CurrentForm->getValue("status") : $CurrentForm->getValue("x_status");
+		if (!$this->status->IsDetailKey) {
+			if (IsApi() && $val === NULL)
+				$this->status->Visible = FALSE; // Disable update for API request
+			else
+				$this->status->setFormValue($val);
+		}
+
+		// Check field name 'userid' first before field var 'x__userid'
+		$val = $CurrentForm->hasValue("userid") ? $CurrentForm->getValue("userid") : $CurrentForm->getValue("x__userid");
+		if (!$this->_userid->IsDetailKey)
+			$this->_userid->setFormValue($val);
 	}
 
 	// Restore form values
@@ -913,6 +923,7 @@ class users_edit extends users
 		$this->username->CurrentValue = $this->username->FormValue;
 		$this->userpwd->CurrentValue = $this->userpwd->FormValue;
 		$this->level->CurrentValue = $this->level->FormValue;
+		$this->status->CurrentValue = $this->status->FormValue;
 	}
 
 	// Load row based on key values
@@ -956,6 +967,7 @@ class users_edit extends users
 		$this->username->setDbValue($row['username']);
 		$this->userpwd->setDbValue($row['userpwd']);
 		$this->level->setDbValue($row['level']);
+		$this->status->setDbValue($row['status']);
 	}
 
 	// Return a row with default values
@@ -968,6 +980,7 @@ class users_edit extends users
 		$row['username'] = NULL;
 		$row['userpwd'] = NULL;
 		$row['level'] = NULL;
+		$row['status'] = NULL;
 		return $row;
 	}
 
@@ -1011,6 +1024,7 @@ class users_edit extends users
 		// username
 		// userpwd
 		// level
+		// status
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -1097,10 +1111,13 @@ class users_edit extends users
 			}
 			$this->level->ViewCustomAttributes = "";
 
-			// userid
-			$this->_userid->LinkCustomAttributes = "";
-			$this->_userid->HrefValue = "";
-			$this->_userid->TooltipValue = "";
+			// status
+			if (strval($this->status->CurrentValue) != "") {
+				$this->status->ViewValue = $this->status->optionCaption($this->status->CurrentValue);
+			} else {
+				$this->status->ViewValue = NULL;
+			}
+			$this->status->ViewCustomAttributes = "";
 
 			// id_klinik
 			$this->id_klinik->LinkCustomAttributes = "";
@@ -1126,13 +1143,12 @@ class users_edit extends users
 			$this->level->LinkCustomAttributes = "";
 			$this->level->HrefValue = "";
 			$this->level->TooltipValue = "";
-		} elseif ($this->RowType == ROWTYPE_EDIT) { // Edit row
 
-			// userid
-			$this->_userid->EditAttrs["class"] = "form-control";
-			$this->_userid->EditCustomAttributes = "";
-			$this->_userid->EditValue = $this->_userid->CurrentValue;
-			$this->_userid->ViewCustomAttributes = "";
+			// status
+			$this->status->LinkCustomAttributes = "";
+			$this->status->HrefValue = "";
+			$this->status->TooltipValue = "";
+		} elseif ($this->RowType == ROWTYPE_EDIT) { // Edit row
 
 			// id_klinik
 			$this->id_klinik->EditAttrs["class"] = "form-control";
@@ -1235,13 +1251,14 @@ class users_edit extends users
 				}
 			}
 
+			// status
+			$this->status->EditAttrs["class"] = "form-control";
+			$this->status->EditCustomAttributes = "";
+			$this->status->EditValue = $this->status->options(TRUE);
+
 			// Edit refer script
-			// userid
-
-			$this->_userid->LinkCustomAttributes = "";
-			$this->_userid->HrefValue = "";
-
 			// id_klinik
+
 			$this->id_klinik->LinkCustomAttributes = "";
 			$this->id_klinik->HrefValue = "";
 
@@ -1260,6 +1277,10 @@ class users_edit extends users
 			// level
 			$this->level->LinkCustomAttributes = "";
 			$this->level->HrefValue = "";
+
+			// status
+			$this->status->LinkCustomAttributes = "";
+			$this->status->HrefValue = "";
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -1280,11 +1301,6 @@ class users_edit extends users
 		// Check if validation required
 		if (!Config("SERVER_VALIDATE"))
 			return ($FormError == "");
-		if ($this->_userid->Required) {
-			if (!$this->_userid->IsDetailKey && $this->_userid->FormValue != NULL && $this->_userid->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->_userid->caption(), $this->_userid->RequiredErrorMessage));
-			}
-		}
 		if ($this->id_klinik->Required) {
 			if (!$this->id_klinik->IsDetailKey && $this->id_klinik->FormValue != NULL && $this->id_klinik->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->id_klinik->caption(), $this->id_klinik->RequiredErrorMessage));
@@ -1311,6 +1327,11 @@ class users_edit extends users
 		if ($this->level->Required) {
 			if (!$this->level->IsDetailKey && $this->level->FormValue != NULL && $this->level->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->level->caption(), $this->level->RequiredErrorMessage));
+			}
+		}
+		if ($this->status->Required) {
+			if (!$this->status->IsDetailKey && $this->status->FormValue != NULL && $this->status->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->status->caption(), $this->status->RequiredErrorMessage));
 			}
 		}
 
@@ -1370,6 +1391,9 @@ class users_edit extends users
 				
 			}
 			
+
+			// status
+			$this->status->setDbValueDef($rsnew, $this->status->CurrentValue, NULL, $this->status->ReadOnly);
 
 			// Call Row Updating event
 			$updateRow = $this->Row_Updating($rsold, $rsnew);
@@ -1457,6 +1481,8 @@ class users_edit extends users
 				case "x_id_pegawai":
 					break;
 				case "x_level":
+					break;
+				case "x_status":
 					break;
 				default:
 					$lookupFilter = "";
@@ -1575,6 +1601,14 @@ class users_edit extends users
 	function Page_Render() {
 
 		//echo "Page Render";
+		$levelid = CurrentUserLevel();
+		if($levelid != '-1') {
+			$this->id_klinik->ReadOnly = TRUE;
+			$this->id_pegawai->ReadOnly = TRUE;
+			$this->username->ReadOnly = TRUE;
+			$this->level->ReadOnly = TRUE;
+			$this->status->ReadOnly = TRUE;
+		} 
 	}
 
 	// Page Data Rendering event

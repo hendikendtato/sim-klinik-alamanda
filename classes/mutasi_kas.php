@@ -857,7 +857,11 @@ class mutasi_kas extends DbTable
 			$this->staff->ViewValue = $this->staff->lookupCacheOption($curVal);
 			if ($this->staff->ViewValue === NULL) { // Lookup from database
 				$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-				$sqlWrk = $this->staff->Lookup->getSql(FALSE, $filterWrk, '', $this);
+				$lookupFilter = function() {
+					return "`status` <> 'Non Aktif'";
+				};
+				$lookupFilter = $lookupFilter->bindTo($this);
+				$sqlWrk = $this->staff->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
 				$rswrk = Conn()->execute($sqlWrk);
 				if ($rswrk && !$rswrk->EOF) { // Lookup values found
 					$arwrk = [];
@@ -1285,15 +1289,17 @@ class mutasi_kas extends DbTable
 		// To view properties of field class, use:
 		//var_dump($this-><FieldName>);
 
-		$id_klinik = CurrentUserInfo("id_klinik");
-		if($id_klinik != '' OR $id_klinik != FALSE){
-			$this->id_klinik->CurrentValue = $id_klinik ;
-			$this->id_klinik->ReadOnly = TRUE; 
-		}
-		$id_pegawai = CurrentUserInfo("id_pegawai");
-		if($id_pegawai != '' OR $id_pegawai != FALSE){
-			$this->staff->CurrentValue = $id_pegawai ;
-			$this->staff->ReadOnly = TRUE; 
+		if(CurrentUserLevel() != '-1') {
+			$id_klinik = CurrentUserInfo("id_klinik");
+			if($id_klinik != '' OR $id_klinik != FALSE){
+				$this->id_klinik->CurrentValue = $id_klinik ;
+				$this->id_klinik->ReadOnly = TRUE; 
+			}
+			$id_pegawai = CurrentUserInfo("id_pegawai");
+			if($id_pegawai != '' OR $id_pegawai != FALSE){
+				$this->staff->CurrentValue = $id_pegawai ;
+				$this->staff->ReadOnly = TRUE; 
+			}
 		}	
 	}
 

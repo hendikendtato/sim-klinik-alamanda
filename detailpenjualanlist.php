@@ -226,6 +226,15 @@ $detailpenjualan_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
+<?php if ($detailpenjualan_list->voucher_barang->Visible) { // voucher_barang ?>
+	<?php if ($detailpenjualan_list->SortUrl($detailpenjualan_list->voucher_barang) == "") { ?>
+		<th data-name="voucher_barang" class="<?php echo $detailpenjualan_list->voucher_barang->headerCellClass() ?>"><div id="elh_detailpenjualan_voucher_barang" class="detailpenjualan_voucher_barang"><div class="ew-table-header-caption"><?php echo $detailpenjualan_list->voucher_barang->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="voucher_barang" class="<?php echo $detailpenjualan_list->voucher_barang->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $detailpenjualan_list->SortUrl($detailpenjualan_list->voucher_barang) ?>', 1);"><div id="elh_detailpenjualan_voucher_barang" class="detailpenjualan_voucher_barang">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $detailpenjualan_list->voucher_barang->caption() ?></span><span class="ew-table-header-sort"><?php if ($detailpenjualan_list->voucher_barang->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($detailpenjualan_list->voucher_barang->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
 <?php if ($detailpenjualan_list->komisi_recall->Visible) { // komisi_recall ?>
 	<?php if ($detailpenjualan_list->SortUrl($detailpenjualan_list->komisi_recall) == "") { ?>
 		<th data-name="komisi_recall" class="<?php echo $detailpenjualan_list->komisi_recall->headerCellClass() ?>"><div id="elh_detailpenjualan_komisi_recall" class="detailpenjualan_komisi_recall"><div class="ew-table-header-caption"><?php echo $detailpenjualan_list->komisi_recall->caption() ?></div></div></th>
@@ -369,6 +378,13 @@ $detailpenjualan_list->ListOptions->render("body", "left", $detailpenjualan_list
 		<td data-name="disc_rp" <?php echo $detailpenjualan_list->disc_rp->cellAttributes() ?>>
 <span id="el<?php echo $detailpenjualan_list->RowCount ?>_detailpenjualan_disc_rp">
 <span<?php echo $detailpenjualan_list->disc_rp->viewAttributes() ?>><?php echo $detailpenjualan_list->disc_rp->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
+	<?php if ($detailpenjualan_list->voucher_barang->Visible) { // voucher_barang ?>
+		<td data-name="voucher_barang" <?php echo $detailpenjualan_list->voucher_barang->cellAttributes() ?>>
+<span id="el<?php echo $detailpenjualan_list->RowCount ?>_detailpenjualan_voucher_barang">
+<span<?php echo $detailpenjualan_list->voucher_barang->viewAttributes() ?>><?php echo $detailpenjualan_list->voucher_barang->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>

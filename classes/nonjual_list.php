@@ -817,6 +817,7 @@ class nonjual_list extends nonjual
 		$this->setupExportOptions();
 		$this->id_nonjual->Visible = FALSE;
 		$this->id_klinik->setVisibility();
+		$this->id_staff->setVisibility();
 		$this->tanggal->setVisibility();
 		$this->keterangan->setVisibility();
 		$this->hideFieldsForAddEdit();
@@ -853,6 +854,7 @@ class nonjual_list extends nonjual
 
 		// Set up lookup cache
 		$this->setupLookupOptions($this->id_klinik);
+		$this->setupLookupOptions($this->id_staff);
 
 		// Search filters
 		$srchAdvanced = ""; // Advanced search filter
@@ -1107,6 +1109,7 @@ class nonjual_list extends nonjual
 		$savedFilterList = "";
 		$filterList = Concat($filterList, $this->id_nonjual->AdvancedSearch->toJson(), ","); // Field id_nonjual
 		$filterList = Concat($filterList, $this->id_klinik->AdvancedSearch->toJson(), ","); // Field id_klinik
+		$filterList = Concat($filterList, $this->id_staff->AdvancedSearch->toJson(), ","); // Field id_staff
 		$filterList = Concat($filterList, $this->tanggal->AdvancedSearch->toJson(), ","); // Field tanggal
 		$filterList = Concat($filterList, $this->keterangan->AdvancedSearch->toJson(), ","); // Field keterangan
 		if ($this->BasicSearch->Keyword != "") {
@@ -1162,6 +1165,14 @@ class nonjual_list extends nonjual
 		$this->id_klinik->AdvancedSearch->SearchValue2 = @$filter["y_id_klinik"];
 		$this->id_klinik->AdvancedSearch->SearchOperator2 = @$filter["w_id_klinik"];
 		$this->id_klinik->AdvancedSearch->save();
+
+		// Field id_staff
+		$this->id_staff->AdvancedSearch->SearchValue = @$filter["x_id_staff"];
+		$this->id_staff->AdvancedSearch->SearchOperator = @$filter["z_id_staff"];
+		$this->id_staff->AdvancedSearch->SearchCondition = @$filter["v_id_staff"];
+		$this->id_staff->AdvancedSearch->SearchValue2 = @$filter["y_id_staff"];
+		$this->id_staff->AdvancedSearch->SearchOperator2 = @$filter["w_id_staff"];
+		$this->id_staff->AdvancedSearch->save();
 
 		// Field tanggal
 		$this->tanggal->AdvancedSearch->SearchValue = @$filter["x_tanggal"];
@@ -1346,6 +1357,7 @@ class nonjual_list extends nonjual
 			$this->CurrentOrder = Get("order");
 			$this->CurrentOrderType = Get("ordertype", "");
 			$this->updateSort($this->id_klinik); // id_klinik
+			$this->updateSort($this->id_staff); // id_staff
 			$this->updateSort($this->tanggal); // tanggal
 			$this->updateSort($this->keterangan); // keterangan
 			$this->setStartRecordNumber(1); // Reset start position
@@ -1384,6 +1396,7 @@ class nonjual_list extends nonjual
 				$orderBy = "";
 				$this->setSessionOrderBy($orderBy);
 				$this->id_klinik->setSort("");
+				$this->id_staff->setSort("");
 				$this->tanggal->setSort("");
 				$this->keterangan->setSort("");
 			}
@@ -1987,6 +2000,7 @@ class nonjual_list extends nonjual
 			return;
 		$this->id_nonjual->setDbValue($row['id_nonjual']);
 		$this->id_klinik->setDbValue($row['id_klinik']);
+		$this->id_staff->setDbValue($row['id_staff']);
 		$this->tanggal->setDbValue($row['tanggal']);
 		$this->keterangan->setDbValue($row['keterangan']);
 	}
@@ -1997,6 +2011,7 @@ class nonjual_list extends nonjual
 		$row = [];
 		$row['id_nonjual'] = NULL;
 		$row['id_klinik'] = NULL;
+		$row['id_staff'] = NULL;
 		$row['tanggal'] = NULL;
 		$row['keterangan'] = NULL;
 		return $row;
@@ -2044,6 +2059,7 @@ class nonjual_list extends nonjual
 		// Common render codes for all row types
 		// id_nonjual
 		// id_klinik
+		// id_staff
 		// tanggal
 		// keterangan
 
@@ -2075,6 +2091,32 @@ class nonjual_list extends nonjual
 			}
 			$this->id_klinik->ViewCustomAttributes = "";
 
+			// id_staff
+			$curVal = strval($this->id_staff->CurrentValue);
+			if ($curVal != "") {
+				$this->id_staff->ViewValue = $this->id_staff->lookupCacheOption($curVal);
+				if ($this->id_staff->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$lookupFilter = function() {
+						return "`status` <> 'Non Aktif'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
+					$sqlWrk = $this->id_staff->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->id_staff->ViewValue = $this->id_staff->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->id_staff->ViewValue = $this->id_staff->CurrentValue;
+					}
+				}
+			} else {
+				$this->id_staff->ViewValue = NULL;
+			}
+			$this->id_staff->ViewCustomAttributes = "";
+
 			// tanggal
 			$this->tanggal->ViewValue = $this->tanggal->CurrentValue;
 			$this->tanggal->ViewValue = FormatDateTime($this->tanggal->ViewValue, 7);
@@ -2088,6 +2130,11 @@ class nonjual_list extends nonjual
 			$this->id_klinik->LinkCustomAttributes = "";
 			$this->id_klinik->HrefValue = "";
 			$this->id_klinik->TooltipValue = "";
+
+			// id_staff
+			$this->id_staff->LinkCustomAttributes = "";
+			$this->id_staff->HrefValue = "";
+			$this->id_staff->TooltipValue = "";
 
 			// tanggal
 			$this->tanggal->LinkCustomAttributes = "";
@@ -2363,6 +2410,12 @@ class nonjual_list extends nonjual
 			switch ($fld->FieldVar) {
 				case "x_id_klinik":
 					break;
+				case "x_id_staff":
+					$lookupFilter = function() {
+						return "`status` <> 'Non Aktif'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
+					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -2384,6 +2437,8 @@ class nonjual_list extends nonjual
 					// Format the field values
 					switch ($fld->FieldVar) {
 						case "x_id_klinik":
+							break;
+						case "x_id_staff":
 							break;
 					}
 					$ar[strval($row[0])] = $row;

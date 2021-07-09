@@ -97,9 +97,6 @@ $m_barang_delete->showMessage();
 <?php if ($m_barang_delete->tipe->Visible) { // tipe ?>
 		<th class="<?php echo $m_barang_delete->tipe->headerCellClass() ?>"><span id="elh_m_barang_tipe" class="m_barang_tipe"><?php echo $m_barang_delete->tipe->caption() ?></span></th>
 <?php } ?>
-<?php if ($m_barang_delete->status->Visible) { // status ?>
-		<th class="<?php echo $m_barang_delete->status->headerCellClass() ?>"><span id="elh_m_barang_status" class="m_barang_status"><?php echo $m_barang_delete->status->caption() ?></span></th>
-<?php } ?>
 <?php if ($m_barang_delete->shortname_barang->Visible) { // shortname_barang ?>
 		<th class="<?php echo $m_barang_delete->shortname_barang->headerCellClass() ?>"><span id="elh_m_barang_shortname_barang" class="m_barang_shortname_barang"><?php echo $m_barang_delete->shortname_barang->caption() ?></span></th>
 <?php } ?>
@@ -190,13 +187,6 @@ while (!$m_barang_delete->Recordset->EOF) {
 		<td <?php echo $m_barang_delete->tipe->cellAttributes() ?>>
 <span id="el<?php echo $m_barang_delete->RowCount ?>_m_barang_tipe" class="m_barang_tipe">
 <span<?php echo $m_barang_delete->tipe->viewAttributes() ?>><?php echo $m_barang_delete->tipe->getViewValue() ?></span>
-</span>
-</td>
-<?php } ?>
-<?php if ($m_barang_delete->status->Visible) { // status ?>
-		<td <?php echo $m_barang_delete->status->cellAttributes() ?>>
-<span id="el<?php echo $m_barang_delete->RowCount ?>_m_barang_status" class="m_barang_status">
-<span<?php echo $m_barang_delete->status->viewAttributes() ?>><?php echo $m_barang_delete->status->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

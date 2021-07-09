@@ -1329,10 +1329,12 @@ class kirimbarang extends DbTable
 		//	$this->id_pegawai->ViewValue = $nama_pegawai;
 		//}
 
-		$id_pegawai = CurrentUserInfo("id_pegawai");
-		if($id_pegawai != '' OR $id_pegawai != FALSE){
-			$this->id_pegawai->CurrentValue = $id_pegawai ;
-			$this->id_pegawai->ReadOnly = TRUE; 
+		if(CurrentUserLevel() != '-1') {
+			$id_pegawai = CurrentUserInfo("id_pegawai");
+			if($id_pegawai != '' OR $id_pegawai != FALSE){
+				$this->id_pegawai->CurrentValue = $id_pegawai ;
+				$this->id_pegawai->ReadOnly = TRUE; 
+			}
 		}
 	}
 

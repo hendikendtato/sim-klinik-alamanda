@@ -621,10 +621,8 @@ class detailpenyesuaianstok_preview extends detailpenyesuaianstok
 		$this->setupOtherOptions();
 
 		// Set up lookup cache
-		$this->setupLookupOptions($this->kode_barang);
-		$this->setupLookupOptions($this->id_barang);
-
 		// Load filter
+
 		$filter = Get("f", "");
 		$filter = Decrypt($filter);
 		if ($filter == "") $filter = "0=1";
@@ -899,18 +897,6 @@ class detailpenyesuaianstok_preview extends detailpenyesuaianstok
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
-				case "x_kode_barang":
-					$lookupFilter = function() {
-						return "`komposisi` <> 'Yes'";
-					};
-					$lookupFilter = $lookupFilter->bindTo($this);
-					break;
-				case "x_id_barang":
-					$lookupFilter = function() {
-						return "`komposisi` <> 'Yes'";
-					};
-					$lookupFilter = $lookupFilter->bindTo($this);
-					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -931,10 +917,6 @@ class detailpenyesuaianstok_preview extends detailpenyesuaianstok
 
 					// Format the field values
 					switch ($fld->FieldVar) {
-						case "x_kode_barang":
-							break;
-						case "x_id_barang":
-							break;
 					}
 					$ar[strval($row[0])] = $row;
 					$rs->moveNext();

@@ -73,6 +73,9 @@ $nonjual_delete->showMessage();
 <?php if ($nonjual_delete->id_klinik->Visible) { // id_klinik ?>
 		<th class="<?php echo $nonjual_delete->id_klinik->headerCellClass() ?>"><span id="elh_nonjual_id_klinik" class="nonjual_id_klinik"><?php echo $nonjual_delete->id_klinik->caption() ?></span></th>
 <?php } ?>
+<?php if ($nonjual_delete->id_staff->Visible) { // id_staff ?>
+		<th class="<?php echo $nonjual_delete->id_staff->headerCellClass() ?>"><span id="elh_nonjual_id_staff" class="nonjual_id_staff"><?php echo $nonjual_delete->id_staff->caption() ?></span></th>
+<?php } ?>
 <?php if ($nonjual_delete->tanggal->Visible) { // tanggal ?>
 		<th class="<?php echo $nonjual_delete->tanggal->headerCellClass() ?>"><span id="elh_nonjual_tanggal" class="nonjual_tanggal"><?php echo $nonjual_delete->tanggal->caption() ?></span></th>
 <?php } ?>
@@ -104,6 +107,13 @@ while (!$nonjual_delete->Recordset->EOF) {
 		<td <?php echo $nonjual_delete->id_klinik->cellAttributes() ?>>
 <span id="el<?php echo $nonjual_delete->RowCount ?>_nonjual_id_klinik" class="nonjual_id_klinik">
 <span<?php echo $nonjual_delete->id_klinik->viewAttributes() ?>><?php echo $nonjual_delete->id_klinik->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($nonjual_delete->id_staff->Visible) { // id_staff ?>
+		<td <?php echo $nonjual_delete->id_staff->cellAttributes() ?>>
+<span id="el<?php echo $nonjual_delete->RowCount ?>_nonjual_id_staff" class="nonjual_id_staff">
+<span<?php echo $nonjual_delete->id_staff->viewAttributes() ?>><?php echo $nonjual_delete->id_staff->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

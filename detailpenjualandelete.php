@@ -97,6 +97,9 @@ $detailpenjualan_delete->showMessage();
 <?php if ($detailpenjualan_delete->disc_rp->Visible) { // disc_rp ?>
 		<th class="<?php echo $detailpenjualan_delete->disc_rp->headerCellClass() ?>"><span id="elh_detailpenjualan_disc_rp" class="detailpenjualan_disc_rp"><?php echo $detailpenjualan_delete->disc_rp->caption() ?></span></th>
 <?php } ?>
+<?php if ($detailpenjualan_delete->voucher_barang->Visible) { // voucher_barang ?>
+		<th class="<?php echo $detailpenjualan_delete->voucher_barang->headerCellClass() ?>"><span id="elh_detailpenjualan_voucher_barang" class="detailpenjualan_voucher_barang"><?php echo $detailpenjualan_delete->voucher_barang->caption() ?></span></th>
+<?php } ?>
 <?php if ($detailpenjualan_delete->komisi_recall->Visible) { // komisi_recall ?>
 		<th class="<?php echo $detailpenjualan_delete->komisi_recall->headerCellClass() ?>"><span id="elh_detailpenjualan_komisi_recall" class="detailpenjualan_komisi_recall"><?php echo $detailpenjualan_delete->komisi_recall->caption() ?></span></th>
 <?php } ?>
@@ -184,6 +187,13 @@ while (!$detailpenjualan_delete->Recordset->EOF) {
 		<td <?php echo $detailpenjualan_delete->disc_rp->cellAttributes() ?>>
 <span id="el<?php echo $detailpenjualan_delete->RowCount ?>_detailpenjualan_disc_rp" class="detailpenjualan_disc_rp">
 <span<?php echo $detailpenjualan_delete->disc_rp->viewAttributes() ?>><?php echo $detailpenjualan_delete->disc_rp->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($detailpenjualan_delete->voucher_barang->Visible) { // voucher_barang ?>
+		<td <?php echo $detailpenjualan_delete->voucher_barang->cellAttributes() ?>>
+<span id="el<?php echo $detailpenjualan_delete->RowCount ?>_detailpenjualan_voucher_barang" class="detailpenjualan_voucher_barang">
+<span<?php echo $detailpenjualan_delete->voucher_barang->viewAttributes() ?>><?php echo $detailpenjualan_delete->voucher_barang->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

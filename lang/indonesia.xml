@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<ew-language date="2021/7/4" version="16.0.1" id="ID" name="Indonesian" desc="Indonesian" author="e.World Technology Ltd.">
+<ew-language date="2021/7/9" version="16.0.1" id="ID" name="Indonesian" desc="Indonesian" author="e.World Technology Ltd.">
   <!--
 	*** Important Notes:
 	1. Language ID should follow: https://developers.google.com/recaptcha/docs/language,
@@ -886,9 +886,6 @@
     <menu id="686">
       <phrase id="menutext" value="Detail Nonjual" />
     </menu>
-    <menu id="685">
-      <phrase id="menutext" value="m status barang" />
-    </menu>
     <menu id="679">
       <phrase id="menutext" value="Komisi Kinerja" />
     </menu>
@@ -927,6 +924,9 @@
     </menu>
     <menu id="233">
       <phrase id="menutext" value="Subkategori Barang" />
+    </menu>
+    <menu id="685">
+      <phrase id="menutext" value="Status Barang" />
     </menu>
     <menu id="20">
       <phrase id="menutext" value="Stok &amp; Harga Jual" />
@@ -1032,9 +1032,6 @@
     </menu>
     <menu id="151">
       <phrase id="menutext" value="Kartu Stok" />
-    </menu>
-    <menu id="247">
-      <phrase id="menutext" value="Detail Kartu Stok" />
     </menu>
     <menu id="153">
       <phrase id="menutext" value="Penyesuaian Stok" />
@@ -1236,9 +1233,6 @@
     </menu>
     <menu id="236">
       <phrase id="menutext" value="Detail Kirim Barang" />
-    </menu>
-    <menu id="234">
-      <phrase id="menutext" value="view hargajual" />
     </menu>
     <menu id="228">
       <phrase id="menutext" value="Struk Belanja" />
@@ -1491,6 +1485,9 @@
       </field>
       <field id="disc_rp">
         <phrase id="fldcaption" value="Diskon (Rp)" />
+      </field>
+      <field id="voucher_barang">
+        <phrase id="fldcaption" value="Voucher" />
       </field>
       <field id="komisi_recall">
         <phrase id="fldcaption" value="Komisi Recall" />
@@ -1947,9 +1944,6 @@
         <phrase id="fldtagvalue4" value="Non Jual" />
         <phrase id="fldtagcaption4" value="Non Jual" />
       </field>
-      <field id="status">
-        <phrase id="fldcaption" value="Status" />
-      </field>
       <field id="shortname_barang">
         <phrase id="fldcaption" value="Shortname" />
       </field>
@@ -2054,6 +2048,9 @@
         <phrase id="fldtagcaption3" value="Jual" />
         <phrase id="fldtagvalue4" value="Non Jual" />
         <phrase id="fldtagcaption4" value="Non Jual" />
+      </field>
+      <field id="status">
+        <phrase id="fldcaption" value="Status" />
       </field>
     </table>
     <table id="m_hargajual_detail">
@@ -3084,50 +3081,12 @@
         <phrase id="fldtagvalue4" value="1" />
         <phrase id="fldtagcaption4" value="Kasir" />
       </field>
-    </table>
-    <table id="v_kartustok">
-      <phrase id="tblcaption" value="Kartu Stok" />
-      <field id="id">
-        <phrase id="fldcaption" value="id" />
-      </field>
-      <field id="kode_barang">
-        <phrase id="fldcaption" value="kode barang" />
-      </field>
-      <field id="nama_barang">
-        <phrase id="fldcaption" value="nama barang" />
-      </field>
-      <field id="satuan">
-        <phrase id="fldcaption" value="satuan" />
-      </field>
-      <field id="jenis">
-        <phrase id="fldcaption" value="jenis" />
-      </field>
-      <field id="kategori">
-        <phrase id="fldcaption" value="kategori" />
-      </field>
-      <field id="subkategori">
-        <phrase id="fldcaption" value="subkategori" />
-      </field>
-      <field id="komposisi">
-        <phrase id="fldcaption" value="komposisi" />
-        <phrase id="fldtagvalue1" value="Yes" />
-        <phrase id="fldtagcaption1" value="Yes" />
-        <phrase id="fldtagvalue2" value="No" />
-        <phrase id="fldtagcaption2" value="No" />
-      </field>
-      <field id="tipe">
-        <phrase id="fldcaption" value="tipe" />
-        <phrase id="fldtagvalue1" value="Perawatan" />
-        <phrase id="fldtagcaption1" value="Perawatan" />
-        <phrase id="fldtagvalue2" value="Bahan" />
-        <phrase id="fldtagcaption2" value="Bahan" />
-        <phrase id="fldtagvalue3" value="Jual" />
-        <phrase id="fldtagcaption3" value="Jual" />
-        <phrase id="fldtagvalue4" value="Non Jual" />
-        <phrase id="fldtagcaption4" value="Non Jual" />
-      </field>
       <field id="status">
-        <phrase id="fldcaption" value="status" />
+        <phrase id="fldcaption" value="Status" />
+        <phrase id="fldtagvalue1" value="Aktif" />
+        <phrase id="fldtagcaption1" value="Aktif" />
+        <phrase id="fldtagvalue2" value="Non Aktif" />
+        <phrase id="fldtagcaption2" value="Non Aktif" />
       </field>
     </table>
     <table id="v_lap_retur">
@@ -3164,94 +3123,6 @@
       </field>
       <field id="jumlah">
         <phrase id="fldcaption" value="jumlah" />
-      </field>
-    </table>
-    <table id="view_hargajual">
-      <phrase id="tblcaption" value="view hargajual" />
-      <field id="id">
-        <phrase id="fldcaption" value="id" />
-      </field>
-      <field id="kode_barang">
-        <phrase id="fldcaption" value="kode barang" />
-      </field>
-      <field id="nama_barang">
-        <phrase id="fldcaption" value="nama barang" />
-      </field>
-      <field id="satuan">
-        <phrase id="fldcaption" value="satuan" />
-      </field>
-      <field id="jenis">
-        <phrase id="fldcaption" value="jenis" />
-      </field>
-      <field id="kategori">
-        <phrase id="fldcaption" value="kategori" />
-      </field>
-      <field id="subkategori">
-        <phrase id="fldcaption" value="subkategori" />
-      </field>
-      <field id="totalhargajual">
-        <phrase id="fldcaption" value="Total Harga" />
-      </field>
-      <field id="id_hargajual">
-        <phrase id="fldcaption" value="id hargajual" />
-      </field>
-      <field id="id_barang">
-        <phrase id="fldcaption" value="id barang" />
-      </field>
-      <field id="id_klinik">
-        <phrase id="fldcaption" value="id klinik" />
-      </field>
-      <field id="nama_klinik">
-        <phrase id="fldcaption" value="nama klinik" />
-      </field>
-      <field id="telpon_klinik">
-        <phrase id="fldcaption" value="telpon klinik" />
-      </field>
-      <field id="alamat_klinik">
-        <phrase id="fldcaption" value="alamat klinik" />
-      </field>
-      <field id="foto_klinik">
-        <phrase id="fldcaption" value="foto klinik" />
-      </field>
-      <field id="stok">
-        <phrase id="fldcaption" value="stok" />
-      </field>
-      <field id="komposisi">
-        <phrase id="fldcaption" value="komposisi" />
-        <phrase id="fldtagvalue1" value="Yes" />
-        <phrase id="fldtagcaption1" value="Yes" />
-        <phrase id="fldtagvalue2" value="No" />
-        <phrase id="fldtagcaption2" value="No" />
-      </field>
-      <field id="status">
-        <phrase id="fldcaption" value="status" />
-      </field>
-      <field id="tipe">
-        <phrase id="fldcaption" value="tipe" />
-        <phrase id="fldtagvalue1" value="Perawatan" />
-        <phrase id="fldtagcaption1" value="Perawatan" />
-        <phrase id="fldtagvalue2" value="Bahan" />
-        <phrase id="fldtagcaption2" value="Bahan" />
-        <phrase id="fldtagvalue3" value="Jual" />
-        <phrase id="fldtagcaption3" value="Jual" />
-        <phrase id="fldtagvalue4" value="Non Jual" />
-        <phrase id="fldtagcaption4" value="Non Jual" />
-      </field>
-      <field id="tgl_exp">
-        <phrase id="fldcaption" value="tgl exp" />
-      </field>
-      <field id="disc_rp">
-        <phrase id="fldcaption" value="disc rp" />
-      </field>
-      <field id="disc_pr">
-        <phrase id="fldcaption" value="disc pr" />
-      </field>
-      <field id="discontinue">
-        <phrase id="fldcaption" value="discontinue" />
-        <phrase id="fldtagvalue1" value="Yes" />
-        <phrase id="fldtagcaption1" value="Yes" />
-        <phrase id="fldtagvalue2" value="No" />
-        <phrase id="fldtagcaption2" value="No" />
       </field>
     </table>
     <table id="view_rm_pasien">
@@ -3534,6 +3405,9 @@
       </field>
       <field id="id_klinik">
         <phrase id="fldcaption" value="Klinik" />
+      </field>
+      <field id="id_staff">
+        <phrase id="fldcaption" value="Pegawai" />
       </field>
       <field id="tanggal">
         <phrase id="fldcaption" value="Tanggal" />

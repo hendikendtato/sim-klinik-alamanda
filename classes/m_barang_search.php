@@ -673,7 +673,6 @@ class m_barang_search extends m_barang
 		$this->subkategori->setVisibility();
 		$this->komposisi->setVisibility();
 		$this->tipe->setVisibility();
-		$this->status->setVisibility();
 		$this->shortname_barang->Visible = FALSE;
 		$this->id_tag->Visible = FALSE;
 		$this->discontinue->setVisibility();
@@ -702,7 +701,6 @@ class m_barang_search extends m_barang
 		$this->setupLookupOptions($this->jenis);
 		$this->setupLookupOptions($this->kategori);
 		$this->setupLookupOptions($this->subkategori);
-		$this->setupLookupOptions($this->status);
 		$this->setupLookupOptions($this->id_tag);
 
 		// Set up Breadcrumb
@@ -755,7 +753,6 @@ class m_barang_search extends m_barang
 		$this->buildSearchUrl($srchUrl, $this->subkategori); // subkategori
 		$this->buildSearchUrl($srchUrl, $this->komposisi); // komposisi
 		$this->buildSearchUrl($srchUrl, $this->tipe); // tipe
-		$this->buildSearchUrl($srchUrl, $this->status); // status
 		$this->buildSearchUrl($srchUrl, $this->discontinue); // discontinue
 		if ($srchUrl != "")
 			$srchUrl .= "&";
@@ -843,8 +840,6 @@ class m_barang_search extends m_barang
 			$got = TRUE;
 		if ($this->tipe->AdvancedSearch->post())
 			$got = TRUE;
-		if ($this->status->AdvancedSearch->post())
-			$got = TRUE;
 		if ($this->discontinue->AdvancedSearch->post())
 			$got = TRUE;
 		return $got;
@@ -870,7 +865,6 @@ class m_barang_search extends m_barang
 		// subkategori
 		// komposisi
 		// tipe
-		// status
 		// shortname_barang
 		// id_tag
 		// discontinue
@@ -993,28 +987,6 @@ class m_barang_search extends m_barang
 			}
 			$this->tipe->ViewCustomAttributes = "";
 
-			// status
-			$curVal = strval($this->status->CurrentValue);
-			if ($curVal != "") {
-				$this->status->ViewValue = $this->status->lookupCacheOption($curVal);
-				if ($this->status->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id_status`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->status->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->status->ViewValue = $this->status->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->status->ViewValue = $this->status->CurrentValue;
-					}
-				}
-			} else {
-				$this->status->ViewValue = NULL;
-			}
-			$this->status->ViewCustomAttributes = "";
-
 			// shortname_barang
 			$this->shortname_barang->ViewValue = $this->shortname_barang->CurrentValue;
 			$this->shortname_barang->ViewCustomAttributes = "";
@@ -1083,11 +1055,6 @@ class m_barang_search extends m_barang
 			$this->tipe->LinkCustomAttributes = "";
 			$this->tipe->HrefValue = "";
 			$this->tipe->TooltipValue = "";
-
-			// status
-			$this->status->LinkCustomAttributes = "";
-			$this->status->HrefValue = "";
-			$this->status->TooltipValue = "";
 
 			// discontinue
 			$this->discontinue->LinkCustomAttributes = "";
@@ -1191,30 +1158,6 @@ class m_barang_search extends m_barang
 			$this->tipe->EditCustomAttributes = "";
 			$this->tipe->EditValue = $this->tipe->options(FALSE);
 
-			// status
-			$this->status->EditAttrs["class"] = "form-control";
-			$this->status->EditCustomAttributes = "";
-			$curVal = trim(strval($this->status->AdvancedSearch->SearchValue));
-			if ($curVal != "")
-				$this->status->AdvancedSearch->ViewValue = $this->status->lookupCacheOption($curVal);
-			else
-				$this->status->AdvancedSearch->ViewValue = $this->status->Lookup !== NULL && is_array($this->status->Lookup->Options) ? $curVal : NULL;
-			if ($this->status->AdvancedSearch->ViewValue !== NULL) { // Load from cache
-				$this->status->EditValue = array_values($this->status->Lookup->Options);
-			} else { // Lookup from database
-				if ($curVal == "") {
-					$filterWrk = "0=1";
-				} else {
-					$filterWrk = "`id_status`" . SearchString("=", $this->status->AdvancedSearch->SearchValue, DATATYPE_NUMBER, "");
-				}
-				$sqlWrk = $this->status->Lookup->getSql(TRUE, $filterWrk, '', $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				$arwrk = $rswrk ? $rswrk->getRows() : [];
-				if ($rswrk)
-					$rswrk->close();
-				$this->status->EditValue = $arwrk;
-			}
-
 			// discontinue
 			$this->discontinue->EditCustomAttributes = "";
 			$this->discontinue->EditValue = $this->discontinue->options(FALSE);
@@ -1261,7 +1204,6 @@ class m_barang_search extends m_barang
 		$this->subkategori->AdvancedSearch->load();
 		$this->komposisi->AdvancedSearch->load();
 		$this->tipe->AdvancedSearch->load();
-		$this->status->AdvancedSearch->load();
 		$this->discontinue->AdvancedSearch->load();
 	}
 
@@ -1302,8 +1244,6 @@ class m_barang_search extends m_barang
 					break;
 				case "x_tipe":
 					break;
-				case "x_status":
-					break;
 				case "x_id_tag":
 					break;
 				case "x_discontinue":
@@ -1335,8 +1275,6 @@ class m_barang_search extends m_barang
 						case "x_kategori":
 							break;
 						case "x_subkategori":
-							break;
-						case "x_status":
 							break;
 						case "x_id_tag":
 							break;

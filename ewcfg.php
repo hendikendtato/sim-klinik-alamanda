@@ -161,7 +161,7 @@ $CONFIG = [
 
 	// General
 	"UNFORMAT_YEAR" => 50, // Unformat year
-	"RANDOM_KEY" => 'wRfOg3FPVGpei7pI', // Random key for encryption
+	"RANDOM_KEY" => '0rsqQia1b4YX2eDR', // Random key for encryption
 	"ENCRYPTION_KEY" => '', // Encryption key for data protection
 	"PROJECT_STYLESHEET_FILENAME" => "css/sim_klinik_alamanda.css", // Project stylesheet file name
 	"PROJECT_CHARSET" => "utf-8", // Project charset
@@ -259,7 +259,7 @@ $CONFIG = [
 	 * to login. Hashed password is irreversible, it will be reset during password recovery.
 	 */
 	"ENCRYPTED_PASSWORD" => FALSE, // Use encrypted password
-	"CASE_SENSITIVE_PASSWORD" => FALSE, // Case-sensitive password
+	"CASE_SENSITIVE_PASSWORD" => TRUE, // Case-sensitive password
 
 	// Session timeout time
 	"SESSION_TIMEOUT" => 0, // Session timeout time (minutes)

@@ -39,6 +39,7 @@ class m_hargajual extends DbTable
 	public $kategori;
 	public $subkategori;
 	public $tipe;
+	public $status;
 
 	// Constructor
 	public function __construct()
@@ -86,7 +87,7 @@ class m_hargajual extends DbTable
 		$this->id_barang->Sortable = TRUE; // Allow sort
 		$this->id_barang->UsePleaseSelect = TRUE; // Use PleaseSelect by default
 		$this->id_barang->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->id_barang->Lookup = new Lookup('id_barang', 'm_barang', FALSE, 'id', ["nama_barang","","",""], [], [], [], [], ["kategori","subkategori","tipe"], ["x_kategori","x_subkategori","x_tipe"], '', '');
+		$this->id_barang->Lookup = new Lookup('id_barang', 'm_barang', FALSE, 'id', ["nama_barang","","",""], [], [], [], [], ["kategori","subkategori","tipe"], ["x_kategori","x_subkategori","x_tipe[]"], '', '');
 		$this->id_barang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id_barang'] = &$this->id_barang;
 
@@ -169,11 +170,20 @@ class m_hargajual extends DbTable
 		$this->fields['subkategori'] = &$this->subkategori;
 
 		// tipe
-		$this->tipe = new DbField('m_hargajual', 'm_hargajual', 'x_tipe', 'tipe', '`tipe`', '`tipe`', 202, 9, -1, FALSE, '`tipe`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'RADIO');
+		$this->tipe = new DbField('m_hargajual', 'm_hargajual', 'x_tipe', 'tipe', '`tipe`', '`tipe`', 202, 9, -1, FALSE, '`tipe`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'CHECKBOX');
 		$this->tipe->Sortable = TRUE; // Allow sort
 		$this->tipe->Lookup = new Lookup('tipe', 'm_hargajual', FALSE, '', ["","","",""], [], [], [], [], [], [], '', '');
 		$this->tipe->OptionCount = 4;
 		$this->fields['tipe'] = &$this->tipe;
+
+		// status
+		$this->status = new DbField('m_hargajual', 'm_hargajual', 'x_status', 'status', '`status`', '`status`', 3, 11, -1, FALSE, '`status`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->status->Sortable = TRUE; // Allow sort
+		$this->status->UsePleaseSelect = TRUE; // Use PleaseSelect by default
+		$this->status->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
+		$this->status->Lookup = new Lookup('status', 'm_status_barang', FALSE, 'id_status', ["status_barang","","",""], [], [], [], [], [], [], '', '');
+		$this->status->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->fields['status'] = &$this->status;
 	}
 
 	// Field Visibility
@@ -543,6 +553,7 @@ class m_hargajual extends DbTable
 		$this->kategori->DbValue = $row['kategori'];
 		$this->subkategori->DbValue = $row['subkategori'];
 		$this->tipe->DbValue = $row['tipe'];
+		$this->status->DbValue = $row['status'];
 	}
 
 	// Delete uploaded files
@@ -787,6 +798,7 @@ class m_hargajual extends DbTable
 		$this->kategori->setDbValue($rs->fields('kategori'));
 		$this->subkategori->setDbValue($rs->fields('subkategori'));
 		$this->tipe->setDbValue($rs->fields('tipe'));
+		$this->status->setDbValue($rs->fields('status'));
 	}
 
 	// Render list row values
@@ -812,6 +824,7 @@ class m_hargajual extends DbTable
 		// kategori
 		// subkategori
 		// tipe
+		// status
 		// id_hargajual
 
 		$this->id_hargajual->ViewValue = $this->id_hargajual->CurrentValue;
@@ -964,11 +977,37 @@ class m_hargajual extends DbTable
 
 		// tipe
 		if (strval($this->tipe->CurrentValue) != "") {
-			$this->tipe->ViewValue = $this->tipe->optionCaption($this->tipe->CurrentValue);
+			$this->tipe->ViewValue = new OptionValues();
+			$arwrk = explode(",", strval($this->tipe->CurrentValue));
+			$cnt = count($arwrk);
+			for ($ari = 0; $ari < $cnt; $ari++)
+				$this->tipe->ViewValue->add($this->tipe->optionCaption(trim($arwrk[$ari])));
 		} else {
 			$this->tipe->ViewValue = NULL;
 		}
 		$this->tipe->ViewCustomAttributes = "";
+
+		// status
+		$curVal = strval($this->status->CurrentValue);
+		if ($curVal != "") {
+			$this->status->ViewValue = $this->status->lookupCacheOption($curVal);
+			if ($this->status->ViewValue === NULL) { // Lookup from database
+				$filterWrk = "`id_status`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+				$sqlWrk = $this->status->Lookup->getSql(FALSE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = $rswrk->fields('df');
+					$this->status->ViewValue = $this->status->displayValue($arwrk);
+					$rswrk->Close();
+				} else {
+					$this->status->ViewValue = $this->status->CurrentValue;
+				}
+			}
+		} else {
+			$this->status->ViewValue = NULL;
+		}
+		$this->status->ViewCustomAttributes = "";
 
 		// id_hargajual
 		$this->id_hargajual->LinkCustomAttributes = "";
@@ -1039,6 +1078,11 @@ class m_hargajual extends DbTable
 		$this->tipe->LinkCustomAttributes = "";
 		$this->tipe->HrefValue = "";
 		$this->tipe->TooltipValue = "";
+
+		// status
+		$this->status->LinkCustomAttributes = "";
+		$this->status->HrefValue = "";
+		$this->status->TooltipValue = "";
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -1139,6 +1183,10 @@ class m_hargajual extends DbTable
 		$this->tipe->EditCustomAttributes = "";
 		$this->tipe->EditValue = $this->tipe->options(FALSE);
 
+		// status
+		$this->status->EditAttrs["class"] = "form-control";
+		$this->status->EditCustomAttributes = "";
+
 		// Call Row Rendered event
 		$this->Row_Rendered();
 	}
@@ -1181,6 +1229,7 @@ class m_hargajual extends DbTable
 					$doc->exportCaption($this->kategori);
 					$doc->exportCaption($this->subkategori);
 					$doc->exportCaption($this->tipe);
+					$doc->exportCaption($this->status);
 				} else {
 					$doc->exportCaption($this->id_hargajual);
 					$doc->exportCaption($this->id_barang);
@@ -1196,6 +1245,7 @@ class m_hargajual extends DbTable
 					$doc->exportCaption($this->kategori);
 					$doc->exportCaption($this->subkategori);
 					$doc->exportCaption($this->tipe);
+					$doc->exportCaption($this->status);
 				}
 				$doc->endExportRow();
 			}
@@ -1240,6 +1290,7 @@ class m_hargajual extends DbTable
 						$doc->exportField($this->kategori);
 						$doc->exportField($this->subkategori);
 						$doc->exportField($this->tipe);
+						$doc->exportField($this->status);
 					} else {
 						$doc->exportField($this->id_hargajual);
 						$doc->exportField($this->id_barang);
@@ -1255,6 +1306,7 @@ class m_hargajual extends DbTable
 						$doc->exportField($this->kategori);
 						$doc->exportField($this->subkategori);
 						$doc->exportField($this->tipe);
+						$doc->exportField($this->status);
 					}
 					$doc->endExportRow($rowCnt);
 				}

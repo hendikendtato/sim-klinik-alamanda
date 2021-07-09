@@ -86,14 +86,12 @@ class detailpenyesuaianstok extends DbTable
 		// kode_barang
 		$this->kode_barang = new DbField('detailpenyesuaianstok', 'detailpenyesuaianstok', 'x_kode_barang', 'kode_barang', '`kode_barang`', '`kode_barang`', 3, 11, -1, FALSE, '`kode_barang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->kode_barang->Sortable = TRUE; // Allow sort
-		$this->kode_barang->Lookup = new Lookup('kode_barang', 'view_hargajual', FALSE, 'id', ["kode_barang","","",""], ["penyesuaianstok x_id_klinik"], [], ["id_klinik"], ["x_id_klinik"], ["id"], ["x_id_barang"], '', '');
 		$this->kode_barang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['kode_barang'] = &$this->kode_barang;
 
 		// id_barang
 		$this->id_barang = new DbField('detailpenyesuaianstok', 'detailpenyesuaianstok', 'x_id_barang', 'id_barang', '`id_barang`', '`id_barang`', 3, 255, -1, FALSE, '`id_barang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->id_barang->Sortable = TRUE; // Allow sort
-		$this->id_barang->Lookup = new Lookup('id_barang', 'view_hargajual', FALSE, 'id', ["nama_barang","","",""], ["penyesuaianstok x_id_klinik"], [], ["id_klinik"], ["x_id_klinik"], [], [], '', '');
 		$this->id_barang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id_barang'] = &$this->id_barang;
 
@@ -807,56 +805,12 @@ class detailpenyesuaianstok extends DbTable
 
 		// kode_barang
 		$this->kode_barang->ViewValue = $this->kode_barang->CurrentValue;
-		$curVal = strval($this->kode_barang->CurrentValue);
-		if ($curVal != "") {
-			$this->kode_barang->ViewValue = $this->kode_barang->lookupCacheOption($curVal);
-			if ($this->kode_barang->ViewValue === NULL) { // Lookup from database
-				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-				$lookupFilter = function() {
-					return "`komposisi` <> 'Yes'";
-				};
-				$lookupFilter = $lookupFilter->bindTo($this);
-				$sqlWrk = $this->kode_barang->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup values found
-					$arwrk = [];
-					$arwrk[1] = $rswrk->fields('df');
-					$this->kode_barang->ViewValue = $this->kode_barang->displayValue($arwrk);
-					$rswrk->Close();
-				} else {
-					$this->kode_barang->ViewValue = $this->kode_barang->CurrentValue;
-				}
-			}
-		} else {
-			$this->kode_barang->ViewValue = NULL;
-		}
+		$this->kode_barang->ViewValue = FormatNumber($this->kode_barang->ViewValue, 0, -2, -2, -2);
 		$this->kode_barang->ViewCustomAttributes = "";
 
 		// id_barang
 		$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
-		$curVal = strval($this->id_barang->CurrentValue);
-		if ($curVal != "") {
-			$this->id_barang->ViewValue = $this->id_barang->lookupCacheOption($curVal);
-			if ($this->id_barang->ViewValue === NULL) { // Lookup from database
-				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-				$lookupFilter = function() {
-					return "`komposisi` <> 'Yes'";
-				};
-				$lookupFilter = $lookupFilter->bindTo($this);
-				$sqlWrk = $this->id_barang->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup values found
-					$arwrk = [];
-					$arwrk[1] = $rswrk->fields('df');
-					$this->id_barang->ViewValue = $this->id_barang->displayValue($arwrk);
-					$rswrk->Close();
-				} else {
-					$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
-				}
-			}
-		} else {
-			$this->id_barang->ViewValue = NULL;
-		}
+		$this->id_barang->ViewValue = FormatNumber($this->id_barang->ViewValue, 0, -2, -2, -2);
 		$this->id_barang->ViewCustomAttributes = "";
 
 		// stokdatabase

@@ -131,6 +131,16 @@ $users_view->showMessage();
 </td>
 	</tr>
 <?php } ?>
+<?php if ($users_view->status->Visible) { // status ?>
+	<tr id="r_status">
+		<td class="<?php echo $users_view->TableLeftColumnClass ?>"><span id="elh_users_status"><?php echo $users_view->status->caption() ?></span></td>
+		<td data-name="status" <?php echo $users_view->status->cellAttributes() ?>>
+<span id="el_users_status">
+<span<?php echo $users_view->status->viewAttributes() ?>><?php echo $users_view->status->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
 </table>
 </form>
 <?php

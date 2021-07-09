@@ -775,6 +775,7 @@ class users_view extends users
 		$this->username->setVisibility();
 		$this->userpwd->setVisibility();
 		$this->level->setVisibility();
+		$this->status->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -1006,6 +1007,7 @@ class users_view extends users
 		$this->username->setDbValue($row['username']);
 		$this->userpwd->setDbValue($row['userpwd']);
 		$this->level->setDbValue($row['level']);
+		$this->status->setDbValue($row['status']);
 	}
 
 	// Return a row with default values
@@ -1018,6 +1020,7 @@ class users_view extends users
 		$row['username'] = NULL;
 		$row['userpwd'] = NULL;
 		$row['level'] = NULL;
+		$row['status'] = NULL;
 		return $row;
 	}
 
@@ -1044,6 +1047,7 @@ class users_view extends users
 		// username
 		// userpwd
 		// level
+		// status
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -1130,6 +1134,14 @@ class users_view extends users
 			}
 			$this->level->ViewCustomAttributes = "";
 
+			// status
+			if (strval($this->status->CurrentValue) != "") {
+				$this->status->ViewValue = $this->status->optionCaption($this->status->CurrentValue);
+			} else {
+				$this->status->ViewValue = NULL;
+			}
+			$this->status->ViewCustomAttributes = "";
+
 			// userid
 			$this->_userid->LinkCustomAttributes = "";
 			$this->_userid->HrefValue = "";
@@ -1159,6 +1171,11 @@ class users_view extends users
 			$this->level->LinkCustomAttributes = "";
 			$this->level->HrefValue = "";
 			$this->level->TooltipValue = "";
+
+			// status
+			$this->status->LinkCustomAttributes = "";
+			$this->status->HrefValue = "";
+			$this->status->TooltipValue = "";
 		}
 
 		// Call Row Rendered event
@@ -1384,6 +1401,8 @@ class users_view extends users
 				case "x_id_pegawai":
 					break;
 				case "x_level":
+					break;
+				case "x_status":
 					break;
 				default:
 					$lookupFilter = "";

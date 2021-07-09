@@ -259,15 +259,6 @@ $m_barang_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
-<?php if ($m_barang_list->status->Visible) { // status ?>
-	<?php if ($m_barang_list->SortUrl($m_barang_list->status) == "") { ?>
-		<th data-name="status" class="<?php echo $m_barang_list->status->headerCellClass() ?>"><div id="elh_m_barang_status" class="m_barang_status"><div class="ew-table-header-caption"><?php echo $m_barang_list->status->caption() ?></div></div></th>
-	<?php } else { ?>
-		<th data-name="status" class="<?php echo $m_barang_list->status->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $m_barang_list->SortUrl($m_barang_list->status) ?>', 1);"><div id="elh_m_barang_status" class="m_barang_status">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $m_barang_list->status->caption() ?></span><span class="ew-table-header-sort"><?php if ($m_barang_list->status->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($m_barang_list->status->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-		</div></div></th>
-	<?php } ?>
-<?php } ?>
 <?php if ($m_barang_list->shortname_barang->Visible) { // shortname_barang ?>
 	<?php if ($m_barang_list->SortUrl($m_barang_list->shortname_barang) == "") { ?>
 		<th data-name="shortname_barang" class="<?php echo $m_barang_list->shortname_barang->headerCellClass() ?>"><div id="elh_m_barang_shortname_barang" class="m_barang_shortname_barang"><div class="ew-table-header-caption"><?php echo $m_barang_list->shortname_barang->caption() ?></div></div></th>
@@ -420,13 +411,6 @@ $m_barang_list->ListOptions->render("body", "left", $m_barang_list->RowCount);
 		<td data-name="tipe" <?php echo $m_barang_list->tipe->cellAttributes() ?>>
 <span id="el<?php echo $m_barang_list->RowCount ?>_m_barang_tipe">
 <span<?php echo $m_barang_list->tipe->viewAttributes() ?>><?php echo $m_barang_list->tipe->getViewValue() ?></span>
-</span>
-</td>
-	<?php } ?>
-	<?php if ($m_barang_list->status->Visible) { // status ?>
-		<td data-name="status" <?php echo $m_barang_list->status->cellAttributes() ?>>
-<span id="el<?php echo $m_barang_list->RowCount ?>_m_barang_status">
-<span<?php echo $m_barang_list->status->viewAttributes() ?>><?php echo $m_barang_list->status->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>

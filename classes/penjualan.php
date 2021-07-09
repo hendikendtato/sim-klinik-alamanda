@@ -2427,8 +2427,8 @@ class penjualan extends DbTable
 		$rsnew['kode_penjualan'] = 'J' . $id_klinik . '-' . date('ym') . '-' . $nomor_urut;
 
 		// Action
+		date_default_timezone_set("Asia/Jakarta");	
 		$action_date = date("d M Y");
-		date_default_timezone_set("America/New_York");
 		$user = CurrentUserInfo("id_pegawai");
 		$pegawai = ExecuteScalar("SELECT nama_pegawai FROM m_pegawai WHERE id_pegawai='$user'");
 		$status = $rsnew["status"];
@@ -3355,6 +3355,157 @@ class penjualan extends DbTable
 				}
 				$tgl_terakhir_transaksi = date("Y-m-d H:i:s");
 				Execute("UPDATE m_pelanggan SET tgl_terakhir_transaksi = '".$tgl_terakhir_transaksi."' WHERE id_pelanggan='".$id_pelanggan."'");
+
+				//API DATA TRANSAKSI
+				$url = "http://172.16.0.2:8069/web/transaksipenjualan";
+					$data_sql = ExecuteRow("SELECT penjualan.*, m_pelanggan.id_pelanggan, m_pelanggan.nama_pelanggan, m_member.id AS id_member, m_jenis_member.nama_member, m_klinik.*, pg1.id_pegawai AS id_dokter, pg1.nama_pegawai AS nama_dokter, pg2.id_pegawai AS id_sales, pg2.nama_pegawai AS nama_sales, pg3.id_pegawai AS id_be_wajah, pg3.nama_pegawai AS nama_be_wajah, pg4.id_pegawai AS id_be_body, pg4.nama_pegawai AS nama_be_body, pg5.id_pegawai AS id_medis, pg5.nama_pegawai AS nama_medis, rekmeddokter.*, m_rekening.*, kartu.*, kartubank.id_kartu AS id_kartubank, kartubank.nama_kartu AS nama_kartubank, kartubank.id_bank AS id_bank_kartubank, kartubank.jenis AS jenis_kartubank, kartubank.charge_type AS type_kartubank, kartubank.charge_price AS price_kartubank, m_kas.id AS id_kas, m_kas.nama AS nama_kas FROM penjualan 
+											JOIN detailpenjualan ON penjualan.id = detailpenjualan.id_penjualan 
+											JOIN m_pelanggan ON penjualan.id_pelanggan = m_pelanggan.id_pelanggan 
+											JOIN m_klinik ON penjualan.id_klinik = m_klinik.id_klinik
+											JOIN m_kas ON m_kas.id = penjualan.id_kas
+											LEFT JOIN m_member ON m_member.id = penjualan.id_member 
+											LEFT JOIN m_jenis_member ON m_member.jenis_member = m_jenis_member.id_jenis_member
+											LEFT JOIN m_pegawai pg1 ON pg1.id_pegawai = penjualan.dokter 
+											LEFT JOIN m_pegawai pg2 ON pg2.id_pegawai = penjualan.sales 
+											LEFT JOIN m_pegawai pg3 ON pg3.id_pegawai = penjualan.dok_be_wajah
+											LEFT JOIN m_pegawai pg4 ON pg4.id_pegawai = penjualan.be_body
+											LEFT JOIN m_pegawai pg5 ON pg5.id_pegawai = penjualan.medis 
+											LEFT JOIN rekmeddokter ON rekmeddokter.id_rekmeddok = penjualan.id_rmd 
+											LEFT JOIN m_rekening ON m_rekening.id_rekening = penjualan.id_bank 
+											LEFT JOIN m_kartu kartu ON kartu.id_kartu = penjualan.id_kartu 
+											LEFT JOIN m_kartu kartubank ON kartubank.id_kartu = penjualan.id_kartubank WHERE penjualan.id = '".$rsnew['id']."'");
+
+					// print_r($data_sql);
+					$data_detail = ExecuteRows("SELECT dp.id_penjualan, dp.id_barang, m_barang.nama_barang, m_barang.kode_barang, dp.qty, dp.harga_jual, dp.disc_pr, dp.disc_rp, dp.subtotal FROM detailpenjualan dp
+												JOIN m_barang ON m_barang.id = dp.id_barang WHERE dp.id_penjualan = '".$rsnew['id']."'");
+					$detail = [];
+					foreach($data_detail AS $dd){
+						$rowData = [
+							'id_penjualan' => $dd['id_penjualan'],
+							'id_barang' => $dd['id_barang'],
+							'nama_barang' => $dd['nama_barang'],
+							'kode_barang' => $dd['kode_barang'],
+							'qty' => $dd['qty'],
+							'harga_jual' => $dd['harga_jual'],
+							'disc_pr' => $dd['disc_pr'],
+							'disc_rp' => $dd['disc_rp'],
+							'subtotal' => $dd['subtotal'],
+						];
+						array_push($detail, $rowData);
+					}
+
+					// print_r($data_detail);
+					// print_r($detail);
+
+					$data_array = [
+						'id' => $data_sql['id'],
+						'waktu' => $data_sql['waktu'],
+						'id_pelanggan' => [
+							'id_pelanggan' => $data_sql['id_pelanggan'],
+							'nama_pelanggan' => $data_sql['nama_pelanggan'],
+						],
+						'id_member' => [
+							'id_member' => $data_sql['id_member'],
+							'nama_member' => $data_sql['nama_member'],
+						],
+						'diskon_persen' => $data_sql['diskon_persen'],
+						'diskon_rupiah' => $data_sql['diskon_rupiah'],
+						'ppn' => $data_sql['ppn'],
+						'total' => $data_sql['total'],
+						'bayar' => $data_sql['bayar'],
+						'bayar_non_tunai' => $data_sql['bayar_non_tunai'],
+						'total_non_tunai_charge' => $data_sql['total_non_tunai_charge'],
+						'kode_penjualan' => $data_sql['kode_penjualan'],
+						'keterangan' => $data_sql['keterangan'],
+						'dokter' => [
+							'id_pegawai' => $data_sql['id_dokter'],
+							'nama_pegawai' => $data_sql['nama_dokter'],
+						],
+						'sales' => [
+							'id_pegawai' => $data_sql['id_sales'],
+							'nama_pegawai' => $data_sql['nama_sales'],
+						],
+						'dok_be_wajah' => [
+							'id_pegawai' => $data_sql['id_be_wajah'],
+							'nama_pegawai' => $data_sql['nama_be_wajah'],
+						],
+						'be_body' => [
+							'id_pegawai' => $data_sql['id_be_body'],
+							'nama_pegawai' => $data_sql['nama_be_body'],
+						],
+						'medis' => [
+							'id_pegawai' => $data_sql['id_medis'],
+							'nama_pegawai' => $data_sql['nama_medis'],
+						],
+						'id_klinik' => [
+							'id_klinik' => $data_sql['id_klinik'],
+							'nama_klinik' => $data_sql['nama_klinik'],
+						],
+						'id_rmd' => [
+							'id_rekmeddok' => $data_sql['id_rekmeddok'],
+							'kode_rekmeddok' => $data_sql['kode_rekmeddok'],
+						],
+						'metode_pembayaran' => $data_sql['metode_pembayaran'],
+						'id_rekening' => [
+							'id_bank' => $data_sql['id_bank'],
+							'nama_rekening' => $data_sql['nama_rekening'],
+							'nomor_rekening' => $data_sql['nomor_rekening'],
+						],
+						'id_kartu' => [
+							'id_kartu' => $data_sql['id_kartu'],
+							'nama_kartu' => $data_sql['nama_kartu'],
+							'jenis' => $data_sql['jenis'],
+							'charge_type' => $data_sql['charge_type'],
+							'charge_price' => $data_sql['charge_price'],
+						],
+						'jumlah_voucher' => $data_sql['jumlah_voucher'],
+						'id_kartubank' => [
+							'id_kartubank' => $data_sql['id_kartubank'],
+							'nama_kartubank' => $data_sql['nama_kartubank'],
+							'jenis_kartubank' => $data_sql['jenis_kartubank'],
+							'charge_type_kartubank' => $data_sql['type_kartubank'],
+							'charge_price_kartubank' => $data_sql['price_kartubank'],
+						],
+						'id_kas' => [
+							'id_kas' => $data_sql['id_kas'],
+							'nama_kas' => $data_sql['nama_kas'],
+						],
+						'charge' => $data_sql['charge'],
+						'ongkir' => $data_sql['ongkir'],
+						'klaim_poin' => $data_sql['klaim_poin'],
+						'total_penukaran_poin' => $data_sql['total_penukaran_poin'],
+						'action' => $data_sql['action'],
+						'status' => $data_sql['status'],
+						'detailpenjualan' => $detail,
+
+						// $key => $value
+					];
+
+					//$data = http_build_query($data_array);
+					$postdata = json_encode($data_array);
+					print_r($postdata);
+					$curl = curl_init();
+					curl_setopt($curl, CURLOPT_URL, $url);
+					curl_setopt($curl, CURLOPT_POST, true);
+					curl_setopt($curl, CURLOPT_POSTFIELDS, $postdata);
+					curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+					curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+					$resp = curl_exec($curl);
+					if($e = curl_error($curl)){
+						echo $e;
+					} else {
+
+						// $decoded = json_decode($resp);
+						echo "Berhasil";
+
+						// foreach ($decoded as $key => $value) {
+						// 	echo $key . ':' . $value . '<br>';
+						// }
+
+					}
+					curl_close($curl);
+
+					//die();									
 			} //End of if(status == printed)
 	}
 
@@ -3365,8 +3516,8 @@ class penjualan extends DbTable
 		// To cancel, set return value to FALSE
 		// Action
 
+		date_default_timezone_set("Asia/Jakarta");	
 		$action_date = date("d M Y");
-		date_default_timezone_set("America/New_York");
 		$user = CurrentUserInfo("id_pegawai");
 		$pegawai = ExecuteScalar("SELECT nama_pegawai FROM m_pegawai WHERE id_pegawai='$user'");
 		$status = $rsnew["status"];

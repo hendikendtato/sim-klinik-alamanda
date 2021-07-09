@@ -89,7 +89,6 @@ class kartustok extends DbTable
 
 		// id_barang
 		$this->id_barang = new DbField('kartustok', 'kartustok', 'x_id_barang', 'id_barang', '`id_barang`', '`id_barang`', 3, 11, -1, FALSE, '`id_barang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->id_barang->IsForeignKey = TRUE; // Foreign key field
 		$this->id_barang->Sortable = TRUE; // Allow sort
 		$this->id_barang->Lookup = new Lookup('id_barang', 'm_barang', FALSE, 'id', ["nama_barang","","",""], [], [], [], [], [], [], '', '');
 		$this->id_barang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
@@ -248,58 +247,6 @@ class kartustok extends DbTable
 		} else {
 			$fld->setSort("");
 		}
-	}
-
-	// Current master table name
-	public function getCurrentMasterTable()
-	{
-		return @$_SESSION[PROJECT_NAME . "_" . $this->TableVar . "_" . Config("TABLE_MASTER_TABLE")];
-	}
-	public function setCurrentMasterTable($v)
-	{
-		$_SESSION[PROJECT_NAME . "_" . $this->TableVar . "_" . Config("TABLE_MASTER_TABLE")] = $v;
-	}
-
-	// Session master WHERE clause
-	public function getMasterFilter()
-	{
-
-		// Master filter
-		$masterFilter = "";
-		if ($this->getCurrentMasterTable() == "V_kartustok") {
-			if ($this->id_barang->getSessionValue() != "")
-				$masterFilter .= "`id`=" . QuotedValue($this->id_barang->getSessionValue(), DATATYPE_NUMBER, "DB");
-			else
-				return "";
-		}
-		return $masterFilter;
-	}
-
-	// Session detail WHERE clause
-	public function getDetailFilter()
-	{
-
-		// Detail filter
-		$detailFilter = "";
-		if ($this->getCurrentMasterTable() == "V_kartustok") {
-			if ($this->id_barang->getSessionValue() != "")
-				$detailFilter .= "`id_barang`=" . QuotedValue($this->id_barang->getSessionValue(), DATATYPE_NUMBER, "DB");
-			else
-				return "";
-		}
-		return $detailFilter;
-	}
-
-	// Master filter
-	public function sqlMasterFilter_V_kartustok()
-	{
-		return "`id`=@id@";
-	}
-
-	// Detail filter
-	public function sqlDetailFilter_V_kartustok()
-	{
-		return "`id_barang`=@id_barang@";
 	}
 
 	// Table level SQL
@@ -766,10 +713,6 @@ class kartustok extends DbTable
 	// Add master url
 	public function addMasterUrl($url)
 	{
-		if ($this->getCurrentMasterTable() == "V_kartustok" && !ContainsString($url, Config("TABLE_SHOW_MASTER") . "=")) {
-			$url .= (ContainsString($url, "?") ? "&" : "?") . Config("TABLE_SHOW_MASTER") . "=" . $this->getCurrentMasterTable();
-			$url .= "&fk_id=" . urlencode($this->id_barang->CurrentValue);
-		}
 		return $url;
 	}
 	public function keyToJson($htmlEncode = FALSE)
@@ -1309,33 +1252,8 @@ class kartustok extends DbTable
 		// id_barang
 		$this->id_barang->EditAttrs["class"] = "form-control";
 		$this->id_barang->EditCustomAttributes = "";
-		if ($this->id_barang->getSessionValue() != "") {
-			$this->id_barang->CurrentValue = $this->id_barang->getSessionValue();
-			$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
-			$curVal = strval($this->id_barang->CurrentValue);
-			if ($curVal != "") {
-				$this->id_barang->ViewValue = $this->id_barang->lookupCacheOption($curVal);
-				if ($this->id_barang->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->id_barang->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->id_barang->ViewValue = $this->id_barang->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
-					}
-				}
-			} else {
-				$this->id_barang->ViewValue = NULL;
-			}
-			$this->id_barang->ViewCustomAttributes = "";
-		} else {
-			$this->id_barang->EditValue = $this->id_barang->CurrentValue;
-			$this->id_barang->PlaceHolder = RemoveHtml($this->id_barang->caption());
-		}
+		$this->id_barang->EditValue = $this->id_barang->CurrentValue;
+		$this->id_barang->PlaceHolder = RemoveHtml($this->id_barang->caption());
 
 		// id_klinik
 		$this->id_klinik->EditAttrs["class"] = "form-control";

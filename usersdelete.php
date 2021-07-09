@@ -82,6 +82,9 @@ $users_delete->showMessage();
 <?php if ($users_delete->level->Visible) { // level ?>
 		<th class="<?php echo $users_delete->level->headerCellClass() ?>"><span id="elh_users_level" class="users_level"><?php echo $users_delete->level->caption() ?></span></th>
 <?php } ?>
+<?php if ($users_delete->status->Visible) { // status ?>
+		<th class="<?php echo $users_delete->status->headerCellClass() ?>"><span id="elh_users_status" class="users_status"><?php echo $users_delete->status->caption() ?></span></th>
+<?php } ?>
 	</tr>
 	</thead>
 	<tbody>
@@ -128,6 +131,13 @@ while (!$users_delete->Recordset->EOF) {
 		<td <?php echo $users_delete->level->cellAttributes() ?>>
 <span id="el<?php echo $users_delete->RowCount ?>_users_level" class="users_level">
 <span<?php echo $users_delete->level->viewAttributes() ?>><?php echo $users_delete->level->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($users_delete->status->Visible) { // status ?>
+		<td <?php echo $users_delete->status->cellAttributes() ?>>
+<span id="el<?php echo $users_delete->RowCount ?>_users_status" class="users_status">
+<span<?php echo $users_delete->status->viewAttributes() ?>><?php echo $users_delete->status->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

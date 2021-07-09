@@ -902,6 +902,15 @@ class wp_reservasi_view extends wp_reservasi
 		$options = &$this->OtherOptions;
 		$option = $options["action"];
 
+		// Edit
+		$item = &$option->add("edit");
+		$editcaption = HtmlTitle($Language->phrase("ViewPageEditLink"));
+		if ($this->IsModal) // Modal
+			$item->Body = "<a class=\"ew-action ew-edit\" title=\"" . $editcaption . "\" data-caption=\"" . $editcaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,url:'" . HtmlEncode($this->EditUrl) . "'});\">" . $Language->phrase("ViewPageEditLink") . "</a>";
+		else
+			$item->Body = "<a class=\"ew-action ew-edit\" title=\"" . $editcaption . "\" data-caption=\"" . $editcaption . "\" href=\"" . HtmlEncode($this->EditUrl) . "\">" . $Language->phrase("ViewPageEditLink") . "</a>";
+		$item->Visible = ($this->EditUrl != "" && $Security->canEdit());
+
 		// Set up action default
 		$option = $options["action"];
 		$option->DropDownButtonPhrase = $Language->phrase("ButtonActions");

@@ -351,10 +351,6 @@ class kartustok_add extends kartustok
 		if (!isset($GLOBALS['users']))
 			$GLOBALS['users'] = new users();
 
-		// Table object (V_kartustok)
-		if (!isset($GLOBALS['V_kartustok']))
-			$GLOBALS['V_kartustok'] = new V_kartustok();
-
 		// Page ID (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "PAGE_ID"))
 			define(PROJECT_NAMESPACE . "PAGE_ID", 'add');
@@ -770,11 +766,6 @@ class kartustok_add extends kartustok
 
 		// Load old record / default values
 		$loaded = $this->loadOldRecord();
-
-		// Set up master/detail parameters
-		// NOTE: must be after loadOldRecord to prevent master key values overwritten
-
-		$this->setupMasterParms();
 
 		// Load form values
 		if ($postBack) {
@@ -1608,52 +1599,27 @@ class kartustok_add extends kartustok
 			// id_barang
 			$this->id_barang->EditAttrs["class"] = "form-control";
 			$this->id_barang->EditCustomAttributes = "";
-			if ($this->id_barang->getSessionValue() != "") {
-				$this->id_barang->CurrentValue = $this->id_barang->getSessionValue();
-				$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
-				$curVal = strval($this->id_barang->CurrentValue);
-				if ($curVal != "") {
-					$this->id_barang->ViewValue = $this->id_barang->lookupCacheOption($curVal);
-					if ($this->id_barang->ViewValue === NULL) { // Lookup from database
-						$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-						$sqlWrk = $this->id_barang->Lookup->getSql(FALSE, $filterWrk, '', $this);
-						$rswrk = Conn()->execute($sqlWrk);
-						if ($rswrk && !$rswrk->EOF) { // Lookup values found
-							$arwrk = [];
-							$arwrk[1] = $rswrk->fields('df');
-							$this->id_barang->ViewValue = $this->id_barang->displayValue($arwrk);
-							$rswrk->Close();
-						} else {
-							$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
-						}
+			$this->id_barang->EditValue = HtmlEncode($this->id_barang->CurrentValue);
+			$curVal = strval($this->id_barang->CurrentValue);
+			if ($curVal != "") {
+				$this->id_barang->EditValue = $this->id_barang->lookupCacheOption($curVal);
+				if ($this->id_barang->EditValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->id_barang->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+						$this->id_barang->EditValue = $this->id_barang->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->id_barang->EditValue = HtmlEncode($this->id_barang->CurrentValue);
 					}
-				} else {
-					$this->id_barang->ViewValue = NULL;
 				}
-				$this->id_barang->ViewCustomAttributes = "";
 			} else {
-				$this->id_barang->EditValue = HtmlEncode($this->id_barang->CurrentValue);
-				$curVal = strval($this->id_barang->CurrentValue);
-				if ($curVal != "") {
-					$this->id_barang->EditValue = $this->id_barang->lookupCacheOption($curVal);
-					if ($this->id_barang->EditValue === NULL) { // Lookup from database
-						$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-						$sqlWrk = $this->id_barang->Lookup->getSql(FALSE, $filterWrk, '', $this);
-						$rswrk = Conn()->execute($sqlWrk);
-						if ($rswrk && !$rswrk->EOF) { // Lookup values found
-							$arwrk = [];
-							$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-							$this->id_barang->EditValue = $this->id_barang->displayValue($arwrk);
-							$rswrk->Close();
-						} else {
-							$this->id_barang->EditValue = HtmlEncode($this->id_barang->CurrentValue);
-						}
-					}
-				} else {
-					$this->id_barang->EditValue = NULL;
-				}
-				$this->id_barang->PlaceHolder = RemoveHtml($this->id_barang->caption());
+				$this->id_barang->EditValue = NULL;
 			}
+			$this->id_barang->PlaceHolder = RemoveHtml($this->id_barang->caption());
 
 			// id_klinik
 			$this->id_klinik->EditAttrs["class"] = "form-control";
@@ -2227,72 +2193,6 @@ class kartustok_add extends kartustok
 			WriteJson(["success" => TRUE, $this->TableVar => $row]);
 		}
 		return $addRow;
-	}
-
-	// Set up master/detail based on QueryString
-	protected function setupMasterParms()
-	{
-		$validMaster = FALSE;
-
-		// Get the keys for master table
-		if (($master = Get(Config("TABLE_SHOW_MASTER"), Get(Config("TABLE_MASTER")))) !== NULL) {
-			$masterTblVar = $master;
-			if ($masterTblVar == "") {
-				$validMaster = TRUE;
-				$this->DbMasterFilter = "";
-				$this->DbDetailFilter = "";
-			}
-			if ($masterTblVar == "V_kartustok") {
-				$validMaster = TRUE;
-				if (($parm = Get("fk_id", Get("id_barang"))) !== NULL) {
-					$GLOBALS["V_kartustok"]->id->setQueryStringValue($parm);
-					$this->id_barang->setQueryStringValue($GLOBALS["V_kartustok"]->id->QueryStringValue);
-					$this->id_barang->setSessionValue($this->id_barang->QueryStringValue);
-					if (!is_numeric($GLOBALS["V_kartustok"]->id->QueryStringValue))
-						$validMaster = FALSE;
-				} else {
-					$validMaster = FALSE;
-				}
-			}
-		} elseif (($master = Post(Config("TABLE_SHOW_MASTER"), Post(Config("TABLE_MASTER")))) !== NULL) {
-			$masterTblVar = $master;
-			if ($masterTblVar == "") {
-				$validMaster = TRUE;
-				$this->DbMasterFilter = "";
-				$this->DbDetailFilter = "";
-			}
-			if ($masterTblVar == "V_kartustok") {
-				$validMaster = TRUE;
-				if (($parm = Post("fk_id", Post("id_barang"))) !== NULL) {
-					$GLOBALS["V_kartustok"]->id->setFormValue($parm);
-					$this->id_barang->setFormValue($GLOBALS["V_kartustok"]->id->FormValue);
-					$this->id_barang->setSessionValue($this->id_barang->FormValue);
-					if (!is_numeric($GLOBALS["V_kartustok"]->id->FormValue))
-						$validMaster = FALSE;
-				} else {
-					$validMaster = FALSE;
-				}
-			}
-		}
-		if ($validMaster) {
-
-			// Save current master table
-			$this->setCurrentMasterTable($masterTblVar);
-
-			// Reset start record counter (new master key)
-			if (!$this->isAddOrEdit()) {
-				$this->StartRecord = 1;
-				$this->setStartRecordNumber($this->StartRecord);
-			}
-
-			// Clear previous master key from Session
-			if ($masterTblVar != "V_kartustok") {
-				if ($this->id_barang->CurrentValue == "")
-					$this->id_barang->setSessionValue("");
-			}
-		}
-		$this->DbMasterFilter = $this->getMasterFilter(); // Get master filter
-		$this->DbDetailFilter = $this->getDetailFilter(); // Get detail filter
 	}
 
 	// Set up Breadcrumb

@@ -31,6 +31,7 @@ class users extends DbTable
 	public $username;
 	public $userpwd;
 	public $level;
+	public $status;
 
 	// Constructor
 	public function __construct()
@@ -109,6 +110,15 @@ class users extends DbTable
 		$this->level->Lookup = new Lookup('level', 'userlevels', FALSE, 'userlevelid', ["userlevelname","","",""], [], [], [], [], [], [], '', '');
 		$this->level->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['level'] = &$this->level;
+
+		// status
+		$this->status = new DbField('users', 'users', 'x_status', 'status', '`status`', '`status`', 202, 9, -1, FALSE, '`status`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->status->Sortable = TRUE; // Allow sort
+		$this->status->UsePleaseSelect = TRUE; // Use PleaseSelect by default
+		$this->status->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
+		$this->status->Lookup = new Lookup('status', 'users', FALSE, '', ["","","",""], [], [], [], [], [], [], '', '');
+		$this->status->OptionCount = 2;
+		$this->fields['status'] = &$this->status;
 	}
 
 	// Field Visibility
@@ -477,6 +487,7 @@ class users extends DbTable
 		$this->username->DbValue = $row['username'];
 		$this->userpwd->DbValue = $row['userpwd'];
 		$this->level->DbValue = $row['level'];
+		$this->status->DbValue = $row['status'];
 	}
 
 	// Delete uploaded files
@@ -713,6 +724,7 @@ class users extends DbTable
 		$this->username->setDbValue($rs->fields('username'));
 		$this->userpwd->setDbValue($rs->fields('userpwd'));
 		$this->level->setDbValue($rs->fields('level'));
+		$this->status->setDbValue($rs->fields('status'));
 	}
 
 	// Render list row values
@@ -730,6 +742,7 @@ class users extends DbTable
 		// username
 		// userpwd
 		// level
+		// status
 		// userid
 
 		$this->_userid->ViewValue = $this->_userid->CurrentValue;
@@ -814,6 +827,14 @@ class users extends DbTable
 		}
 		$this->level->ViewCustomAttributes = "";
 
+		// status
+		if (strval($this->status->CurrentValue) != "") {
+			$this->status->ViewValue = $this->status->optionCaption($this->status->CurrentValue);
+		} else {
+			$this->status->ViewValue = NULL;
+		}
+		$this->status->ViewCustomAttributes = "";
+
 		// userid
 		$this->_userid->LinkCustomAttributes = "";
 		$this->_userid->HrefValue = "";
@@ -843,6 +864,11 @@ class users extends DbTable
 		$this->level->LinkCustomAttributes = "";
 		$this->level->HrefValue = "";
 		$this->level->TooltipValue = "";
+
+		// status
+		$this->status->LinkCustomAttributes = "";
+		$this->status->HrefValue = "";
+		$this->status->TooltipValue = "";
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -899,6 +925,11 @@ class users extends DbTable
 		} else {
 		}
 
+		// status
+		$this->status->EditAttrs["class"] = "form-control";
+		$this->status->EditCustomAttributes = "";
+		$this->status->EditValue = $this->status->options(TRUE);
+
 		// Call Row Rendered event
 		$this->Row_Rendered();
 	}
@@ -934,6 +965,7 @@ class users extends DbTable
 					$doc->exportCaption($this->username);
 					$doc->exportCaption($this->userpwd);
 					$doc->exportCaption($this->level);
+					$doc->exportCaption($this->status);
 				} else {
 					$doc->exportCaption($this->_userid);
 					$doc->exportCaption($this->id_klinik);
@@ -941,6 +973,7 @@ class users extends DbTable
 					$doc->exportCaption($this->username);
 					$doc->exportCaption($this->userpwd);
 					$doc->exportCaption($this->level);
+					$doc->exportCaption($this->status);
 				}
 				$doc->endExportRow();
 			}
@@ -978,6 +1011,7 @@ class users extends DbTable
 						$doc->exportField($this->username);
 						$doc->exportField($this->userpwd);
 						$doc->exportField($this->level);
+						$doc->exportField($this->status);
 					} else {
 						$doc->exportField($this->_userid);
 						$doc->exportField($this->id_klinik);
@@ -985,6 +1019,7 @@ class users extends DbTable
 						$doc->exportField($this->username);
 						$doc->exportField($this->userpwd);
 						$doc->exportField($this->level);
+						$doc->exportField($this->status);
 					}
 					$doc->endExportRow($rowCnt);
 				}

@@ -259,21 +259,11 @@ $kartustok_add->showMessage();
 <input type="hidden" name="t" value="kartustok">
 <input type="hidden" name="action" id="action" value="insert">
 <input type="hidden" name="modal" value="<?php echo (int)$kartustok_add->IsModal ?>">
-<?php if ($kartustok->getCurrentMasterTable() == "V_kartustok") { ?>
-<input type="hidden" name="<?php echo Config("TABLE_SHOW_MASTER") ?>" value="V_kartustok">
-<input type="hidden" name="fk_id" value="<?php echo HtmlEncode($kartustok_add->id_barang->getSessionValue()) ?>">
-<?php } ?>
 <div class="ew-add-div"><!-- page* -->
 <?php if ($kartustok_add->id_barang->Visible) { // id_barang ?>
 	<div id="r_id_barang" class="form-group row">
 		<label id="elh_kartustok_id_barang" class="<?php echo $kartustok_add->LeftColumnClass ?>"><?php echo $kartustok_add->id_barang->caption() ?><?php echo $kartustok_add->id_barang->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $kartustok_add->RightColumnClass ?>"><div <?php echo $kartustok_add->id_barang->cellAttributes() ?>>
-<?php if ($kartustok_add->id_barang->getSessionValue() != "") { ?>
-<span id="el_kartustok_id_barang">
-<span<?php echo $kartustok_add->id_barang->viewAttributes() ?>><input type="text" readonly class="form-control-plaintext" value="<?php echo HtmlEncode(RemoveHtml($kartustok_add->id_barang->ViewValue)) ?>"></span>
-</span>
-<input type="hidden" id="x_id_barang" name="x_id_barang" value="<?php echo HtmlEncode($kartustok_add->id_barang->CurrentValue) ?>">
-<?php } else { ?>
 <span id="el_kartustok_id_barang">
 <?php
 $onchange = $kartustok_add->id_barang->EditAttrs->prepend("onchange", "");
@@ -296,7 +286,6 @@ loadjs.ready(["fkartustokadd"], function() {
 </script>
 <?php echo $kartustok_add->id_barang->Lookup->getParamTag($kartustok_add, "p_x_id_barang") ?>
 </span>
-<?php } ?>
 <?php echo $kartustok_add->id_barang->CustomMsg ?></div></div>
 	</div>
 <?php } ?>

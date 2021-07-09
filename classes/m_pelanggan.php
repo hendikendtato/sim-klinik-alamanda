@@ -1431,7 +1431,37 @@ class m_pelanggan extends DbTable
 	}
 	// Row Inserted event
 	function Row_Inserted($rsold, &$rsnew) {
-		//echo "Row Inserted"
+					//API DATA TRANSAKSI
+					$url = "http://172.16.0.2:8069/web/customer";
+					$data_sql = ExecuteRow("SELECT * FROM m_pelanggan WHERE id_pelanggan = '".$rsnew['id_pelanggan']."'");
+					foreach ($data_sql as $key => $value) {
+						if(!is_int($key)){
+							$data_array = [
+								$key => $value
+							];
+							//$data = http_build_query($data_array);
+							$postdata = json_encode($data_array);
+							print_r($postdata);
+							$curl = curl_init();
+							curl_setopt($curl, CURLOPT_URL, $url);
+							curl_setopt($curl, CURLOPT_POST, true);
+							curl_setopt($curl, CURLOPT_POSTFIELDS, $postdata);
+							curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+							curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+							$resp = curl_exec($curl);
+						}
+					}
+					if($e = curl_error($curl)){
+						echo $e;
+					} else {
+						// $decoded = json_decode($resp);
+						echo "Berhasil";
+						// foreach ($decoded as $key => $value) {
+						// 	echo $key . ':' . $value . '<br>';
+						// }
+					}
+					curl_close($curl);
+					die();
 	}
 	// Row Updating event
 	function Row_Updating($rsold, &$rsnew) {

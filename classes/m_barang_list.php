@@ -824,7 +824,6 @@ class m_barang_list extends m_barang
 		$this->subkategori->setVisibility();
 		$this->komposisi->setVisibility();
 		$this->tipe->setVisibility();
-		$this->status->setVisibility();
 		$this->shortname_barang->setVisibility();
 		$this->id_tag->setVisibility();
 		$this->discontinue->setVisibility();
@@ -865,7 +864,6 @@ class m_barang_list extends m_barang
 		$this->setupLookupOptions($this->jenis);
 		$this->setupLookupOptions($this->kategori);
 		$this->setupLookupOptions($this->subkategori);
-		$this->setupLookupOptions($this->status);
 		$this->setupLookupOptions($this->id_tag);
 
 		// Search filters
@@ -1145,7 +1143,6 @@ class m_barang_list extends m_barang
 		$filterList = Concat($filterList, $this->subkategori->AdvancedSearch->toJson(), ","); // Field subkategori
 		$filterList = Concat($filterList, $this->komposisi->AdvancedSearch->toJson(), ","); // Field komposisi
 		$filterList = Concat($filterList, $this->tipe->AdvancedSearch->toJson(), ","); // Field tipe
-		$filterList = Concat($filterList, $this->status->AdvancedSearch->toJson(), ","); // Field status
 		$filterList = Concat($filterList, $this->discontinue->AdvancedSearch->toJson(), ","); // Field discontinue
 		if ($this->BasicSearch->Keyword != "") {
 			$wrk = "\"" . Config("TABLE_BASIC_SEARCH") . "\":\"" . JsEncode($this->BasicSearch->Keyword) . "\",\"" . Config("TABLE_BASIC_SEARCH_TYPE") . "\":\"" . JsEncode($this->BasicSearch->Type) . "\"";
@@ -1241,14 +1238,6 @@ class m_barang_list extends m_barang
 		$this->tipe->AdvancedSearch->SearchOperator2 = @$filter["w_tipe"];
 		$this->tipe->AdvancedSearch->save();
 
-		// Field status
-		$this->status->AdvancedSearch->SearchValue = @$filter["x_status"];
-		$this->status->AdvancedSearch->SearchOperator = @$filter["z_status"];
-		$this->status->AdvancedSearch->SearchCondition = @$filter["v_status"];
-		$this->status->AdvancedSearch->SearchValue2 = @$filter["y_status"];
-		$this->status->AdvancedSearch->SearchOperator2 = @$filter["w_status"];
-		$this->status->AdvancedSearch->save();
-
 		// Field discontinue
 		$this->discontinue->AdvancedSearch->SearchValue = @$filter["x_discontinue"];
 		$this->discontinue->AdvancedSearch->SearchOperator = @$filter["z_discontinue"];
@@ -1274,7 +1263,6 @@ class m_barang_list extends m_barang
 		$this->buildSearchSql($where, $this->subkategori, $default, FALSE); // subkategori
 		$this->buildSearchSql($where, $this->komposisi, $default, FALSE); // komposisi
 		$this->buildSearchSql($where, $this->tipe, $default, FALSE); // tipe
-		$this->buildSearchSql($where, $this->status, $default, FALSE); // status
 		$this->buildSearchSql($where, $this->discontinue, $default, FALSE); // discontinue
 
 		// Set up search parm
@@ -1289,7 +1277,6 @@ class m_barang_list extends m_barang
 			$this->subkategori->AdvancedSearch->save(); // subkategori
 			$this->komposisi->AdvancedSearch->save(); // komposisi
 			$this->tipe->AdvancedSearch->save(); // tipe
-			$this->status->AdvancedSearch->save(); // status
 			$this->discontinue->AdvancedSearch->save(); // discontinue
 		}
 		return $where;
@@ -1482,8 +1469,6 @@ class m_barang_list extends m_barang
 			return TRUE;
 		if ($this->tipe->AdvancedSearch->issetSession())
 			return TRUE;
-		if ($this->status->AdvancedSearch->issetSession())
-			return TRUE;
 		if ($this->discontinue->AdvancedSearch->issetSession())
 			return TRUE;
 		return FALSE;
@@ -1526,7 +1511,6 @@ class m_barang_list extends m_barang
 		$this->subkategori->AdvancedSearch->unsetSession();
 		$this->komposisi->AdvancedSearch->unsetSession();
 		$this->tipe->AdvancedSearch->unsetSession();
-		$this->status->AdvancedSearch->unsetSession();
 		$this->discontinue->AdvancedSearch->unsetSession();
 	}
 
@@ -1546,7 +1530,6 @@ class m_barang_list extends m_barang
 		$this->subkategori->AdvancedSearch->load();
 		$this->komposisi->AdvancedSearch->load();
 		$this->tipe->AdvancedSearch->load();
-		$this->status->AdvancedSearch->load();
 		$this->discontinue->AdvancedSearch->load();
 	}
 
@@ -1567,7 +1550,6 @@ class m_barang_list extends m_barang
 			$this->updateSort($this->subkategori); // subkategori
 			$this->updateSort($this->komposisi); // komposisi
 			$this->updateSort($this->tipe); // tipe
-			$this->updateSort($this->status); // status
 			$this->updateSort($this->shortname_barang); // shortname_barang
 			$this->updateSort($this->id_tag); // id_tag
 			$this->updateSort($this->discontinue); // discontinue
@@ -1615,7 +1597,6 @@ class m_barang_list extends m_barang
 				$this->subkategori->setSort("");
 				$this->komposisi->setSort("");
 				$this->tipe->setSort("");
-				$this->status->setSort("");
 				$this->shortname_barang->setSort("");
 				$this->id_tag->setSort("");
 				$this->discontinue->setSort("");
@@ -2018,13 +1999,6 @@ class m_barang_list extends m_barang
 				$this->Command = "search";
 		}
 
-		// status
-		if (!$this->isAddOrEdit() && $this->status->AdvancedSearch->get()) {
-			$got = TRUE;
-			if (($this->status->AdvancedSearch->SearchValue != "" || $this->status->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
-				$this->Command = "search";
-		}
-
 		// discontinue
 		if (!$this->isAddOrEdit() && $this->discontinue->AdvancedSearch->get()) {
 			$got = TRUE;
@@ -2105,7 +2079,6 @@ class m_barang_list extends m_barang
 		$this->subkategori->setDbValue($row['subkategori']);
 		$this->komposisi->setDbValue($row['komposisi']);
 		$this->tipe->setDbValue($row['tipe']);
-		$this->status->setDbValue($row['status']);
 		$this->shortname_barang->setDbValue($row['shortname_barang']);
 		$this->id_tag->setDbValue($row['id_tag']);
 		$this->discontinue->setDbValue($row['discontinue']);
@@ -2124,7 +2097,6 @@ class m_barang_list extends m_barang
 		$row['subkategori'] = NULL;
 		$row['komposisi'] = NULL;
 		$row['tipe'] = NULL;
-		$row['status'] = NULL;
 		$row['shortname_barang'] = NULL;
 		$row['id_tag'] = NULL;
 		$row['discontinue'] = NULL;
@@ -2180,7 +2152,6 @@ class m_barang_list extends m_barang
 		// subkategori
 		// komposisi
 		// tipe
-		// status
 		// shortname_barang
 		// id_tag
 		// discontinue
@@ -2303,28 +2274,6 @@ class m_barang_list extends m_barang
 			}
 			$this->tipe->ViewCustomAttributes = "";
 
-			// status
-			$curVal = strval($this->status->CurrentValue);
-			if ($curVal != "") {
-				$this->status->ViewValue = $this->status->lookupCacheOption($curVal);
-				if ($this->status->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id_status`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->status->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->status->ViewValue = $this->status->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->status->ViewValue = $this->status->CurrentValue;
-					}
-				}
-			} else {
-				$this->status->ViewValue = NULL;
-			}
-			$this->status->ViewCustomAttributes = "";
-
 			// shortname_barang
 			$this->shortname_barang->ViewValue = $this->shortname_barang->CurrentValue;
 			$this->shortname_barang->ViewCustomAttributes = "";
@@ -2404,11 +2353,6 @@ class m_barang_list extends m_barang
 			$this->tipe->HrefValue = "";
 			$this->tipe->TooltipValue = "";
 
-			// status
-			$this->status->LinkCustomAttributes = "";
-			$this->status->HrefValue = "";
-			$this->status->TooltipValue = "";
-
 			// shortname_barang
 			$this->shortname_barang->LinkCustomAttributes = "";
 			$this->shortname_barang->HrefValue = "";
@@ -2464,7 +2408,6 @@ class m_barang_list extends m_barang
 		$this->subkategori->AdvancedSearch->load();
 		$this->komposisi->AdvancedSearch->load();
 		$this->tipe->AdvancedSearch->load();
-		$this->status->AdvancedSearch->load();
 		$this->discontinue->AdvancedSearch->load();
 	}
 
@@ -2744,8 +2687,6 @@ class m_barang_list extends m_barang
 					break;
 				case "x_tipe":
 					break;
-				case "x_status":
-					break;
 				case "x_id_tag":
 					break;
 				case "x_discontinue":
@@ -2777,8 +2718,6 @@ class m_barang_list extends m_barang
 						case "x_kategori":
 							break;
 						case "x_subkategori":
-							break;
-						case "x_status":
 							break;
 						case "x_id_tag":
 							break;

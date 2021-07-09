@@ -4,20 +4,20 @@ namespace PHPMaker2020\sim_klinik_alamanda;
 /**
  * Page class
  */
-class nonjual_add extends nonjual
+class wp_reservasi_edit extends wp_reservasi
 {
 
 	// Page ID
-	public $PageID = "add";
+	public $PageID = "edit";
 
 	// Project ID
 	public $ProjectID = "{8546B030-7993-4749-BFDB-17AFAAF4065D}";
 
 	// Table name
-	public $TableName = 'nonjual';
+	public $TableName = 'wp_reservasi';
 
 	// Page object name
-	public $PageObjName = "nonjual_add";
+	public $PageObjName = "wp_reservasi_edit";
 
 	// Page headings
 	public $Heading = "";
@@ -341,10 +341,10 @@ class nonjual_add extends nonjual
 		// Parent constuctor
 		parent::__construct();
 
-		// Table object (nonjual)
-		if (!isset($GLOBALS["nonjual"]) || get_class($GLOBALS["nonjual"]) == PROJECT_NAMESPACE . "nonjual") {
-			$GLOBALS["nonjual"] = &$this;
-			$GLOBALS["Table"] = &$GLOBALS["nonjual"];
+		// Table object (wp_reservasi)
+		if (!isset($GLOBALS["wp_reservasi"]) || get_class($GLOBALS["wp_reservasi"]) == PROJECT_NAMESPACE . "wp_reservasi") {
+			$GLOBALS["wp_reservasi"] = &$this;
+			$GLOBALS["Table"] = &$GLOBALS["wp_reservasi"];
 		}
 
 		// Table object (users)
@@ -353,11 +353,11 @@ class nonjual_add extends nonjual
 
 		// Page ID (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "PAGE_ID"))
-			define(PROJECT_NAMESPACE . "PAGE_ID", 'add');
+			define(PROJECT_NAMESPACE . "PAGE_ID", 'edit');
 
 		// Table name (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "TABLE_NAME"))
-			define(PROJECT_NAMESPACE . "TABLE_NAME", 'nonjual');
+			define(PROJECT_NAMESPACE . "TABLE_NAME", 'wp_reservasi');
 
 		// Start timer
 		if (!isset($GLOBALS["DebugTimer"]))
@@ -386,14 +386,14 @@ class nonjual_add extends nonjual
 		Page_Unloaded();
 
 		// Export
-		global $nonjual;
+		global $wp_reservasi;
 		if ($this->CustomExport && $this->CustomExport == $this->Export && array_key_exists($this->CustomExport, Config("EXPORT_CLASSES"))) {
 				$content = ob_get_contents();
 			if ($ExportFileName == "")
 				$ExportFileName = $this->TableVar;
 			$class = PROJECT_NAMESPACE . Config("EXPORT_CLASSES." . $this->CustomExport);
 			if (class_exists($class)) {
-				$doc = new $class($nonjual);
+				$doc = new $class($wp_reservasi);
 				$doc->Text = @$content;
 				if ($this->isExport("email"))
 					echo $this->exportEmail($doc->Text);
@@ -428,7 +428,7 @@ class nonjual_add extends nonjual
 				$pageName = GetPageName($url);
 				if ($pageName != $this->getListUrl()) { // Not List page
 					$row["caption"] = $this->getModalCaption($pageName);
-					if ($pageName == "nonjualview.php")
+					if ($pageName == "wp_reservasiview.php")
 						$row["view"] = "1";
 				} else { // List page should not be shown as modal => error
 					$row["error"] = $this->getFailureMessage();
@@ -519,7 +519,7 @@ class nonjual_add extends nonjual
 	{
 		$key = "";
 		if (is_array($ar)) {
-			$key .= @$ar['id_nonjual'];
+			$key .= @$ar['id'];
 		}
 		return $key;
 	}
@@ -532,7 +532,7 @@ class nonjual_add extends nonjual
 	protected function hideFieldsForAddEdit()
 	{
 		if ($this->isAdd() || $this->isCopy() || $this->isGridAdd())
-			$this->id_nonjual->Visible = FALSE;
+			$this->id->Visible = FALSE;
 	}
 
 	// Lookup data
@@ -619,15 +619,11 @@ class nonjual_add extends nonjual
 		$Security->loadCurrentUserLevel(Config("PROJECT_ID") . $this->TableName);
 		if ($Security->isLoggedIn()) $Security->TablePermission_Loaded();
 	}
-	public $FormClassName = "ew-horizontal ew-form ew-add-form";
+	public $FormClassName = "ew-horizontal ew-form ew-edit-form";
 	public $IsModal = FALSE;
 	public $IsMobileOrModal = FALSE;
-	public $DbMasterFilter = "";
-	public $DbDetailFilter = "";
-	public $StartRecord;
-	public $Priv = 0;
-	public $OldRecordset;
-	public $CopyRecord;
+	public $DbMasterFilter;
+	public $DbDetailFilter;
 
 	//
 	// Page run
@@ -647,7 +643,7 @@ class nonjual_add extends nonjual
 		// Security
 		if (ValidApiRequest()) { // API request
 			$this->setupApiSecurity(); // Set up API Security
-			if (!$Security->canAdd()) {
+			if (!$Security->canEdit()) {
 				SetStatus(401); // Unauthorized
 				return;
 			}
@@ -660,11 +656,11 @@ class nonjual_add extends nonjual
 			$Security->loadCurrentUserLevel($this->ProjectID . $this->TableName);
 			if ($Security->isLoggedIn())
 				$Security->TablePermission_Loaded();
-			if (!$Security->canAdd()) {
+			if (!$Security->canEdit()) {
 				$Security->saveLastUrl();
 				$this->setFailureMessage(DeniedMessage()); // Set no permission
 				if ($Security->canList())
-					$this->terminate(GetUrl("nonjuallist.php"));
+					$this->terminate(GetUrl("wp_reservasilist.php"));
 				else
 					$this->terminate(GetUrl("login.php"));
 				return;
@@ -674,11 +670,18 @@ class nonjual_add extends nonjual
 		// Create form object
 		$CurrentForm = new HttpForm();
 		$this->CurrentAction = Param("action"); // Set up current action
-		$this->id_nonjual->Visible = FALSE;
-		$this->id_klinik->setVisibility();
-		$this->id_staff->setVisibility();
-		$this->tanggal->setVisibility();
+		$this->id->setVisibility();
+		$this->nama->setVisibility();
+		$this->no_telp->setVisibility();
 		$this->keterangan->setVisibility();
+		$this->jenis_perawatan->setVisibility();
+		$this->id_klinik->setVisibility();
+		$this->terapis->setVisibility();
+		$this->tanggal->setVisibility();
+		$this->jam_mulai->setVisibility();
+		$this->jam_selesai->setVisibility();
+		$this->status->setVisibility();
+		$this->created_at->Visible = FALSE;
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -701,12 +704,12 @@ class nonjual_add extends nonjual
 
 		// Set up lookup cache
 		$this->setupLookupOptions($this->id_klinik);
-		$this->setupLookupOptions($this->id_staff);
+		$this->setupLookupOptions($this->terapis);
 
 		// Check permission
-		if (!$Security->canAdd()) {
+		if (!$Security->canEdit()) {
 			$this->setFailureMessage(DeniedMessage()); // No permission
-			$this->terminate("nonjuallist.php");
+			$this->terminate("wp_reservasilist.php");
 			return;
 		}
 
@@ -714,107 +717,130 @@ class nonjual_add extends nonjual
 		if ($this->IsModal)
 			$SkipHeaderFooter = TRUE;
 		$this->IsMobileOrModal = IsMobile() || $this->IsModal;
-		$this->FormClassName = "ew-form ew-add-form ew-horizontal";
+		$this->FormClassName = "ew-form ew-edit-form ew-horizontal";
+		$loaded = FALSE;
 		$postBack = FALSE;
 
-		// Set up current action
+		// Set up current action and primary key
 		if (IsApi()) {
-			$this->CurrentAction = "insert"; // Add record directly
-			$postBack = TRUE;
-		} elseif (Post("action") !== NULL) {
-			$this->CurrentAction = Post("action"); // Get form action
-			$postBack = TRUE;
-		} else { // Not post back
 
-			// Load key values from QueryString
-			$this->CopyRecord = TRUE;
-			if (Get("id_nonjual") !== NULL) {
-				$this->id_nonjual->setQueryStringValue(Get("id_nonjual"));
-				$this->setKey("id_nonjual", $this->id_nonjual->CurrentValue); // Set up key
+			// Load key values
+			$loaded = TRUE;
+			if (Get("id") !== NULL) {
+				$this->id->setQueryStringValue(Get("id"));
+				$this->id->setOldValue($this->id->QueryStringValue);
+			} elseif (Key(0) !== NULL) {
+				$this->id->setQueryStringValue(Key(0));
+				$this->id->setOldValue($this->id->QueryStringValue);
+			} elseif (Post("id") !== NULL) {
+				$this->id->setFormValue(Post("id"));
+				$this->id->setOldValue($this->id->FormValue);
+			} elseif (Route(2) !== NULL) {
+				$this->id->setQueryStringValue(Route(2));
+				$this->id->setOldValue($this->id->QueryStringValue);
 			} else {
-				$this->setKey("id_nonjual", ""); // Clear key
-				$this->CopyRecord = FALSE;
+				$loaded = FALSE; // Unable to load key
 			}
-			if ($this->CopyRecord) {
-				$this->CurrentAction = "copy"; // Copy record
+
+			// Load record
+			if ($loaded)
+				$loaded = $this->loadRow();
+			if (!$loaded) {
+				$this->setFailureMessage($Language->phrase("NoRecord")); // Set no record message
+				$this->terminate();
+				return;
+			}
+			$this->CurrentAction = "update"; // Update record directly
+			$postBack = TRUE;
+		} else {
+			if (Post("action") !== NULL) {
+				$this->CurrentAction = Post("action"); // Get action code
+				if (!$this->isShow()) // Not reload record, handle as postback
+					$postBack = TRUE;
+
+				// Load key from Form
+				if ($CurrentForm->hasValue("x_id")) {
+					$this->id->setFormValue($CurrentForm->getValue("x_id"));
+				}
 			} else {
-				$this->CurrentAction = "show"; // Display blank record
+				$this->CurrentAction = "show"; // Default action is display
+
+				// Load key from QueryString / Route
+				$loadByQuery = FALSE;
+				if (Get("id") !== NULL) {
+					$this->id->setQueryStringValue(Get("id"));
+					$loadByQuery = TRUE;
+				} elseif (Route(2) !== NULL) {
+					$this->id->setQueryStringValue(Route(2));
+					$loadByQuery = TRUE;
+				} else {
+					$this->id->CurrentValue = NULL;
+				}
 			}
+
+			// Load current record
+			$loaded = $this->loadRow();
 		}
 
-		// Load old record / default values
-		$loaded = $this->loadOldRecord();
-
-		// Load form values
+		// Process form if post back
 		if ($postBack) {
-			$this->loadFormValues(); // Load form values
+			$this->loadFormValues(); // Get form values
 		}
-
-		// Set up detail parameters
-		$this->setupDetailParms();
 
 		// Validate form if post back
 		if ($postBack) {
 			if (!$this->validateForm()) {
-				$this->EventCancelled = TRUE; // Event cancelled
-				$this->restoreFormValues(); // Restore form values
 				$this->setFailureMessage($FormError);
+				$this->EventCancelled = TRUE; // Event cancelled
+				$this->restoreFormValues();
 				if (IsApi()) {
 					$this->terminate();
 					return;
 				} else {
-					$this->CurrentAction = "show"; // Form error, reset action
+					$this->CurrentAction = ""; // Form error, reset action
 				}
 			}
 		}
 
 		// Perform current action
 		switch ($this->CurrentAction) {
-			case "copy": // Copy an existing record
-				if (!$loaded) { // Record not loaded
+			case "show": // Get a record to display
+				if (!$loaded) { // Load record based on key
 					if ($this->getFailureMessage() == "")
 						$this->setFailureMessage($Language->phrase("NoRecord")); // No record found
-					$this->terminate("nonjuallist.php"); // No matching record, return to list
+					$this->terminate("wp_reservasilist.php"); // No matching record, return to list
 				}
-
-				// Set up detail parameters
-				$this->setupDetailParms();
 				break;
-			case "insert": // Add new record
-				$this->SendEmail = TRUE; // Send email on add success
-				if ($this->addRow($this->OldRecordset)) { // Add successful
+			case "update": // Update
+				$returnUrl = $this->getReturnUrl();
+				if (GetPageName($returnUrl) == "wp_reservasilist.php")
+					$returnUrl = $this->addMasterUrl($returnUrl); // List page, return to List page with correct master key if necessary
+				$this->SendEmail = TRUE; // Send email on update success
+				if ($this->editRow()) { // Update record based on key
 					if ($this->getSuccessMessage() == "")
-						$this->setSuccessMessage($Language->phrase("AddSuccess")); // Set up success message
-					$returnUrl = "nonjuallist.php";
-					if (GetPageName($returnUrl) == "nonjuallist.php")
-						$returnUrl = $this->addMasterUrl($returnUrl); // List page, return to List page with correct master key if necessary
-					elseif (GetPageName($returnUrl) == "nonjualview.php")
-						$returnUrl = $this->getViewUrl(); // View page, return to View page with keyurl directly
-					if (IsApi()) { // Return to caller
+						$this->setSuccessMessage($Language->phrase("UpdateSuccess")); // Update success
+					if (IsApi()) {
 						$this->terminate(TRUE);
 						return;
 					} else {
-						$this->terminate($returnUrl);
+						$this->terminate($returnUrl); // Return to caller
 					}
 				} elseif (IsApi()) { // API request, return
 					$this->terminate();
 					return;
+				} elseif ($this->getFailureMessage() == $Language->phrase("NoRecord")) {
+					$this->terminate($returnUrl); // Return to caller
 				} else {
 					$this->EventCancelled = TRUE; // Event cancelled
-					$this->restoreFormValues(); // Add failed, restore form values
-
-					// Set up detail parameters
-					$this->setupDetailParms();
+					$this->restoreFormValues(); // Restore form values if update failed
 				}
 		}
 
 		// Set up Breadcrumb
 		$this->setupBreadcrumb();
 
-		// Render row based on row type
-		$this->RowType = ROWTYPE_ADD; // Render add type
-
-		// Render row
+		// Render the record
+		$this->RowType = ROWTYPE_EDIT; // Render as Edit
 		$this->resetAttributes();
 		$this->renderRow();
 	}
@@ -825,21 +851,6 @@ class nonjual_add extends nonjual
 		global $CurrentForm, $Language;
 	}
 
-	// Load default values
-	protected function loadDefaultValues()
-	{
-		$this->id_nonjual->CurrentValue = NULL;
-		$this->id_nonjual->OldValue = $this->id_nonjual->CurrentValue;
-		$this->id_klinik->CurrentValue = NULL;
-		$this->id_klinik->OldValue = $this->id_klinik->CurrentValue;
-		$this->id_staff->CurrentValue = NULL;
-		$this->id_staff->OldValue = $this->id_staff->CurrentValue;
-		$this->tanggal->CurrentValue = NULL;
-		$this->tanggal->OldValue = $this->tanggal->CurrentValue;
-		$this->keterangan->CurrentValue = NULL;
-		$this->keterangan->OldValue = $this->keterangan->CurrentValue;
-	}
-
 	// Load form values
 	protected function loadFormValues()
 	{
@@ -847,32 +858,27 @@ class nonjual_add extends nonjual
 		// Load from form
 		global $CurrentForm;
 
-		// Check field name 'id_klinik' first before field var 'x_id_klinik'
-		$val = $CurrentForm->hasValue("id_klinik") ? $CurrentForm->getValue("id_klinik") : $CurrentForm->getValue("x_id_klinik");
-		if (!$this->id_klinik->IsDetailKey) {
+		// Check field name 'id' first before field var 'x_id'
+		$val = $CurrentForm->hasValue("id") ? $CurrentForm->getValue("id") : $CurrentForm->getValue("x_id");
+		if (!$this->id->IsDetailKey)
+			$this->id->setFormValue($val);
+
+		// Check field name 'nama' first before field var 'x_nama'
+		$val = $CurrentForm->hasValue("nama") ? $CurrentForm->getValue("nama") : $CurrentForm->getValue("x_nama");
+		if (!$this->nama->IsDetailKey) {
 			if (IsApi() && $val === NULL)
-				$this->id_klinik->Visible = FALSE; // Disable update for API request
+				$this->nama->Visible = FALSE; // Disable update for API request
 			else
-				$this->id_klinik->setFormValue($val);
+				$this->nama->setFormValue($val);
 		}
 
-		// Check field name 'id_staff' first before field var 'x_id_staff'
-		$val = $CurrentForm->hasValue("id_staff") ? $CurrentForm->getValue("id_staff") : $CurrentForm->getValue("x_id_staff");
-		if (!$this->id_staff->IsDetailKey) {
+		// Check field name 'no_telp' first before field var 'x_no_telp'
+		$val = $CurrentForm->hasValue("no_telp") ? $CurrentForm->getValue("no_telp") : $CurrentForm->getValue("x_no_telp");
+		if (!$this->no_telp->IsDetailKey) {
 			if (IsApi() && $val === NULL)
-				$this->id_staff->Visible = FALSE; // Disable update for API request
+				$this->no_telp->Visible = FALSE; // Disable update for API request
 			else
-				$this->id_staff->setFormValue($val);
-		}
-
-		// Check field name 'tanggal' first before field var 'x_tanggal'
-		$val = $CurrentForm->hasValue("tanggal") ? $CurrentForm->getValue("tanggal") : $CurrentForm->getValue("x_tanggal");
-		if (!$this->tanggal->IsDetailKey) {
-			if (IsApi() && $val === NULL)
-				$this->tanggal->Visible = FALSE; // Disable update for API request
-			else
-				$this->tanggal->setFormValue($val);
-			$this->tanggal->CurrentValue = UnFormatDateTime($this->tanggal->CurrentValue, 7);
+				$this->no_telp->setFormValue($val);
 		}
 
 		// Check field name 'keterangan' first before field var 'x_keterangan'
@@ -884,19 +890,91 @@ class nonjual_add extends nonjual
 				$this->keterangan->setFormValue($val);
 		}
 
-		// Check field name 'id_nonjual' first before field var 'x_id_nonjual'
-		$val = $CurrentForm->hasValue("id_nonjual") ? $CurrentForm->getValue("id_nonjual") : $CurrentForm->getValue("x_id_nonjual");
+		// Check field name 'jenis_perawatan' first before field var 'x_jenis_perawatan'
+		$val = $CurrentForm->hasValue("jenis_perawatan") ? $CurrentForm->getValue("jenis_perawatan") : $CurrentForm->getValue("x_jenis_perawatan");
+		if (!$this->jenis_perawatan->IsDetailKey) {
+			if (IsApi() && $val === NULL)
+				$this->jenis_perawatan->Visible = FALSE; // Disable update for API request
+			else
+				$this->jenis_perawatan->setFormValue($val);
+		}
+
+		// Check field name 'id_klinik' first before field var 'x_id_klinik'
+		$val = $CurrentForm->hasValue("id_klinik") ? $CurrentForm->getValue("id_klinik") : $CurrentForm->getValue("x_id_klinik");
+		if (!$this->id_klinik->IsDetailKey) {
+			if (IsApi() && $val === NULL)
+				$this->id_klinik->Visible = FALSE; // Disable update for API request
+			else
+				$this->id_klinik->setFormValue($val);
+		}
+
+		// Check field name 'terapis' first before field var 'x_terapis'
+		$val = $CurrentForm->hasValue("terapis") ? $CurrentForm->getValue("terapis") : $CurrentForm->getValue("x_terapis");
+		if (!$this->terapis->IsDetailKey) {
+			if (IsApi() && $val === NULL)
+				$this->terapis->Visible = FALSE; // Disable update for API request
+			else
+				$this->terapis->setFormValue($val);
+		}
+
+		// Check field name 'tanggal' first before field var 'x_tanggal'
+		$val = $CurrentForm->hasValue("tanggal") ? $CurrentForm->getValue("tanggal") : $CurrentForm->getValue("x_tanggal");
+		if (!$this->tanggal->IsDetailKey) {
+			if (IsApi() && $val === NULL)
+				$this->tanggal->Visible = FALSE; // Disable update for API request
+			else
+				$this->tanggal->setFormValue($val);
+			$this->tanggal->CurrentValue = UnFormatDateTime($this->tanggal->CurrentValue, 0);
+		}
+
+		// Check field name 'jam_mulai' first before field var 'x_jam_mulai'
+		$val = $CurrentForm->hasValue("jam_mulai") ? $CurrentForm->getValue("jam_mulai") : $CurrentForm->getValue("x_jam_mulai");
+		if (!$this->jam_mulai->IsDetailKey) {
+			if (IsApi() && $val === NULL)
+				$this->jam_mulai->Visible = FALSE; // Disable update for API request
+			else
+				$this->jam_mulai->setFormValue($val);
+			$this->jam_mulai->CurrentValue = UnFormatDateTime($this->jam_mulai->CurrentValue, 4);
+		}
+
+		// Check field name 'jam_selesai' first before field var 'x_jam_selesai'
+		$val = $CurrentForm->hasValue("jam_selesai") ? $CurrentForm->getValue("jam_selesai") : $CurrentForm->getValue("x_jam_selesai");
+		if (!$this->jam_selesai->IsDetailKey) {
+			if (IsApi() && $val === NULL)
+				$this->jam_selesai->Visible = FALSE; // Disable update for API request
+			else
+				$this->jam_selesai->setFormValue($val);
+			$this->jam_selesai->CurrentValue = UnFormatDateTime($this->jam_selesai->CurrentValue, 4);
+		}
+
+		// Check field name 'status' first before field var 'x_status'
+		$val = $CurrentForm->hasValue("status") ? $CurrentForm->getValue("status") : $CurrentForm->getValue("x_status");
+		if (!$this->status->IsDetailKey) {
+			if (IsApi() && $val === NULL)
+				$this->status->Visible = FALSE; // Disable update for API request
+			else
+				$this->status->setFormValue($val);
+		}
 	}
 
 	// Restore form values
 	public function restoreFormValues()
 	{
 		global $CurrentForm;
-		$this->id_klinik->CurrentValue = $this->id_klinik->FormValue;
-		$this->id_staff->CurrentValue = $this->id_staff->FormValue;
-		$this->tanggal->CurrentValue = $this->tanggal->FormValue;
-		$this->tanggal->CurrentValue = UnFormatDateTime($this->tanggal->CurrentValue, 7);
+		$this->id->CurrentValue = $this->id->FormValue;
+		$this->nama->CurrentValue = $this->nama->FormValue;
+		$this->no_telp->CurrentValue = $this->no_telp->FormValue;
 		$this->keterangan->CurrentValue = $this->keterangan->FormValue;
+		$this->jenis_perawatan->CurrentValue = $this->jenis_perawatan->FormValue;
+		$this->id_klinik->CurrentValue = $this->id_klinik->FormValue;
+		$this->terapis->CurrentValue = $this->terapis->FormValue;
+		$this->tanggal->CurrentValue = $this->tanggal->FormValue;
+		$this->tanggal->CurrentValue = UnFormatDateTime($this->tanggal->CurrentValue, 0);
+		$this->jam_mulai->CurrentValue = $this->jam_mulai->FormValue;
+		$this->jam_mulai->CurrentValue = UnFormatDateTime($this->jam_mulai->CurrentValue, 4);
+		$this->jam_selesai->CurrentValue = $this->jam_selesai->FormValue;
+		$this->jam_selesai->CurrentValue = UnFormatDateTime($this->jam_selesai->CurrentValue, 4);
+		$this->status->CurrentValue = $this->status->FormValue;
 	}
 
 	// Load row based on key values
@@ -934,23 +1012,36 @@ class nonjual_add extends nonjual
 		$this->Row_Selected($row);
 		if (!$rs || $rs->EOF)
 			return;
-		$this->id_nonjual->setDbValue($row['id_nonjual']);
-		$this->id_klinik->setDbValue($row['id_klinik']);
-		$this->id_staff->setDbValue($row['id_staff']);
-		$this->tanggal->setDbValue($row['tanggal']);
+		$this->id->setDbValue($row['id']);
+		$this->nama->setDbValue($row['nama']);
+		$this->no_telp->setDbValue($row['no_telp']);
 		$this->keterangan->setDbValue($row['keterangan']);
+		$this->jenis_perawatan->setDbValue($row['jenis_perawatan']);
+		$this->id_klinik->setDbValue($row['id_klinik']);
+		$this->terapis->setDbValue($row['terapis']);
+		$this->tanggal->setDbValue($row['tanggal']);
+		$this->jam_mulai->setDbValue($row['jam_mulai']);
+		$this->jam_selesai->setDbValue($row['jam_selesai']);
+		$this->status->setDbValue($row['status']);
+		$this->created_at->setDbValue($row['created_at']);
 	}
 
 	// Return a row with default values
 	protected function newRow()
 	{
-		$this->loadDefaultValues();
 		$row = [];
-		$row['id_nonjual'] = $this->id_nonjual->CurrentValue;
-		$row['id_klinik'] = $this->id_klinik->CurrentValue;
-		$row['id_staff'] = $this->id_staff->CurrentValue;
-		$row['tanggal'] = $this->tanggal->CurrentValue;
-		$row['keterangan'] = $this->keterangan->CurrentValue;
+		$row['id'] = NULL;
+		$row['nama'] = NULL;
+		$row['no_telp'] = NULL;
+		$row['keterangan'] = NULL;
+		$row['jenis_perawatan'] = NULL;
+		$row['id_klinik'] = NULL;
+		$row['terapis'] = NULL;
+		$row['tanggal'] = NULL;
+		$row['jam_mulai'] = NULL;
+		$row['jam_selesai'] = NULL;
+		$row['status'] = NULL;
+		$row['created_at'] = NULL;
 		return $row;
 	}
 
@@ -960,8 +1051,8 @@ class nonjual_add extends nonjual
 
 		// Load key values from Session
 		$validKey = TRUE;
-		if (strval($this->getKey("id_nonjual")) != "")
-			$this->id_nonjual->OldValue = $this->getKey("id_nonjual"); // id_nonjual
+		if (strval($this->getKey("id")) != "")
+			$this->id->OldValue = $this->getKey("id"); // id
 		else
 			$validKey = FALSE;
 
@@ -988,17 +1079,40 @@ class nonjual_add extends nonjual
 		$this->Row_Rendering();
 
 		// Common render codes for all row types
-		// id_nonjual
-		// id_klinik
-		// id_staff
-		// tanggal
+		// id
+		// nama
+		// no_telp
 		// keterangan
+		// jenis_perawatan
+		// id_klinik
+		// terapis
+		// tanggal
+		// jam_mulai
+		// jam_selesai
+		// status
+		// created_at
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
-			// id_nonjual
-			$this->id_nonjual->ViewValue = $this->id_nonjual->CurrentValue;
-			$this->id_nonjual->ViewCustomAttributes = "";
+			// id
+			$this->id->ViewValue = $this->id->CurrentValue;
+			$this->id->ViewCustomAttributes = "";
+
+			// nama
+			$this->nama->ViewValue = $this->nama->CurrentValue;
+			$this->nama->ViewCustomAttributes = "";
+
+			// no_telp
+			$this->no_telp->ViewValue = $this->no_telp->CurrentValue;
+			$this->no_telp->ViewCustomAttributes = "";
+
+			// keterangan
+			$this->keterangan->ViewValue = $this->keterangan->CurrentValue;
+			$this->keterangan->ViewCustomAttributes = "";
+
+			// jenis_perawatan
+			$this->jenis_perawatan->ViewValue = $this->jenis_perawatan->CurrentValue;
+			$this->jenis_perawatan->ViewCustomAttributes = "";
 
 			// id_klinik
 			$curVal = strval($this->id_klinik->CurrentValue);
@@ -1022,61 +1136,138 @@ class nonjual_add extends nonjual
 			}
 			$this->id_klinik->ViewCustomAttributes = "";
 
-			// id_staff
-			$curVal = strval($this->id_staff->CurrentValue);
+			// terapis
+			$curVal = strval($this->terapis->CurrentValue);
 			if ($curVal != "") {
-				$this->id_staff->ViewValue = $this->id_staff->lookupCacheOption($curVal);
-				if ($this->id_staff->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$lookupFilter = function() {
-						return "`status` <> 'Non Aktif'";
-					};
-					$lookupFilter = $lookupFilter->bindTo($this);
-					$sqlWrk = $this->id_staff->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
+				$this->terapis->ViewValue = $this->terapis->lookupCacheOption($curVal);
+				if ($this->terapis->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->terapis->Lookup->getSql(FALSE, $filterWrk, '', $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
 						$arwrk[1] = $rswrk->fields('df');
-						$this->id_staff->ViewValue = $this->id_staff->displayValue($arwrk);
+						$this->terapis->ViewValue = $this->terapis->displayValue($arwrk);
 						$rswrk->Close();
 					} else {
-						$this->id_staff->ViewValue = $this->id_staff->CurrentValue;
+						$this->terapis->ViewValue = $this->terapis->CurrentValue;
 					}
 				}
 			} else {
-				$this->id_staff->ViewValue = NULL;
+				$this->terapis->ViewValue = NULL;
 			}
-			$this->id_staff->ViewCustomAttributes = "";
+			$this->terapis->ViewCustomAttributes = "";
 
 			// tanggal
 			$this->tanggal->ViewValue = $this->tanggal->CurrentValue;
-			$this->tanggal->ViewValue = FormatDateTime($this->tanggal->ViewValue, 7);
+			$this->tanggal->ViewValue = FormatDateTime($this->tanggal->ViewValue, 0);
 			$this->tanggal->ViewCustomAttributes = "";
 
+			// jam_mulai
+			$this->jam_mulai->ViewValue = $this->jam_mulai->CurrentValue;
+			$this->jam_mulai->ViewValue = FormatDateTime($this->jam_mulai->ViewValue, 4);
+			$this->jam_mulai->ViewCustomAttributes = "";
+
+			// jam_selesai
+			$this->jam_selesai->ViewValue = $this->jam_selesai->CurrentValue;
+			$this->jam_selesai->ViewValue = FormatDateTime($this->jam_selesai->ViewValue, 4);
+			$this->jam_selesai->ViewCustomAttributes = "";
+
+			// status
+			$this->status->ViewValue = $this->status->CurrentValue;
+			$this->status->ViewCustomAttributes = "";
+
+			// id
+			$this->id->LinkCustomAttributes = "";
+			$this->id->HrefValue = "";
+			$this->id->TooltipValue = "";
+
+			// nama
+			$this->nama->LinkCustomAttributes = "";
+			$this->nama->HrefValue = "";
+			$this->nama->TooltipValue = "";
+
+			// no_telp
+			$this->no_telp->LinkCustomAttributes = "";
+			$this->no_telp->HrefValue = "";
+			$this->no_telp->TooltipValue = "";
+
 			// keterangan
-			$this->keterangan->ViewValue = $this->keterangan->CurrentValue;
-			$this->keterangan->ViewCustomAttributes = "";
+			$this->keterangan->LinkCustomAttributes = "";
+			$this->keterangan->HrefValue = "";
+			$this->keterangan->TooltipValue = "";
+
+			// jenis_perawatan
+			$this->jenis_perawatan->LinkCustomAttributes = "";
+			$this->jenis_perawatan->HrefValue = "";
+			$this->jenis_perawatan->TooltipValue = "";
 
 			// id_klinik
 			$this->id_klinik->LinkCustomAttributes = "";
 			$this->id_klinik->HrefValue = "";
 			$this->id_klinik->TooltipValue = "";
 
-			// id_staff
-			$this->id_staff->LinkCustomAttributes = "";
-			$this->id_staff->HrefValue = "";
-			$this->id_staff->TooltipValue = "";
+			// terapis
+			$this->terapis->LinkCustomAttributes = "";
+			$this->terapis->HrefValue = "";
+			$this->terapis->TooltipValue = "";
 
 			// tanggal
 			$this->tanggal->LinkCustomAttributes = "";
 			$this->tanggal->HrefValue = "";
 			$this->tanggal->TooltipValue = "";
 
+			// jam_mulai
+			$this->jam_mulai->LinkCustomAttributes = "";
+			$this->jam_mulai->HrefValue = "";
+			$this->jam_mulai->TooltipValue = "";
+
+			// jam_selesai
+			$this->jam_selesai->LinkCustomAttributes = "";
+			$this->jam_selesai->HrefValue = "";
+			$this->jam_selesai->TooltipValue = "";
+
+			// status
+			$this->status->LinkCustomAttributes = "";
+			$this->status->HrefValue = "";
+			$this->status->TooltipValue = "";
+		} elseif ($this->RowType == ROWTYPE_EDIT) { // Edit row
+
+			// id
+			$this->id->EditAttrs["class"] = "form-control";
+			$this->id->EditCustomAttributes = "";
+			$this->id->EditValue = $this->id->CurrentValue;
+			$this->id->ViewCustomAttributes = "";
+
+			// nama
+			$this->nama->EditAttrs["class"] = "form-control";
+			$this->nama->EditCustomAttributes = "";
+			if (!$this->nama->Raw)
+				$this->nama->CurrentValue = HtmlDecode($this->nama->CurrentValue);
+			$this->nama->EditValue = HtmlEncode($this->nama->CurrentValue);
+			$this->nama->PlaceHolder = RemoveHtml($this->nama->caption());
+
+			// no_telp
+			$this->no_telp->EditAttrs["class"] = "form-control";
+			$this->no_telp->EditCustomAttributes = "";
+			if (!$this->no_telp->Raw)
+				$this->no_telp->CurrentValue = HtmlDecode($this->no_telp->CurrentValue);
+			$this->no_telp->EditValue = HtmlEncode($this->no_telp->CurrentValue);
+			$this->no_telp->PlaceHolder = RemoveHtml($this->no_telp->caption());
+
 			// keterangan
-			$this->keterangan->LinkCustomAttributes = "";
-			$this->keterangan->HrefValue = "";
-			$this->keterangan->TooltipValue = "";
-		} elseif ($this->RowType == ROWTYPE_ADD) { // Add row
+			$this->keterangan->EditAttrs["class"] = "form-control";
+			$this->keterangan->EditCustomAttributes = "";
+			$this->keterangan->EditValue = HtmlEncode($this->keterangan->CurrentValue);
+			$this->keterangan->PlaceHolder = RemoveHtml($this->keterangan->caption());
+
+			// jenis_perawatan
+			$this->jenis_perawatan->EditAttrs["class"] = "form-control";
+			$this->jenis_perawatan->EditCustomAttributes = "";
+			if (!$this->jenis_perawatan->Raw)
+				$this->jenis_perawatan->CurrentValue = HtmlDecode($this->jenis_perawatan->CurrentValue);
+			$this->jenis_perawatan->EditValue = HtmlEncode($this->jenis_perawatan->CurrentValue);
+			$this->jenis_perawatan->PlaceHolder = RemoveHtml($this->jenis_perawatan->caption());
 
 			// id_klinik
 			$this->id_klinik->EditAttrs["class"] = "form-control";
@@ -1102,63 +1293,101 @@ class nonjual_add extends nonjual
 				$this->id_klinik->EditValue = $arwrk;
 			}
 
-			// id_staff
-			$this->id_staff->EditAttrs["class"] = "form-control";
-			$this->id_staff->EditCustomAttributes = "";
-			$curVal = trim(strval($this->id_staff->CurrentValue));
+			// terapis
+			$this->terapis->EditAttrs["class"] = "form-control";
+			$this->terapis->EditCustomAttributes = "";
+			$curVal = trim(strval($this->terapis->CurrentValue));
 			if ($curVal != "")
-				$this->id_staff->ViewValue = $this->id_staff->lookupCacheOption($curVal);
+				$this->terapis->ViewValue = $this->terapis->lookupCacheOption($curVal);
 			else
-				$this->id_staff->ViewValue = $this->id_staff->Lookup !== NULL && is_array($this->id_staff->Lookup->Options) ? $curVal : NULL;
-			if ($this->id_staff->ViewValue !== NULL) { // Load from cache
-				$this->id_staff->EditValue = array_values($this->id_staff->Lookup->Options);
+				$this->terapis->ViewValue = $this->terapis->Lookup !== NULL && is_array($this->terapis->Lookup->Options) ? $curVal : NULL;
+			if ($this->terapis->ViewValue !== NULL) { // Load from cache
+				$this->terapis->EditValue = array_values($this->terapis->Lookup->Options);
 			} else { // Lookup from database
 				if ($curVal == "") {
 					$filterWrk = "0=1";
 				} else {
-					$filterWrk = "`id_pegawai`" . SearchString("=", $this->id_staff->CurrentValue, DATATYPE_NUMBER, "");
+					$filterWrk = "`id`" . SearchString("=", $this->terapis->CurrentValue, DATATYPE_NUMBER, "");
 				}
-				$lookupFilter = function() {
-					return "`status` <> 'Non Aktif'";
-				};
-				$lookupFilter = $lookupFilter->bindTo($this);
-				$sqlWrk = $this->id_staff->Lookup->getSql(TRUE, $filterWrk, $lookupFilter, $this);
+				$sqlWrk = $this->terapis->Lookup->getSql(TRUE, $filterWrk, '', $this);
 				$rswrk = Conn()->execute($sqlWrk);
 				$arwrk = $rswrk ? $rswrk->getRows() : [];
 				if ($rswrk)
 					$rswrk->close();
-				$this->id_staff->EditValue = $arwrk;
+				$this->terapis->EditValue = $arwrk;
 			}
 
 			// tanggal
 			$this->tanggal->EditAttrs["class"] = "form-control";
 			$this->tanggal->EditCustomAttributes = "";
-			$this->tanggal->EditValue = HtmlEncode(FormatDateTime($this->tanggal->CurrentValue, 7));
+			$this->tanggal->EditValue = HtmlEncode(FormatDateTime($this->tanggal->CurrentValue, 8));
 			$this->tanggal->PlaceHolder = RemoveHtml($this->tanggal->caption());
 
+			// jam_mulai
+			$this->jam_mulai->EditAttrs["class"] = "form-control";
+			$this->jam_mulai->EditCustomAttributes = "";
+			$this->jam_mulai->EditValue = HtmlEncode($this->jam_mulai->CurrentValue);
+			$this->jam_mulai->PlaceHolder = RemoveHtml($this->jam_mulai->caption());
+
+			// jam_selesai
+			$this->jam_selesai->EditAttrs["class"] = "form-control";
+			$this->jam_selesai->EditCustomAttributes = "";
+			$this->jam_selesai->EditValue = HtmlEncode($this->jam_selesai->CurrentValue);
+			$this->jam_selesai->PlaceHolder = RemoveHtml($this->jam_selesai->caption());
+
+			// status
+			$this->status->EditAttrs["class"] = "form-control";
+			$this->status->EditCustomAttributes = "";
+			if (!$this->status->Raw)
+				$this->status->CurrentValue = HtmlDecode($this->status->CurrentValue);
+			$this->status->EditValue = HtmlEncode($this->status->CurrentValue);
+			$this->status->PlaceHolder = RemoveHtml($this->status->caption());
+
+			// Edit refer script
+			// id
+
+			$this->id->LinkCustomAttributes = "";
+			$this->id->HrefValue = "";
+
+			// nama
+			$this->nama->LinkCustomAttributes = "";
+			$this->nama->HrefValue = "";
+
+			// no_telp
+			$this->no_telp->LinkCustomAttributes = "";
+			$this->no_telp->HrefValue = "";
+
 			// keterangan
-			$this->keterangan->EditAttrs["class"] = "form-control";
-			$this->keterangan->EditCustomAttributes = "";
-			$this->keterangan->EditValue = HtmlEncode($this->keterangan->CurrentValue);
-			$this->keterangan->PlaceHolder = RemoveHtml($this->keterangan->caption());
+			$this->keterangan->LinkCustomAttributes = "";
+			$this->keterangan->HrefValue = "";
 
-			// Add refer script
+			// jenis_perawatan
+			$this->jenis_perawatan->LinkCustomAttributes = "";
+			$this->jenis_perawatan->HrefValue = "";
+
 			// id_klinik
-
 			$this->id_klinik->LinkCustomAttributes = "";
 			$this->id_klinik->HrefValue = "";
 
-			// id_staff
-			$this->id_staff->LinkCustomAttributes = "";
-			$this->id_staff->HrefValue = "";
+			// terapis
+			$this->terapis->LinkCustomAttributes = "";
+			$this->terapis->HrefValue = "";
 
 			// tanggal
 			$this->tanggal->LinkCustomAttributes = "";
 			$this->tanggal->HrefValue = "";
 
-			// keterangan
-			$this->keterangan->LinkCustomAttributes = "";
-			$this->keterangan->HrefValue = "";
+			// jam_mulai
+			$this->jam_mulai->LinkCustomAttributes = "";
+			$this->jam_mulai->HrefValue = "";
+
+			// jam_selesai
+			$this->jam_selesai->LinkCustomAttributes = "";
+			$this->jam_selesai->HrefValue = "";
+
+			// status
+			$this->status->LinkCustomAttributes = "";
+			$this->status->HrefValue = "";
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -1179,14 +1408,39 @@ class nonjual_add extends nonjual
 		// Check if validation required
 		if (!Config("SERVER_VALIDATE"))
 			return ($FormError == "");
+		if ($this->id->Required) {
+			if (!$this->id->IsDetailKey && $this->id->FormValue != NULL && $this->id->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->id->caption(), $this->id->RequiredErrorMessage));
+			}
+		}
+		if ($this->nama->Required) {
+			if (!$this->nama->IsDetailKey && $this->nama->FormValue != NULL && $this->nama->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->nama->caption(), $this->nama->RequiredErrorMessage));
+			}
+		}
+		if ($this->no_telp->Required) {
+			if (!$this->no_telp->IsDetailKey && $this->no_telp->FormValue != NULL && $this->no_telp->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->no_telp->caption(), $this->no_telp->RequiredErrorMessage));
+			}
+		}
+		if ($this->keterangan->Required) {
+			if (!$this->keterangan->IsDetailKey && $this->keterangan->FormValue != NULL && $this->keterangan->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->keterangan->caption(), $this->keterangan->RequiredErrorMessage));
+			}
+		}
+		if ($this->jenis_perawatan->Required) {
+			if (!$this->jenis_perawatan->IsDetailKey && $this->jenis_perawatan->FormValue != NULL && $this->jenis_perawatan->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->jenis_perawatan->caption(), $this->jenis_perawatan->RequiredErrorMessage));
+			}
+		}
 		if ($this->id_klinik->Required) {
 			if (!$this->id_klinik->IsDetailKey && $this->id_klinik->FormValue != NULL && $this->id_klinik->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->id_klinik->caption(), $this->id_klinik->RequiredErrorMessage));
 			}
 		}
-		if ($this->id_staff->Required) {
-			if (!$this->id_staff->IsDetailKey && $this->id_staff->FormValue != NULL && $this->id_staff->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->id_staff->caption(), $this->id_staff->RequiredErrorMessage));
+		if ($this->terapis->Required) {
+			if (!$this->terapis->IsDetailKey && $this->terapis->FormValue != NULL && $this->terapis->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->terapis->caption(), $this->terapis->RequiredErrorMessage));
 			}
 		}
 		if ($this->tanggal->Required) {
@@ -1194,21 +1448,29 @@ class nonjual_add extends nonjual
 				AddMessage($FormError, str_replace("%s", $this->tanggal->caption(), $this->tanggal->RequiredErrorMessage));
 			}
 		}
-		if (!CheckEuroDate($this->tanggal->FormValue)) {
+		if (!CheckDate($this->tanggal->FormValue)) {
 			AddMessage($FormError, $this->tanggal->errorMessage());
 		}
-		if ($this->keterangan->Required) {
-			if (!$this->keterangan->IsDetailKey && $this->keterangan->FormValue != NULL && $this->keterangan->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->keterangan->caption(), $this->keterangan->RequiredErrorMessage));
+		if ($this->jam_mulai->Required) {
+			if (!$this->jam_mulai->IsDetailKey && $this->jam_mulai->FormValue != NULL && $this->jam_mulai->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->jam_mulai->caption(), $this->jam_mulai->RequiredErrorMessage));
 			}
 		}
-
-		// Validate detail grid
-		$detailTblVar = explode(",", $this->getCurrentDetailTable());
-		if (in_array("detail_nonjual", $detailTblVar) && $GLOBALS["detail_nonjual"]->DetailAdd) {
-			if (!isset($GLOBALS["detail_nonjual_grid"]))
-				$GLOBALS["detail_nonjual_grid"] = new detail_nonjual_grid(); // Get detail page object
-			$GLOBALS["detail_nonjual_grid"]->validateGridForm();
+		if (!CheckTime($this->jam_mulai->FormValue)) {
+			AddMessage($FormError, $this->jam_mulai->errorMessage());
+		}
+		if ($this->jam_selesai->Required) {
+			if (!$this->jam_selesai->IsDetailKey && $this->jam_selesai->FormValue != NULL && $this->jam_selesai->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->jam_selesai->caption(), $this->jam_selesai->RequiredErrorMessage));
+			}
+		}
+		if (!CheckTime($this->jam_selesai->FormValue)) {
+			AddMessage($FormError, $this->jam_selesai->errorMessage());
+		}
+		if ($this->status->Required) {
+			if (!$this->status->IsDetailKey && $this->status->FormValue != NULL && $this->status->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->status->caption(), $this->status->RequiredErrorMessage));
+			}
 		}
 
 		// Return validate result
@@ -1223,131 +1485,114 @@ class nonjual_add extends nonjual
 		return $validateForm;
 	}
 
-	// Add record
-	protected function addRow($rsold = NULL)
+	// Update record based on key values
+	protected function editRow()
 	{
-		global $Language, $Security;
+		global $Security, $Language;
+		$oldKeyFilter = $this->getRecordFilter();
+		$filter = $this->applyUserIDFilters($oldKeyFilter);
 		$conn = $this->getConnection();
-
-		// Begin transaction
-		if ($this->getCurrentDetailTable() != "")
-			$conn->beginTrans();
-
-		// Load db values from rsold
-		$this->loadDbValues($rsold);
-		if ($rsold) {
-		}
-		$rsnew = [];
-
-		// id_klinik
-		$this->id_klinik->setDbValueDef($rsnew, $this->id_klinik->CurrentValue, NULL, FALSE);
-
-		// id_staff
-		$this->id_staff->setDbValueDef($rsnew, $this->id_staff->CurrentValue, NULL, FALSE);
-
-		// tanggal
-		$this->tanggal->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal->CurrentValue, 7), CurrentDate(), FALSE);
-
-		// keterangan
-		$this->keterangan->setDbValueDef($rsnew, $this->keterangan->CurrentValue, NULL, FALSE);
-
-		// Call Row Inserting event
-		$rs = ($rsold) ? $rsold->fields : NULL;
-		$insertRow = $this->Row_Inserting($rs, $rsnew);
-		if ($insertRow) {
-			$conn->raiseErrorFn = Config("ERROR_FUNC");
-			$addRow = $this->insert($rsnew);
-			$conn->raiseErrorFn = "";
-			if ($addRow) {
-			}
+		$this->CurrentFilter = $filter;
+		$sql = $this->getCurrentSql();
+		$conn->raiseErrorFn = Config("ERROR_FUNC");
+		$rs = $conn->execute($sql);
+		$conn->raiseErrorFn = "";
+		if ($rs === FALSE)
+			return FALSE;
+		if ($rs->EOF) {
+			$this->setFailureMessage($Language->phrase("NoRecord")); // Set no record message
+			$editRow = FALSE; // Update Failed
 		} else {
-			if ($this->getSuccessMessage() != "" || $this->getFailureMessage() != "") {
 
-				// Use the message, do nothing
-			} elseif ($this->CancelMessage != "") {
-				$this->setFailureMessage($this->CancelMessage);
-				$this->CancelMessage = "";
-			} else {
-				$this->setFailureMessage($Language->phrase("InsertCancelled"));
-			}
-			$addRow = FALSE;
-		}
+			// Save old values
+			$rsold = &$rs->fields;
+			$this->loadDbValues($rsold);
+			$rsnew = [];
 
-		// Add detail records
-		if ($addRow) {
-			$detailTblVar = explode(",", $this->getCurrentDetailTable());
-			if (in_array("detail_nonjual", $detailTblVar) && $GLOBALS["detail_nonjual"]->DetailAdd) {
-				$GLOBALS["detail_nonjual"]->id_nonjual->setSessionValue($this->id_nonjual->CurrentValue); // Set master key
-				if (!isset($GLOBALS["detail_nonjual_grid"]))
-					$GLOBALS["detail_nonjual_grid"] = new detail_nonjual_grid(); // Get detail page object
-				$Security->loadCurrentUserLevel($this->ProjectID . "detail_nonjual"); // Load user level of detail table
-				$addRow = $GLOBALS["detail_nonjual_grid"]->gridInsert();
-				$Security->loadCurrentUserLevel($this->ProjectID . $this->TableName); // Restore user level of master table
-				if (!$addRow) {
-					$GLOBALS["detail_nonjual"]->id_nonjual->setSessionValue(""); // Clear master key if insert failed
+			// nama
+			$this->nama->setDbValueDef($rsnew, $this->nama->CurrentValue, NULL, $this->nama->ReadOnly);
+
+			// no_telp
+			$this->no_telp->setDbValueDef($rsnew, $this->no_telp->CurrentValue, NULL, $this->no_telp->ReadOnly);
+
+			// keterangan
+			$this->keterangan->setDbValueDef($rsnew, $this->keterangan->CurrentValue, NULL, $this->keterangan->ReadOnly);
+
+			// jenis_perawatan
+			$this->jenis_perawatan->setDbValueDef($rsnew, $this->jenis_perawatan->CurrentValue, NULL, $this->jenis_perawatan->ReadOnly);
+
+			// id_klinik
+			$this->id_klinik->setDbValueDef($rsnew, $this->id_klinik->CurrentValue, NULL, $this->id_klinik->ReadOnly);
+
+			// terapis
+			$this->terapis->setDbValueDef($rsnew, $this->terapis->CurrentValue, NULL, $this->terapis->ReadOnly);
+
+			// tanggal
+			$this->tanggal->setDbValueDef($rsnew, UnFormatDateTime($this->tanggal->CurrentValue, 0), NULL, $this->tanggal->ReadOnly);
+
+			// jam_mulai
+			$this->jam_mulai->setDbValueDef($rsnew, $this->jam_mulai->CurrentValue, NULL, $this->jam_mulai->ReadOnly);
+
+			// jam_selesai
+			$this->jam_selesai->setDbValueDef($rsnew, $this->jam_selesai->CurrentValue, NULL, $this->jam_selesai->ReadOnly);
+
+			// status
+			$this->status->setDbValueDef($rsnew, $this->status->CurrentValue, NULL, $this->status->ReadOnly);
+
+			// Call Row Updating event
+			$updateRow = $this->Row_Updating($rsold, $rsnew);
+
+			// Check for duplicate key when key changed
+			if ($updateRow) {
+				$newKeyFilter = $this->getRecordFilter($rsnew);
+				if ($newKeyFilter != $oldKeyFilter) {
+					$rsChk = $this->loadRs($newKeyFilter);
+					if ($rsChk && !$rsChk->EOF) {
+						$keyErrMsg = str_replace("%f", $newKeyFilter, $Language->phrase("DupKey"));
+						$this->setFailureMessage($keyErrMsg);
+						$rsChk->close();
+						$updateRow = FALSE;
+					}
 				}
 			}
-		}
-
-		// Commit/Rollback transaction
-		if ($this->getCurrentDetailTable() != "") {
-			if ($addRow) {
-				$conn->commitTrans(); // Commit transaction
+			if ($updateRow) {
+				$conn->raiseErrorFn = Config("ERROR_FUNC");
+				if (count($rsnew) > 0)
+					$editRow = $this->update($rsnew, "", $rsold);
+				else
+					$editRow = TRUE; // No field to update
+				$conn->raiseErrorFn = "";
+				if ($editRow) {
+				}
 			} else {
-				$conn->rollbackTrans(); // Rollback transaction
+				if ($this->getSuccessMessage() != "" || $this->getFailureMessage() != "") {
+
+					// Use the message, do nothing
+				} elseif ($this->CancelMessage != "") {
+					$this->setFailureMessage($this->CancelMessage);
+					$this->CancelMessage = "";
+				} else {
+					$this->setFailureMessage($Language->phrase("UpdateCancelled"));
+				}
+				$editRow = FALSE;
 			}
 		}
-		if ($addRow) {
 
-			// Call Row Inserted event
-			$rs = ($rsold) ? $rsold->fields : NULL;
-			$this->Row_Inserted($rs, $rsnew);
-		}
+		// Call Row_Updated event
+		if ($editRow)
+			$this->Row_Updated($rsold, $rsnew);
+		$rs->close();
 
 		// Clean upload path if any
-		if ($addRow) {
+		if ($editRow) {
 		}
 
 		// Write JSON for API request
-		if (IsApi() && $addRow) {
+		if (IsApi() && $editRow) {
 			$row = $this->getRecordsFromRecordset([$rsnew], TRUE);
 			WriteJson(["success" => TRUE, $this->TableVar => $row]);
 		}
-		return $addRow;
-	}
-
-	// Set up detail parms based on QueryString
-	protected function setupDetailParms()
-	{
-
-		// Get the keys for master table
-		$detailTblVar = Get(Config("TABLE_SHOW_DETAIL"));
-		if ($detailTblVar !== NULL) {
-			$this->setCurrentDetailTable($detailTblVar);
-		} else {
-			$detailTblVar = $this->getCurrentDetailTable();
-		}
-		if ($detailTblVar != "") {
-			$detailTblVar = explode(",", $detailTblVar);
-			if (in_array("detail_nonjual", $detailTblVar)) {
-				if (!isset($GLOBALS["detail_nonjual_grid"]))
-					$GLOBALS["detail_nonjual_grid"] = new detail_nonjual_grid();
-				if ($GLOBALS["detail_nonjual_grid"]->DetailAdd) {
-					if ($this->CopyRecord)
-						$GLOBALS["detail_nonjual_grid"]->CurrentMode = "copy";
-					else
-						$GLOBALS["detail_nonjual_grid"]->CurrentMode = "add";
-					$GLOBALS["detail_nonjual_grid"]->CurrentAction = "gridadd";
-
-					// Save current master table to detail table
-					$GLOBALS["detail_nonjual_grid"]->setCurrentMasterTable($this->TableVar);
-					$GLOBALS["detail_nonjual_grid"]->setStartRecordNumber(1);
-					$GLOBALS["detail_nonjual_grid"]->id_nonjual->IsDetailKey = TRUE;
-					$GLOBALS["detail_nonjual_grid"]->id_nonjual->CurrentValue = $this->id_nonjual->CurrentValue;
-					$GLOBALS["detail_nonjual_grid"]->id_nonjual->setSessionValue($GLOBALS["detail_nonjual_grid"]->id_nonjual->CurrentValue);
-				}
-			}
-		}
+		return $editRow;
 	}
 
 	// Set up Breadcrumb
@@ -1356,9 +1601,9 @@ class nonjual_add extends nonjual
 		global $Breadcrumb, $Language;
 		$Breadcrumb = new Breadcrumb();
 		$url = substr(CurrentUrl(), strrpos(CurrentUrl(), "/")+1);
-		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("nonjuallist.php"), "", $this->TableVar, TRUE);
-		$pageId = ($this->isCopy()) ? "Copy" : "Add";
-		$Breadcrumb->add("add", $pageId, $url);
+		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("wp_reservasilist.php"), "", $this->TableVar, TRUE);
+		$pageId = "edit";
+		$Breadcrumb->add("edit", $pageId, $url);
 	}
 
 	// Setup lookup options
@@ -1377,11 +1622,7 @@ class nonjual_add extends nonjual
 			switch ($fld->FieldVar) {
 				case "x_id_klinik":
 					break;
-				case "x_id_staff":
-					$lookupFilter = function() {
-						return "`status` <> 'Non Aktif'";
-					};
-					$lookupFilter = $lookupFilter->bindTo($this);
+				case "x_terapis":
 					break;
 				default:
 					$lookupFilter = "";
@@ -1405,7 +1646,7 @@ class nonjual_add extends nonjual
 					switch ($fld->FieldVar) {
 						case "x_id_klinik":
 							break;
-						case "x_id_staff":
+						case "x_terapis":
 							break;
 					}
 					$ar[strval($row[0])] = $row;
@@ -1415,6 +1656,44 @@ class nonjual_add extends nonjual
 					$rs->close();
 				$fld->Lookup->Options = $ar;
 			}
+		}
+	}
+
+	// Set up starting record parameters
+	public function setupStartRecord()
+	{
+		if ($this->DisplayRecords == 0)
+			return;
+		if ($this->isPageRequest()) { // Validate request
+			$startRec = Get(Config("TABLE_START_REC"));
+			$pageNo = Get(Config("TABLE_PAGE_NO"));
+			if ($pageNo !== NULL) { // Check for "pageno" parameter first
+				if (is_numeric($pageNo)) {
+					$this->StartRecord = ($pageNo - 1) * $this->DisplayRecords + 1;
+					if ($this->StartRecord <= 0) {
+						$this->StartRecord = 1;
+					} elseif ($this->StartRecord >= (int)(($this->TotalRecords - 1)/$this->DisplayRecords) * $this->DisplayRecords + 1) {
+						$this->StartRecord = (int)(($this->TotalRecords - 1)/$this->DisplayRecords) * $this->DisplayRecords + 1;
+					}
+					$this->setStartRecordNumber($this->StartRecord);
+				}
+			} elseif ($startRec !== NULL) { // Check for "start" parameter
+				$this->StartRecord = $startRec;
+				$this->setStartRecordNumber($this->StartRecord);
+			}
+		}
+		$this->StartRecord = $this->getStartRecordNumber();
+
+		// Check if correct start record counter
+		if (!is_numeric($this->StartRecord) || $this->StartRecord == "") { // Avoid invalid start record counter
+			$this->StartRecord = 1; // Reset start record counter
+			$this->setStartRecordNumber($this->StartRecord);
+		} elseif ($this->StartRecord > $this->TotalRecords) { // Avoid starting record > total records
+			$this->StartRecord = (int)(($this->TotalRecords - 1)/$this->DisplayRecords) * $this->DisplayRecords + 1; // Point to last page first record
+			$this->setStartRecordNumber($this->StartRecord);
+		} elseif (($this->StartRecord - 1) % $this->DisplayRecords != 0) {
+			$this->StartRecord = (int)(($this->StartRecord - 1)/$this->DisplayRecords) * $this->DisplayRecords + 1; // Point to page boundary
+			$this->setStartRecordNumber($this->StartRecord);
 		}
 	}
 

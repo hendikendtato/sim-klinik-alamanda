@@ -1265,10 +1265,12 @@ class purchaseorder extends DbTable
 		// To view properties of field class, use:
 		//var_dump($this-><FieldName>);
 
-		$id_pegawai = CurrentUserInfo("id_pegawai");
-		if($id_pegawai != '' OR $id_pegawai != FALSE){
-			$this->idstaff_po->CurrentValue = $id_pegawai ;
-			$this->idstaff_po->ReadOnly = TRUE; 
+		if(CurrentUserLevel() != '-1') {
+			$id_pegawai = CurrentUserInfo("id_pegawai");
+			if($id_pegawai != '' OR $id_pegawai != FALSE){
+				$this->idstaff_po->CurrentValue = $id_pegawai;
+				$this->idstaff_po->ReadOnly = TRUE; 
+			}
 		}
 	}
 

@@ -80,11 +80,8 @@ class detailretur extends DbTable
 		$this->fields['id_retur'] = &$this->id_retur;
 
 		// id_barang
-		$this->id_barang = new DbField('detailretur', 'detailretur', 'x_id_barang', 'id_barang', '`id_barang`', '`id_barang`', 3, 11, -1, FALSE, '`id_barang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->id_barang = new DbField('detailretur', 'detailretur', 'x_id_barang', 'id_barang', '`id_barang`', '`id_barang`', 3, 11, -1, FALSE, '`id_barang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->id_barang->Sortable = TRUE; // Allow sort
-		$this->id_barang->UsePleaseSelect = TRUE; // Use PleaseSelect by default
-		$this->id_barang->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->id_barang->Lookup = new Lookup('id_barang', 'view_hargajual', FALSE, 'id', ["nama_barang","","",""], ["returbarang x_id_klinik"], [], ["id_klinik"], ["x_id_klinik"], ["satuan"], ["x_id_satuan"], '', '');
 		$this->id_barang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id_barang'] = &$this->id_barang;
 
@@ -780,25 +777,8 @@ class detailretur extends DbTable
 		$this->id_retur->ViewCustomAttributes = "";
 
 		// id_barang
-		$curVal = strval($this->id_barang->CurrentValue);
-		if ($curVal != "") {
-			$this->id_barang->ViewValue = $this->id_barang->lookupCacheOption($curVal);
-			if ($this->id_barang->ViewValue === NULL) { // Lookup from database
-				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-				$sqlWrk = $this->id_barang->Lookup->getSql(FALSE, $filterWrk, '', $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup values found
-					$arwrk = [];
-					$arwrk[1] = $rswrk->fields('df');
-					$this->id_barang->ViewValue = $this->id_barang->displayValue($arwrk);
-					$rswrk->Close();
-				} else {
-					$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
-				}
-			}
-		} else {
-			$this->id_barang->ViewValue = NULL;
-		}
+		$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
+		$this->id_barang->ViewValue = FormatNumber($this->id_barang->ViewValue, 0, -2, -2, -2);
 		$this->id_barang->ViewCustomAttributes = "";
 
 		// jumlah
@@ -890,6 +870,8 @@ class detailretur extends DbTable
 		// id_barang
 		$this->id_barang->EditAttrs["class"] = "form-control";
 		$this->id_barang->EditCustomAttributes = "";
+		$this->id_barang->EditValue = $this->id_barang->CurrentValue;
+		$this->id_barang->PlaceHolder = RemoveHtml($this->id_barang->caption());
 
 		// jumlah
 		$this->jumlah->EditAttrs["class"] = "form-control";

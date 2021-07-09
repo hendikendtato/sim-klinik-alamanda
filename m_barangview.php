@@ -161,16 +161,6 @@ $m_barang_view->showMessage();
 </td>
 	</tr>
 <?php } ?>
-<?php if ($m_barang_view->status->Visible) { // status ?>
-	<tr id="r_status">
-		<td class="<?php echo $m_barang_view->TableLeftColumnClass ?>"><span id="elh_m_barang_status"><?php echo $m_barang_view->status->caption() ?></span></td>
-		<td data-name="status" <?php echo $m_barang_view->status->cellAttributes() ?>>
-<span id="el_m_barang_status">
-<span<?php echo $m_barang_view->status->viewAttributes() ?>><?php echo $m_barang_view->status->getViewValue() ?></span>
-</span>
-</td>
-	</tr>
-<?php } ?>
 <?php if ($m_barang_view->shortname_barang->Visible) { // shortname_barang ?>
 	<tr id="r_shortname_barang">
 		<td class="<?php echo $m_barang_view->TableLeftColumnClass ?>"><span id="elh_m_barang_shortname_barang"><?php echo $m_barang_view->shortname_barang->caption() ?></span></td>

@@ -797,6 +797,7 @@ class detailpenjualan_view extends detailpenjualan
 		$this->qty->setVisibility();
 		$this->disc_pr->setVisibility();
 		$this->disc_rp->setVisibility();
+		$this->voucher_barang->setVisibility();
 		$this->komisi_recall->setVisibility();
 		$this->subtotal->setVisibility();
 		$this->hna->setVisibility();
@@ -822,9 +823,6 @@ class detailpenjualan_view extends detailpenjualan
 
 		// Set up lookup cache
 		$this->setupLookupOptions($this->id_penjualan);
-		$this->setupLookupOptions($this->id_barang);
-		$this->setupLookupOptions($this->kode_barang);
-		$this->setupLookupOptions($this->nama_barang);
 		$this->setupLookupOptions($this->komisi_recall);
 
 		// Check permission
@@ -1035,6 +1033,7 @@ class detailpenjualan_view extends detailpenjualan
 		$this->qty->setDbValue($row['qty']);
 		$this->disc_pr->setDbValue($row['disc_pr']);
 		$this->disc_rp->setDbValue($row['disc_rp']);
+		$this->voucher_barang->setDbValue($row['voucher_barang']);
 		$this->komisi_recall->setDbValue($row['komisi_recall']);
 		$this->subtotal->setDbValue($row['subtotal']);
 		$this->hna->setDbValue($row['hna']);
@@ -1056,6 +1055,7 @@ class detailpenjualan_view extends detailpenjualan
 		$row['qty'] = NULL;
 		$row['disc_pr'] = NULL;
 		$row['disc_rp'] = NULL;
+		$row['voucher_barang'] = NULL;
 		$row['komisi_recall'] = NULL;
 		$row['subtotal'] = NULL;
 		$row['hna'] = NULL;
@@ -1096,6 +1096,10 @@ class detailpenjualan_view extends detailpenjualan
 			$this->disc_rp->CurrentValue = ConvertToFloatString($this->disc_rp->CurrentValue);
 
 		// Convert decimal values if posted back
+		if ($this->voucher_barang->FormValue == $this->voucher_barang->CurrentValue && is_numeric(ConvertToFloatString($this->voucher_barang->CurrentValue)))
+			$this->voucher_barang->CurrentValue = ConvertToFloatString($this->voucher_barang->CurrentValue);
+
+		// Convert decimal values if posted back
 		if ($this->subtotal->FormValue == $this->subtotal->CurrentValue && is_numeric(ConvertToFloatString($this->subtotal->CurrentValue)))
 			$this->subtotal->CurrentValue = ConvertToFloatString($this->subtotal->CurrentValue);
 
@@ -1115,6 +1119,7 @@ class detailpenjualan_view extends detailpenjualan
 		// qty
 		// disc_pr
 		// disc_rp
+		// voucher_barang
 		// komisi_recall
 		// subtotal
 		// hna
@@ -1149,80 +1154,17 @@ class detailpenjualan_view extends detailpenjualan
 
 			// id_barang
 			$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
-			$curVal = strval($this->id_barang->CurrentValue);
-			if ($curVal != "") {
-				$this->id_barang->ViewValue = $this->id_barang->lookupCacheOption($curVal);
-				if ($this->id_barang->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->id_barang->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$arwrk[2] = $rswrk->fields('df2');
-						$this->id_barang->ViewValue = $this->id_barang->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
-					}
-				}
-			} else {
-				$this->id_barang->ViewValue = NULL;
-			}
+			$this->id_barang->ViewValue = FormatNumber($this->id_barang->ViewValue, 0, -2, -2, -2);
 			$this->id_barang->ViewCustomAttributes = "";
 
 			// kode_barang
 			$this->kode_barang->ViewValue = $this->kode_barang->CurrentValue;
-			$curVal = strval($this->kode_barang->CurrentValue);
-			if ($curVal != "") {
-				$this->kode_barang->ViewValue = $this->kode_barang->lookupCacheOption($curVal);
-				if ($this->kode_barang->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$lookupFilter = function() {
-						return "`discontinue` <> 'Yes'";
-					};
-					$lookupFilter = $lookupFilter->bindTo($this);
-					$sqlWrk = $this->kode_barang->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->kode_barang->ViewValue = $this->kode_barang->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->kode_barang->ViewValue = $this->kode_barang->CurrentValue;
-					}
-				}
-			} else {
-				$this->kode_barang->ViewValue = NULL;
-			}
+			$this->kode_barang->ViewValue = FormatNumber($this->kode_barang->ViewValue, 0, -2, -2, -2);
 			$this->kode_barang->ViewCustomAttributes = "";
 
 			// nama_barang
 			$this->nama_barang->ViewValue = $this->nama_barang->CurrentValue;
-			$curVal = strval($this->nama_barang->CurrentValue);
-			if ($curVal != "") {
-				$this->nama_barang->ViewValue = $this->nama_barang->lookupCacheOption($curVal);
-				if ($this->nama_barang->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$lookupFilter = function() {
-						return "`discontinue` <> 'Yes'";
-					};
-					$lookupFilter = $lookupFilter->bindTo($this);
-					$sqlWrk = $this->nama_barang->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->nama_barang->ViewValue = $this->nama_barang->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->nama_barang->ViewValue = $this->nama_barang->CurrentValue;
-					}
-				}
-			} else {
-				$this->nama_barang->ViewValue = NULL;
-			}
+			$this->nama_barang->ViewValue = FormatNumber($this->nama_barang->ViewValue, 0, -2, -2, -2);
 			$this->nama_barang->ViewCustomAttributes = "";
 
 			// id_kemasan
@@ -1258,6 +1200,11 @@ class detailpenjualan_view extends detailpenjualan
 			$this->disc_rp->ViewValue = $this->disc_rp->CurrentValue;
 			$this->disc_rp->ViewValue = FormatNumber($this->disc_rp->ViewValue, 2, -2, -2, -2);
 			$this->disc_rp->ViewCustomAttributes = "";
+
+			// voucher_barang
+			$this->voucher_barang->ViewValue = $this->voucher_barang->CurrentValue;
+			$this->voucher_barang->ViewValue = FormatNumber($this->voucher_barang->ViewValue, 2, -2, -2, -2);
+			$this->voucher_barang->ViewCustomAttributes = "";
 
 			// komisi_recall
 			$curVal = strval($this->komisi_recall->CurrentValue);
@@ -1339,6 +1286,11 @@ class detailpenjualan_view extends detailpenjualan
 			$this->disc_rp->LinkCustomAttributes = "";
 			$this->disc_rp->HrefValue = "";
 			$this->disc_rp->TooltipValue = "";
+
+			// voucher_barang
+			$this->voucher_barang->LinkCustomAttributes = "";
+			$this->voucher_barang->HrefValue = "";
+			$this->voucher_barang->TooltipValue = "";
 
 			// komisi_recall
 			$this->komisi_recall->LinkCustomAttributes = "";
@@ -1638,20 +1590,6 @@ class detailpenjualan_view extends detailpenjualan
 			switch ($fld->FieldVar) {
 				case "x_id_penjualan":
 					break;
-				case "x_id_barang":
-					break;
-				case "x_kode_barang":
-					$lookupFilter = function() {
-						return "`discontinue` <> 'Yes'";
-					};
-					$lookupFilter = $lookupFilter->bindTo($this);
-					break;
-				case "x_nama_barang":
-					$lookupFilter = function() {
-						return "`discontinue` <> 'Yes'";
-					};
-					$lookupFilter = $lookupFilter->bindTo($this);
-					break;
 				case "x_komisi_recall":
 					$lookupFilter = function() {
 						return "`status` <> 'Non Aktif'";
@@ -1679,12 +1617,6 @@ class detailpenjualan_view extends detailpenjualan
 					// Format the field values
 					switch ($fld->FieldVar) {
 						case "x_id_penjualan":
-							break;
-						case "x_id_barang":
-							break;
-						case "x_kode_barang":
-							break;
-						case "x_nama_barang":
 							break;
 						case "x_komisi_recall":
 							break;

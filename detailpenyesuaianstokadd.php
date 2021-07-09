@@ -137,12 +137,6 @@ loadjs.ready("head", function() {
 	fdetailpenyesuaianstokadd.validateRequired = <?php echo Config("CLIENT_VALIDATE") ? "true" : "false" ?>;
 
 	// Dynamic selection lists
-	fdetailpenyesuaianstokadd.lists["x_kode_barang"] = <?php echo $detailpenyesuaianstok_add->kode_barang->Lookup->toClientList($detailpenyesuaianstok_add) ?>;
-	fdetailpenyesuaianstokadd.lists["x_kode_barang"].options = <?php echo JsonEncode($detailpenyesuaianstok_add->kode_barang->lookupOptions()) ?>;
-	fdetailpenyesuaianstokadd.autoSuggests["x_kode_barang"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
-	fdetailpenyesuaianstokadd.lists["x_id_barang"] = <?php echo $detailpenyesuaianstok_add->id_barang->Lookup->toClientList($detailpenyesuaianstok_add) ?>;
-	fdetailpenyesuaianstokadd.lists["x_id_barang"].options = <?php echo JsonEncode($detailpenyesuaianstok_add->id_barang->lookupOptions()) ?>;
-	fdetailpenyesuaianstokadd.autoSuggests["x_id_barang"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
 	loadjs.done("fdetailpenyesuaianstokadd");
 });
 </script>
@@ -189,53 +183,20 @@ $detailpenyesuaianstok_add->showMessage();
 <?php } ?>
 <?php if ($detailpenyesuaianstok_add->kode_barang->Visible) { // kode_barang ?>
 	<div id="r_kode_barang" class="form-group row">
-		<label id="elh_detailpenyesuaianstok_kode_barang" class="<?php echo $detailpenyesuaianstok_add->LeftColumnClass ?>"><?php echo $detailpenyesuaianstok_add->kode_barang->caption() ?><?php echo $detailpenyesuaianstok_add->kode_barang->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<label id="elh_detailpenyesuaianstok_kode_barang" for="x_kode_barang" class="<?php echo $detailpenyesuaianstok_add->LeftColumnClass ?>"><?php echo $detailpenyesuaianstok_add->kode_barang->caption() ?><?php echo $detailpenyesuaianstok_add->kode_barang->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $detailpenyesuaianstok_add->RightColumnClass ?>"><div <?php echo $detailpenyesuaianstok_add->kode_barang->cellAttributes() ?>>
 <span id="el_detailpenyesuaianstok_kode_barang">
-<?php
-$onchange = $detailpenyesuaianstok_add->kode_barang->EditAttrs->prepend("onchange", "ew.autoFill(this);");
-$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
-$detailpenyesuaianstok_add->kode_barang->EditAttrs["onchange"] = "";
-?>
-<span id="as_x_kode_barang">
-	<input type="text" class="form-control" name="sv_x_kode_barang" id="sv_x_kode_barang" value="<?php echo RemoveHtml($detailpenyesuaianstok_add->kode_barang->EditValue) ?>" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_add->kode_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_add->kode_barang->getPlaceHolder()) ?>"<?php echo $detailpenyesuaianstok_add->kode_barang->editAttributes() ?>>
-</span>
-<input type="hidden" data-table="detailpenyesuaianstok" data-field="x_kode_barang" data-value-separator="<?php echo $detailpenyesuaianstok_add->kode_barang->displayValueSeparatorAttribute() ?>" name="x_kode_barang" id="x_kode_barang" value="<?php echo HtmlEncode($detailpenyesuaianstok_add->kode_barang->CurrentValue) ?>"<?php echo $onchange ?>>
-<script>
-loadjs.ready(["fdetailpenyesuaianstokadd"], function() {
-	fdetailpenyesuaianstokadd.createAutoSuggest({"id":"x_kode_barang","forceSelect":true});
-});
-</script>
-<?php echo $detailpenyesuaianstok_add->kode_barang->Lookup->getParamTag($detailpenyesuaianstok_add, "p_x_kode_barang") ?>
+<input type="text" data-table="detailpenyesuaianstok" data-field="x_kode_barang" name="x_kode_barang" id="x_kode_barang" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_add->kode_barang->getPlaceHolder()) ?>" value="<?php echo $detailpenyesuaianstok_add->kode_barang->EditValue ?>"<?php echo $detailpenyesuaianstok_add->kode_barang->editAttributes() ?>>
 </span>
 <?php echo $detailpenyesuaianstok_add->kode_barang->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 <?php if ($detailpenyesuaianstok_add->id_barang->Visible) { // id_barang ?>
 	<div id="r_id_barang" class="form-group row">
-		<label id="elh_detailpenyesuaianstok_id_barang" class="<?php echo $detailpenyesuaianstok_add->LeftColumnClass ?>"><?php echo $detailpenyesuaianstok_add->id_barang->caption() ?><?php echo $detailpenyesuaianstok_add->id_barang->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<label id="elh_detailpenyesuaianstok_id_barang" for="x_id_barang" class="<?php echo $detailpenyesuaianstok_add->LeftColumnClass ?>"><?php echo $detailpenyesuaianstok_add->id_barang->caption() ?><?php echo $detailpenyesuaianstok_add->id_barang->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $detailpenyesuaianstok_add->RightColumnClass ?>"><div <?php echo $detailpenyesuaianstok_add->id_barang->cellAttributes() ?>>
 <span id="el_detailpenyesuaianstok_id_barang">
-<?php
-$onchange = $detailpenyesuaianstok_add->id_barang->EditAttrs->prepend("onchange", "");
-$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
-$detailpenyesuaianstok_add->id_barang->EditAttrs["onchange"] = "";
-?>
-<span id="as_x_id_barang">
-	<div class="input-group">
-		<input type="text" class="form-control" name="sv_x_id_barang" id="sv_x_id_barang" value="<?php echo RemoveHtml($detailpenyesuaianstok_add->id_barang->EditValue) ?>" size="50" maxlength="40" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_add->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_add->id_barang->getPlaceHolder()) ?>"<?php echo $detailpenyesuaianstok_add->id_barang->editAttributes() ?>>
-		<div class="input-group-append">
-			<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($detailpenyesuaianstok_add->id_barang->caption()), $Language->phrase("LookupLink", TRUE))) ?>" onclick="ew.modalLookupShow({lnk:this,el:'x_id_barang',m:0,n:10,srch:false});" class="ew-lookup-btn btn btn-default"<?php echo ($detailpenyesuaianstok_add->id_barang->ReadOnly || $detailpenyesuaianstok_add->id_barang->Disabled) ? " disabled" : "" ?>><i class="fas fa-search ew-icon"></i></button>
-		</div>
-	</div>
-</span>
-<input type="hidden" data-table="detailpenyesuaianstok" data-field="x_id_barang" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $detailpenyesuaianstok_add->id_barang->displayValueSeparatorAttribute() ?>" name="x_id_barang" id="x_id_barang" value="<?php echo HtmlEncode($detailpenyesuaianstok_add->id_barang->CurrentValue) ?>"<?php echo $onchange ?>>
-<script>
-loadjs.ready(["fdetailpenyesuaianstokadd"], function() {
-	fdetailpenyesuaianstokadd.createAutoSuggest({"id":"x_id_barang","forceSelect":true});
-});
-</script>
-<?php echo $detailpenyesuaianstok_add->id_barang->Lookup->getParamTag($detailpenyesuaianstok_add, "p_x_id_barang") ?>
+<input type="text" data-table="detailpenyesuaianstok" data-field="x_id_barang" name="x_id_barang" id="x_id_barang" size="50" maxlength="40" placeholder="<?php echo HtmlEncode($detailpenyesuaianstok_add->id_barang->getPlaceHolder()) ?>" value="<?php echo $detailpenyesuaianstok_add->id_barang->EditValue ?>"<?php echo $detailpenyesuaianstok_add->id_barang->editAttributes() ?>>
 </span>
 <?php echo $detailpenyesuaianstok_add->id_barang->CustomMsg ?></div></div>
 	</div>

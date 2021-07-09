@@ -138,9 +138,14 @@ loadjs.ready("head", function() {
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $m_hargajual_edit->subkategori->caption(), $m_hargajual_edit->subkategori->RequiredErrorMessage)) ?>");
 			<?php } ?>
 			<?php if ($m_hargajual_edit->tipe->Required) { ?>
-				elm = this.getElements("x" + infix + "_tipe");
+				elm = this.getElements("x" + infix + "_tipe[]");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $m_hargajual_edit->tipe->caption(), $m_hargajual_edit->tipe->RequiredErrorMessage)) ?>");
+			<?php } ?>
+			<?php if ($m_hargajual_edit->status->Required) { ?>
+				elm = this.getElements("x" + infix + "_status");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $m_hargajual_edit->status->caption(), $m_hargajual_edit->status->RequiredErrorMessage)) ?>");
 			<?php } ?>
 
 				// Call Form_CustomValidate event
@@ -180,8 +185,10 @@ loadjs.ready("head", function() {
 	fm_hargajualedit.lists["x_kategori"].options = <?php echo JsonEncode($m_hargajual_edit->kategori->lookupOptions()) ?>;
 	fm_hargajualedit.lists["x_subkategori"] = <?php echo $m_hargajual_edit->subkategori->Lookup->toClientList($m_hargajual_edit) ?>;
 	fm_hargajualedit.lists["x_subkategori"].options = <?php echo JsonEncode($m_hargajual_edit->subkategori->lookupOptions()) ?>;
-	fm_hargajualedit.lists["x_tipe"] = <?php echo $m_hargajual_edit->tipe->Lookup->toClientList($m_hargajual_edit) ?>;
-	fm_hargajualedit.lists["x_tipe"].options = <?php echo JsonEncode($m_hargajual_edit->tipe->options(FALSE, TRUE)) ?>;
+	fm_hargajualedit.lists["x_tipe[]"] = <?php echo $m_hargajual_edit->tipe->Lookup->toClientList($m_hargajual_edit) ?>;
+	fm_hargajualedit.lists["x_tipe[]"].options = <?php echo JsonEncode($m_hargajual_edit->tipe->options(FALSE, TRUE)) ?>;
+	fm_hargajualedit.lists["x_status"] = <?php echo $m_hargajual_edit->status->Lookup->toClientList($m_hargajual_edit) ?>;
+	fm_hargajualedit.lists["x_status"].options = <?php echo JsonEncode($m_hargajual_edit->status->lookupOptions()) ?>;
 	loadjs.done("fm_hargajualedit");
 });
 </script>
@@ -371,12 +378,27 @@ loadjs.ready(["fm_hargajualedit", "datetimepicker"], function() {
 		<label id="elh_m_hargajual_tipe" class="<?php echo $m_hargajual_edit->LeftColumnClass ?>"><?php echo $m_hargajual_edit->tipe->caption() ?><?php echo $m_hargajual_edit->tipe->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $m_hargajual_edit->RightColumnClass ?>"><div <?php echo $m_hargajual_edit->tipe->cellAttributes() ?>>
 <span id="el_m_hargajual_tipe">
-<div id="tp_x_tipe" class="ew-template"><input type="radio" class="custom-control-input" data-table="m_hargajual" data-field="x_tipe" data-value-separator="<?php echo $m_hargajual_edit->tipe->displayValueSeparatorAttribute() ?>" name="x_tipe" id="x_tipe" value="{value}"<?php echo $m_hargajual_edit->tipe->editAttributes() ?>></div>
+<div id="tp_x_tipe" class="ew-template"><input type="checkbox" class="custom-control-input" data-table="m_hargajual" data-field="x_tipe" data-value-separator="<?php echo $m_hargajual_edit->tipe->displayValueSeparatorAttribute() ?>" name="x_tipe[]" id="x_tipe[]" value="{value}"<?php echo $m_hargajual_edit->tipe->editAttributes() ?>></div>
 <div id="dsl_x_tipe" data-repeatcolumn="5" class="ew-item-list d-none"><div>
-<?php echo $m_hargajual_edit->tipe->radioButtonListHtml(FALSE, "x_tipe") ?>
+<?php echo $m_hargajual_edit->tipe->checkBoxListHtml(FALSE, "x_tipe[]") ?>
 </div></div>
 </span>
 <?php echo $m_hargajual_edit->tipe->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
+<?php if ($m_hargajual_edit->status->Visible) { // status ?>
+	<div id="r_status" class="form-group row">
+		<label id="elh_m_hargajual_status" for="x_status" class="<?php echo $m_hargajual_edit->LeftColumnClass ?>"><?php echo $m_hargajual_edit->status->caption() ?><?php echo $m_hargajual_edit->status->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $m_hargajual_edit->RightColumnClass ?>"><div <?php echo $m_hargajual_edit->status->cellAttributes() ?>>
+<span id="el_m_hargajual_status">
+<div class="input-group">
+	<select class="custom-select ew-custom-select" data-table="m_hargajual" data-field="x_status" data-value-separator="<?php echo $m_hargajual_edit->status->displayValueSeparatorAttribute() ?>" id="x_status" name="x_status"<?php echo $m_hargajual_edit->status->editAttributes() ?>>
+			<?php echo $m_hargajual_edit->status->selectOptionListHtml("x_status") ?>
+		</select>
+</div>
+<?php echo $m_hargajual_edit->status->Lookup->getParamTag($m_hargajual_edit, "p_x_status") ?>
+</span>
+<?php echo $m_hargajual_edit->status->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 </div><!-- /page* -->

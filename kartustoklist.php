@@ -107,15 +107,6 @@ loadjs.ready("head", function() {
 <div class="clearfix"></div>
 </div>
 <?php } ?>
-<?php if (!$kartustok_list->isExport() || Config("EXPORT_MASTER_RECORD") && $kartustok_list->isExport("print")) { ?>
-<?php
-if ($kartustok_list->DbMasterFilter != "" && $kartustok->getCurrentMasterTable() == "V_kartustok") {
-	if ($kartustok_list->MasterRecordExists) {
-		include_once "V_kartustokmaster.php";
-	}
-}
-?>
-<?php } ?>
 <?php
 $kartustok_list->renderOtherOptions();
 ?>
@@ -171,10 +162,6 @@ $kartustok_list->showMessage();
 <input type="hidden" name="<?php echo Config("TOKEN_NAME") ?>" value="<?php echo $Page->Token ?>">
 <?php } ?>
 <input type="hidden" name="t" value="kartustok">
-<?php if ($kartustok->getCurrentMasterTable() == "V_kartustok" && $kartustok->CurrentAction) { ?>
-<input type="hidden" name="<?php echo Config("TABLE_SHOW_MASTER") ?>" value="V_kartustok">
-<input type="hidden" name="fk_id" value="<?php echo HtmlEncode($kartustok_list->id_barang->getSessionValue()) ?>">
-<?php } ?>
 <div id="gmp_kartustok" class="<?php echo ResponsiveTableClass() ?>card-body ew-grid-middle-panel">
 <?php if ($kartustok_list->TotalRecords > 0 || $kartustok_list->isGridEdit()) { ?>
 <table id="tbl_kartustoklist" class="table ew-table"><!-- .ew-table -->

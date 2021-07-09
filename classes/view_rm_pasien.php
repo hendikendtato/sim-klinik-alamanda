@@ -131,7 +131,6 @@ class view_rm_pasien extends DbTable
 		// id_barang
 		$this->id_barang = new DbField('view_rm_pasien', 'view_rm_pasien', 'x_id_barang', 'id_barang', '`id_barang`', '`id_barang`', 3, 11, -1, FALSE, '`id_barang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->id_barang->Sortable = TRUE; // Allow sort
-		$this->id_barang->Lookup = new Lookup('id_barang', 'view_hargajual', FALSE, 'id_barang', ["nama_barang","","",""], ["penjualan x_id_klinik"], [], ["id_klinik"], ["x_id_klinik"], ["totalhargajual"], ["x_harga_jual"], '', '');
 		$this->id_barang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id_barang'] = &$this->id_barang;
 
@@ -899,29 +898,7 @@ class view_rm_pasien extends DbTable
 
 		// id_barang
 		$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
-		$curVal = strval($this->id_barang->CurrentValue);
-		if ($curVal != "") {
-			$this->id_barang->ViewValue = $this->id_barang->lookupCacheOption($curVal);
-			if ($this->id_barang->ViewValue === NULL) { // Lookup from database
-				$filterWrk = "`id_barang`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-				$lookupFilter = function() {
-					return "`tipe` <> 'Bahan'";
-				};
-				$lookupFilter = $lookupFilter->bindTo($this);
-				$sqlWrk = $this->id_barang->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup values found
-					$arwrk = [];
-					$arwrk[1] = $rswrk->fields('df');
-					$this->id_barang->ViewValue = $this->id_barang->displayValue($arwrk);
-					$rswrk->Close();
-				} else {
-					$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
-				}
-			}
-		} else {
-			$this->id_barang->ViewValue = NULL;
-		}
+		$this->id_barang->ViewValue = FormatNumber($this->id_barang->ViewValue, 0, -2, -2, -2);
 		$this->id_barang->ViewCustomAttributes = "";
 
 		// kode_barang

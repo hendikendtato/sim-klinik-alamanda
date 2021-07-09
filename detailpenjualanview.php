@@ -161,6 +161,16 @@ $detailpenjualan_view->showMessage();
 </td>
 	</tr>
 <?php } ?>
+<?php if ($detailpenjualan_view->voucher_barang->Visible) { // voucher_barang ?>
+	<tr id="r_voucher_barang">
+		<td class="<?php echo $detailpenjualan_view->TableLeftColumnClass ?>"><span id="elh_detailpenjualan_voucher_barang"><?php echo $detailpenjualan_view->voucher_barang->caption() ?></span></td>
+		<td data-name="voucher_barang" <?php echo $detailpenjualan_view->voucher_barang->cellAttributes() ?>>
+<span id="el_detailpenjualan_voucher_barang">
+<span<?php echo $detailpenjualan_view->voucher_barang->viewAttributes() ?>><?php echo $detailpenjualan_view->voucher_barang->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
 <?php if ($detailpenjualan_view->komisi_recall->Visible) { // komisi_recall ?>
 	<tr id="r_komisi_recall">
 		<td class="<?php echo $detailpenjualan_view->TableLeftColumnClass ?>"><span id="elh_detailpenjualan_komisi_recall"><?php echo $detailpenjualan_view->komisi_recall->caption() ?></span></td>

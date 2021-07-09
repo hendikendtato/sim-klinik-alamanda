@@ -15,6 +15,16 @@ namespace PHPMaker2020\sim_klinik_alamanda;
 </td>
 		</tr>
 <?php } ?>
+<?php if ($nonjual->id_staff->Visible) { // id_staff ?>
+		<tr id="r_id_staff">
+			<td class="<?php echo $nonjual->TableLeftColumnClass ?>"><?php echo $nonjual->id_staff->caption() ?></td>
+			<td <?php echo $nonjual->id_staff->cellAttributes() ?>>
+<span id="el_nonjual_id_staff">
+<span<?php echo $nonjual->id_staff->viewAttributes() ?>><?php echo $nonjual->id_staff->getViewValue() ?></span>
+</span>
+</td>
+		</tr>
+<?php } ?>
 <?php if ($nonjual->tanggal->Visible) { // tanggal ?>
 		<tr id="r_tanggal">
 			<td class="<?php echo $nonjual->TableLeftColumnClass ?>"><?php echo $nonjual->tanggal->caption() ?></td>

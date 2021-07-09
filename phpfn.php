@@ -13435,7 +13435,8 @@ function SetupLoginStatus() {
 	$LoginStatus["loginUrl"] = $loginUrl;
 	$LoginStatus["loginText"] = $Language->phrase("Login");
 	$LoginStatus["canLogin"] = $loginPage && $loginUrl && !IsLoggedIn();
-	$personalDataPage = "personaldata.php";
+	$id = ExecuteScalar("SELECT userid FROM users WHERE username LIKE '".CurrentUserName()."' ");
+	$personalDataPage = "usersedit.php?_userid=".$id;
 	$personalDataUrl = "";
 	if ($currentPage != $personalDataPage)
 		$personalDataUrl = "window.location='" . GetUrl($personalDataPage) . "';return false;";

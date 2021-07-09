@@ -128,6 +128,15 @@ $detailpenjualan_preview->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
+<?php if ($detailpenjualan_preview->voucher_barang->Visible) { // voucher_barang ?>
+	<?php if ($detailpenjualan->SortUrl($detailpenjualan_preview->voucher_barang) == "") { ?>
+		<th class="<?php echo $detailpenjualan_preview->voucher_barang->headerCellClass() ?>"><?php echo $detailpenjualan_preview->voucher_barang->caption() ?></th>
+	<?php } else { ?>
+		<th class="<?php echo $detailpenjualan_preview->voucher_barang->headerCellClass() ?>"><div class="ew-pointer" data-sort="<?php echo HtmlEncode($detailpenjualan_preview->voucher_barang->Name) ?>" data-sort-order="<?php echo $detailpenjualan_preview->SortField == $detailpenjualan_preview->voucher_barang->Name && $detailpenjualan_preview->SortOrder == "ASC" ? "DESC" : "ASC" ?>">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $detailpenjualan_preview->voucher_barang->caption() ?></span><span class="ew-table-header-sort"><?php if ($detailpenjualan_preview->SortField == $detailpenjualan_preview->voucher_barang->Name) { ?><?php if ($detailpenjualan_preview->SortOrder == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($detailpenjualan_preview->SortOrder == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?><?php } ?></span>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
 <?php if ($detailpenjualan_preview->komisi_recall->Visible) { // komisi_recall ?>
 	<?php if ($detailpenjualan->SortUrl($detailpenjualan_preview->komisi_recall) == "") { ?>
 		<th class="<?php echo $detailpenjualan_preview->komisi_recall->headerCellClass() ?>"><?php echo $detailpenjualan_preview->komisi_recall->caption() ?></th>
@@ -231,6 +240,12 @@ $detailpenjualan_preview->ListOptions->render("body", "left", $detailpenjualan_p
 		<!-- disc_rp -->
 		<td<?php echo $detailpenjualan_preview->disc_rp->cellAttributes() ?>>
 <span<?php echo $detailpenjualan_preview->disc_rp->viewAttributes() ?>><?php echo $detailpenjualan_preview->disc_rp->getViewValue() ?></span>
+</td>
+<?php } ?>
+<?php if ($detailpenjualan_preview->voucher_barang->Visible) { // voucher_barang ?>
+		<!-- voucher_barang -->
+		<td<?php echo $detailpenjualan_preview->voucher_barang->cellAttributes() ?>>
+<span<?php echo $detailpenjualan_preview->voucher_barang->viewAttributes() ?>><?php echo $detailpenjualan_preview->voucher_barang->getViewValue() ?></span>
 </td>
 <?php } ?>
 <?php if ($detailpenjualan_preview->komisi_recall->Visible) { // komisi_recall ?>

@@ -351,10 +351,6 @@ class kartustok_delete extends kartustok
 		if (!isset($GLOBALS['users']))
 			$GLOBALS['users'] = new users();
 
-		// Table object (V_kartustok)
-		if (!isset($GLOBALS['V_kartustok']))
-			$GLOBALS['V_kartustok'] = new V_kartustok();
-
 		// Page ID (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "PAGE_ID"))
 			define(PROJECT_NAMESPACE . "PAGE_ID", 'delete');
@@ -637,9 +633,6 @@ class kartustok_delete extends kartustok
 			$this->terminate("kartustoklist.php");
 			return;
 		}
-
-		// Set up master/detail parameters
-		$this->setupMasterParms();
 
 		// Set up Breadcrumb
 		$this->setupBreadcrumb();
@@ -1320,72 +1313,6 @@ class kartustok_delete extends kartustok
 			WriteJson(["success" => TRUE, $this->TableVar => $row]);
 		}
 		return $deleteRows;
-	}
-
-	// Set up master/detail based on QueryString
-	protected function setupMasterParms()
-	{
-		$validMaster = FALSE;
-
-		// Get the keys for master table
-		if (($master = Get(Config("TABLE_SHOW_MASTER"), Get(Config("TABLE_MASTER")))) !== NULL) {
-			$masterTblVar = $master;
-			if ($masterTblVar == "") {
-				$validMaster = TRUE;
-				$this->DbMasterFilter = "";
-				$this->DbDetailFilter = "";
-			}
-			if ($masterTblVar == "V_kartustok") {
-				$validMaster = TRUE;
-				if (($parm = Get("fk_id", Get("id_barang"))) !== NULL) {
-					$GLOBALS["V_kartustok"]->id->setQueryStringValue($parm);
-					$this->id_barang->setQueryStringValue($GLOBALS["V_kartustok"]->id->QueryStringValue);
-					$this->id_barang->setSessionValue($this->id_barang->QueryStringValue);
-					if (!is_numeric($GLOBALS["V_kartustok"]->id->QueryStringValue))
-						$validMaster = FALSE;
-				} else {
-					$validMaster = FALSE;
-				}
-			}
-		} elseif (($master = Post(Config("TABLE_SHOW_MASTER"), Post(Config("TABLE_MASTER")))) !== NULL) {
-			$masterTblVar = $master;
-			if ($masterTblVar == "") {
-				$validMaster = TRUE;
-				$this->DbMasterFilter = "";
-				$this->DbDetailFilter = "";
-			}
-			if ($masterTblVar == "V_kartustok") {
-				$validMaster = TRUE;
-				if (($parm = Post("fk_id", Post("id_barang"))) !== NULL) {
-					$GLOBALS["V_kartustok"]->id->setFormValue($parm);
-					$this->id_barang->setFormValue($GLOBALS["V_kartustok"]->id->FormValue);
-					$this->id_barang->setSessionValue($this->id_barang->FormValue);
-					if (!is_numeric($GLOBALS["V_kartustok"]->id->FormValue))
-						$validMaster = FALSE;
-				} else {
-					$validMaster = FALSE;
-				}
-			}
-		}
-		if ($validMaster) {
-
-			// Save current master table
-			$this->setCurrentMasterTable($masterTblVar);
-
-			// Reset start record counter (new master key)
-			if (!$this->isAddOrEdit()) {
-				$this->StartRecord = 1;
-				$this->setStartRecordNumber($this->StartRecord);
-			}
-
-			// Clear previous master key from Session
-			if ($masterTblVar != "V_kartustok") {
-				if ($this->id_barang->CurrentValue == "")
-					$this->id_barang->setSessionValue("");
-			}
-		}
-		$this->DbMasterFilter = $this->getMasterFilter(); // Get master filter
-		$this->DbDetailFilter = $this->getDetailFilter(); // Get detail filter
 	}
 
 	// Set up Breadcrumb

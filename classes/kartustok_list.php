@@ -406,10 +406,6 @@ class kartustok_list extends kartustok
 		if (!isset($GLOBALS['users']))
 			$GLOBALS['users'] = new users();
 
-		// Table object (V_kartustok)
-		if (!isset($GLOBALS['V_kartustok']))
-			$GLOBALS['V_kartustok'] = new V_kartustok();
-
 		// Page ID (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "PAGE_ID"))
 			define(PROJECT_NAMESPACE . "PAGE_ID", 'list');
@@ -856,9 +852,6 @@ class kartustok_list extends kartustok
 		// Create Token
 		$this->createToken();
 
-		// Set up master detail parameters
-		$this->setupMasterParms();
-
 		// Setup other options
 		$this->setupOtherOptions();
 
@@ -1015,28 +1008,8 @@ class kartustok_list extends kartustok
 		$filter = "";
 		if (!$Security->canList())
 			$filter = "(0=1)"; // Filter all records
-
-		// Restore master/detail filter
-		$this->DbMasterFilter = $this->getMasterFilter(); // Restore master filter
-		$this->DbDetailFilter = $this->getDetailFilter(); // Restore detail filter
 		AddFilter($filter, $this->DbDetailFilter);
 		AddFilter($filter, $this->SearchWhere);
-
-		// Load master record
-		if ($this->CurrentMode != "add" && $this->getMasterFilter() != "" && $this->getCurrentMasterTable() == "V_kartustok") {
-			global $V_kartustok;
-			$rsmaster = $V_kartustok->loadRs($this->DbMasterFilter);
-			$this->MasterRecordExists = ($rsmaster && !$rsmaster->EOF);
-			if (!$this->MasterRecordExists) {
-				$this->setFailureMessage($Language->phrase("NoRecord")); // Set no record found
-				$this->terminate("V_kartustoklist.php"); // Return to master page
-			} else {
-				$V_kartustok->loadListRowValues($rsmaster);
-				$V_kartustok->RowType = ROWTYPE_MASTER; // Master row
-				$V_kartustok->renderListRow();
-				$rsmaster->close();
-			}
-		}
 
 		// Set up filter
 		if ($this->Command == "json") {
@@ -1656,14 +1629,6 @@ class kartustok_list extends kartustok
 			// Reset search criteria
 			if ($this->Command == "reset" || $this->Command == "resetall")
 				$this->resetSearchParms();
-
-			// Reset master/detail keys
-			if ($this->Command == "resetall") {
-				$this->setCurrentMasterTable(""); // Clear master table
-				$this->DbMasterFilter = "";
-				$this->DbDetailFilter = "";
-				$this->id_barang->setSessionValue("");
-			}
 
 			// Reset sorting order
 			if ($this->Command == "resetsort") {
@@ -2912,26 +2877,6 @@ class kartustok_list extends kartustok
 
 		// Call Page Exporting server event
 		$this->ExportDoc->ExportCustom = !$this->Page_Exporting();
-
-		// Export master record
-		if (Config("EXPORT_MASTER_RECORD") && $this->getMasterFilter() != "" && $this->getCurrentMasterTable() == "V_kartustok") {
-			global $V_kartustok;
-			if (!isset($V_kartustok))
-				$V_kartustok = new V_kartustok();
-			$rsmaster = $V_kartustok->loadRs($this->DbMasterFilter); // Load master record
-			if ($rsmaster && !$rsmaster->EOF) {
-				$exportStyle = $doc->Style;
-				$doc->setStyle("v"); // Change to vertical
-				if (!$this->isExport("csv") || Config("EXPORT_MASTER_RECORD_FOR_CSV")) {
-					$doc->Table = &$V_kartustok;
-					$V_kartustok->exportDocument($doc, $rsmaster);
-					$doc->exportEmptyRow();
-					$doc->Table = &$this;
-				}
-				$doc->setStyle($exportStyle); // Restore
-				$rsmaster->close();
-			}
-		}
 		$header = $this->PageHeader;
 		$this->Page_DataRendering($header);
 		$doc->Text .= $header;
@@ -2975,78 +2920,6 @@ class kartustok_list extends kartustok
 				return $content;
 			}
 		}
-	}
-
-	// Set up master/detail based on QueryString
-	protected function setupMasterParms()
-	{
-		$validMaster = FALSE;
-
-		// Get the keys for master table
-		if (($master = Get(Config("TABLE_SHOW_MASTER"), Get(Config("TABLE_MASTER")))) !== NULL) {
-			$masterTblVar = $master;
-			if ($masterTblVar == "") {
-				$validMaster = TRUE;
-				$this->DbMasterFilter = "";
-				$this->DbDetailFilter = "";
-			}
-			if ($masterTblVar == "V_kartustok") {
-				$validMaster = TRUE;
-				if (($parm = Get("fk_id", Get("id_barang"))) !== NULL) {
-					$GLOBALS["V_kartustok"]->id->setQueryStringValue($parm);
-					$this->id_barang->setQueryStringValue($GLOBALS["V_kartustok"]->id->QueryStringValue);
-					$this->id_barang->setSessionValue($this->id_barang->QueryStringValue);
-					if (!is_numeric($GLOBALS["V_kartustok"]->id->QueryStringValue))
-						$validMaster = FALSE;
-				} else {
-					$validMaster = FALSE;
-				}
-			}
-		} elseif (($master = Post(Config("TABLE_SHOW_MASTER"), Post(Config("TABLE_MASTER")))) !== NULL) {
-			$masterTblVar = $master;
-			if ($masterTblVar == "") {
-				$validMaster = TRUE;
-				$this->DbMasterFilter = "";
-				$this->DbDetailFilter = "";
-			}
-			if ($masterTblVar == "V_kartustok") {
-				$validMaster = TRUE;
-				if (($parm = Post("fk_id", Post("id_barang"))) !== NULL) {
-					$GLOBALS["V_kartustok"]->id->setFormValue($parm);
-					$this->id_barang->setFormValue($GLOBALS["V_kartustok"]->id->FormValue);
-					$this->id_barang->setSessionValue($this->id_barang->FormValue);
-					if (!is_numeric($GLOBALS["V_kartustok"]->id->FormValue))
-						$validMaster = FALSE;
-				} else {
-					$validMaster = FALSE;
-				}
-			}
-		}
-		if ($validMaster) {
-
-			// Update URL
-			$this->AddUrl = $this->addMasterUrl($this->AddUrl);
-			$this->InlineAddUrl = $this->addMasterUrl($this->InlineAddUrl);
-			$this->GridAddUrl = $this->addMasterUrl($this->GridAddUrl);
-			$this->GridEditUrl = $this->addMasterUrl($this->GridEditUrl);
-
-			// Save current master table
-			$this->setCurrentMasterTable($masterTblVar);
-
-			// Reset start record counter (new master key)
-			if (!$this->isAddOrEdit()) {
-				$this->StartRecord = 1;
-				$this->setStartRecordNumber($this->StartRecord);
-			}
-
-			// Clear previous master key from Session
-			if ($masterTblVar != "V_kartustok") {
-				if ($this->id_barang->CurrentValue == "")
-					$this->id_barang->setSessionValue("");
-			}
-		}
-		$this->DbMasterFilter = $this->getMasterFilter(); // Get master filter
-		$this->DbDetailFilter = $this->getDetailFilter(); // Get detail filter
 	}
 
 	// Set up Breadcrumb

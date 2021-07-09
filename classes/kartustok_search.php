@@ -351,10 +351,6 @@ class kartustok_search extends kartustok
 		if (!isset($GLOBALS['users']))
 			$GLOBALS['users'] = new users();
 
-		// Table object (V_kartustok)
-		if (!isset($GLOBALS['V_kartustok']))
-			$GLOBALS['V_kartustok'] = new V_kartustok();
-
 		// Page ID (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "PAGE_ID"))
 			define(PROJECT_NAMESPACE . "PAGE_ID", 'search');

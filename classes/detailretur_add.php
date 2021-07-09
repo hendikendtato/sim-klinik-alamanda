@@ -704,7 +704,6 @@ class detailretur_add extends detailretur
 		$this->createToken();
 
 		// Set up lookup cache
-		$this->setupLookupOptions($this->id_barang);
 		$this->setupLookupOptions($this->id_satuan);
 
 		// Check permission
@@ -1008,25 +1007,8 @@ class detailretur_add extends detailretur
 			$this->id_retur->ViewCustomAttributes = "";
 
 			// id_barang
-			$curVal = strval($this->id_barang->CurrentValue);
-			if ($curVal != "") {
-				$this->id_barang->ViewValue = $this->id_barang->lookupCacheOption($curVal);
-				if ($this->id_barang->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->id_barang->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->id_barang->ViewValue = $this->id_barang->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
-					}
-				}
-			} else {
-				$this->id_barang->ViewValue = NULL;
-			}
+			$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
+			$this->id_barang->ViewValue = FormatNumber($this->id_barang->ViewValue, 0, -2, -2, -2);
 			$this->id_barang->ViewCustomAttributes = "";
 
 			// jumlah
@@ -1091,36 +1073,10 @@ class detailretur_add extends detailretur
 			}
 
 			// id_barang
+			$this->id_barang->EditAttrs["class"] = "form-control";
 			$this->id_barang->EditCustomAttributes = "";
-			$curVal = trim(strval($this->id_barang->CurrentValue));
-			if ($curVal != "")
-				$this->id_barang->ViewValue = $this->id_barang->lookupCacheOption($curVal);
-			else
-				$this->id_barang->ViewValue = $this->id_barang->Lookup !== NULL && is_array($this->id_barang->Lookup->Options) ? $curVal : NULL;
-			if ($this->id_barang->ViewValue !== NULL) { // Load from cache
-				$this->id_barang->EditValue = array_values($this->id_barang->Lookup->Options);
-				if ($this->id_barang->ViewValue == "")
-					$this->id_barang->ViewValue = $Language->phrase("PleaseSelect");
-			} else { // Lookup from database
-				if ($curVal == "") {
-					$filterWrk = "0=1";
-				} else {
-					$filterWrk = "`id`" . SearchString("=", $this->id_barang->CurrentValue, DATATYPE_NUMBER, "");
-				}
-				$sqlWrk = $this->id_barang->Lookup->getSql(TRUE, $filterWrk, '', $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup values found
-					$arwrk = [];
-					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-					$this->id_barang->ViewValue = $this->id_barang->displayValue($arwrk);
-				} else {
-					$this->id_barang->ViewValue = $Language->phrase("PleaseSelect");
-				}
-				$arwrk = $rswrk ? $rswrk->getRows() : [];
-				if ($rswrk)
-					$rswrk->close();
-				$this->id_barang->EditValue = $arwrk;
-			}
+			$this->id_barang->EditValue = HtmlEncode($this->id_barang->CurrentValue);
+			$this->id_barang->PlaceHolder = RemoveHtml($this->id_barang->caption());
 
 			// jumlah
 			$this->jumlah->EditAttrs["class"] = "form-control";
@@ -1204,6 +1160,9 @@ class detailretur_add extends detailretur
 			if (!$this->id_barang->IsDetailKey && $this->id_barang->FormValue != NULL && $this->id_barang->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->id_barang->caption(), $this->id_barang->RequiredErrorMessage));
 			}
+		}
+		if (!CheckInteger($this->id_barang->FormValue)) {
+			AddMessage($FormError, $this->id_barang->errorMessage());
 		}
 		if ($this->jumlah->Required) {
 			if (!$this->jumlah->IsDetailKey && $this->jumlah->FormValue != NULL && $this->jumlah->FormValue == "") {
@@ -1407,8 +1366,6 @@ class detailretur_add extends detailretur
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
-				case "x_id_barang":
-					break;
 				case "x_id_satuan":
 					break;
 				default:
@@ -1431,8 +1388,6 @@ class detailretur_add extends detailretur
 
 					// Format the field values
 					switch ($fld->FieldVar) {
-						case "x_id_barang":
-							break;
 						case "x_id_satuan":
 							break;
 					}

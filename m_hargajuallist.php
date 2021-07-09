@@ -76,6 +76,8 @@ loadjs.ready("head", function() {
 	// Dynamic selection lists
 	fm_hargajuallistsrch.lists["x_id_barang"] = <?php echo $m_hargajual_list->id_barang->Lookup->toClientList($m_hargajual_list) ?>;
 	fm_hargajuallistsrch.lists["x_id_barang"].options = <?php echo JsonEncode($m_hargajual_list->id_barang->lookupOptions()) ?>;
+	fm_hargajuallistsrch.lists["x_tipe[]"] = <?php echo $m_hargajual_list->tipe->Lookup->toClientList($m_hargajual_list) ?>;
+	fm_hargajuallistsrch.lists["x_tipe[]"].options = <?php echo JsonEncode($m_hargajual_list->tipe->options(FALSE, TRUE)) ?>;
 
 	// Filters
 	fm_hargajuallistsrch.filterList = <?php echo $m_hargajual_list->getFilterList() ?>;
@@ -174,6 +176,33 @@ $m_hargajual_list->renderRow();
 </div>
 <?php echo $m_hargajual_list->id_barang->Lookup->getParamTag($m_hargajual_list, "p_x_id_barang") ?>
 <input type="hidden" data-table="m_hargajual" data-field="x_id_barang" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $m_hargajual_list->id_barang->displayValueSeparatorAttribute() ?>" name="x_id_barang" id="x_id_barang" value="<?php echo $m_hargajual_list->id_barang->AdvancedSearch->SearchValue ?>"<?php echo $m_hargajual_list->id_barang->editAttributes() ?>>
+</span>
+	</div>
+	<?php if ($m_hargajual_list->SearchColumnCount % $m_hargajual_list->SearchFieldsPerRow == 0) { ?>
+</div>
+	<?php } ?>
+<?php } ?>
+<?php if ($m_hargajual_list->tipe->Visible) { // tipe ?>
+	<?php
+		$m_hargajual_list->SearchColumnCount++;
+		if (($m_hargajual_list->SearchColumnCount - 1) % $m_hargajual_list->SearchFieldsPerRow == 0) {
+			$m_hargajual_list->SearchRowCount++;
+	?>
+<div id="xsr_<?php echo $m_hargajual_list->SearchRowCount ?>" class="ew-row d-sm-flex">
+	<?php
+		}
+	 ?>
+	<div id="xsc_tipe" class="ew-cell form-group">
+		<label class="ew-search-caption ew-label"><?php echo $m_hargajual_list->tipe->caption() ?></label>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_tipe" id="z_tipe" value="=">
+</span>
+		<span id="el_m_hargajual_tipe" class="ew-search-field">
+<div id="tp_x_tipe" class="ew-template"><input type="checkbox" class="custom-control-input" data-table="m_hargajual" data-field="x_tipe" data-value-separator="<?php echo $m_hargajual_list->tipe->displayValueSeparatorAttribute() ?>" name="x_tipe[]" id="x_tipe[]" value="{value}"<?php echo $m_hargajual_list->tipe->editAttributes() ?>></div>
+<div id="dsl_x_tipe" data-repeatcolumn="5" class="ew-item-list d-none"><div>
+<?php echo $m_hargajual_list->tipe->checkBoxListHtml(FALSE, "x_tipe[]") ?>
+</div></div>
 </span>
 	</div>
 	<?php if ($m_hargajual_list->SearchColumnCount % $m_hargajual_list->SearchFieldsPerRow == 0) { ?>
@@ -334,6 +363,24 @@ $m_hargajual_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
+<?php if ($m_hargajual_list->tipe->Visible) { // tipe ?>
+	<?php if ($m_hargajual_list->SortUrl($m_hargajual_list->tipe) == "") { ?>
+		<th data-name="tipe" class="<?php echo $m_hargajual_list->tipe->headerCellClass() ?>"><div id="elh_m_hargajual_tipe" class="m_hargajual_tipe"><div class="ew-table-header-caption"><?php echo $m_hargajual_list->tipe->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="tipe" class="<?php echo $m_hargajual_list->tipe->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $m_hargajual_list->SortUrl($m_hargajual_list->tipe) ?>', 1);"><div id="elh_m_hargajual_tipe" class="m_hargajual_tipe">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $m_hargajual_list->tipe->caption() ?></span><span class="ew-table-header-sort"><?php if ($m_hargajual_list->tipe->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($m_hargajual_list->tipe->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
+<?php if ($m_hargajual_list->status->Visible) { // status ?>
+	<?php if ($m_hargajual_list->SortUrl($m_hargajual_list->status) == "") { ?>
+		<th data-name="status" class="<?php echo $m_hargajual_list->status->headerCellClass() ?>"><div id="elh_m_hargajual_status" class="m_hargajual_status"><div class="ew-table-header-caption"><?php echo $m_hargajual_list->status->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="status" class="<?php echo $m_hargajual_list->status->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $m_hargajual_list->SortUrl($m_hargajual_list->status) ?>', 1);"><div id="elh_m_hargajual_status" class="m_hargajual_status">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $m_hargajual_list->status->caption() ?></span><span class="ew-table-header-sort"><?php if ($m_hargajual_list->status->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($m_hargajual_list->status->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
 <?php
 
 // Render list options (header, right)
@@ -466,6 +513,20 @@ $m_hargajual_list->ListOptions->render("body", "left", $m_hargajual_list->RowCou
 		<td data-name="tgl_exp" <?php echo $m_hargajual_list->tgl_exp->cellAttributes() ?>>
 <span id="el<?php echo $m_hargajual_list->RowCount ?>_m_hargajual_tgl_exp">
 <span<?php echo $m_hargajual_list->tgl_exp->viewAttributes() ?>><?php echo $m_hargajual_list->tgl_exp->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
+	<?php if ($m_hargajual_list->tipe->Visible) { // tipe ?>
+		<td data-name="tipe" <?php echo $m_hargajual_list->tipe->cellAttributes() ?>>
+<span id="el<?php echo $m_hargajual_list->RowCount ?>_m_hargajual_tipe">
+<span<?php echo $m_hargajual_list->tipe->viewAttributes() ?>><?php echo $m_hargajual_list->tipe->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
+	<?php if ($m_hargajual_list->status->Visible) { // status ?>
+		<td data-name="status" <?php echo $m_hargajual_list->status->cellAttributes() ?>>
+<span id="el<?php echo $m_hargajual_list->RowCount ?>_m_hargajual_status">
+<span<?php echo $m_hargajual_list->status->viewAttributes() ?>><?php echo $m_hargajual_list->status->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>

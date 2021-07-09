@@ -703,7 +703,6 @@ class view_rm_pasien_search extends view_rm_pasien
 
 		// Set up lookup cache
 		$this->setupLookupOptions($this->id_klinik);
-		$this->setupLookupOptions($this->id_barang);
 
 		// Set up Breadcrumb
 		$this->setupBreadcrumb();
@@ -918,29 +917,7 @@ class view_rm_pasien_search extends view_rm_pasien
 
 			// id_barang
 			$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
-			$curVal = strval($this->id_barang->CurrentValue);
-			if ($curVal != "") {
-				$this->id_barang->ViewValue = $this->id_barang->lookupCacheOption($curVal);
-				if ($this->id_barang->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id_barang`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$lookupFilter = function() {
-						return "`tipe` <> 'Bahan'";
-					};
-					$lookupFilter = $lookupFilter->bindTo($this);
-					$sqlWrk = $this->id_barang->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->id_barang->ViewValue = $this->id_barang->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
-					}
-				}
-			} else {
-				$this->id_barang->ViewValue = NULL;
-			}
+			$this->id_barang->ViewValue = FormatNumber($this->id_barang->ViewValue, 0, -2, -2, -2);
 			$this->id_barang->ViewCustomAttributes = "";
 
 			// kode_barang
@@ -1144,12 +1121,6 @@ class view_rm_pasien_search extends view_rm_pasien
 			switch ($fld->FieldVar) {
 				case "x_id_klinik":
 					break;
-				case "x_id_barang":
-					$lookupFilter = function() {
-						return "`tipe` <> 'Bahan'";
-					};
-					$lookupFilter = $lookupFilter->bindTo($this);
-					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -1171,8 +1142,6 @@ class view_rm_pasien_search extends view_rm_pasien
 					// Format the field values
 					switch ($fld->FieldVar) {
 						case "x_id_klinik":
-							break;
-						case "x_id_barang":
 							break;
 					}
 					$ar[strval($row[0])] = $row;

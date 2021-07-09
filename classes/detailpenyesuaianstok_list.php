@@ -863,10 +863,8 @@ class detailpenyesuaianstok_list extends detailpenyesuaianstok
 		}
 
 		// Set up lookup cache
-		$this->setupLookupOptions($this->kode_barang);
-		$this->setupLookupOptions($this->id_barang);
-
 		// Search filters
+
 		$srchAdvanced = ""; // Advanced search filter
 		$srchBasic = ""; // Basic search filter
 		$filter = "";
@@ -1628,56 +1626,12 @@ class detailpenyesuaianstok_list extends detailpenyesuaianstok
 
 			// kode_barang
 			$this->kode_barang->ViewValue = $this->kode_barang->CurrentValue;
-			$curVal = strval($this->kode_barang->CurrentValue);
-			if ($curVal != "") {
-				$this->kode_barang->ViewValue = $this->kode_barang->lookupCacheOption($curVal);
-				if ($this->kode_barang->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$lookupFilter = function() {
-						return "`komposisi` <> 'Yes'";
-					};
-					$lookupFilter = $lookupFilter->bindTo($this);
-					$sqlWrk = $this->kode_barang->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->kode_barang->ViewValue = $this->kode_barang->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->kode_barang->ViewValue = $this->kode_barang->CurrentValue;
-					}
-				}
-			} else {
-				$this->kode_barang->ViewValue = NULL;
-			}
+			$this->kode_barang->ViewValue = FormatNumber($this->kode_barang->ViewValue, 0, -2, -2, -2);
 			$this->kode_barang->ViewCustomAttributes = "";
 
 			// id_barang
 			$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
-			$curVal = strval($this->id_barang->CurrentValue);
-			if ($curVal != "") {
-				$this->id_barang->ViewValue = $this->id_barang->lookupCacheOption($curVal);
-				if ($this->id_barang->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$lookupFilter = function() {
-						return "`komposisi` <> 'Yes'";
-					};
-					$lookupFilter = $lookupFilter->bindTo($this);
-					$sqlWrk = $this->id_barang->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->id_barang->ViewValue = $this->id_barang->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
-					}
-				}
-			} else {
-				$this->id_barang->ViewValue = NULL;
-			}
+			$this->id_barang->ViewValue = FormatNumber($this->id_barang->ViewValue, 0, -2, -2, -2);
 			$this->id_barang->ViewCustomAttributes = "";
 
 			// stokdatabase
@@ -2072,18 +2026,6 @@ class detailpenyesuaianstok_list extends detailpenyesuaianstok
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
-				case "x_kode_barang":
-					$lookupFilter = function() {
-						return "`komposisi` <> 'Yes'";
-					};
-					$lookupFilter = $lookupFilter->bindTo($this);
-					break;
-				case "x_id_barang":
-					$lookupFilter = function() {
-						return "`komposisi` <> 'Yes'";
-					};
-					$lookupFilter = $lookupFilter->bindTo($this);
-					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -2104,10 +2046,6 @@ class detailpenyesuaianstok_list extends detailpenyesuaianstok
 
 					// Format the field values
 					switch ($fld->FieldVar) {
-						case "x_kode_barang":
-							break;
-						case "x_id_barang":
-							break;
 					}
 					$ar[strval($row[0])] = $row;
 					$rs->moveNext();

@@ -775,6 +775,7 @@ class nonjual_view extends nonjual
 		$this->setupExportOptions();
 		$this->id_nonjual->setVisibility();
 		$this->id_klinik->setVisibility();
+		$this->id_staff->setVisibility();
 		$this->tanggal->setVisibility();
 		$this->keterangan->setVisibility();
 		$this->hideFieldsForAddEdit();
@@ -799,6 +800,7 @@ class nonjual_view extends nonjual
 
 		// Set up lookup cache
 		$this->setupLookupOptions($this->id_klinik);
+		$this->setupLookupOptions($this->id_staff);
 
 		// Check permission
 		if (!$Security->canView()) {
@@ -1082,6 +1084,7 @@ class nonjual_view extends nonjual
 			return;
 		$this->id_nonjual->setDbValue($row['id_nonjual']);
 		$this->id_klinik->setDbValue($row['id_klinik']);
+		$this->id_staff->setDbValue($row['id_staff']);
 		$this->tanggal->setDbValue($row['tanggal']);
 		$this->keterangan->setDbValue($row['keterangan']);
 	}
@@ -1092,6 +1095,7 @@ class nonjual_view extends nonjual
 		$row = [];
 		$row['id_nonjual'] = NULL;
 		$row['id_klinik'] = NULL;
+		$row['id_staff'] = NULL;
 		$row['tanggal'] = NULL;
 		$row['keterangan'] = NULL;
 		return $row;
@@ -1116,6 +1120,7 @@ class nonjual_view extends nonjual
 		// Common render codes for all row types
 		// id_nonjual
 		// id_klinik
+		// id_staff
 		// tanggal
 		// keterangan
 
@@ -1147,6 +1152,32 @@ class nonjual_view extends nonjual
 			}
 			$this->id_klinik->ViewCustomAttributes = "";
 
+			// id_staff
+			$curVal = strval($this->id_staff->CurrentValue);
+			if ($curVal != "") {
+				$this->id_staff->ViewValue = $this->id_staff->lookupCacheOption($curVal);
+				if ($this->id_staff->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$lookupFilter = function() {
+						return "`status` <> 'Non Aktif'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
+					$sqlWrk = $this->id_staff->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->id_staff->ViewValue = $this->id_staff->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->id_staff->ViewValue = $this->id_staff->CurrentValue;
+					}
+				}
+			} else {
+				$this->id_staff->ViewValue = NULL;
+			}
+			$this->id_staff->ViewCustomAttributes = "";
+
 			// tanggal
 			$this->tanggal->ViewValue = $this->tanggal->CurrentValue;
 			$this->tanggal->ViewValue = FormatDateTime($this->tanggal->ViewValue, 7);
@@ -1165,6 +1196,11 @@ class nonjual_view extends nonjual
 			$this->id_klinik->LinkCustomAttributes = "";
 			$this->id_klinik->HrefValue = "";
 			$this->id_klinik->TooltipValue = "";
+
+			// id_staff
+			$this->id_staff->LinkCustomAttributes = "";
+			$this->id_staff->HrefValue = "";
+			$this->id_staff->TooltipValue = "";
 
 			// tanggal
 			$this->tanggal->LinkCustomAttributes = "";
@@ -1449,6 +1485,12 @@ class nonjual_view extends nonjual
 			switch ($fld->FieldVar) {
 				case "x_id_klinik":
 					break;
+				case "x_id_staff":
+					$lookupFilter = function() {
+						return "`status` <> 'Non Aktif'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
+					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -1470,6 +1512,8 @@ class nonjual_view extends nonjual
 					// Format the field values
 					switch ($fld->FieldVar) {
 						case "x_id_klinik":
+							break;
+						case "x_id_staff":
 							break;
 					}
 					$ar[strval($row[0])] = $row;

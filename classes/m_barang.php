@@ -34,7 +34,6 @@ class m_barang extends DbTable
 	public $subkategori;
 	public $komposisi;
 	public $tipe;
-	public $status;
 	public $shortname_barang;
 	public $id_tag;
 	public $discontinue;
@@ -139,15 +138,6 @@ class m_barang extends DbTable
 		$this->tipe->Lookup = new Lookup('tipe', 'm_barang', FALSE, '', ["","","",""], [], [], [], [], [], [], '', '');
 		$this->tipe->OptionCount = 4;
 		$this->fields['tipe'] = &$this->tipe;
-
-		// status
-		$this->status = new DbField('m_barang', 'm_barang', 'x_status', 'status', '`status`', '`status`', 3, 11, -1, FALSE, '`status`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
-		$this->status->Sortable = TRUE; // Allow sort
-		$this->status->UsePleaseSelect = TRUE; // Use PleaseSelect by default
-		$this->status->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->status->Lookup = new Lookup('status', 'm_status_barang', FALSE, 'id_status', ["status_barang","","",""], [], [], [], [], [], [], '', '');
-		$this->status->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->fields['status'] = &$this->status;
 
 		// shortname_barang
 		$this->shortname_barang = new DbField('m_barang', 'm_barang', 'x_shortname_barang', 'shortname_barang', '`shortname_barang`', '`shortname_barang`', 200, 100, -1, FALSE, '`shortname_barang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
@@ -533,7 +523,6 @@ class m_barang extends DbTable
 		$this->subkategori->DbValue = $row['subkategori'];
 		$this->komposisi->DbValue = $row['komposisi'];
 		$this->tipe->DbValue = $row['tipe'];
-		$this->status->DbValue = $row['status'];
 		$this->shortname_barang->DbValue = $row['shortname_barang'];
 		$this->id_tag->DbValue = $row['id_tag'];
 		$this->discontinue->DbValue = $row['discontinue'];
@@ -776,7 +765,6 @@ class m_barang extends DbTable
 		$this->subkategori->setDbValue($rs->fields('subkategori'));
 		$this->komposisi->setDbValue($rs->fields('komposisi'));
 		$this->tipe->setDbValue($rs->fields('tipe'));
-		$this->status->setDbValue($rs->fields('status'));
 		$this->shortname_barang->setDbValue($rs->fields('shortname_barang'));
 		$this->id_tag->setDbValue($rs->fields('id_tag'));
 		$this->discontinue->setDbValue($rs->fields('discontinue'));
@@ -800,7 +788,6 @@ class m_barang extends DbTable
 		// subkategori
 		// komposisi
 		// tipe
-		// status
 		// shortname_barang
 		// id_tag
 		// discontinue
@@ -921,28 +908,6 @@ class m_barang extends DbTable
 		}
 		$this->tipe->ViewCustomAttributes = "";
 
-		// status
-		$curVal = strval($this->status->CurrentValue);
-		if ($curVal != "") {
-			$this->status->ViewValue = $this->status->lookupCacheOption($curVal);
-			if ($this->status->ViewValue === NULL) { // Lookup from database
-				$filterWrk = "`id_status`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-				$sqlWrk = $this->status->Lookup->getSql(FALSE, $filterWrk, '', $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup values found
-					$arwrk = [];
-					$arwrk[1] = $rswrk->fields('df');
-					$this->status->ViewValue = $this->status->displayValue($arwrk);
-					$rswrk->Close();
-				} else {
-					$this->status->ViewValue = $this->status->CurrentValue;
-				}
-			}
-		} else {
-			$this->status->ViewValue = NULL;
-		}
-		$this->status->ViewCustomAttributes = "";
-
 		// shortname_barang
 		$this->shortname_barang->ViewValue = $this->shortname_barang->CurrentValue;
 		$this->shortname_barang->ViewCustomAttributes = "";
@@ -1022,11 +987,6 @@ class m_barang extends DbTable
 		$this->tipe->HrefValue = "";
 		$this->tipe->TooltipValue = "";
 
-		// status
-		$this->status->LinkCustomAttributes = "";
-		$this->status->HrefValue = "";
-		$this->status->TooltipValue = "";
-
 		// shortname_barang
 		$this->shortname_barang->LinkCustomAttributes = "";
 		$this->shortname_barang->HrefValue = "";
@@ -1103,10 +1063,6 @@ class m_barang extends DbTable
 		$this->tipe->EditCustomAttributes = "";
 		$this->tipe->EditValue = $this->tipe->options(FALSE);
 
-		// status
-		$this->status->EditAttrs["class"] = "form-control";
-		$this->status->EditCustomAttributes = "";
-
 		// shortname_barang
 		$this->shortname_barang->EditAttrs["class"] = "form-control";
 		$this->shortname_barang->EditCustomAttributes = "";
@@ -1161,7 +1117,6 @@ class m_barang extends DbTable
 					$doc->exportCaption($this->subkategori);
 					$doc->exportCaption($this->komposisi);
 					$doc->exportCaption($this->tipe);
-					$doc->exportCaption($this->status);
 					$doc->exportCaption($this->shortname_barang);
 					$doc->exportCaption($this->id_tag);
 					$doc->exportCaption($this->discontinue);
@@ -1175,7 +1130,6 @@ class m_barang extends DbTable
 					$doc->exportCaption($this->subkategori);
 					$doc->exportCaption($this->komposisi);
 					$doc->exportCaption($this->tipe);
-					$doc->exportCaption($this->status);
 					$doc->exportCaption($this->shortname_barang);
 					$doc->exportCaption($this->id_tag);
 					$doc->exportCaption($this->discontinue);
@@ -1219,7 +1173,6 @@ class m_barang extends DbTable
 						$doc->exportField($this->subkategori);
 						$doc->exportField($this->komposisi);
 						$doc->exportField($this->tipe);
-						$doc->exportField($this->status);
 						$doc->exportField($this->shortname_barang);
 						$doc->exportField($this->id_tag);
 						$doc->exportField($this->discontinue);
@@ -1233,7 +1186,6 @@ class m_barang extends DbTable
 						$doc->exportField($this->subkategori);
 						$doc->exportField($this->komposisi);
 						$doc->exportField($this->tipe);
-						$doc->exportField($this->status);
 						$doc->exportField($this->shortname_barang);
 						$doc->exportField($this->id_tag);
 						$doc->exportField($this->discontinue);
@@ -1312,6 +1264,40 @@ class m_barang extends DbTable
 	function Row_Inserted($rsold, &$rsnew) {
 
 		//echo "Row Inserted"
+		//API DATA TRANSAKSI ADD
+
+		$url = "http://172.16.0.2:8069/web/produk";
+		$data_sql = ExecuteRow("SELECT * FROM m_barang WHERE id = '".$rsnew['id']."'");
+		foreach ($data_sql as $key => $value) {
+			if(!is_int($key)){
+				$data_array = [
+					$key => $value
+				];
+				$data = http_build_query($data_array);
+
+				//print_r($data);
+				$curl = curl_init();
+				curl_setopt($curl, CURLOPT_URL, $url);
+				curl_setopt($curl, CURLOPT_POST, true);
+				curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+				$resp = curl_exec($curl);
+			}
+		}
+		if($e = curl_error($curl)){
+			echo $e;
+		} else {
+			$decoded = json_decode($resp);
+				echo $decoded;
+
+					// foreach ($decoded as $key => $value) {
+					// 	echo $key . ':' . $value . '<br>';
+					// }
+
+		}
+		curl_close($curl);
+
+		//die();	
 	}
 
 	// Row Updating event
@@ -1326,7 +1312,39 @@ class m_barang extends DbTable
 	// Row Updated event
 	function Row_Updated($rsold, &$rsnew) {
 
-		//echo "Row Updated";
+		//API DATA TRANSAKSI UPDATE
+		$url = "http://172.16.0.2:8069/web/produk";
+		$data_sql = ExecuteRow("SELECT * FROM m_barang WHERE id = '".$rsnew['id']."'");
+		foreach ($data_sql as $key => $value) {
+			if(!is_int($key)){
+				$data_array = [
+					$key => $value
+				];
+				$data = http_build_query($data_array);
+
+				//print_r($data);
+				$curl = curl_init();
+				curl_setopt($curl, CURLOPT_URL, $url);
+				curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
+				curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+				$resp = curl_exec($curl);
+			}
+		}
+		if($e = curl_error($curl)){
+			echo $e;
+		} else {
+			$decoded = json_decode($resp);
+				echo $decoded;
+
+					// foreach ($decoded as $key => $value) {
+					// 	echo $key . ':' . $value . '<br>';
+					// }
+
+		}
+		curl_close($curl);
+
+		//die();
 	}
 
 	// Row Update Conflict event

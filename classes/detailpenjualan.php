@@ -45,6 +45,7 @@ class detailpenjualan extends DbTable
 	public $qty;
 	public $disc_pr;
 	public $disc_rp;
+	public $voucher_barang;
 	public $komisi_recall;
 	public $subtotal;
 	public $hna;
@@ -105,21 +106,18 @@ class detailpenjualan extends DbTable
 		// id_barang
 		$this->id_barang = new DbField('detailpenjualan', 'detailpenjualan', 'x_id_barang', 'id_barang', '`id_barang`', '`id_barang`', 3, 11, -1, FALSE, '`id_barang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->id_barang->Sortable = TRUE; // Allow sort
-		$this->id_barang->Lookup = new Lookup('id_barang', 'view_hargajual', FALSE, 'id', ["kode_barang","nama_barang","",""], ["penjualan x_id_klinik"], [], ["id_klinik"], ["x_id_klinik"], ["totalhargajual","stok","disc_pr","disc_rp"], ["x_harga_jual","x_stok","x_disc_pr","x_disc_rp"], '', '');
 		$this->id_barang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id_barang'] = &$this->id_barang;
 
 		// kode_barang
 		$this->kode_barang = new DbField('detailpenjualan', 'detailpenjualan', 'x_kode_barang', 'kode_barang', '`kode_barang`', '`kode_barang`', 3, 11, -1, FALSE, '`kode_barang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->kode_barang->Sortable = TRUE; // Allow sort
-		$this->kode_barang->Lookup = new Lookup('kode_barang', 'view_hargajual', FALSE, 'id', ["kode_barang","","",""], ["penjualan x_id_klinik"], [], ["id_klinik"], ["x_id_klinik"], ["id","id_barang"], ["x_id_barang","x_nama_barang"], '', '');
 		$this->kode_barang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['kode_barang'] = &$this->kode_barang;
 
 		// nama_barang
 		$this->nama_barang = new DbField('detailpenjualan', 'detailpenjualan', 'x_nama_barang', 'nama_barang', '`nama_barang`', '`nama_barang`', 3, 255, -1, FALSE, '`nama_barang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->nama_barang->Sortable = TRUE; // Allow sort
-		$this->nama_barang->Lookup = new Lookup('nama_barang', 'view_hargajual', FALSE, 'id', ["nama_barang","","",""], ["penjualan x_id_klinik"], [], ["id_klinik"], ["x_id_klinik"], ["id"], ["x_id_barang"], '', '');
 		$this->nama_barang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['nama_barang'] = &$this->nama_barang;
 
@@ -171,6 +169,12 @@ class detailpenjualan extends DbTable
 		$this->disc_rp->Sortable = TRUE; // Allow sort
 		$this->disc_rp->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
 		$this->fields['disc_rp'] = &$this->disc_rp;
+
+		// voucher_barang
+		$this->voucher_barang = new DbField('detailpenjualan', 'detailpenjualan', 'x_voucher_barang', 'voucher_barang', '`voucher_barang`', '`voucher_barang`', 5, 22, -1, FALSE, '`voucher_barang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->voucher_barang->Sortable = TRUE; // Allow sort
+		$this->voucher_barang->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
+		$this->fields['voucher_barang'] = &$this->voucher_barang;
 
 		// komisi_recall
 		$this->komisi_recall = new DbField('detailpenjualan', 'detailpenjualan', 'x_komisi_recall', 'komisi_recall', '`komisi_recall`', '`komisi_recall`', 3, 11, -1, FALSE, '`komisi_recall`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
@@ -624,6 +628,7 @@ class detailpenjualan extends DbTable
 		$this->qty->DbValue = $row['qty'];
 		$this->disc_pr->DbValue = $row['disc_pr'];
 		$this->disc_rp->DbValue = $row['disc_rp'];
+		$this->voucher_barang->DbValue = $row['voucher_barang'];
 		$this->komisi_recall->DbValue = $row['komisi_recall'];
 		$this->subtotal->DbValue = $row['subtotal'];
 		$this->hna->DbValue = $row['hna'];
@@ -873,6 +878,7 @@ class detailpenjualan extends DbTable
 		$this->qty->setDbValue($rs->fields('qty'));
 		$this->disc_pr->setDbValue($rs->fields('disc_pr'));
 		$this->disc_rp->setDbValue($rs->fields('disc_rp'));
+		$this->voucher_barang->setDbValue($rs->fields('voucher_barang'));
 		$this->komisi_recall->setDbValue($rs->fields('komisi_recall'));
 		$this->subtotal->setDbValue($rs->fields('subtotal'));
 		$this->hna->setDbValue($rs->fields('hna'));
@@ -899,6 +905,7 @@ class detailpenjualan extends DbTable
 		// qty
 		// disc_pr
 		// disc_rp
+		// voucher_barang
 		// komisi_recall
 		// subtotal
 		// hna
@@ -931,80 +938,17 @@ class detailpenjualan extends DbTable
 
 		// id_barang
 		$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
-		$curVal = strval($this->id_barang->CurrentValue);
-		if ($curVal != "") {
-			$this->id_barang->ViewValue = $this->id_barang->lookupCacheOption($curVal);
-			if ($this->id_barang->ViewValue === NULL) { // Lookup from database
-				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-				$sqlWrk = $this->id_barang->Lookup->getSql(FALSE, $filterWrk, '', $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup values found
-					$arwrk = [];
-					$arwrk[1] = $rswrk->fields('df');
-					$arwrk[2] = $rswrk->fields('df2');
-					$this->id_barang->ViewValue = $this->id_barang->displayValue($arwrk);
-					$rswrk->Close();
-				} else {
-					$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
-				}
-			}
-		} else {
-			$this->id_barang->ViewValue = NULL;
-		}
+		$this->id_barang->ViewValue = FormatNumber($this->id_barang->ViewValue, 0, -2, -2, -2);
 		$this->id_barang->ViewCustomAttributes = "";
 
 		// kode_barang
 		$this->kode_barang->ViewValue = $this->kode_barang->CurrentValue;
-		$curVal = strval($this->kode_barang->CurrentValue);
-		if ($curVal != "") {
-			$this->kode_barang->ViewValue = $this->kode_barang->lookupCacheOption($curVal);
-			if ($this->kode_barang->ViewValue === NULL) { // Lookup from database
-				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-				$lookupFilter = function() {
-					return "`discontinue` <> 'Yes'";
-				};
-				$lookupFilter = $lookupFilter->bindTo($this);
-				$sqlWrk = $this->kode_barang->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup values found
-					$arwrk = [];
-					$arwrk[1] = $rswrk->fields('df');
-					$this->kode_barang->ViewValue = $this->kode_barang->displayValue($arwrk);
-					$rswrk->Close();
-				} else {
-					$this->kode_barang->ViewValue = $this->kode_barang->CurrentValue;
-				}
-			}
-		} else {
-			$this->kode_barang->ViewValue = NULL;
-		}
+		$this->kode_barang->ViewValue = FormatNumber($this->kode_barang->ViewValue, 0, -2, -2, -2);
 		$this->kode_barang->ViewCustomAttributes = "";
 
 		// nama_barang
 		$this->nama_barang->ViewValue = $this->nama_barang->CurrentValue;
-		$curVal = strval($this->nama_barang->CurrentValue);
-		if ($curVal != "") {
-			$this->nama_barang->ViewValue = $this->nama_barang->lookupCacheOption($curVal);
-			if ($this->nama_barang->ViewValue === NULL) { // Lookup from database
-				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-				$lookupFilter = function() {
-					return "`discontinue` <> 'Yes'";
-				};
-				$lookupFilter = $lookupFilter->bindTo($this);
-				$sqlWrk = $this->nama_barang->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup values found
-					$arwrk = [];
-					$arwrk[1] = $rswrk->fields('df');
-					$this->nama_barang->ViewValue = $this->nama_barang->displayValue($arwrk);
-					$rswrk->Close();
-				} else {
-					$this->nama_barang->ViewValue = $this->nama_barang->CurrentValue;
-				}
-			}
-		} else {
-			$this->nama_barang->ViewValue = NULL;
-		}
+		$this->nama_barang->ViewValue = FormatNumber($this->nama_barang->ViewValue, 0, -2, -2, -2);
 		$this->nama_barang->ViewCustomAttributes = "";
 
 		// id_kemasan
@@ -1040,6 +984,11 @@ class detailpenjualan extends DbTable
 		$this->disc_rp->ViewValue = $this->disc_rp->CurrentValue;
 		$this->disc_rp->ViewValue = FormatNumber($this->disc_rp->ViewValue, 2, -2, -2, -2);
 		$this->disc_rp->ViewCustomAttributes = "";
+
+		// voucher_barang
+		$this->voucher_barang->ViewValue = $this->voucher_barang->CurrentValue;
+		$this->voucher_barang->ViewValue = FormatNumber($this->voucher_barang->ViewValue, 2, -2, -2, -2);
+		$this->voucher_barang->ViewCustomAttributes = "";
 
 		// komisi_recall
 		$curVal = strval($this->komisi_recall->CurrentValue);
@@ -1136,6 +1085,11 @@ class detailpenjualan extends DbTable
 		$this->disc_rp->LinkCustomAttributes = "";
 		$this->disc_rp->HrefValue = "";
 		$this->disc_rp->TooltipValue = "";
+
+		// voucher_barang
+		$this->voucher_barang->LinkCustomAttributes = "";
+		$this->voucher_barang->HrefValue = "";
+		$this->voucher_barang->TooltipValue = "";
 
 		// komisi_recall
 		$this->komisi_recall->LinkCustomAttributes = "";
@@ -1272,6 +1226,15 @@ class detailpenjualan extends DbTable
 			$this->disc_rp->EditValue = FormatNumber($this->disc_rp->EditValue, -2, -2, -2, -2);
 		
 
+		// voucher_barang
+		$this->voucher_barang->EditAttrs["class"] = "form-control";
+		$this->voucher_barang->EditCustomAttributes = "";
+		$this->voucher_barang->EditValue = $this->voucher_barang->CurrentValue;
+		$this->voucher_barang->PlaceHolder = RemoveHtml($this->voucher_barang->caption());
+		if (strval($this->voucher_barang->EditValue) != "" && is_numeric($this->voucher_barang->EditValue))
+			$this->voucher_barang->EditValue = FormatNumber($this->voucher_barang->EditValue, -2, -2, -2, -2);
+		
+
 		// komisi_recall
 		$this->komisi_recall->EditAttrs["class"] = "form-control";
 		$this->komisi_recall->EditCustomAttributes = "";
@@ -1329,6 +1292,7 @@ class detailpenjualan extends DbTable
 					$doc->exportCaption($this->qty);
 					$doc->exportCaption($this->disc_pr);
 					$doc->exportCaption($this->disc_rp);
+					$doc->exportCaption($this->voucher_barang);
 					$doc->exportCaption($this->komisi_recall);
 					$doc->exportCaption($this->subtotal);
 				} else {
@@ -1343,6 +1307,7 @@ class detailpenjualan extends DbTable
 					$doc->exportCaption($this->qty);
 					$doc->exportCaption($this->disc_pr);
 					$doc->exportCaption($this->disc_rp);
+					$doc->exportCaption($this->voucher_barang);
 					$doc->exportCaption($this->komisi_recall);
 					$doc->exportCaption($this->subtotal);
 					$doc->exportCaption($this->hna);
@@ -1386,6 +1351,7 @@ class detailpenjualan extends DbTable
 						$doc->exportField($this->qty);
 						$doc->exportField($this->disc_pr);
 						$doc->exportField($this->disc_rp);
+						$doc->exportField($this->voucher_barang);
 						$doc->exportField($this->komisi_recall);
 						$doc->exportField($this->subtotal);
 					} else {
@@ -1400,6 +1366,7 @@ class detailpenjualan extends DbTable
 						$doc->exportField($this->qty);
 						$doc->exportField($this->disc_pr);
 						$doc->exportField($this->disc_rp);
+						$doc->exportField($this->voucher_barang);
 						$doc->exportField($this->komisi_recall);
 						$doc->exportField($this->subtotal);
 						$doc->exportField($this->hna);
@@ -1617,11 +1584,11 @@ class detailpenjualan extends DbTable
 					$id_rmd = ExecuteScalar("SELECT id_rmd FROM penjualan WHERE id='$pid_penjualan'");
 					$sekarang = date('Y-m-d');
 					$status =	 ExecuteScalar("SELECT status FROM penjualan WHERE id='$pid_penjualan'");
-						if($status == 'Printed') { //SAVE IF PRINTED
+						if($status == 'Printed' && $status != 'Draft') { //SAVE IF PRINTED
 
 							// if tanggal input < tanggal sekarang
-							if($tanggal < $sekarang){
 
+							/* if($tanggal < $sekarang){
 								//Barang Komposisi
 								if($komposisi == "Yes") {
 									$id_komposisi = ExecuteScalar("SELECT id_komposisi FROM komposisi WHERE id_barang = '$id_barang'");
@@ -1629,39 +1596,29 @@ class detailpenjualan extends DbTable
 									if($sql->RecordCount() > 0) {
 										$sql->MoveFirst();
 										while(!$sql->EOF) {
-
 											//logic
 											$id_barang_komposisi = $sql->fields['id_barang'];
 											$jumlah = $sql->fields['jumlah'];
 											$jumlah_barang_komposisi = $jumlah * $qty;
-
 											//Get stok tanggal = $tanggal 
 											$stok_lama_barang_komposisi = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal = '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
-
 											//jika stok tanggal = $tanggal itu tidak ada
 											if($stok_lama_barang_komposisi == NULL OR $stok_lama_barang_komposisi == FALSE){
-
 												//get data tanggal sebelumnya
 												$stok_sebelumnya_barang_komposisi = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal < '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
-
 												//jika stok tanggal sebelumnya tidak ada
 												if($stok_sebelumnya_barang_komposisi == NULL OR $stok_sebelumnya_barang_komposisi == FALSE){
-
 													//get stok data transaksi stok
 													$stok_data = ExecuteScalar("SELECT stok_awal FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' ORDER BY tanggal ASC LIMIT 1");
-
 													//jika stok data di kartustok tidak ada sama sekali
 													if($stok_data == NULL OR $stok_data == FALSE){
 														$data_stok_hargajual = ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik'");
 														$stok_baru_komposisi = $data_stok_hargajual - $jumlah_barang_komposisi;
-
 														// if stok_lama_barang_komposisi - jumlah_barang_komposisi < 0, stok skrng = 0
 														if($stok_baru_komposisi <= 0) {
-
 															//insert into kartustok
 															$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_komposisi', '$id_klinik', '$tanggal', '$data_stok_hargajual', '$pid_penjualan', '$jumlah_barang_komposisi', '0')");
 														} else {
-
 															//insert into kartustok
 															$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_komposisi', '$id_klinik', '$tanggal', '$data_stok_hargajual', '$pid_penjualan', '$jumlah_barang_komposisi', '$stok_baru_komposisi')");
 														}
@@ -1682,14 +1639,11 @@ class detailpenjualan extends DbTable
 														Execute("UPDATE m_hargajual SET stok='$stok_akhir_kartustok' WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik'");		
 													} else {
 														$stok_baru_komposisi = $stok_data - $jumlah_barang_komposisi;
-
 														// if stok_lama_barang_komposisi - jumlah_barang_komposisi < 0, stok skrng = 0
 														if($stok_baru_komposisi <= 0) {
-
 															//insert into kartustok
 															$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_komposisi', '$id_klinik', '$tanggal', '$stok_data', '$pid_penjualan', '$jumlah_barang_komposisi', '0')");
 														} else {
-
 															//insert into kartustok
 															$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_komposisi', '$id_klinik', '$tanggal', '$stok_data', '$pid_penjualan', '$jumlah_barang_komposisi', '$stok_baru_komposisi')");
 														}
@@ -1711,14 +1665,11 @@ class detailpenjualan extends DbTable
 													}
 												} else {
 													$stok_baru_komposisi = $stok_sebelumnya_barang_komposisi - $jumlah_barang_komposisi;
-
 													// if stok_lama_barang_komposisi - jumlah_barang_komposisi < 0, stok skrng = 0
 													if($stok_baru_komposisi <= 0) {
-
 														//insert into kartustok
 														$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_komposisi', '$id_klinik', '$tanggal', '$stok_sebelumnya_barang_komposisi', '$pid_penjualan', '$jumlah_barang_komposisi', '0')");
 													} else {
-
 														//insert into kartustok
 														$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_komposisi', '$id_klinik', '$tanggal', '$stok_sebelumnya_barang_komposisi', '$pid_penjualan', '$jumlah_barang_komposisi', '$stok_baru_komposisi')");
 													}
@@ -1740,14 +1691,11 @@ class detailpenjualan extends DbTable
 												}
 											} else {
 												$stok_baru_komposisi = $stok_lama_barang_komposisi - $jumlah_barang_komposisi;
-
 												// if stok_lama_barang_komposisi - jumlah_barang_komposisi < 0, stok skrng = 0
 												if($stok_baru_komposisi <= 0) {
-
 													//insert data ke kartustok
 													$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_komposisi', '$id_klinik', '$tanggal', '$stok_lama_barang_komposisi', '$pid_penjualan', '$jumlah_barang_komposisi', '0')");																	
 												} else {
-
 													//insert data ke kartustok
 													$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_komposisi', '$id_klinik', '$tanggal', '$stok_lama_barang_komposisi', '$pid_penjualan', '$jumlah_barang_komposisi', '$stok_baru_komposisi')");
 												}
@@ -1771,7 +1719,6 @@ class detailpenjualan extends DbTable
 										}
 										$sql->Close();
 									}
-
 								//Barang Promo	
 								} else if($status_barang == "Promo") {
 									$id_promo = ExecuteScalar("SELECT id_promo FROM promo WHERE id_barang = '$id_barang'");
@@ -1782,32 +1729,24 @@ class detailpenjualan extends DbTable
 											$id_barang_promo = $sql->fields['id_barang'];
 											$jumlah = $sql->fields['jumlah'];
 											$jumlah_barang_promo = $jumlah * $qty;
-
 											//get data stok where tanggal = $tanggal
 											$stok_lama_barang_promo = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal = '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
-
 											//if data stok tanggal = $tanggal NULL
 											if($stok_lama_barang_promo == NULL OR $stok_lama_barang_promo == FALSE) {
-
 												//get data stok tanggal sebelumnya
 												$stok_lama_barang_promo = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal < '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
-
 												//if data stok tanggal sebelumnya = NULL
 												if($stok_lama_barang_promo == NULL OR $stok_lama_barang_promo == FALSE){
-
 													//get data stok dari kartustok
 													$data_stok_awal = ExecuteScalar("SELECT stok_awal FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' ORDER BY tanggal ASC LIMIT 1");
-
 													//if tidak ada data stok di kartustok
 													if($data_stok_awal == NULL OR $data_stok_awal == FALSE){
 														$get_stok = ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik'");
 														$stok_barang_promo = $get_stok - $jumlah_barang_promo;
 														if($stok_barang_promo <= 0) {
-
 															//insert into kartustok
 															$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_promo', '$id_klinik', '$tanggal', '$get_stok', '$pid_penjualan', '$jumlah_barang_promo', 0)");
 														} else {
-
 															//insert into kartustok
 															$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_promo', '$id_klinik', '$tanggal', '$get_stok', '$pid_penjualan', '$jumlah_barang_promo', '$stok_barang_promo')");
 														}
@@ -1829,11 +1768,9 @@ class detailpenjualan extends DbTable
 													} else {
 														$stok_baru_barang_promo = $data_stok_awal - $jumlah_barang_promo;
 														if($stok_baru_barang_promo <= 0) {
-
 															//insert into kartustok
 															$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_promo', '$id_klinik', '$tanggal', '$data_stok_awal', '$pid_penjualan', '$jumlah_barang_promo', 0)");
 														} else {
-
 															//insert into kartustok
 															$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_promo', '$id_klinik', '$tanggal', '$data_stok_awal', '$pid_penjualan', '$jumlah_barang_promo', '$stok_baru_barang_promo')");
 														}
@@ -1856,11 +1793,9 @@ class detailpenjualan extends DbTable
 												} else {
 													$stok_baru_barang_promo = $stok_lama_barang_promo - $jumlah_barang_promo;
 													if($stok_baru_barang_promo <= 0) {
-
 														//insert into kartustok
 														$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_promo', '$id_klinik', '$tanggal', '$stok_lama_barang_promo', '$pid_penjualan', '$jumlah_barang_promo', 0)");
 													} else {
-
 														//insert into kartustok
 														$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_promo', '$id_klinik', '$tanggal', '$stok_lama_barang_promo', '$pid_penjualan', '$jumlah_barang_promo', '$stok_baru_barang_promo')");
 													}
@@ -1912,63 +1847,47 @@ class detailpenjualan extends DbTable
 										}
 										$sql->Close();
 									}
-
 								//Barang Jual	
 								} else {
-
 									//Get stok tanggal = $tanggal
 									$stok_tanggal = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal = '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
-
 									//jika tidak ada transaksi stok di tanggal itu
 									if($stok_tanggal == NULL OR $stok_tanggal == FALSE) {
 										$stok_saldo = ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik'");
 										$stok_update = $stok_saldo - $qty;
-
 										//get stok tanggal < $tanggal
 										$stok_tgl_sebelumnya = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal < '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
-
 										//jika tidak ada transaksi stok di tanggal < $tanggal
 										if($stok_tgl_sebelumnya == NULL OR $stok_tgl_sebelumnya == FALSE){
-
 											//get stok data transaksi stok
 											$stok_data = ExecuteScalar("SELECT stok_awal FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' ORDER BY tanggal ASC LIMIT 1");
-
 											//jika tidak ada transaksi stok sama sekali
 											if($stok_data == NULL OR $stok_data == FALSE){
-
 												//get data from hargajual
 												$stok_hargajual = ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik'");
 												$stok_terbaru = $stok_hargajual - $qty;
 												if ($stok_update <= 0) {
 													$update_saldo = Execute("UPDATE m_hargajual SET stok='0' WHERE id_klinik = '$id_klinik' AND id_barang = '$id_barang'");
-
 													// menyimpan transaksi ke kartu stok
 													$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal','$stok_hargajual', '$pid_penjualan', '$qty', '0')");
-
 													//print_r($kartu_stok);
 												} else {
 													$update_saldo = Execute("UPDATE m_hargajual SET stok = '$stok_terbaru' WHERE id_klinik = '$id_klinik' AND id_barang = '$id_barang'");
-
 													// menyimpan transaksi ke kartu stok
 													$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok_hargajual', '$pid_penjualan', '$qty', '$stok_terbaru')");
-
 													//print_r($kartu_stok);
 												}
 											} else {
 												$stok_terbaru = $stok_data - $qty;
 												if ($stok_update <= 0) {
 													$update_saldo = Execute("UPDATE m_hargajual SET stok='0' WHERE id_klinik = '$id_klinik' AND id_barang = '$id_barang'");
-
 													// menyimpan transaksi ke kartu stok
 													$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok_data', '$pid_penjualan', '$qty', '0')");
-
 													//print_r($kartu_stok);
 												} else {
 													$update_saldo = Execute("UPDATE m_hargajual SET stok = '$stok_update' WHERE id_klinik = '$id_klinik' AND id_barang = '$id_barang'");
-
 													// menyimpan transaksi ke kartu stok
 													$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok_data', '$pid_penjualan', '$qty', '$stok_terbaru')");
-
 													//print_r($kartu_stok);
 												}
 												$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC");
@@ -1989,17 +1908,13 @@ class detailpenjualan extends DbTable
 											$stok_terbaru = $stok_tgl_sebelumnya - $qty;
 											if ($stok_update <= 0) {
 												$update_saldo = Execute("UPDATE m_hargajual SET stok='0' WHERE id_klinik = '$id_klinik' AND id_barang = '$id_barang'");
-
 												// menyimpan transaksi ke kartu stok
 												$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok_tgl_sebelumnya', '$pid_penjualan', '$qty', '0')");
-
 												//print_r($kartu_stok);
 											} else {
 												$update_saldo = Execute("UPDATE m_hargajual SET stok = '$stok_update' WHERE id_klinik = '$id_klinik' AND id_barang = '$id_barang'");
-
 												// menyimpan transaksi ke kartu stok
 												$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok_tgl_sebelumnya', '$pid_penjualan', '$qty', '$stok_terbaru')");
-
 												//print_r($kartu_stok);
 											}
 											$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC");
@@ -2022,17 +1937,13 @@ class detailpenjualan extends DbTable
 										$stok_terbaru = $stok_tanggal - $qty;
 										if ($stok_update <= 0) {
 											$update_saldo = Execute("UPDATE m_hargajual SET stok='0' WHERE id_klinik = '$id_klinik' AND id_barang = '$id_barang'");
-
 											// menyimpan transaksi ke kartu stok
 											$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok_tanggal', '$pid_penjualan', '$qty', '0')");
-
 											//print_r($kartu_stok);
 										} else {
 											$update_saldo = Execute("UPDATE m_hargajual SET stok = '$stok_update' WHERE id_klinik = '$id_klinik' AND id_barang = '$id_barang'");
-
 											// menyimpan transaksi ke kartu stok
 											$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok_tanggal', '$pid_penjualan', '$qty', '$stok_terbaru')");
-
 											//print_r($kartu_stok);
 										}
 										$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC");
@@ -2050,21 +1961,19 @@ class detailpenjualan extends DbTable
 										}
 									}
 								}
-							} else {
+							} else { */
 								if($komposisi == "Yes") {
 									$id_komposisi = ExecuteScalar("SELECT id_komposisi FROM komposisi WHERE id_barang = '$id_barang'");
 									$sql = Execute("SELECT * FROM detailkomposisi WHERE id_komposisi = '$id_komposisi'"); //query
 									if($sql->RecordCount() > 0) {
 										$sql->MoveFirst();
 										while(!$sql->EOF) {
-
 											//logic
 											$id_barang_komposisi = $sql->fields['id_barang'];
 											$jumlah = $sql->fields['jumlah'];
 											$jumlah_barang_komposisi = $jumlah * $qty;
 											$stok_lama_barang_komposisi = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
 											$stok_baru_komposisi = $stok_lama_barang_komposisi - $jumlah_barang_komposisi;
-
 											// if stok_lama_barang_komposisi - jumlah_barang_komposisi < 0, stok skrng = 0
 											if($stok_baru_komposisi <= 0) {
 												$update_stok = Execute("UPDATE m_hargajual SET stok=0 WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik'");
@@ -2104,40 +2013,30 @@ class detailpenjualan extends DbTable
 									$stok_terbaru = $stok - $qty;
 									if ($stok_terbaru <= 0) {
 										$update_saldo = Execute("UPDATE m_hargajual SET stok='0' WHERE id_klinik = '$id_klinik' AND id_barang = '$id_barang'");
-
 										// menyimpan transaksi ke kartu stok
 										$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok', '$pid_penjualan', '$qty', '0')");
-
 										//print_r($kartu_stok);
 									} else {
 										$update_saldo = Execute("UPDATE m_hargajual SET stok = '$stok_terbaru' WHERE id_klinik = '$id_klinik' AND id_barang = '$id_barang'");
-
 										// menyimpan transaksi ke kartu stok
 										$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok', '$pid_penjualan', '$qty', '$stok_terbaru')");
-
 										//print_r($kartu_stok);
 									}
 								}
-							}
-
+							//}
 							// menyimpan transaksi ke rekam medis penjualan berdasarkan id rekam medis dokter
 							if(!is_null($id_rmd)){
-
 								// if yes, insert to detailrekmedpenjualan
 								$insert_barang = Execute("INSERT INTO detailrekmedpenjualan (id_rekmeddok, id_barang, jumlah) VALUES ('$id_rmd', '$id_barang', '$qty')");
 							}	
 						} //END IF PRINTED
 	}
-
 	// Row Updating event
 	function Row_Updating($rsold, &$rsnew) {
-
 		// Enter your code here
 		// To cancel, set return value to FALSE
-
 		return TRUE;
 	}
-
 	// Row Updated event
 	function Row_Updated($rsold, &$rsnew) {
 			$pid_penjualan = $rsnew['id_penjualan'];
@@ -2150,10 +2049,9 @@ class detailpenjualan extends DbTable
 			$id_rmd = ExecuteScalar("SELECT id_rmd FROM penjualan WHERE id='$pid_penjualan'");
 			$status = ExecuteScalar("SELECT status FROM penjualan WHERE id='$pid_penjualan'");
 				if($status == 'Printed') { //SAVE IF PRINTED
-
 					// if tanggal input < tanggal sekarang
-					if($tanggal < $sekarang){
 
+					/*if($tanggal < $sekarang){
 						//Barang Komposisi
 						if($komposisi == "Yes") {
 							$id_komposisi = ExecuteScalar("SELECT id_komposisi FROM komposisi WHERE id_barang = '$id_barang'");
@@ -2161,39 +2059,29 @@ class detailpenjualan extends DbTable
 							if($sql->RecordCount() > 0) {
 								$sql->MoveFirst();
 								while(!$sql->EOF) {
-
 									//logic
 									$id_barang_komposisi = $sql->fields['id_barang'];
 									$jumlah = $sql->fields['jumlah'];
 									$jumlah_barang_komposisi = $jumlah * $qty;
-
 									//Get stok tanggal = $tanggal 
 									$stok_lama_barang_komposisi = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal = '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
-
 									//jika stok tanggal = $tanggal itu tidak ada
 									if($stok_lama_barang_komposisi == NULL OR $stok_lama_barang_komposisi == FALSE){
-
 										//get data tanggal sebelumnya
 										$stok_sebelumnya_barang_komposisi = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' AND tanggal < '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
-
 										//jika stok tanggal sebelumnya tidak ada
 										if($stok_sebelumnya_barang_komposisi == NULL OR $stok_sebelumnya_barang_komposisi == FALSE){
-
 											//get stok data transaksi stok
 											$stok_data = ExecuteScalar("SELECT stok_awal FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' ORDER BY tanggal ASC LIMIT 1");
-
 											//jika stok data di kartustok tidak ada sama sekali
 											if($stok_data == NULL OR $stok_data == FALSE){
 												$data_stok_hargajual = ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik'");
 												$stok_baru_komposisi = $data_stok_hargajual - $jumlah_barang_komposisi;
-
 												// if stok_lama_barang_komposisi - jumlah_barang_komposisi < 0, stok skrng = 0
 												if($stok_baru_komposisi <= 0) {
-
 													//insert into kartustok
 													$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_komposisi', '$id_klinik', '$tanggal', '$data_stok_hargajual', '$pid_penjualan', '$jumlah_barang_komposisi', '0')");
 												} else {
-
 													//insert into kartustok
 													$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_komposisi', '$id_klinik', '$tanggal', '$data_stok_hargajual', '$pid_penjualan', '$jumlah_barang_komposisi', '$stok_baru_komposisi')");
 												}
@@ -2208,14 +2096,11 @@ class detailpenjualan extends DbTable
 												Execute("UPDATE m_hargajual SET stok='$stok_akhir_kartustok' WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik'");		
 											} else {
 												$stok_baru_komposisi = $stok_data - $jumlah_barang_komposisi;
-
 												// if stok_lama_barang_komposisi - jumlah_barang_komposisi < 0, stok skrng = 0
 												if($stok_baru_komposisi <= 0) {
-
 													//insert into kartustok
 													$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_komposisi', '$id_klinik', '$tanggal', '$stok_data', '$pid_penjualan', '$jumlah_barang_komposisi', '0')");
 												} else {
-
 													//insert into kartustok
 													$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_komposisi', '$id_klinik', '$tanggal', '$stok_data', '$pid_penjualan', '$jumlah_barang_komposisi', '$stok_baru_komposisi')");
 												}
@@ -2231,14 +2116,11 @@ class detailpenjualan extends DbTable
 											}
 										} else {
 											$stok_baru_komposisi = $stok_sebelumnya_barang_komposisi - $jumlah_barang_komposisi;
-
 											// if stok_lama_barang_komposisi - jumlah_barang_komposisi < 0, stok skrng = 0
 											if($stok_baru_komposisi <= 0) {
-
 												//insert into kartustok
 												$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_komposisi', '$id_klinik', '$tanggal', '$stok_sebelumnya_barang_komposisi', '$pid_penjualan', '$jumlah_barang_komposisi', '0')");
 											} else {
-
 												//insert into kartustok
 												$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_komposisi', '$id_klinik', '$tanggal', '$stok_sebelumnya_barang_komposisi', '$pid_penjualan', '$jumlah_barang_komposisi', '$stok_baru_komposisi')");
 											}
@@ -2254,14 +2136,11 @@ class detailpenjualan extends DbTable
 										}
 									} else {
 										$stok_baru_komposisi = $stok_lama_barang_komposisi - $jumlah_barang_komposisi;
-
 										// if stok_lama_barang_komposisi - jumlah_barang_komposisi < 0, stok skrng = 0
 										if($stok_baru_komposisi <= 0) {
-
 											//insert data ke kartustok
 											$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_komposisi', '$id_klinik', '$tanggal', '$stok_lama_barang_komposisi', '$pid_penjualan', '$jumlah_barang_komposisi', '0')");																	
 										} else {
-
 											//insert data ke kartustok
 											$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_komposisi', '$id_klinik', '$tanggal', '$stok_lama_barang_komposisi', '$pid_penjualan', '$jumlah_barang_komposisi', '$stok_baru_komposisi')");
 										}
@@ -2279,7 +2158,6 @@ class detailpenjualan extends DbTable
 								}
 								$sql->Close();
 							}
-
 						//Barang Promo	
 						} else if($status_barang == "Promo") {
 							$id_promo = ExecuteScalar("SELECT id_promo FROM promo WHERE id_barang = '$id_barang'");
@@ -2290,32 +2168,24 @@ class detailpenjualan extends DbTable
 									$id_barang_promo = $sql->fields['id_barang'];
 									$jumlah = $sql->fields['jumlah'];
 									$jumlah_barang_promo = $jumlah * $qty;
-
 									//get data stok where tanggal = $tanggal
 									$stok_lama_barang_promo = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal = '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
-
 									//if data stok tanggal = $tanggal NULL
 									if($stok_lama_barang_promo == NULL OR $stok_lama_barang_promo == FALSE) {
-
 										//get data stok tanggal sebelumnya
 										$stok_lama_barang_promo = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' AND tanggal < '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
-
 										//if data stok tanggal sebelumnya = NULL
 										if($stok_lama_barang_promo == NULL OR $stok_lama_barang_promo == FALSE){
-
 											//get data stok dari kartustok
 											$data_stok_awal = ExecuteScalar("SELECT stok_awal FROM kartustok WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik' ORDER BY tanggal ASC LIMIT 1");
-
 											//if tidak ada data stok di kartustok
 											if($data_stok_awal == NULL OR $data_stok_awal == FALSE){
 												$get_stok = ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_barang = '$id_barang_promo' AND id_klinik = '$id_klinik'");
 												$stok_barang_promo = $get_stok - $jumlah_barang_promo;
 												if($stok_barang_promo <= 0) {
-
 													//insert into kartustok
 													$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_promo', '$id_klinik', '$tanggal', '$get_stok', '$pid_penjualan', '$jumlah_barang_promo', 0)");
 												} else {
-
 													//insert into kartustok
 													$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_promo', '$id_klinik', '$tanggal', '$get_stok', '$pid_penjualan', '$jumlah_barang_promo', '$stok_barang_promo')");
 												}
@@ -2331,11 +2201,9 @@ class detailpenjualan extends DbTable
 											} else {
 												$stok_baru_barang_promo = $data_stok_awal - $jumlah_barang_promo;
 												if($stok_baru_barang_promo <= 0) {
-
 													//insert into kartustok
 													$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_promo', '$id_klinik', '$tanggal', '$data_stok_awal', '$pid_penjualan', '$jumlah_barang_promo', 0)");
 												} else {
-
 													//insert into kartustok
 													$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_promo', '$id_klinik', '$tanggal', '$data_stok_awal', '$pid_penjualan', '$jumlah_barang_promo', '$stok_baru_barang_promo')");
 												}
@@ -2352,11 +2220,9 @@ class detailpenjualan extends DbTable
 										} else {
 											$stok_baru_barang_promo = $stok_lama_barang_promo - $jumlah_barang_promo;
 											if($stok_baru_barang_promo <= 0) {
-
 												//insert into kartustok
 												$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_promo', '$id_klinik', '$tanggal', '$stok_lama_barang_promo', '$pid_penjualan', '$jumlah_barang_promo', 0)");
 											} else {
-
 												//insert into kartustok
 												$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang_promo', '$id_klinik', '$tanggal', '$stok_lama_barang_promo', '$pid_penjualan', '$jumlah_barang_promo', '$stok_baru_barang_promo')");
 											}
@@ -2395,63 +2261,47 @@ class detailpenjualan extends DbTable
 								}
 								$sql->Close();
 							}
-
 						//Barang Jual	
 						} else {
-
 							//Get stok tanggal = $tanggal
 							$stok_tanggal = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal = '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
-
 							//jika tidak ada transaksi stok di tanggal itu
 							if($stok_tanggal == NULL OR $stok_tanggal == FALSE) {
 								$stok_saldo = ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik'");
 								$stok_update = $stok_saldo - $qty;
-
 								//get stok tanggal < $tanggal
 								$stok_tgl_sebelumnya = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal < '$tanggal' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
-
 								//jika tidak ada transaksi stok di tanggal < $tanggal
 								if($stok_tgl_sebelumnya == NULL OR $stok_tgl_sebelumnya == FALSE){
-
 									//get stok data transaksi stok
 									$stok_data = ExecuteScalar("SELECT stok_awal FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' ORDER BY tanggal ASC LIMIT 1");
-
 									//jika tidak ada transaksi stok sama sekali
 									if($stok_data == NULL OR $stok_data == FALSE){
-
 										//get data from hargajual
 										$stok_hargajual = ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik'");
 										$stok_terbaru = $stok_hargajual - $qty;
 										if ($stok_update <= 0) {
 											$update_saldo = Execute("UPDATE m_hargajual SET stok='0' WHERE id_klinik = '$id_klinik' AND id_barang = '$id_barang'");
-
 											// menyimpan transaksi ke kartu stok
 											$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal','$stok_hargajual', '$pid_penjualan', '$qty', '0')");
-
 											//print_r($kartu_stok);
 										} else {
 											$update_saldo = Execute("UPDATE m_hargajual SET stok = '$stok_terbaru' WHERE id_klinik = '$id_klinik' AND id_barang = '$id_barang'");
-
 											// menyimpan transaksi ke kartu stok
 											$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok_hargajual', '$pid_penjualan', '$qty', '$stok_terbaru')");
-
 											//print_r($kartu_stok);
 										}
 									} else {
 										$stok_terbaru = $stok_data - $qty;
 										if ($stok_update <= 0) {
 											$update_saldo = Execute("UPDATE m_hargajual SET stok='0' WHERE id_klinik = '$id_klinik' AND id_barang = '$id_barang'");
-
 											// menyimpan transaksi ke kartu stok
 											$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok_data', '$pid_penjualan', '$qty', '0')");
-
 											//print_r($kartu_stok);
 										} else {
 											$update_saldo = Execute("UPDATE m_hargajual SET stok = '$stok_update' WHERE id_klinik = '$id_klinik' AND id_barang = '$id_barang'");
-
 											// menyimpan transaksi ke kartu stok
 											$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok_data', '$pid_penjualan', '$qty', '$stok_terbaru')");
-
 											//print_r($kartu_stok);
 										}
 										$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC");
@@ -2466,17 +2316,13 @@ class detailpenjualan extends DbTable
 									$stok_terbaru = $stok_tgl_sebelumnya - $qty;
 									if ($stok_update <= 0) {
 										$update_saldo = Execute("UPDATE m_hargajual SET stok='0' WHERE id_klinik = '$id_klinik' AND id_barang = '$id_barang'");
-
 										// menyimpan transaksi ke kartu stok
 										$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok_tgl_sebelumnya', '$pid_penjualan', '$qty', '0')");
-
 										//print_r($kartu_stok);
 									} else {
 										$update_saldo = Execute("UPDATE m_hargajual SET stok = '$stok_update' WHERE id_klinik = '$id_klinik' AND id_barang = '$id_barang'");
-
 										// menyimpan transaksi ke kartu stok
 										$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok_tgl_sebelumnya', '$pid_penjualan', '$qty', '$stok_terbaru')");
-
 										//print_r($kartu_stok);
 									}
 									$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggel ASC, id_kartustok ASC");
@@ -2493,17 +2339,13 @@ class detailpenjualan extends DbTable
 								$stok_terbaru = $stok_tanggal - $qty;
 								if ($stok_update <= 0) {
 									$update_saldo = Execute("UPDATE m_hargajual SET stok='0' WHERE id_klinik = '$id_klinik' AND id_barang = '$id_barang'");
-
 									// menyimpan transaksi ke kartu stok
 									$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok_tanggal', '$pid_penjualan', '$qty', '0')");
-
 									//print_r($kartu_stok);
 								} else {
 									$update_saldo = Execute("UPDATE m_hargajual SET stok = '$stok_update' WHERE id_klinik = '$id_klinik' AND id_barang = '$id_barang'");
-
 									// menyimpan transaksi ke kartu stok
 									$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok_tanggal', '$pid_penjualan', '$qty', '$stok_terbaru')");
-
 									//print_r($kartu_stok);
 								}
 								$data_stok = ExecuteRows("SELECT id_kartustok, stok_awal, stok_akhir FROM kartustok WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik' AND tanggal > '$tanggal' ORDER BY tanggal ASC, id_kartustok ASC");
@@ -2515,21 +2357,19 @@ class detailpenjualan extends DbTable
 								}
 							}
 						}
-					} else {
+					} else {*/
 						if($komposisi == "Yes") {
 							$id_komposisi = ExecuteScalar("SELECT id_komposisi FROM komposisi WHERE id_barang = '$id_barang'");
 							$sql = Execute("SELECT * FROM detailkomposisi WHERE id_komposisi = '$id_komposisi'"); //query
 							if($sql->RecordCount() > 0) {
 								$sql->MoveFirst();
 								while(!$sql->EOF) {
-
 									//logic
 									$id_barang_komposisi = $sql->fields['id_barang'];
 									$jumlah = $sql->fields['jumlah'];
 									$jumlah_barang_komposisi = $jumlah * $qty;
 									$stok_lama_barang_komposisi = ExecuteScalar("SELECT stok_akhir FROM kartustok WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik' ORDER BY tanggal DESC, id_kartustok DESC LIMIT 1");
 									$stok_baru_komposisi = $stok_lama_barang_komposisi - $jumlah_barang_komposisi;
-
 									// if stok_lama_barang_komposisi - jumlah_barang_komposisi < 0, stok skrng = 0
 									if($stok_baru_komposisi <= 0) {
 										$update_stok = Execute("UPDATE m_hargajual SET stok=0 WHERE id_barang = '$id_barang_komposisi' AND id_klinik = '$id_klinik'");
@@ -2569,54 +2409,40 @@ class detailpenjualan extends DbTable
 							$stok_terbaru = $stok - $qty;
 							if ($stok_terbaru <= 0) {
 								$update_saldo = Execute("UPDATE m_hargajual SET stok='0' WHERE id_klinik = '$id_klinik' AND id_barang = '$id_barang'");
-
 								// menyimpan transaksi ke kartu stok
 								$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok', '$pid_penjualan', '$qty', '0')");
-
 								//print_r($kartu_stok);
 							} else {
 								$update_saldo = Execute("UPDATE m_hargajual SET stok = '$stok_terbaru' WHERE id_klinik = '$id_klinik' AND id_barang = '$id_barang'");
-
 								// menyimpan transaksi ke kartu stok
 								$kartu_stok = Execute("INSERT INTO kartustok (id_barang, id_klinik, tanggal, stok_awal, id_penjualan, keluar, stok_akhir) VALUES ('$id_barang', '$id_klinik', '$tanggal', '$stok', '$pid_penjualan', '$qty', '$stok_terbaru')");
-
 								//print_r($kartu_stok);
 							}
 						}
-					}
-
+					//}
 					// menyimpan transaksi ke rekam medis penjualan berdasarkan id rekam medis dokter
 					if(!is_null($id_rmd)){
-
 						// if yes, insert to detailrekmedpenjualan
 						$insert_barang = Execute("INSERT INTO detailrekmedpenjualan (id_rekmeddok, id_barang, jumlah) VALUES ('$id_rmd', '$id_barang', '$qty')");
 					}	
 				} //END IF PRINTED
 	}
-
 	// Row Update Conflict event
 	function Row_UpdateConflict($rsold, &$rsnew) {
-
 		// Enter your code here
 		// To ignore conflict, set return value to FALSE
-
 		return TRUE;
 	}
-
 	// Grid Inserting event
 	function Grid_Inserting() {
-
 		// Enter your code here
 		// To reject grid insert, set return value to FALSE
-
 		$rsnew = $this->GetGridFormValues(); // Get the form values of the new records as an array of array
-
 		//var_dump($rsnew); exit();
 		if(empty($rsnew)){
 			$this->setFailureMessage("Data barang belum masuk!");
 			return FALSE;
 		} else {
-
 			// check apabila promo masih berlaku apa tidak
 			foreach($rsnew as $row) {
 				$id_barang = $row["id_barang"];
@@ -2635,21 +2461,15 @@ class detailpenjualan extends DbTable
 		}
 		return TRUE;
 	}
-
 	// Grid Inserted event
 	function Grid_Inserted($rsnew) {
-
 		//echo "Grid Inserted";
 	}
-
 	// Grid Updating event
 	function Grid_Updating($rsold) {
-
 		// Enter your code here
 		// To reject grid update, set return value to FALSE
-
 		$rsnew = $this->GetGridFormValues(); // Get the form values of the new records as an array of array
-
 		//var_dump($rsnew); exit();
 		if(empty($rsnew)){
 			$this->setFailureMessage("Data barang belum masuk!");
@@ -2657,65 +2477,46 @@ class detailpenjualan extends DbTable
 		}
 		return TRUE;
 	}
-
 	// Grid Updated event
 	function Grid_Updated($rsold, $rsnew) {
-
 		//echo "Grid Updated";
 	}
-
 	// Row Deleting event
 	function Row_Deleting(&$rs) {
-
 		// Enter your code here
 		// To cancel, set return value to False
-
 		return TRUE;
 	}
-
 	// Row Deleted event
 	function Row_Deleted(&$rs) {
-
 		//echo "Row Deleted";
 	}
-
 	// Email Sending event
 	function Email_Sending($email, &$args) {
-
 		//var_dump($email); var_dump($args); exit();
 		return TRUE;
 	}
-
 	// Lookup Selecting event
 	function Lookup_Selecting($fld, &$filter) {
-
 		//var_dump($fld->Name, $fld->Lookup, $filter); // Uncomment to view the filter
 		// Enter your code here
-
 	}
-
 	// Row Rendering event
 	function Row_Rendering() {
-
 		// Enter your code here
 	}
-
 	// Row Rendered event
 	function Row_Rendered() {
-
 		// To view properties of field class, use:
 		//var_dump($this-><FieldName>);
 		//$this->id_barang->Visible = FALSE;
 		//$this->id_barang->Header = FALSE;
-
 		$valuesubtotal = $this->subtotal->CurrentValue;
 		$valuesubtotal1 = str_replace(".", "", $valuesubtotal);
 		$this->subtotal->EditValue = $valuesubtotal1;
 	}
-
 	// User ID Filtering event
 	function UserID_Filtering(&$filter) {
-
 		// Enter your code here
 	}
 }

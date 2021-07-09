@@ -79,8 +79,6 @@ loadjs.ready("head", function() {
 	fm_barangsearch.lists["x_komposisi"].options = <?php echo JsonEncode($m_barang_search->komposisi->options(FALSE, TRUE)) ?>;
 	fm_barangsearch.lists["x_tipe"] = <?php echo $m_barang_search->tipe->Lookup->toClientList($m_barang_search) ?>;
 	fm_barangsearch.lists["x_tipe"].options = <?php echo JsonEncode($m_barang_search->tipe->options(FALSE, TRUE)) ?>;
-	fm_barangsearch.lists["x_status"] = <?php echo $m_barang_search->status->Lookup->toClientList($m_barang_search) ?>;
-	fm_barangsearch.lists["x_status"].options = <?php echo JsonEncode($m_barang_search->status->lookupOptions()) ?>;
 	fm_barangsearch.lists["x_discontinue"] = <?php echo $m_barang_search->discontinue->Lookup->toClientList($m_barang_search) ?>;
 	fm_barangsearch.lists["x_discontinue"].options = <?php echo JsonEncode($m_barang_search->discontinue->options(FALSE, TRUE)) ?>;
 	loadjs.done("fm_barangsearch");
@@ -228,26 +226,6 @@ $m_barang_search->showMessage();
 <div id="dsl_x_tipe" data-repeatcolumn="5" class="ew-item-list d-none"><div>
 <?php echo $m_barang_search->tipe->radioButtonListHtml(FALSE, "x_tipe") ?>
 </div></div>
-</span>
-		</div></div>
-	</div>
-<?php } ?>
-<?php if ($m_barang_search->status->Visible) { // status ?>
-	<div id="r_status" class="form-group row">
-		<label for="x_status" class="<?php echo $m_barang_search->LeftColumnClass ?>"><span id="elh_m_barang_status"><?php echo $m_barang_search->status->caption() ?></span>
-		<span class="ew-search-operator">
-<?php echo $Language->phrase("=") ?>
-<input type="hidden" name="z_status" id="z_status" value="=">
-</span>
-		</label>
-		<div class="<?php echo $m_barang_search->RightColumnClass ?>"><div <?php echo $m_barang_search->status->cellAttributes() ?>>
-			<span id="el_m_barang_status" class="ew-search-field">
-<div class="input-group">
-	<select class="custom-select ew-custom-select" data-table="m_barang" data-field="x_status" data-value-separator="<?php echo $m_barang_search->status->displayValueSeparatorAttribute() ?>" id="x_status" name="x_status"<?php echo $m_barang_search->status->editAttributes() ?>>
-			<?php echo $m_barang_search->status->selectOptionListHtml("x_status") ?>
-		</select>
-</div>
-<?php echo $m_barang_search->status->Lookup->getParamTag($m_barang_search, "p_x_status") ?>
 </span>
 		</div></div>
 	</div>

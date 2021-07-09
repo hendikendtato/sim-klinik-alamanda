@@ -214,6 +214,15 @@ $users_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
+<?php if ($users_list->status->Visible) { // status ?>
+	<?php if ($users_list->SortUrl($users_list->status) == "") { ?>
+		<th data-name="status" class="<?php echo $users_list->status->headerCellClass() ?>"><div id="elh_users_status" class="users_status"><div class="ew-table-header-caption"><?php echo $users_list->status->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="status" class="<?php echo $users_list->status->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $users_list->SortUrl($users_list->status) ?>', 1);"><div id="elh_users_status" class="users_status">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $users_list->status->caption() ?><?php echo $Language->phrase("SrchLegend") ?></span><span class="ew-table-header-sort"><?php if ($users_list->status->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($users_list->status->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
 <?php
 
 // Render list options (header, right)
@@ -304,6 +313,13 @@ $users_list->ListOptions->render("body", "left", $users_list->RowCount);
 		<td data-name="level" <?php echo $users_list->level->cellAttributes() ?>>
 <span id="el<?php echo $users_list->RowCount ?>_users_level">
 <span<?php echo $users_list->level->viewAttributes() ?>><?php echo $users_list->level->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
+	<?php if ($users_list->status->Visible) { // status ?>
+		<td data-name="status" <?php echo $users_list->status->cellAttributes() ?>>
+<span id="el<?php echo $users_list->RowCount ?>_users_status">
+<span<?php echo $users_list->status->viewAttributes() ?>><?php echo $users_list->status->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>

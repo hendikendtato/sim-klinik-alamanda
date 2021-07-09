@@ -69,6 +69,9 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $detailretur_add->id_barang->caption(), $detailretur_add->id_barang->RequiredErrorMessage)) ?>");
 			<?php } ?>
+				elm = this.getElements("x" + infix + "_id_barang");
+				if (elm && !ew.checkInteger(elm.value))
+					return this.onError(elm, "<?php echo JsEncode($detailretur_add->id_barang->errorMessage()) ?>");
 			<?php if ($detailretur_add->jumlah->Required) { ?>
 				elm = this.getElements("x" + infix + "_jumlah");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
@@ -110,8 +113,6 @@ loadjs.ready("head", function() {
 	fdetailreturadd.validateRequired = <?php echo Config("CLIENT_VALIDATE") ? "true" : "false" ?>;
 
 	// Dynamic selection lists
-	fdetailreturadd.lists["x_id_barang"] = <?php echo $detailretur_add->id_barang->Lookup->toClientList($detailretur_add) ?>;
-	fdetailreturadd.lists["x_id_barang"].options = <?php echo JsonEncode($detailretur_add->id_barang->lookupOptions()) ?>;
 	fdetailreturadd.lists["x_id_satuan"] = <?php echo $detailretur_add->id_satuan->Lookup->toClientList($detailretur_add) ?>;
 	fdetailreturadd.lists["x_id_satuan"].options = <?php echo JsonEncode($detailretur_add->id_satuan->lookupOptions()) ?>;
 	loadjs.done("fdetailreturadd");
@@ -163,15 +164,7 @@ $detailretur_add->showMessage();
 		<label id="elh_detailretur_id_barang" for="x_id_barang" class="<?php echo $detailretur_add->LeftColumnClass ?>"><?php echo $detailretur_add->id_barang->caption() ?><?php echo $detailretur_add->id_barang->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $detailretur_add->RightColumnClass ?>"><div <?php echo $detailretur_add->id_barang->cellAttributes() ?>>
 <span id="el_detailretur_id_barang">
-<?php $detailretur_add->id_barang->EditAttrs->prepend("onchange", "ew.autoFill(this);"); ?>
-<div class="input-group ew-lookup-list">
-	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_id_barang"><?php echo EmptyValue(strval($detailretur_add->id_barang->ViewValue)) ? $Language->phrase("PleaseSelect") : $detailretur_add->id_barang->ViewValue ?></div>
-	<div class="input-group-append">
-		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($detailretur_add->id_barang->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($detailretur_add->id_barang->ReadOnly || $detailretur_add->id_barang->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_id_barang',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
-	</div>
-</div>
-<?php echo $detailretur_add->id_barang->Lookup->getParamTag($detailretur_add, "p_x_id_barang") ?>
-<input type="hidden" data-table="detailretur" data-field="x_id_barang" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $detailretur_add->id_barang->displayValueSeparatorAttribute() ?>" name="x_id_barang" id="x_id_barang" value="<?php echo $detailretur_add->id_barang->CurrentValue ?>"<?php echo $detailretur_add->id_barang->editAttributes() ?>>
+<input type="text" data-table="detailretur" data-field="x_id_barang" name="x_id_barang" id="x_id_barang" size="40" maxlength="40" placeholder="<?php echo HtmlEncode($detailretur_add->id_barang->getPlaceHolder()) ?>" value="<?php echo $detailretur_add->id_barang->EditValue ?>"<?php echo $detailretur_add->id_barang->editAttributes() ?>>
 </span>
 <?php echo $detailretur_add->id_barang->CustomMsg ?></div></div>
 	</div>

@@ -2319,7 +2319,11 @@ class mutasi_kas_list extends mutasi_kas
 				$this->staff->ViewValue = $this->staff->lookupCacheOption($curVal);
 				if ($this->staff->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->staff->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$lookupFilter = function() {
+						return "`status` <> 'Non Aktif'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
+					$sqlWrk = $this->staff->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
@@ -2686,6 +2690,10 @@ class mutasi_kas_list extends mutasi_kas
 				case "x_tipe":
 					break;
 				case "x_staff":
+					$lookupFilter = function() {
+						return "`status` <> 'Non Aktif'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
 					break;
 				default:
 					$lookupFilter = "";

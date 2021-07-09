@@ -1510,6 +1510,12 @@ class wp_reservasi_list extends wp_reservasi
 		$item->Visible = $Security->canView();
 		$item->OnLeft = FALSE;
 
+		// "edit"
+		$item = &$this->ListOptions->add("edit");
+		$item->CssClass = "text-nowrap";
+		$item->Visible = $Security->canEdit();
+		$item->OnLeft = FALSE;
+
 		// List actions
 		$item = &$this->ListOptions->add("listactions");
 		$item->CssClass = "text-nowrap";
@@ -1556,6 +1562,15 @@ class wp_reservasi_list extends wp_reservasi
 		$viewcaption = HtmlTitle($Language->phrase("ViewLink"));
 		if ($Security->canView()) {
 			$opt->Body = "<a class=\"ew-row-link ew-view\" title=\"" . $viewcaption . "\" data-caption=\"" . $viewcaption . "\" href=\"" . HtmlEncode($this->ViewUrl) . "\">" . $Language->phrase("ViewLink") . "</a>";
+		} else {
+			$opt->Body = "";
+		}
+
+		// "edit"
+		$opt = $this->ListOptions["edit"];
+		$editcaption = HtmlTitle($Language->phrase("EditLink"));
+		if ($Security->canEdit()) {
+			$opt->Body = "<a class=\"ew-row-link ew-edit\" title=\"" . HtmlTitle($Language->phrase("EditLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("EditLink")) . "\" href=\"" . HtmlEncode($this->EditUrl) . "\">" . $Language->phrase("EditLink") . "</a>";
 		} else {
 			$opt->Body = "";
 		}

@@ -100,6 +100,12 @@ $m_hargajual_delete->showMessage();
 <?php if ($m_hargajual_delete->tgl_exp->Visible) { // tgl_exp ?>
 		<th class="<?php echo $m_hargajual_delete->tgl_exp->headerCellClass() ?>"><span id="elh_m_hargajual_tgl_exp" class="m_hargajual_tgl_exp"><?php echo $m_hargajual_delete->tgl_exp->caption() ?></span></th>
 <?php } ?>
+<?php if ($m_hargajual_delete->tipe->Visible) { // tipe ?>
+		<th class="<?php echo $m_hargajual_delete->tipe->headerCellClass() ?>"><span id="elh_m_hargajual_tipe" class="m_hargajual_tipe"><?php echo $m_hargajual_delete->tipe->caption() ?></span></th>
+<?php } ?>
+<?php if ($m_hargajual_delete->status->Visible) { // status ?>
+		<th class="<?php echo $m_hargajual_delete->status->headerCellClass() ?>"><span id="elh_m_hargajual_status" class="m_hargajual_status"><?php echo $m_hargajual_delete->status->caption() ?></span></th>
+<?php } ?>
 	</tr>
 	</thead>
 	<tbody>
@@ -188,6 +194,20 @@ while (!$m_hargajual_delete->Recordset->EOF) {
 		<td <?php echo $m_hargajual_delete->tgl_exp->cellAttributes() ?>>
 <span id="el<?php echo $m_hargajual_delete->RowCount ?>_m_hargajual_tgl_exp" class="m_hargajual_tgl_exp">
 <span<?php echo $m_hargajual_delete->tgl_exp->viewAttributes() ?>><?php echo $m_hargajual_delete->tgl_exp->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($m_hargajual_delete->tipe->Visible) { // tipe ?>
+		<td <?php echo $m_hargajual_delete->tipe->cellAttributes() ?>>
+<span id="el<?php echo $m_hargajual_delete->RowCount ?>_m_hargajual_tipe" class="m_hargajual_tipe">
+<span<?php echo $m_hargajual_delete->tipe->viewAttributes() ?>><?php echo $m_hargajual_delete->tipe->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($m_hargajual_delete->status->Visible) { // status ?>
+		<td <?php echo $m_hargajual_delete->status->cellAttributes() ?>>
+<span id="el<?php echo $m_hargajual_delete->RowCount ?>_m_hargajual_status" class="m_hargajual_status">
+<span<?php echo $m_hargajual_delete->status->viewAttributes() ?>><?php echo $m_hargajual_delete->status->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

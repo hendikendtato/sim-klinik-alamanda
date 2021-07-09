@@ -676,6 +676,7 @@ class users_add extends users
 		$this->username->setVisibility();
 		$this->userpwd->setVisibility();
 		$this->level->setVisibility();
+		$this->status->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -829,6 +830,8 @@ class users_add extends users
 		$this->userpwd->OldValue = $this->userpwd->CurrentValue;
 		$this->level->CurrentValue = NULL;
 		$this->level->OldValue = $this->level->CurrentValue;
+		$this->status->CurrentValue = NULL;
+		$this->status->OldValue = $this->status->CurrentValue;
 	}
 
 	// Load form values
@@ -886,6 +889,15 @@ class users_add extends users
 				$this->level->setFormValue($val);
 		}
 
+		// Check field name 'status' first before field var 'x_status'
+		$val = $CurrentForm->hasValue("status") ? $CurrentForm->getValue("status") : $CurrentForm->getValue("x_status");
+		if (!$this->status->IsDetailKey) {
+			if (IsApi() && $val === NULL)
+				$this->status->Visible = FALSE; // Disable update for API request
+			else
+				$this->status->setFormValue($val);
+		}
+
 		// Check field name 'userid' first before field var 'x__userid'
 		$val = $CurrentForm->hasValue("userid") ? $CurrentForm->getValue("userid") : $CurrentForm->getValue("x__userid");
 	}
@@ -899,6 +911,7 @@ class users_add extends users
 		$this->username->CurrentValue = $this->username->FormValue;
 		$this->userpwd->CurrentValue = $this->userpwd->FormValue;
 		$this->level->CurrentValue = $this->level->FormValue;
+		$this->status->CurrentValue = $this->status->FormValue;
 	}
 
 	// Load row based on key values
@@ -942,6 +955,7 @@ class users_add extends users
 		$this->username->setDbValue($row['username']);
 		$this->userpwd->setDbValue($row['userpwd']);
 		$this->level->setDbValue($row['level']);
+		$this->status->setDbValue($row['status']);
 	}
 
 	// Return a row with default values
@@ -955,6 +969,7 @@ class users_add extends users
 		$row['username'] = $this->username->CurrentValue;
 		$row['userpwd'] = $this->userpwd->CurrentValue;
 		$row['level'] = $this->level->CurrentValue;
+		$row['status'] = $this->status->CurrentValue;
 		return $row;
 	}
 
@@ -998,6 +1013,7 @@ class users_add extends users
 		// username
 		// userpwd
 		// level
+		// status
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -1084,6 +1100,14 @@ class users_add extends users
 			}
 			$this->level->ViewCustomAttributes = "";
 
+			// status
+			if (strval($this->status->CurrentValue) != "") {
+				$this->status->ViewValue = $this->status->optionCaption($this->status->CurrentValue);
+			} else {
+				$this->status->ViewValue = NULL;
+			}
+			$this->status->ViewCustomAttributes = "";
+
 			// id_klinik
 			$this->id_klinik->LinkCustomAttributes = "";
 			$this->id_klinik->HrefValue = "";
@@ -1108,6 +1132,11 @@ class users_add extends users
 			$this->level->LinkCustomAttributes = "";
 			$this->level->HrefValue = "";
 			$this->level->TooltipValue = "";
+
+			// status
+			$this->status->LinkCustomAttributes = "";
+			$this->status->HrefValue = "";
+			$this->status->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_ADD) { // Add row
 
 			// id_klinik
@@ -1211,6 +1240,11 @@ class users_add extends users
 				}
 			}
 
+			// status
+			$this->status->EditAttrs["class"] = "form-control";
+			$this->status->EditCustomAttributes = "";
+			$this->status->EditValue = $this->status->options(TRUE);
+
 			// Add refer script
 			// id_klinik
 
@@ -1232,6 +1266,10 @@ class users_add extends users
 			// level
 			$this->level->LinkCustomAttributes = "";
 			$this->level->HrefValue = "";
+
+			// status
+			$this->status->LinkCustomAttributes = "";
+			$this->status->HrefValue = "";
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -1280,6 +1318,11 @@ class users_add extends users
 				AddMessage($FormError, str_replace("%s", $this->level->caption(), $this->level->RequiredErrorMessage));
 			}
 		}
+		if ($this->status->Required) {
+			if (!$this->status->IsDetailKey && $this->status->FormValue != NULL && $this->status->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->status->caption(), $this->status->RequiredErrorMessage));
+			}
+		}
 
 		// Return validate result
 		$validateForm = ($FormError == "");
@@ -1325,6 +1368,9 @@ class users_add extends users
 			
 		}
 		
+
+		// status
+		$this->status->setDbValueDef($rsnew, $this->status->CurrentValue, NULL, FALSE);
 
 		// Call Row Inserting event
 		$rs = ($rsold) ? $rsold->fields : NULL;
@@ -1396,6 +1442,8 @@ class users_add extends users
 				case "x_id_pegawai":
 					break;
 				case "x_level":
+					break;
+				case "x_status":
 					break;
 				default:
 					$lookupFilter = "";

@@ -101,11 +101,6 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $m_barang_edit->tipe->caption(), $m_barang_edit->tipe->RequiredErrorMessage)) ?>");
 			<?php } ?>
-			<?php if ($m_barang_edit->status->Required) { ?>
-				elm = this.getElements("x" + infix + "_status");
-				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $m_barang_edit->status->caption(), $m_barang_edit->status->RequiredErrorMessage)) ?>");
-			<?php } ?>
 			<?php if ($m_barang_edit->shortname_barang->Required) { ?>
 				elm = this.getElements("x" + infix + "_shortname_barang");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
@@ -161,8 +156,6 @@ loadjs.ready("head", function() {
 	fm_barangedit.lists["x_komposisi"].options = <?php echo JsonEncode($m_barang_edit->komposisi->options(FALSE, TRUE)) ?>;
 	fm_barangedit.lists["x_tipe"] = <?php echo $m_barang_edit->tipe->Lookup->toClientList($m_barang_edit) ?>;
 	fm_barangedit.lists["x_tipe"].options = <?php echo JsonEncode($m_barang_edit->tipe->options(FALSE, TRUE)) ?>;
-	fm_barangedit.lists["x_status"] = <?php echo $m_barang_edit->status->Lookup->toClientList($m_barang_edit) ?>;
-	fm_barangedit.lists["x_status"].options = <?php echo JsonEncode($m_barang_edit->status->lookupOptions()) ?>;
 	fm_barangedit.lists["x_id_tag"] = <?php echo $m_barang_edit->id_tag->Lookup->toClientList($m_barang_edit) ?>;
 	fm_barangedit.lists["x_id_tag"].options = <?php echo JsonEncode($m_barang_edit->id_tag->lookupOptions()) ?>;
 	fm_barangedit.lists["x_discontinue"] = <?php echo $m_barang_edit->discontinue->Lookup->toClientList($m_barang_edit) ?>;
@@ -305,21 +298,6 @@ $m_barang_edit->showMessage();
 </div></div>
 </span>
 <?php echo $m_barang_edit->tipe->CustomMsg ?></div></div>
-	</div>
-<?php } ?>
-<?php if ($m_barang_edit->status->Visible) { // status ?>
-	<div id="r_status" class="form-group row">
-		<label id="elh_m_barang_status" for="x_status" class="<?php echo $m_barang_edit->LeftColumnClass ?>"><?php echo $m_barang_edit->status->caption() ?><?php echo $m_barang_edit->status->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
-		<div class="<?php echo $m_barang_edit->RightColumnClass ?>"><div <?php echo $m_barang_edit->status->cellAttributes() ?>>
-<span id="el_m_barang_status">
-<div class="input-group">
-	<select class="custom-select ew-custom-select" data-table="m_barang" data-field="x_status" data-value-separator="<?php echo $m_barang_edit->status->displayValueSeparatorAttribute() ?>" id="x_status" name="x_status"<?php echo $m_barang_edit->status->editAttributes() ?>>
-			<?php echo $m_barang_edit->status->selectOptionListHtml("x_status") ?>
-		</select>
-</div>
-<?php echo $m_barang_edit->status->Lookup->getParamTag($m_barang_edit, "p_x_status") ?>
-</span>
-<?php echo $m_barang_edit->status->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 <?php if ($m_barang_edit->shortname_barang->Visible) { // shortname_barang ?>

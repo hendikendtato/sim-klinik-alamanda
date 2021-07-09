@@ -1373,15 +1373,17 @@ class returbarang extends DbTable
 			$nama_pegawai = ExecuteScalar("SELECT nama_pegawai FROM m_pegawai WHERE id_pegawai = $id_pegawai");
 			$this->id_pegawai->ViewValue = $nama_pegawai;
 		}
-		$id_klinik = CurrentUserInfo("id_klinik");
-		if($id_klinik != '' OR $id_klinik != FALSE){
-			$this->id_klinik->CurrentValue = $id_klinik ;
-			$this->id_klinik->ReadOnly = TRUE; 
-		}
-		$id_pegawai = CurrentUserInfo("id_pegawai");
-		if($id_pegawai != '' OR $id_pegawai != FALSE){
-			$this->id_pegawai->CurrentValue = $id_pegawai ;
-			$this->id_pegawai->ReadOnly = TRUE; 
+		if(CurrentUserLevel() != '-1') {
+			$id_klinik = CurrentUserInfo("id_klinik");
+			if($id_klinik != '' OR $id_klinik != FALSE){
+				$this->id_klinik->CurrentValue = $id_klinik ;
+				$this->id_klinik->ReadOnly = TRUE; 
+			}
+			$id_pegawai = CurrentUserInfo("id_pegawai");
+			if($id_pegawai != '' OR $id_pegawai != FALSE){
+				$this->id_pegawai->CurrentValue = $id_pegawai ;
+				$this->id_pegawai->ReadOnly = TRUE; 
+			}
 		}
 	}
 

@@ -56,11 +56,6 @@ loadjs.ready("head", function() {
 		for (var i = startcnt; i <= rowcnt; i++) {
 			var infix = ($k[0]) ? String(i) : "";
 			$fobj.data("rowindex", infix);
-			<?php if ($users_edit->_userid->Required) { ?>
-				elm = this.getElements("x" + infix + "__userid");
-				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $users_edit->_userid->caption(), $users_edit->_userid->RequiredErrorMessage)) ?>");
-			<?php } ?>
 			<?php if ($users_edit->id_klinik->Required) { ?>
 				elm = this.getElements("x" + infix + "_id_klinik");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
@@ -88,6 +83,11 @@ loadjs.ready("head", function() {
 				elm = this.getElements("x" + infix + "_level");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $users_edit->level->caption(), $users_edit->level->RequiredErrorMessage)) ?>");
+			<?php } ?>
+			<?php if ($users_edit->status->Required) { ?>
+				elm = this.getElements("x" + infix + "_status");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $users_edit->status->caption(), $users_edit->status->RequiredErrorMessage)) ?>");
 			<?php } ?>
 
 				// Call Form_CustomValidate event
@@ -124,6 +124,8 @@ loadjs.ready("head", function() {
 	fusersedit.lists["x_id_pegawai"].options = <?php echo JsonEncode($users_edit->id_pegawai->lookupOptions()) ?>;
 	fusersedit.lists["x_level"] = <?php echo $users_edit->level->Lookup->toClientList($users_edit) ?>;
 	fusersedit.lists["x_level"].options = <?php echo JsonEncode($users_edit->level->lookupOptions()) ?>;
+	fusersedit.lists["x_status"] = <?php echo $users_edit->status->Lookup->toClientList($users_edit) ?>;
+	fusersedit.lists["x_status"].options = <?php echo JsonEncode($users_edit->status->options(FALSE, TRUE)) ?>;
 	loadjs.done("fusersedit");
 });
 </script>
@@ -147,17 +149,6 @@ $users_edit->showMessage();
 <input type="hidden" name="action" id="action" value="update">
 <input type="hidden" name="modal" value="<?php echo (int)$users_edit->IsModal ?>">
 <div class="ew-edit-div"><!-- page* -->
-<?php if ($users_edit->_userid->Visible) { // userid ?>
-	<div id="r__userid" class="form-group row">
-		<label id="elh_users__userid" class="<?php echo $users_edit->LeftColumnClass ?>"><?php echo $users_edit->_userid->caption() ?><?php echo $users_edit->_userid->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
-		<div class="<?php echo $users_edit->RightColumnClass ?>"><div <?php echo $users_edit->_userid->cellAttributes() ?>>
-<span id="el_users__userid">
-<span<?php echo $users_edit->_userid->viewAttributes() ?>><input type="text" readonly class="form-control-plaintext" value="<?php echo HtmlEncode(RemoveHtml($users_edit->_userid->EditValue)) ?>"></span>
-</span>
-<input type="hidden" data-table="users" data-field="x__userid" name="x__userid" id="x__userid" value="<?php echo HtmlEncode($users_edit->_userid->CurrentValue) ?>">
-<?php echo $users_edit->_userid->CustomMsg ?></div></div>
-	</div>
-<?php } ?>
 <?php if ($users_edit->id_klinik->Visible) { // id_klinik ?>
 	<div id="r_id_klinik" class="form-group row">
 		<label id="elh_users_id_klinik" class="<?php echo $users_edit->LeftColumnClass ?>"><?php echo $users_edit->id_klinik->caption() ?><?php echo $users_edit->id_klinik->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
@@ -245,7 +236,22 @@ loadjs.ready(["fusersedit"], function() {
 <?php echo $users_edit->level->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
+<?php if ($users_edit->status->Visible) { // status ?>
+	<div id="r_status" class="form-group row">
+		<label id="elh_users_status" for="x_status" class="<?php echo $users_edit->LeftColumnClass ?>"><?php echo $users_edit->status->caption() ?><?php echo $users_edit->status->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $users_edit->RightColumnClass ?>"><div <?php echo $users_edit->status->cellAttributes() ?>>
+<span id="el_users_status">
+<div class="input-group">
+	<select class="custom-select ew-custom-select" data-table="users" data-field="x_status" data-value-separator="<?php echo $users_edit->status->displayValueSeparatorAttribute() ?>" id="x_status" name="x_status"<?php echo $users_edit->status->editAttributes() ?>>
+			<?php echo $users_edit->status->selectOptionListHtml("x_status") ?>
+		</select>
+</div>
+</span>
+<?php echo $users_edit->status->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
 </div><!-- /page* -->
+	<input type="hidden" data-table="users" data-field="x__userid" name="x__userid" id="x__userid" value="<?php echo HtmlEncode($users_edit->_userid->CurrentValue) ?>">
 <?php if (!$users_edit->IsModal) { ?>
 <div class="form-group row"><!-- buttons .form-group -->
 	<div class="<?php echo $users_edit->OffsetColumnClass ?>"><!-- buttons offset -->

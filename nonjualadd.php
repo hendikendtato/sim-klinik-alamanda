@@ -61,6 +61,11 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $nonjual_add->id_klinik->caption(), $nonjual_add->id_klinik->RequiredErrorMessage)) ?>");
 			<?php } ?>
+			<?php if ($nonjual_add->id_staff->Required) { ?>
+				elm = this.getElements("x" + infix + "_id_staff");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $nonjual_add->id_staff->caption(), $nonjual_add->id_staff->RequiredErrorMessage)) ?>");
+			<?php } ?>
 			<?php if ($nonjual_add->tanggal->Required) { ?>
 				elm = this.getElements("x" + infix + "_tanggal");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
@@ -104,6 +109,8 @@ loadjs.ready("head", function() {
 	// Dynamic selection lists
 	fnonjualadd.lists["x_id_klinik"] = <?php echo $nonjual_add->id_klinik->Lookup->toClientList($nonjual_add) ?>;
 	fnonjualadd.lists["x_id_klinik"].options = <?php echo JsonEncode($nonjual_add->id_klinik->lookupOptions()) ?>;
+	fnonjualadd.lists["x_id_staff"] = <?php echo $nonjual_add->id_staff->Lookup->toClientList($nonjual_add) ?>;
+	fnonjualadd.lists["x_id_staff"].options = <?php echo JsonEncode($nonjual_add->id_staff->lookupOptions()) ?>;
 	loadjs.done("fnonjualadd");
 });
 </script>
@@ -131,7 +138,6 @@ $nonjual_add->showMessage();
 		<label id="elh_nonjual_id_klinik" for="x_id_klinik" class="<?php echo $nonjual_add->LeftColumnClass ?>"><?php echo $nonjual_add->id_klinik->caption() ?><?php echo $nonjual_add->id_klinik->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $nonjual_add->RightColumnClass ?>"><div <?php echo $nonjual_add->id_klinik->cellAttributes() ?>>
 <span id="el_nonjual_id_klinik">
-<?php $nonjual_add->id_klinik->EditAttrs->prepend("onchange", "ew.updateOptions.call(this);"); ?>
 <div class="input-group">
 	<select class="custom-select ew-custom-select" data-table="nonjual" data-field="x_id_klinik" data-value-separator="<?php echo $nonjual_add->id_klinik->displayValueSeparatorAttribute() ?>" id="x_id_klinik" name="x_id_klinik"<?php echo $nonjual_add->id_klinik->editAttributes() ?>>
 			<?php echo $nonjual_add->id_klinik->selectOptionListHtml("x_id_klinik") ?>
@@ -140,6 +146,21 @@ $nonjual_add->showMessage();
 <?php echo $nonjual_add->id_klinik->Lookup->getParamTag($nonjual_add, "p_x_id_klinik") ?>
 </span>
 <?php echo $nonjual_add->id_klinik->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
+<?php if ($nonjual_add->id_staff->Visible) { // id_staff ?>
+	<div id="r_id_staff" class="form-group row">
+		<label id="elh_nonjual_id_staff" for="x_id_staff" class="<?php echo $nonjual_add->LeftColumnClass ?>"><?php echo $nonjual_add->id_staff->caption() ?><?php echo $nonjual_add->id_staff->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $nonjual_add->RightColumnClass ?>"><div <?php echo $nonjual_add->id_staff->cellAttributes() ?>>
+<span id="el_nonjual_id_staff">
+<div class="input-group">
+	<select class="custom-select ew-custom-select" data-table="nonjual" data-field="x_id_staff" data-value-separator="<?php echo $nonjual_add->id_staff->displayValueSeparatorAttribute() ?>" id="x_id_staff" name="x_id_staff"<?php echo $nonjual_add->id_staff->editAttributes() ?>>
+			<?php echo $nonjual_add->id_staff->selectOptionListHtml("x_id_staff") ?>
+		</select>
+</div>
+<?php echo $nonjual_add->id_staff->Lookup->getParamTag($nonjual_add, "p_x_id_staff") ?>
+</span>
+<?php echo $nonjual_add->id_staff->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 <?php if ($nonjual_add->tanggal->Visible) { // tanggal ?>

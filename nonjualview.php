@@ -91,6 +91,16 @@ $nonjual_view->showMessage();
 </td>
 	</tr>
 <?php } ?>
+<?php if ($nonjual_view->id_staff->Visible) { // id_staff ?>
+	<tr id="r_id_staff">
+		<td class="<?php echo $nonjual_view->TableLeftColumnClass ?>"><span id="elh_nonjual_id_staff"><?php echo $nonjual_view->id_staff->caption() ?></span></td>
+		<td data-name="id_staff" <?php echo $nonjual_view->id_staff->cellAttributes() ?>>
+<span id="el_nonjual_id_staff">
+<span<?php echo $nonjual_view->id_staff->viewAttributes() ?>><?php echo $nonjual_view->id_staff->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
 <?php if ($nonjual_view->tanggal->Visible) { // tanggal ?>
 	<tr id="r_tanggal">
 		<td class="<?php echo $nonjual_view->TableLeftColumnClass ?>"><span id="elh_nonjual_tanggal"><?php echo $nonjual_view->tanggal->caption() ?></span></td>

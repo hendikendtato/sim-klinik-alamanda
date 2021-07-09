@@ -84,6 +84,11 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $users_add->level->caption(), $users_add->level->RequiredErrorMessage)) ?>");
 			<?php } ?>
+			<?php if ($users_add->status->Required) { ?>
+				elm = this.getElements("x" + infix + "_status");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $users_add->status->caption(), $users_add->status->RequiredErrorMessage)) ?>");
+			<?php } ?>
 
 				// Call Form_CustomValidate event
 				if (!this.Form_CustomValidate(fobj))
@@ -119,6 +124,8 @@ loadjs.ready("head", function() {
 	fusersadd.lists["x_id_pegawai"].options = <?php echo JsonEncode($users_add->id_pegawai->lookupOptions()) ?>;
 	fusersadd.lists["x_level"] = <?php echo $users_add->level->Lookup->toClientList($users_add) ?>;
 	fusersadd.lists["x_level"].options = <?php echo JsonEncode($users_add->level->lookupOptions()) ?>;
+	fusersadd.lists["x_status"] = <?php echo $users_add->status->Lookup->toClientList($users_add) ?>;
+	fusersadd.lists["x_status"].options = <?php echo JsonEncode($users_add->status->options(FALSE, TRUE)) ?>;
 	loadjs.done("fusersadd");
 });
 </script>
@@ -227,6 +234,20 @@ loadjs.ready(["fusersadd"], function() {
 </span>
 <?php } ?>
 <?php echo $users_add->level->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
+<?php if ($users_add->status->Visible) { // status ?>
+	<div id="r_status" class="form-group row">
+		<label id="elh_users_status" for="x_status" class="<?php echo $users_add->LeftColumnClass ?>"><?php echo $users_add->status->caption() ?><?php echo $users_add->status->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $users_add->RightColumnClass ?>"><div <?php echo $users_add->status->cellAttributes() ?>>
+<span id="el_users_status">
+<div class="input-group">
+	<select class="custom-select ew-custom-select" data-table="users" data-field="x_status" data-value-separator="<?php echo $users_add->status->displayValueSeparatorAttribute() ?>" id="x_status" name="x_status"<?php echo $users_add->status->editAttributes() ?>>
+			<?php echo $users_add->status->selectOptionListHtml("x_status") ?>
+		</select>
+</div>
+</span>
+<?php echo $users_add->status->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 </div><!-- /page* -->

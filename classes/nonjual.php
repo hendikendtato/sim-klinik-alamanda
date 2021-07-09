@@ -27,6 +27,7 @@ class nonjual extends DbTable
 	// Fields
 	public $id_nonjual;
 	public $id_klinik;
+	public $id_staff;
 	public $tanggal;
 	public $keterangan;
 
@@ -80,6 +81,15 @@ class nonjual extends DbTable
 		$this->id_klinik->Lookup = new Lookup('id_klinik', 'm_klinik', FALSE, 'id_klinik', ["nama_klinik","","",""], [], ["detail_nonjual x_id_barang","detail_nonjual x_stok"], [], [], [], [], '', '');
 		$this->id_klinik->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id_klinik'] = &$this->id_klinik;
+
+		// id_staff
+		$this->id_staff = new DbField('nonjual', 'nonjual', 'x_id_staff', 'id_staff', '`id_staff`', '`id_staff`', 3, 11, -1, FALSE, '`id_staff`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->id_staff->Sortable = TRUE; // Allow sort
+		$this->id_staff->UsePleaseSelect = TRUE; // Use PleaseSelect by default
+		$this->id_staff->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
+		$this->id_staff->Lookup = new Lookup('id_staff', 'm_pegawai', FALSE, 'id_pegawai', ["nama_pegawai","","",""], [], [], [], [], [], [], '', '');
+		$this->id_staff->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->fields['id_staff'] = &$this->id_staff;
 
 		// tanggal
 		$this->tanggal = new DbField('nonjual', 'nonjual', 'x_tanggal', 'tanggal', '`tanggal`', CastDateFieldForLike("`tanggal`", 7, "DB"), 133, 10, 7, FALSE, '`tanggal`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
@@ -475,6 +485,7 @@ class nonjual extends DbTable
 		$row = is_array($rs) ? $rs : $rs->fields;
 		$this->id_nonjual->DbValue = $row['id_nonjual'];
 		$this->id_klinik->DbValue = $row['id_klinik'];
+		$this->id_staff->DbValue = $row['id_staff'];
 		$this->tanggal->DbValue = $row['tanggal'];
 		$this->keterangan->DbValue = $row['keterangan'];
 	}
@@ -715,6 +726,7 @@ class nonjual extends DbTable
 	{
 		$this->id_nonjual->setDbValue($rs->fields('id_nonjual'));
 		$this->id_klinik->setDbValue($rs->fields('id_klinik'));
+		$this->id_staff->setDbValue($rs->fields('id_staff'));
 		$this->tanggal->setDbValue($rs->fields('tanggal'));
 		$this->keterangan->setDbValue($rs->fields('keterangan'));
 	}
@@ -730,6 +742,7 @@ class nonjual extends DbTable
 		// Common render codes
 		// id_nonjual
 		// id_klinik
+		// id_staff
 		// tanggal
 		// keterangan
 		// id_nonjual
@@ -759,6 +772,32 @@ class nonjual extends DbTable
 		}
 		$this->id_klinik->ViewCustomAttributes = "";
 
+		// id_staff
+		$curVal = strval($this->id_staff->CurrentValue);
+		if ($curVal != "") {
+			$this->id_staff->ViewValue = $this->id_staff->lookupCacheOption($curVal);
+			if ($this->id_staff->ViewValue === NULL) { // Lookup from database
+				$filterWrk = "`id_pegawai`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+				$lookupFilter = function() {
+					return "`status` <> 'Non Aktif'";
+				};
+				$lookupFilter = $lookupFilter->bindTo($this);
+				$sqlWrk = $this->id_staff->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = $rswrk->fields('df');
+					$this->id_staff->ViewValue = $this->id_staff->displayValue($arwrk);
+					$rswrk->Close();
+				} else {
+					$this->id_staff->ViewValue = $this->id_staff->CurrentValue;
+				}
+			}
+		} else {
+			$this->id_staff->ViewValue = NULL;
+		}
+		$this->id_staff->ViewCustomAttributes = "";
+
 		// tanggal
 		$this->tanggal->ViewValue = $this->tanggal->CurrentValue;
 		$this->tanggal->ViewValue = FormatDateTime($this->tanggal->ViewValue, 7);
@@ -777,6 +816,11 @@ class nonjual extends DbTable
 		$this->id_klinik->LinkCustomAttributes = "";
 		$this->id_klinik->HrefValue = "";
 		$this->id_klinik->TooltipValue = "";
+
+		// id_staff
+		$this->id_staff->LinkCustomAttributes = "";
+		$this->id_staff->HrefValue = "";
+		$this->id_staff->TooltipValue = "";
 
 		// tanggal
 		$this->tanggal->LinkCustomAttributes = "";
@@ -812,6 +856,10 @@ class nonjual extends DbTable
 		// id_klinik
 		$this->id_klinik->EditAttrs["class"] = "form-control";
 		$this->id_klinik->EditCustomAttributes = "";
+
+		// id_staff
+		$this->id_staff->EditAttrs["class"] = "form-control";
+		$this->id_staff->EditCustomAttributes = "";
 
 		// tanggal
 		$this->tanggal->EditAttrs["class"] = "form-control";
@@ -856,11 +904,13 @@ class nonjual extends DbTable
 				if ($exportPageType == "view") {
 					$doc->exportCaption($this->id_nonjual);
 					$doc->exportCaption($this->id_klinik);
+					$doc->exportCaption($this->id_staff);
 					$doc->exportCaption($this->tanggal);
 					$doc->exportCaption($this->keterangan);
 				} else {
 					$doc->exportCaption($this->id_nonjual);
 					$doc->exportCaption($this->id_klinik);
+					$doc->exportCaption($this->id_staff);
 					$doc->exportCaption($this->tanggal);
 					$doc->exportCaption($this->keterangan);
 				}
@@ -896,11 +946,13 @@ class nonjual extends DbTable
 					if ($exportPageType == "view") {
 						$doc->exportField($this->id_nonjual);
 						$doc->exportField($this->id_klinik);
+						$doc->exportField($this->id_staff);
 						$doc->exportField($this->tanggal);
 						$doc->exportField($this->keterangan);
 					} else {
 						$doc->exportField($this->id_nonjual);
 						$doc->exportField($this->id_klinik);
+						$doc->exportField($this->id_staff);
 						$doc->exportField($this->tanggal);
 						$doc->exportField($this->keterangan);
 					}
@@ -1081,10 +1133,17 @@ class nonjual extends DbTable
 		// To view properties of field class, use:
 		//var_dump($this-><FieldName>);
 
-		$id_klinik = CurrentUserInfo("id_klinik");
-		if($id_klinik != '' OR $id_klinik != FALSE){
-			$this->id_klinik->CurrentValue = $id_klinik ;
-			$this->id_klinik->ReadOnly = TRUE; 
+		if(CurrentUserLevel() != '-1') {	
+			$id_klinik = CurrentUserInfo("id_klinik");
+			if($id_klinik != '' OR $id_klinik != FALSE){
+				$this->id_klinik->CurrentValue = $id_klinik ;
+				$this->id_klinik->ReadOnly = TRUE; 
+			}
+			$id_pegawai = CurrentUserInfo("id_pegawai");
+			if($id_pegawai != '' OR $id_pegawai != FALSE){
+				$this->id_staff->CurrentValue = $id_pegawai ;
+				$this->id_staff->ReadOnly = TRUE; 
+			}
 		}
 	}
 

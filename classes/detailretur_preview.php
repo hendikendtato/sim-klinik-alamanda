@@ -618,7 +618,6 @@ class detailretur_preview extends detailretur
 		$this->setupOtherOptions();
 
 		// Set up lookup cache
-		$this->setupLookupOptions($this->id_barang);
 		$this->setupLookupOptions($this->id_satuan);
 
 		// Load filter
@@ -856,8 +855,6 @@ class detailretur_preview extends detailretur
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
-				case "x_id_barang":
-					break;
 				case "x_id_satuan":
 					break;
 				default:
@@ -880,8 +877,6 @@ class detailretur_preview extends detailretur
 
 					// Format the field values
 					switch ($fld->FieldVar) {
-						case "x_id_barang":
-							break;
 						case "x_id_satuan":
 							break;
 					}

@@ -125,6 +125,14 @@ loadjs.ready("head", function() {
 				elm = this.getElements("x" + infix + "_disc_rp");
 				if (elm && !ew.checkNumber(elm.value))
 					return this.onError(elm, "<?php echo JsEncode($detailpenjualan_add->disc_rp->errorMessage()) ?>");
+			<?php if ($detailpenjualan_add->voucher_barang->Required) { ?>
+				elm = this.getElements("x" + infix + "_voucher_barang");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $detailpenjualan_add->voucher_barang->caption(), $detailpenjualan_add->voucher_barang->RequiredErrorMessage)) ?>");
+			<?php } ?>
+				elm = this.getElements("x" + infix + "_voucher_barang");
+				if (elm && !ew.checkNumber(elm.value))
+					return this.onError(elm, "<?php echo JsEncode($detailpenjualan_add->voucher_barang->errorMessage()) ?>");
 			<?php if ($detailpenjualan_add->komisi_recall->Required) { ?>
 				elm = this.getElements("x" + infix + "_komisi_recall");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
@@ -168,15 +176,6 @@ loadjs.ready("head", function() {
 	// Dynamic selection lists
 	fdetailpenjualanadd.lists["x_id_penjualan"] = <?php echo $detailpenjualan_add->id_penjualan->Lookup->toClientList($detailpenjualan_add) ?>;
 	fdetailpenjualanadd.lists["x_id_penjualan"].options = <?php echo JsonEncode($detailpenjualan_add->id_penjualan->lookupOptions()) ?>;
-	fdetailpenjualanadd.lists["x_id_barang"] = <?php echo $detailpenjualan_add->id_barang->Lookup->toClientList($detailpenjualan_add) ?>;
-	fdetailpenjualanadd.lists["x_id_barang"].options = <?php echo JsonEncode($detailpenjualan_add->id_barang->lookupOptions()) ?>;
-	fdetailpenjualanadd.autoSuggests["x_id_barang"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
-	fdetailpenjualanadd.lists["x_kode_barang"] = <?php echo $detailpenjualan_add->kode_barang->Lookup->toClientList($detailpenjualan_add) ?>;
-	fdetailpenjualanadd.lists["x_kode_barang"].options = <?php echo JsonEncode($detailpenjualan_add->kode_barang->lookupOptions()) ?>;
-	fdetailpenjualanadd.autoSuggests["x_kode_barang"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
-	fdetailpenjualanadd.lists["x_nama_barang"] = <?php echo $detailpenjualan_add->nama_barang->Lookup->toClientList($detailpenjualan_add) ?>;
-	fdetailpenjualanadd.lists["x_nama_barang"].options = <?php echo JsonEncode($detailpenjualan_add->nama_barang->lookupOptions()) ?>;
-	fdetailpenjualanadd.autoSuggests["x_nama_barang"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
 	fdetailpenjualanadd.lists["x_komisi_recall"] = <?php echo $detailpenjualan_add->komisi_recall->Lookup->toClientList($detailpenjualan_add) ?>;
 	fdetailpenjualanadd.lists["x_komisi_recall"].options = <?php echo JsonEncode($detailpenjualan_add->komisi_recall->lookupOptions()) ?>;
 	loadjs.done("fdetailpenjualanadd");
@@ -230,72 +229,30 @@ $detailpenjualan_add->showMessage();
 <?php } ?>
 <?php if ($detailpenjualan_add->id_barang->Visible) { // id_barang ?>
 	<div id="r_id_barang" class="form-group row">
-		<label id="elh_detailpenjualan_id_barang" class="<?php echo $detailpenjualan_add->LeftColumnClass ?>"><?php echo $detailpenjualan_add->id_barang->caption() ?><?php echo $detailpenjualan_add->id_barang->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<label id="elh_detailpenjualan_id_barang" for="x_id_barang" class="<?php echo $detailpenjualan_add->LeftColumnClass ?>"><?php echo $detailpenjualan_add->id_barang->caption() ?><?php echo $detailpenjualan_add->id_barang->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $detailpenjualan_add->RightColumnClass ?>"><div <?php echo $detailpenjualan_add->id_barang->cellAttributes() ?>>
 <span id="el_detailpenjualan_id_barang">
-<?php
-$onchange = $detailpenjualan_add->id_barang->EditAttrs->prepend("onchange", "ew.autoFill(this);");
-$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
-$detailpenjualan_add->id_barang->EditAttrs["onchange"] = "";
-?>
-<span id="as_x_id_barang">
-	<input type="text" class="form-control" name="sv_x_id_barang" id="sv_x_id_barang" value="<?php echo RemoveHtml($detailpenjualan_add->id_barang->EditValue) ?>" size="25" maxlength="40" placeholder="<?php echo HtmlEncode($detailpenjualan_add->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailpenjualan_add->id_barang->getPlaceHolder()) ?>"<?php echo $detailpenjualan_add->id_barang->editAttributes() ?>>
-</span>
-<input type="hidden" data-table="detailpenjualan" data-field="x_id_barang" data-value-separator="<?php echo $detailpenjualan_add->id_barang->displayValueSeparatorAttribute() ?>" name="x_id_barang" id="x_id_barang" value="<?php echo HtmlEncode($detailpenjualan_add->id_barang->CurrentValue) ?>"<?php echo $onchange ?>>
-<script>
-loadjs.ready(["fdetailpenjualanadd"], function() {
-	fdetailpenjualanadd.createAutoSuggest({"id":"x_id_barang","forceSelect":true});
-});
-</script>
-<?php echo $detailpenjualan_add->id_barang->Lookup->getParamTag($detailpenjualan_add, "p_x_id_barang") ?>
+<input type="text" data-table="detailpenjualan" data-field="x_id_barang" name="x_id_barang" id="x_id_barang" size="25" maxlength="40" placeholder="<?php echo HtmlEncode($detailpenjualan_add->id_barang->getPlaceHolder()) ?>" value="<?php echo $detailpenjualan_add->id_barang->EditValue ?>"<?php echo $detailpenjualan_add->id_barang->editAttributes() ?>>
 </span>
 <?php echo $detailpenjualan_add->id_barang->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 <?php if ($detailpenjualan_add->kode_barang->Visible) { // kode_barang ?>
 	<div id="r_kode_barang" class="form-group row">
-		<label id="elh_detailpenjualan_kode_barang" class="<?php echo $detailpenjualan_add->LeftColumnClass ?>"><?php echo $detailpenjualan_add->kode_barang->caption() ?><?php echo $detailpenjualan_add->kode_barang->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<label id="elh_detailpenjualan_kode_barang" for="x_kode_barang" class="<?php echo $detailpenjualan_add->LeftColumnClass ?>"><?php echo $detailpenjualan_add->kode_barang->caption() ?><?php echo $detailpenjualan_add->kode_barang->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $detailpenjualan_add->RightColumnClass ?>"><div <?php echo $detailpenjualan_add->kode_barang->cellAttributes() ?>>
 <span id="el_detailpenjualan_kode_barang">
-<?php
-$onchange = $detailpenjualan_add->kode_barang->EditAttrs->prepend("onchange", "ew.autoFill(this);");
-$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
-$detailpenjualan_add->kode_barang->EditAttrs["onchange"] = "";
-?>
-<span id="as_x_kode_barang">
-	<input type="text" class="form-control" name="sv_x_kode_barang" id="sv_x_kode_barang" value="<?php echo RemoveHtml($detailpenjualan_add->kode_barang->EditValue) ?>" size="10" maxlength="255" placeholder="<?php echo HtmlEncode($detailpenjualan_add->kode_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailpenjualan_add->kode_barang->getPlaceHolder()) ?>"<?php echo $detailpenjualan_add->kode_barang->editAttributes() ?>>
-</span>
-<input type="hidden" data-table="detailpenjualan" data-field="x_kode_barang" data-value-separator="<?php echo $detailpenjualan_add->kode_barang->displayValueSeparatorAttribute() ?>" name="x_kode_barang" id="x_kode_barang" value="<?php echo HtmlEncode($detailpenjualan_add->kode_barang->CurrentValue) ?>"<?php echo $onchange ?>>
-<script>
-loadjs.ready(["fdetailpenjualanadd"], function() {
-	fdetailpenjualanadd.createAutoSuggest({"id":"x_kode_barang","forceSelect":true});
-});
-</script>
-<?php echo $detailpenjualan_add->kode_barang->Lookup->getParamTag($detailpenjualan_add, "p_x_kode_barang") ?>
+<input type="text" data-table="detailpenjualan" data-field="x_kode_barang" name="x_kode_barang" id="x_kode_barang" size="10" maxlength="255" placeholder="<?php echo HtmlEncode($detailpenjualan_add->kode_barang->getPlaceHolder()) ?>" value="<?php echo $detailpenjualan_add->kode_barang->EditValue ?>"<?php echo $detailpenjualan_add->kode_barang->editAttributes() ?>>
 </span>
 <?php echo $detailpenjualan_add->kode_barang->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 <?php if ($detailpenjualan_add->nama_barang->Visible) { // nama_barang ?>
 	<div id="r_nama_barang" class="form-group row">
-		<label id="elh_detailpenjualan_nama_barang" class="<?php echo $detailpenjualan_add->LeftColumnClass ?>"><?php echo $detailpenjualan_add->nama_barang->caption() ?><?php echo $detailpenjualan_add->nama_barang->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<label id="elh_detailpenjualan_nama_barang" for="x_nama_barang" class="<?php echo $detailpenjualan_add->LeftColumnClass ?>"><?php echo $detailpenjualan_add->nama_barang->caption() ?><?php echo $detailpenjualan_add->nama_barang->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $detailpenjualan_add->RightColumnClass ?>"><div <?php echo $detailpenjualan_add->nama_barang->cellAttributes() ?>>
 <span id="el_detailpenjualan_nama_barang">
-<?php
-$onchange = $detailpenjualan_add->nama_barang->EditAttrs->prepend("onchange", "ew.autoFill(this);");
-$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
-$detailpenjualan_add->nama_barang->EditAttrs["onchange"] = "";
-?>
-<span id="as_x_nama_barang">
-	<input type="text" class="form-control" name="sv_x_nama_barang" id="sv_x_nama_barang" value="<?php echo RemoveHtml($detailpenjualan_add->nama_barang->EditValue) ?>" size="45" maxlength="255" placeholder="<?php echo HtmlEncode($detailpenjualan_add->nama_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detailpenjualan_add->nama_barang->getPlaceHolder()) ?>"<?php echo $detailpenjualan_add->nama_barang->editAttributes() ?>>
-</span>
-<input type="hidden" data-table="detailpenjualan" data-field="x_nama_barang" data-value-separator="<?php echo $detailpenjualan_add->nama_barang->displayValueSeparatorAttribute() ?>" name="x_nama_barang" id="x_nama_barang" value="<?php echo HtmlEncode($detailpenjualan_add->nama_barang->CurrentValue) ?>"<?php echo $onchange ?>>
-<script>
-loadjs.ready(["fdetailpenjualanadd"], function() {
-	fdetailpenjualanadd.createAutoSuggest({"id":"x_nama_barang","forceSelect":true});
-});
-</script>
-<?php echo $detailpenjualan_add->nama_barang->Lookup->getParamTag($detailpenjualan_add, "p_x_nama_barang") ?>
+<input type="text" data-table="detailpenjualan" data-field="x_nama_barang" name="x_nama_barang" id="x_nama_barang" size="45" maxlength="255" placeholder="<?php echo HtmlEncode($detailpenjualan_add->nama_barang->getPlaceHolder()) ?>" value="<?php echo $detailpenjualan_add->nama_barang->EditValue ?>"<?php echo $detailpenjualan_add->nama_barang->editAttributes() ?>>
 </span>
 <?php echo $detailpenjualan_add->nama_barang->CustomMsg ?></div></div>
 	</div>
@@ -348,6 +305,16 @@ loadjs.ready(["fdetailpenjualanadd"], function() {
 <input type="text" data-table="detailpenjualan" data-field="x_disc_rp" name="x_disc_rp" id="x_disc_rp" size="2" maxlength="20" placeholder="<?php echo HtmlEncode($detailpenjualan_add->disc_rp->getPlaceHolder()) ?>" value="<?php echo $detailpenjualan_add->disc_rp->EditValue ?>"<?php echo $detailpenjualan_add->disc_rp->editAttributes() ?>>
 </span>
 <?php echo $detailpenjualan_add->disc_rp->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
+<?php if ($detailpenjualan_add->voucher_barang->Visible) { // voucher_barang ?>
+	<div id="r_voucher_barang" class="form-group row">
+		<label id="elh_detailpenjualan_voucher_barang" for="x_voucher_barang" class="<?php echo $detailpenjualan_add->LeftColumnClass ?>"><?php echo $detailpenjualan_add->voucher_barang->caption() ?><?php echo $detailpenjualan_add->voucher_barang->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $detailpenjualan_add->RightColumnClass ?>"><div <?php echo $detailpenjualan_add->voucher_barang->cellAttributes() ?>>
+<span id="el_detailpenjualan_voucher_barang">
+<input type="text" data-table="detailpenjualan" data-field="x_voucher_barang" name="x_voucher_barang" id="x_voucher_barang" size="7" maxlength="22" placeholder="<?php echo HtmlEncode($detailpenjualan_add->voucher_barang->getPlaceHolder()) ?>" value="<?php echo $detailpenjualan_add->voucher_barang->EditValue ?>"<?php echo $detailpenjualan_add->voucher_barang->editAttributes() ?>>
+</span>
+<?php echo $detailpenjualan_add->voucher_barang->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 <?php if ($detailpenjualan_add->komisi_recall->Visible) { // komisi_recall ?>

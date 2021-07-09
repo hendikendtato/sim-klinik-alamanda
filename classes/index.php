@@ -433,12 +433,8 @@ class index
 			$this->terminate("userlevelslist.php");
 		if ($Security->allowList(CurrentProjectID() . 'users'))
 			$this->terminate("userslist.php");
-		if ($Security->allowList(CurrentProjectID() . 'V_kartustok'))
-			$this->terminate("V_kartustoklist.php");
 		if ($Security->allowList(CurrentProjectID() . 'v_stokbarang'))
 			$this->terminate("v_stokbaranglist.php");
-		if ($Security->allowList(CurrentProjectID() . 'view_hargajual'))
-			$this->terminate("view_hargajuallist.php");
 		if ($Security->allowList(CurrentProjectID() . 'view_rm_pasien'))
 			$this->terminate("view_rm_pasienlist.php");
 		if ($Security->allowList(CurrentProjectID() . 'wp_reservasi'))
