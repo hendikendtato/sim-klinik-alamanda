@@ -241,15 +241,6 @@ $view_hargajual_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
-<?php if ($view_hargajual_list->totalhargajual->Visible) { // totalhargajual ?>
-	<?php if ($view_hargajual_list->SortUrl($view_hargajual_list->totalhargajual) == "") { ?>
-		<th data-name="totalhargajual" class="<?php echo $view_hargajual_list->totalhargajual->headerCellClass() ?>"><div id="elh_view_hargajual_totalhargajual" class="view_hargajual_totalhargajual"><div class="ew-table-header-caption"><?php echo $view_hargajual_list->totalhargajual->caption() ?></div></div></th>
-	<?php } else { ?>
-		<th data-name="totalhargajual" class="<?php echo $view_hargajual_list->totalhargajual->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $view_hargajual_list->SortUrl($view_hargajual_list->totalhargajual) ?>', 1);"><div id="elh_view_hargajual_totalhargajual" class="view_hargajual_totalhargajual">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $view_hargajual_list->totalhargajual->caption() ?></span><span class="ew-table-header-sort"><?php if ($view_hargajual_list->totalhargajual->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($view_hargajual_list->totalhargajual->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-		</div></div></th>
-	<?php } ?>
-<?php } ?>
 <?php if ($view_hargajual_list->id_hargajual->Visible) { // id_hargajual ?>
 	<?php if ($view_hargajual_list->SortUrl($view_hargajual_list->id_hargajual) == "") { ?>
 		<th data-name="id_hargajual" class="<?php echo $view_hargajual_list->id_hargajual->headerCellClass() ?>"><div id="elh_view_hargajual_id_hargajual" class="view_hargajual_id_hargajual"><div class="ew-table-header-caption"><?php echo $view_hargajual_list->id_hargajual->caption() ?></div></div></th>
@@ -265,6 +256,15 @@ $view_hargajual_list->ListOptions->render("header", "left");
 	<?php } else { ?>
 		<th data-name="id_barang" class="<?php echo $view_hargajual_list->id_barang->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $view_hargajual_list->SortUrl($view_hargajual_list->id_barang) ?>', 1);"><div id="elh_view_hargajual_id_barang" class="view_hargajual_id_barang">
 			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $view_hargajual_list->id_barang->caption() ?></span><span class="ew-table-header-sort"><?php if ($view_hargajual_list->id_barang->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($view_hargajual_list->id_barang->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
+<?php if ($view_hargajual_list->totalhargajual->Visible) { // totalhargajual ?>
+	<?php if ($view_hargajual_list->SortUrl($view_hargajual_list->totalhargajual) == "") { ?>
+		<th data-name="totalhargajual" class="<?php echo $view_hargajual_list->totalhargajual->headerCellClass() ?>"><div id="elh_view_hargajual_totalhargajual" class="view_hargajual_totalhargajual"><div class="ew-table-header-caption"><?php echo $view_hargajual_list->totalhargajual->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="totalhargajual" class="<?php echo $view_hargajual_list->totalhargajual->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $view_hargajual_list->SortUrl($view_hargajual_list->totalhargajual) ?>', 1);"><div id="elh_view_hargajual_totalhargajual" class="view_hargajual_totalhargajual">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $view_hargajual_list->totalhargajual->caption() ?></span><span class="ew-table-header-sort"><?php if ($view_hargajual_list->totalhargajual->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($view_hargajual_list->totalhargajual->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -310,15 +310,6 @@ $view_hargajual_list->ListOptions->render("header", "left");
 	<?php } else { ?>
 		<th data-name="komposisi" class="<?php echo $view_hargajual_list->komposisi->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $view_hargajual_list->SortUrl($view_hargajual_list->komposisi) ?>', 1);"><div id="elh_view_hargajual_komposisi" class="view_hargajual_komposisi">
 			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $view_hargajual_list->komposisi->caption() ?></span><span class="ew-table-header-sort"><?php if ($view_hargajual_list->komposisi->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($view_hargajual_list->komposisi->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-		</div></div></th>
-	<?php } ?>
-<?php } ?>
-<?php if ($view_hargajual_list->status->Visible) { // status ?>
-	<?php if ($view_hargajual_list->SortUrl($view_hargajual_list->status) == "") { ?>
-		<th data-name="status" class="<?php echo $view_hargajual_list->status->headerCellClass() ?>"><div id="elh_view_hargajual_status" class="view_hargajual_status"><div class="ew-table-header-caption"><?php echo $view_hargajual_list->status->caption() ?></div></div></th>
-	<?php } else { ?>
-		<th data-name="status" class="<?php echo $view_hargajual_list->status->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $view_hargajual_list->SortUrl($view_hargajual_list->status) ?>', 1);"><div id="elh_view_hargajual_status" class="view_hargajual_status">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $view_hargajual_list->status->caption() ?></span><span class="ew-table-header-sort"><?php if ($view_hargajual_list->status->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($view_hargajual_list->status->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -481,13 +472,6 @@ $view_hargajual_list->ListOptions->render("body", "left", $view_hargajual_list->
 </span>
 </td>
 	<?php } ?>
-	<?php if ($view_hargajual_list->totalhargajual->Visible) { // totalhargajual ?>
-		<td data-name="totalhargajual" <?php echo $view_hargajual_list->totalhargajual->cellAttributes() ?>>
-<span id="el<?php echo $view_hargajual_list->RowCount ?>_view_hargajual_totalhargajual">
-<span<?php echo $view_hargajual_list->totalhargajual->viewAttributes() ?>><?php echo $view_hargajual_list->totalhargajual->getViewValue() ?></span>
-</span>
-</td>
-	<?php } ?>
 	<?php if ($view_hargajual_list->id_hargajual->Visible) { // id_hargajual ?>
 		<td data-name="id_hargajual" <?php echo $view_hargajual_list->id_hargajual->cellAttributes() ?>>
 <span id="el<?php echo $view_hargajual_list->RowCount ?>_view_hargajual_id_hargajual">
@@ -499,6 +483,13 @@ $view_hargajual_list->ListOptions->render("body", "left", $view_hargajual_list->
 		<td data-name="id_barang" <?php echo $view_hargajual_list->id_barang->cellAttributes() ?>>
 <span id="el<?php echo $view_hargajual_list->RowCount ?>_view_hargajual_id_barang">
 <span<?php echo $view_hargajual_list->id_barang->viewAttributes() ?>><?php echo $view_hargajual_list->id_barang->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
+	<?php if ($view_hargajual_list->totalhargajual->Visible) { // totalhargajual ?>
+		<td data-name="totalhargajual" <?php echo $view_hargajual_list->totalhargajual->cellAttributes() ?>>
+<span id="el<?php echo $view_hargajual_list->RowCount ?>_view_hargajual_totalhargajual">
+<span<?php echo $view_hargajual_list->totalhargajual->viewAttributes() ?>><?php echo $view_hargajual_list->totalhargajual->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>
@@ -534,13 +525,6 @@ $view_hargajual_list->ListOptions->render("body", "left", $view_hargajual_list->
 		<td data-name="komposisi" <?php echo $view_hargajual_list->komposisi->cellAttributes() ?>>
 <span id="el<?php echo $view_hargajual_list->RowCount ?>_view_hargajual_komposisi">
 <span<?php echo $view_hargajual_list->komposisi->viewAttributes() ?>><?php echo $view_hargajual_list->komposisi->getViewValue() ?></span>
-</span>
-</td>
-	<?php } ?>
-	<?php if ($view_hargajual_list->status->Visible) { // status ?>
-		<td data-name="status" <?php echo $view_hargajual_list->status->cellAttributes() ?>>
-<span id="el<?php echo $view_hargajual_list->RowCount ?>_view_hargajual_status">
-<span<?php echo $view_hargajual_list->status->viewAttributes() ?>><?php echo $view_hargajual_list->status->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>

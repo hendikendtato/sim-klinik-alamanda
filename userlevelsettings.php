@@ -672,7 +672,12 @@ $USER_LEVEL_PRIVS = [["{8546B030-7993-4749-BFDB-17AFAAF4065D}antrian","-2","0"],
 	["{8546B030-7993-4749-BFDB-17AFAAF4065D}laporan_barang_terjual.php","0","0"],
 	["{8546B030-7993-4749-BFDB-17AFAAF4065D}laporan_barang_terjual.php","1","0"],
 	["{8546B030-7993-4749-BFDB-17AFAAF4065D}laporan_barang_terjual.php","2","0"],
-	["{8546B030-7993-4749-BFDB-17AFAAF4065D}laporan_barang_terjual.php","3","0"]];
+	["{8546B030-7993-4749-BFDB-17AFAAF4065D}laporan_barang_terjual.php","3","0"],
+	["{8546B030-7993-4749-BFDB-17AFAAF4065D}view_hargajual","-2","0"],
+	["{8546B030-7993-4749-BFDB-17AFAAF4065D}view_hargajual","0","0"],
+	["{8546B030-7993-4749-BFDB-17AFAAF4065D}view_hargajual","1","0"],
+	["{8546B030-7993-4749-BFDB-17AFAAF4065D}view_hargajual","2","0"],
+	["{8546B030-7993-4749-BFDB-17AFAAF4065D}view_hargajual","3","0"]];
 
 // User level table info
 $USER_LEVEL_TABLES = [["antrian","antrian","Antrian",true,"{8546B030-7993-4749-BFDB-17AFAAF4065D}"],
@@ -806,4 +811,5 @@ $USER_LEVEL_TABLES = [["antrian","antrian","Antrian",true,"{8546B030-7993-4749-B
 	["laporan_best_seller_klinik.php","laporan_best_seller_klinik","Laporan Best Seller Klinik",true,"{8546B030-7993-4749-BFDB-17AFAAF4065D}"],
 	["laporan_summary_penjualan.php","laporan_summary_penjualan","Laporan Summary Penjualan",true,"{8546B030-7993-4749-BFDB-17AFAAF4065D}"],
 	["upload_data.php","upload_data","Upload Data",true,"{8546B030-7993-4749-BFDB-17AFAAF4065D}"],
-	["laporan_barang_terjual.php","laporan_barang_terjual","Laporan Barang Terjual",true,"{8546B030-7993-4749-BFDB-17AFAAF4065D}"]];
+	["laporan_barang_terjual.php","laporan_barang_terjual","Laporan Barang Terjual",true,"{8546B030-7993-4749-BFDB-17AFAAF4065D}"],
+	["view_hargajual","view_hargajual","view hargajual",true,"{8546B030-7993-4749-BFDB-17AFAAF4065D}"]];

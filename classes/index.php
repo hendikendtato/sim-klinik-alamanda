@@ -543,6 +543,8 @@ class index
 			$this->terminate("laporan_summary_penjualan.php");
 		if ($Security->allowList(CurrentProjectID() . 'laporan_barang_terjual.php'))
 			$this->terminate("laporan_barang_terjual.php");
+		if ($Security->allowList(CurrentProjectID() . 'view_hargajual'))
+			$this->terminate("view_hargajuallist.php");
 		if ($Security->isLoggedIn()) {
 			$this->setFailureMessage(DeniedMessage() . "<br><br><a href=\"logout.php\">" . $Language->phrase("BackToLogin") . "</a>");
 		} else {

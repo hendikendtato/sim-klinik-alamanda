@@ -724,6 +724,9 @@ class detailpenjualan_add extends detailpenjualan
 
 		// Set up lookup cache
 		$this->setupLookupOptions($this->id_penjualan);
+		$this->setupLookupOptions($this->id_barang);
+		$this->setupLookupOptions($this->kode_barang);
+		$this->setupLookupOptions($this->nama_barang);
 		$this->setupLookupOptions($this->komisi_recall);
 
 		// Check permission
@@ -1204,17 +1207,79 @@ class detailpenjualan_add extends detailpenjualan
 
 			// id_barang
 			$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
-			$this->id_barang->ViewValue = FormatNumber($this->id_barang->ViewValue, 0, -2, -2, -2);
+			$curVal = strval($this->id_barang->CurrentValue);
+			if ($curVal != "") {
+				$this->id_barang->ViewValue = $this->id_barang->lookupCacheOption($curVal);
+				if ($this->id_barang->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->id_barang->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->id_barang->ViewValue = $this->id_barang->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
+					}
+				}
+			} else {
+				$this->id_barang->ViewValue = NULL;
+			}
 			$this->id_barang->ViewCustomAttributes = "";
 
 			// kode_barang
 			$this->kode_barang->ViewValue = $this->kode_barang->CurrentValue;
-			$this->kode_barang->ViewValue = FormatNumber($this->kode_barang->ViewValue, 0, -2, -2, -2);
+			$curVal = strval($this->kode_barang->CurrentValue);
+			if ($curVal != "") {
+				$this->kode_barang->ViewValue = $this->kode_barang->lookupCacheOption($curVal);
+				if ($this->kode_barang->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$lookupFilter = function() {
+						return "`discontinue` <> 'Yes'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
+					$sqlWrk = $this->kode_barang->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->kode_barang->ViewValue = $this->kode_barang->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->kode_barang->ViewValue = $this->kode_barang->CurrentValue;
+					}
+				}
+			} else {
+				$this->kode_barang->ViewValue = NULL;
+			}
 			$this->kode_barang->ViewCustomAttributes = "";
 
 			// nama_barang
 			$this->nama_barang->ViewValue = $this->nama_barang->CurrentValue;
-			$this->nama_barang->ViewValue = FormatNumber($this->nama_barang->ViewValue, 0, -2, -2, -2);
+			$curVal = strval($this->nama_barang->CurrentValue);
+			if ($curVal != "") {
+				$this->nama_barang->ViewValue = $this->nama_barang->lookupCacheOption($curVal);
+				if ($this->nama_barang->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$lookupFilter = function() {
+						return "`discontinue` <> 'Yes'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
+					$sqlWrk = $this->nama_barang->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->nama_barang->ViewValue = $this->nama_barang->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->nama_barang->ViewValue = $this->nama_barang->CurrentValue;
+					}
+				}
+			} else {
+				$this->nama_barang->ViewValue = NULL;
+			}
 			$this->nama_barang->ViewCustomAttributes = "";
 
 			// id_kemasan
@@ -1405,18 +1470,83 @@ class detailpenjualan_add extends detailpenjualan
 			$this->id_barang->EditAttrs["class"] = "form-control";
 			$this->id_barang->EditCustomAttributes = "";
 			$this->id_barang->EditValue = HtmlEncode($this->id_barang->CurrentValue);
+			$curVal = strval($this->id_barang->CurrentValue);
+			if ($curVal != "") {
+				$this->id_barang->EditValue = $this->id_barang->lookupCacheOption($curVal);
+				if ($this->id_barang->EditValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->id_barang->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+						$this->id_barang->EditValue = $this->id_barang->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->id_barang->EditValue = HtmlEncode($this->id_barang->CurrentValue);
+					}
+				}
+			} else {
+				$this->id_barang->EditValue = NULL;
+			}
 			$this->id_barang->PlaceHolder = RemoveHtml($this->id_barang->caption());
 
 			// kode_barang
 			$this->kode_barang->EditAttrs["class"] = "form-control";
 			$this->kode_barang->EditCustomAttributes = "";
 			$this->kode_barang->EditValue = HtmlEncode($this->kode_barang->CurrentValue);
+			$curVal = strval($this->kode_barang->CurrentValue);
+			if ($curVal != "") {
+				$this->kode_barang->EditValue = $this->kode_barang->lookupCacheOption($curVal);
+				if ($this->kode_barang->EditValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$lookupFilter = function() {
+						return "`discontinue` <> 'Yes'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
+					$sqlWrk = $this->kode_barang->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+						$this->kode_barang->EditValue = $this->kode_barang->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->kode_barang->EditValue = HtmlEncode($this->kode_barang->CurrentValue);
+					}
+				}
+			} else {
+				$this->kode_barang->EditValue = NULL;
+			}
 			$this->kode_barang->PlaceHolder = RemoveHtml($this->kode_barang->caption());
 
 			// nama_barang
 			$this->nama_barang->EditAttrs["class"] = "form-control";
 			$this->nama_barang->EditCustomAttributes = "";
 			$this->nama_barang->EditValue = HtmlEncode($this->nama_barang->CurrentValue);
+			$curVal = strval($this->nama_barang->CurrentValue);
+			if ($curVal != "") {
+				$this->nama_barang->EditValue = $this->nama_barang->lookupCacheOption($curVal);
+				if ($this->nama_barang->EditValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$lookupFilter = function() {
+						return "`discontinue` <> 'Yes'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
+					$sqlWrk = $this->nama_barang->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+						$this->nama_barang->EditValue = $this->nama_barang->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->nama_barang->EditValue = HtmlEncode($this->nama_barang->CurrentValue);
+					}
+				}
+			} else {
+				$this->nama_barang->EditValue = NULL;
+			}
 			$this->nama_barang->PlaceHolder = RemoveHtml($this->nama_barang->caption());
 
 			// harga_jual
@@ -1863,6 +1993,20 @@ class detailpenjualan_add extends detailpenjualan
 			switch ($fld->FieldVar) {
 				case "x_id_penjualan":
 					break;
+				case "x_id_barang":
+					break;
+				case "x_kode_barang":
+					$lookupFilter = function() {
+						return "`discontinue` <> 'Yes'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
+					break;
+				case "x_nama_barang":
+					$lookupFilter = function() {
+						return "`discontinue` <> 'Yes'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
+					break;
 				case "x_komisi_recall":
 					$lookupFilter = function() {
 						return "`status` <> 'Non Aktif'";
@@ -1890,6 +2034,12 @@ class detailpenjualan_add extends detailpenjualan
 					// Format the field values
 					switch ($fld->FieldVar) {
 						case "x_id_penjualan":
+							break;
+						case "x_id_barang":
+							break;
+						case "x_kode_barang":
+							break;
+						case "x_nama_barang":
 							break;
 						case "x_komisi_recall":
 							break;

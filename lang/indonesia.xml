@@ -856,6 +856,9 @@
   <project>
     <phrase id="bodytitle" value="Sistem Informasi Klinik" />
     <phrase id="footertext" value="&amp;copy;2020 PT. Primavisi Global Indo." />
+    <menu id="1081">
+      <phrase id="menutext" value="view hargajual" />
+    </menu>
     <menu id="1079">
       <phrase id="menutext" value="Upload Data" />
     </menu>
@@ -3899,6 +3902,91 @@
     </table>
     <table id="laporan_barang_terjual">
       <phrase id="tblcaption" value="Laporan Barang Terjual" />
+    </table>
+    <table id="view_hargajual">
+      <phrase id="tblcaption" value="view hargajual" />
+      <field id="id">
+        <phrase id="fldcaption" value="id" />
+      </field>
+      <field id="kode_barang">
+        <phrase id="fldcaption" value="kode barang" />
+      </field>
+      <field id="nama_barang">
+        <phrase id="fldcaption" value="nama barang" />
+      </field>
+      <field id="satuan">
+        <phrase id="fldcaption" value="satuan" />
+      </field>
+      <field id="jenis">
+        <phrase id="fldcaption" value="jenis" />
+      </field>
+      <field id="kategori">
+        <phrase id="fldcaption" value="kategori" />
+      </field>
+      <field id="subkategori">
+        <phrase id="fldcaption" value="subkategori" />
+      </field>
+      <field id="id_hargajual">
+        <phrase id="fldcaption" value="id hargajual" />
+      </field>
+      <field id="id_barang">
+        <phrase id="fldcaption" value="id barang" />
+      </field>
+      <field id="totalhargajual">
+        <phrase id="fldcaption" value="totalhargajual" />
+      </field>
+      <field id="id_klinik">
+        <phrase id="fldcaption" value="id klinik" />
+      </field>
+      <field id="nama_klinik">
+        <phrase id="fldcaption" value="nama klinik" />
+      </field>
+      <field id="telpon_klinik">
+        <phrase id="fldcaption" value="telpon klinik" />
+      </field>
+      <field id="alamat_klinik">
+        <phrase id="fldcaption" value="alamat klinik" />
+      </field>
+      <field id="foto_klinik">
+        <phrase id="fldcaption" value="foto klinik" />
+      </field>
+      <field id="stok">
+        <phrase id="fldcaption" value="stok" />
+      </field>
+      <field id="komposisi">
+        <phrase id="fldcaption" value="komposisi" />
+        <phrase id="fldtagvalue1" value="Yes" />
+        <phrase id="fldtagcaption1" value="Yes" />
+        <phrase id="fldtagvalue2" value="No" />
+        <phrase id="fldtagcaption2" value="No" />
+      </field>
+      <field id="tipe">
+        <phrase id="fldcaption" value="tipe" />
+        <phrase id="fldtagvalue1" value="Perawatan" />
+        <phrase id="fldtagcaption1" value="Perawatan" />
+        <phrase id="fldtagvalue2" value="Bahan" />
+        <phrase id="fldtagcaption2" value="Bahan" />
+        <phrase id="fldtagvalue3" value="Jual" />
+        <phrase id="fldtagcaption3" value="Jual" />
+        <phrase id="fldtagvalue4" value="Non Jual" />
+        <phrase id="fldtagcaption4" value="Non Jual" />
+      </field>
+      <field id="tgl_exp">
+        <phrase id="fldcaption" value="tgl exp" />
+      </field>
+      <field id="disc_rp">
+        <phrase id="fldcaption" value="disc rp" />
+      </field>
+      <field id="disc_pr">
+        <phrase id="fldcaption" value="disc pr" />
+      </field>
+      <field id="discontinue">
+        <phrase id="fldcaption" value="discontinue" />
+        <phrase id="fldtagvalue1" value="Yes" />
+        <phrase id="fldtagcaption1" value="Yes" />
+        <phrase id="fldtagvalue2" value="No" />
+        <phrase id="fldtagcaption2" value="No" />
+      </field>
     </table>
   </project>
 </ew-language>

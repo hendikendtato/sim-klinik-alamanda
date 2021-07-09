@@ -32,9 +32,9 @@ class view_hargajual extends DbTable
 	public $jenis;
 	public $kategori;
 	public $subkategori;
-	public $totalhargajual;
 	public $id_hargajual;
 	public $id_barang;
+	public $totalhargajual;
 	public $id_klinik;
 	public $nama_klinik;
 	public $telpon_klinik;
@@ -42,7 +42,6 @@ class view_hargajual extends DbTable
 	public $foto_klinik;
 	public $stok;
 	public $komposisi;
-	public $status;
 	public $tipe;
 	public $tgl_exp;
 	public $disc_rp;
@@ -124,15 +123,10 @@ class view_hargajual extends DbTable
 		$this->subkategori->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['subkategori'] = &$this->subkategori;
 
-		// totalhargajual
-		$this->totalhargajual = new DbField('view_hargajual', 'view_hargajual', 'x_totalhargajual', 'totalhargajual', '`totalhargajual`', '`totalhargajual`', 5, 22, -1, FALSE, '`totalhargajual`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->totalhargajual->Sortable = TRUE; // Allow sort
-		$this->totalhargajual->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
-		$this->fields['totalhargajual'] = &$this->totalhargajual;
-
 		// id_hargajual
 		$this->id_hargajual = new DbField('view_hargajual', 'view_hargajual', 'x_id_hargajual', 'id_hargajual', '`id_hargajual`', '`id_hargajual`', 3, 11, -1, FALSE, '`id_hargajual`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'NO');
 		$this->id_hargajual->IsAutoIncrement = TRUE; // Autoincrement field
+		$this->id_hargajual->IsPrimaryKey = TRUE; // Primary key field
 		$this->id_hargajual->Sortable = TRUE; // Allow sort
 		$this->id_hargajual->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id_hargajual'] = &$this->id_hargajual;
@@ -143,9 +137,16 @@ class view_hargajual extends DbTable
 		$this->id_barang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id_barang'] = &$this->id_barang;
 
+		// totalhargajual
+		$this->totalhargajual = new DbField('view_hargajual', 'view_hargajual', 'x_totalhargajual', 'totalhargajual', '`totalhargajual`', '`totalhargajual`', 5, 22, -1, FALSE, '`totalhargajual`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->totalhargajual->Sortable = TRUE; // Allow sort
+		$this->totalhargajual->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
+		$this->fields['totalhargajual'] = &$this->totalhargajual;
+
 		// id_klinik
 		$this->id_klinik = new DbField('view_hargajual', 'view_hargajual', 'x_id_klinik', 'id_klinik', '`id_klinik`', '`id_klinik`', 19, 11, -1, FALSE, '`id_klinik`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'NO');
 		$this->id_klinik->IsAutoIncrement = TRUE; // Autoincrement field
+		$this->id_klinik->IsPrimaryKey = TRUE; // Primary key field
 		$this->id_klinik->Sortable = TRUE; // Allow sort
 		$this->id_klinik->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id_klinik'] = &$this->id_klinik;
@@ -182,12 +183,6 @@ class view_hargajual extends DbTable
 		$this->komposisi->Lookup = new Lookup('komposisi', 'view_hargajual', FALSE, '', ["","","",""], [], [], [], [], [], [], '', '');
 		$this->komposisi->OptionCount = 2;
 		$this->fields['komposisi'] = &$this->komposisi;
-
-		// status
-		$this->status = new DbField('view_hargajual', 'view_hargajual', 'x_status', 'status', '`status`', '`status`', 3, 11, -1, FALSE, '`status`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->status->Sortable = TRUE; // Allow sort
-		$this->status->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->fields['status'] = &$this->status;
 
 		// tipe
 		$this->tipe = new DbField('view_hargajual', 'view_hargajual', 'x_tipe', 'tipe', '`tipe`', '`tipe`', 202, 9, -1, FALSE, '`tipe`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'RADIO');
@@ -557,6 +552,10 @@ class view_hargajual extends DbTable
 		if ($rs) {
 			if (array_key_exists('id', $rs))
 				AddFilter($where, QuotedName('id', $this->Dbid) . '=' . QuotedValue($rs['id'], $this->id->DataType, $this->Dbid));
+			if (array_key_exists('id_hargajual', $rs))
+				AddFilter($where, QuotedName('id_hargajual', $this->Dbid) . '=' . QuotedValue($rs['id_hargajual'], $this->id_hargajual->DataType, $this->Dbid));
+			if (array_key_exists('id_klinik', $rs))
+				AddFilter($where, QuotedName('id_klinik', $this->Dbid) . '=' . QuotedValue($rs['id_klinik'], $this->id_klinik->DataType, $this->Dbid));
 		}
 		$filter = ($curfilter) ? $this->CurrentFilter : "";
 		AddFilter($filter, $where);
@@ -590,9 +589,9 @@ class view_hargajual extends DbTable
 		$this->jenis->DbValue = $row['jenis'];
 		$this->kategori->DbValue = $row['kategori'];
 		$this->subkategori->DbValue = $row['subkategori'];
-		$this->totalhargajual->DbValue = $row['totalhargajual'];
 		$this->id_hargajual->DbValue = $row['id_hargajual'];
 		$this->id_barang->DbValue = $row['id_barang'];
+		$this->totalhargajual->DbValue = $row['totalhargajual'];
 		$this->id_klinik->DbValue = $row['id_klinik'];
 		$this->nama_klinik->DbValue = $row['nama_klinik'];
 		$this->telpon_klinik->DbValue = $row['telpon_klinik'];
@@ -600,7 +599,6 @@ class view_hargajual extends DbTable
 		$this->foto_klinik->DbValue = $row['foto_klinik'];
 		$this->stok->DbValue = $row['stok'];
 		$this->komposisi->DbValue = $row['komposisi'];
-		$this->status->DbValue = $row['status'];
 		$this->tipe->DbValue = $row['tipe'];
 		$this->tgl_exp->DbValue = $row['tgl_exp'];
 		$this->disc_rp->DbValue = $row['disc_rp'];
@@ -617,7 +615,7 @@ class view_hargajual extends DbTable
 	// Record filter WHERE clause
 	protected function sqlKeyFilter()
 	{
-		return "`id` = @id@";
+		return "`id` = @id@ AND `id_hargajual` = @id_hargajual@ AND `id_klinik` = @id_klinik@";
 	}
 
 	// Get record filter
@@ -634,6 +632,26 @@ class view_hargajual extends DbTable
 			return "0=1"; // Invalid key
 		else
 			$keyFilter = str_replace("@id@", AdjustSql($val, $this->Dbid), $keyFilter); // Replace key value
+		if (is_array($row))
+			$val = array_key_exists('id_hargajual', $row) ? $row['id_hargajual'] : NULL;
+		else
+			$val = $this->id_hargajual->OldValue !== NULL ? $this->id_hargajual->OldValue : $this->id_hargajual->CurrentValue;
+		if (!is_numeric($val))
+			return "0=1"; // Invalid key
+		if ($val == NULL)
+			return "0=1"; // Invalid key
+		else
+			$keyFilter = str_replace("@id_hargajual@", AdjustSql($val, $this->Dbid), $keyFilter); // Replace key value
+		if (is_array($row))
+			$val = array_key_exists('id_klinik', $row) ? $row['id_klinik'] : NULL;
+		else
+			$val = $this->id_klinik->OldValue !== NULL ? $this->id_klinik->OldValue : $this->id_klinik->CurrentValue;
+		if (!is_numeric($val))
+			return "0=1"; // Invalid key
+		if ($val == NULL)
+			return "0=1"; // Invalid key
+		else
+			$keyFilter = str_replace("@id_klinik@", AdjustSql($val, $this->Dbid), $keyFilter); // Replace key value
 		return $keyFilter;
 	}
 
@@ -739,6 +757,8 @@ class view_hargajual extends DbTable
 	{
 		$json = "";
 		$json .= "id:" . JsonEncode($this->id->CurrentValue, "number");
+		$json .= ",id_hargajual:" . JsonEncode($this->id_hargajual->CurrentValue, "number");
+		$json .= ",id_klinik:" . JsonEncode($this->id_klinik->CurrentValue, "number");
 		$json = "{" . $json . "}";
 		if ($htmlEncode)
 			$json = HtmlEncode($json);
@@ -753,6 +773,16 @@ class view_hargajual extends DbTable
 			$url .= $parm . "&";
 		if ($this->id->CurrentValue != NULL) {
 			$url .= "id=" . urlencode($this->id->CurrentValue);
+		} else {
+			return "javascript:ew.alert(ew.language.phrase('InvalidRecord'));";
+		}
+		if ($this->id_hargajual->CurrentValue != NULL) {
+			$url .= "&id_hargajual=" . urlencode($this->id_hargajual->CurrentValue);
+		} else {
+			return "javascript:ew.alert(ew.language.phrase('InvalidRecord'));";
+		}
+		if ($this->id_klinik->CurrentValue != NULL) {
+			$url .= "&id_klinik=" . urlencode($this->id_klinik->CurrentValue);
 		} else {
 			return "javascript:ew.alert(ew.language.phrase('InvalidRecord'));";
 		}
@@ -781,15 +811,34 @@ class view_hargajual extends DbTable
 		if (Param("key_m") !== NULL) {
 			$arKeys = Param("key_m");
 			$cnt = count($arKeys);
+			for ($i = 0; $i < $cnt; $i++)
+				$arKeys[$i] = explode(Config("COMPOSITE_KEY_SEPARATOR"), $arKeys[$i]);
 		} else {
 			if (Param("id") !== NULL)
-				$arKeys[] = Param("id");
+				$arKey[] = Param("id");
 			elseif (IsApi() && Key(0) !== NULL)
-				$arKeys[] = Key(0);
+				$arKey[] = Key(0);
 			elseif (IsApi() && Route(2) !== NULL)
-				$arKeys[] = Route(2);
+				$arKey[] = Route(2);
 			else
 				$arKeys = NULL; // Do not setup
+			if (Param("id_hargajual") !== NULL)
+				$arKey[] = Param("id_hargajual");
+			elseif (IsApi() && Key(1) !== NULL)
+				$arKey[] = Key(1);
+			elseif (IsApi() && Route(3) !== NULL)
+				$arKey[] = Route(3);
+			else
+				$arKeys = NULL; // Do not setup
+			if (Param("id_klinik") !== NULL)
+				$arKey[] = Param("id_klinik");
+			elseif (IsApi() && Key(2) !== NULL)
+				$arKey[] = Key(2);
+			elseif (IsApi() && Route(4) !== NULL)
+				$arKey[] = Route(4);
+			else
+				$arKeys = NULL; // Do not setup
+			if (is_array($arKeys)) $arKeys[] = $arKey;
 
 			//return $arKeys; // Do not return yet, so the values will also be checked by the following code
 		}
@@ -798,7 +847,13 @@ class view_hargajual extends DbTable
 		$ar = [];
 		if (is_array($arKeys)) {
 			foreach ($arKeys as $key) {
-				if (!is_numeric($key))
+				if (!is_array($key) || count($key) != 3)
+					continue; // Just skip so other keys will still work
+				if (!is_numeric($key[0])) // id
+					continue;
+				if (!is_numeric($key[1])) // id_hargajual
+					continue;
+				if (!is_numeric($key[2])) // id_klinik
 					continue;
 				$ar[] = $key;
 			}
@@ -814,9 +869,17 @@ class view_hargajual extends DbTable
 		foreach ($arKeys as $key) {
 			if ($keyFilter != "") $keyFilter .= " OR ";
 			if ($setCurrent)
-				$this->id->CurrentValue = $key;
+				$this->id->CurrentValue = $key[0];
 			else
-				$this->id->OldValue = $key;
+				$this->id->OldValue = $key[0];
+			if ($setCurrent)
+				$this->id_hargajual->CurrentValue = $key[1];
+			else
+				$this->id_hargajual->OldValue = $key[1];
+			if ($setCurrent)
+				$this->id_klinik->CurrentValue = $key[2];
+			else
+				$this->id_klinik->OldValue = $key[2];
 			$keyFilter .= "(" . $this->getRecordFilter() . ")";
 		}
 		return $keyFilter;
@@ -843,9 +906,9 @@ class view_hargajual extends DbTable
 		$this->jenis->setDbValue($rs->fields('jenis'));
 		$this->kategori->setDbValue($rs->fields('kategori'));
 		$this->subkategori->setDbValue($rs->fields('subkategori'));
-		$this->totalhargajual->setDbValue($rs->fields('totalhargajual'));
 		$this->id_hargajual->setDbValue($rs->fields('id_hargajual'));
 		$this->id_barang->setDbValue($rs->fields('id_barang'));
+		$this->totalhargajual->setDbValue($rs->fields('totalhargajual'));
 		$this->id_klinik->setDbValue($rs->fields('id_klinik'));
 		$this->nama_klinik->setDbValue($rs->fields('nama_klinik'));
 		$this->telpon_klinik->setDbValue($rs->fields('telpon_klinik'));
@@ -853,7 +916,6 @@ class view_hargajual extends DbTable
 		$this->foto_klinik->setDbValue($rs->fields('foto_klinik'));
 		$this->stok->setDbValue($rs->fields('stok'));
 		$this->komposisi->setDbValue($rs->fields('komposisi'));
-		$this->status->setDbValue($rs->fields('status'));
 		$this->tipe->setDbValue($rs->fields('tipe'));
 		$this->tgl_exp->setDbValue($rs->fields('tgl_exp'));
 		$this->disc_rp->setDbValue($rs->fields('disc_rp'));
@@ -877,9 +939,9 @@ class view_hargajual extends DbTable
 		// jenis
 		// kategori
 		// subkategori
-		// totalhargajual
 		// id_hargajual
 		// id_barang
+		// totalhargajual
 		// id_klinik
 		// nama_klinik
 		// telpon_klinik
@@ -887,7 +949,6 @@ class view_hargajual extends DbTable
 		// foto_klinik
 		// stok
 		// komposisi
-		// status
 		// tipe
 		// tgl_exp
 		// disc_rp
@@ -926,11 +987,6 @@ class view_hargajual extends DbTable
 		$this->subkategori->ViewValue = FormatNumber($this->subkategori->ViewValue, 0, -2, -2, -2);
 		$this->subkategori->ViewCustomAttributes = "";
 
-		// totalhargajual
-		$this->totalhargajual->ViewValue = $this->totalhargajual->CurrentValue;
-		$this->totalhargajual->ViewValue = FormatNumber($this->totalhargajual->ViewValue, 0, -2, -2, -2);
-		$this->totalhargajual->ViewCustomAttributes = "";
-
 		// id_hargajual
 		$this->id_hargajual->ViewValue = $this->id_hargajual->CurrentValue;
 		$this->id_hargajual->ViewCustomAttributes = "";
@@ -940,9 +996,13 @@ class view_hargajual extends DbTable
 		$this->id_barang->ViewValue = FormatNumber($this->id_barang->ViewValue, 0, -2, -2, -2);
 		$this->id_barang->ViewCustomAttributes = "";
 
+		// totalhargajual
+		$this->totalhargajual->ViewValue = $this->totalhargajual->CurrentValue;
+		$this->totalhargajual->ViewValue = FormatNumber($this->totalhargajual->ViewValue, 2, -2, -2, -2);
+		$this->totalhargajual->ViewCustomAttributes = "";
+
 		// id_klinik
 		$this->id_klinik->ViewValue = $this->id_klinik->CurrentValue;
-		$this->id_klinik->ViewValue = FormatNumber($this->id_klinik->ViewValue, 0, -2, -2, -2);
 		$this->id_klinik->ViewCustomAttributes = "";
 
 		// nama_klinik
@@ -973,11 +1033,6 @@ class view_hargajual extends DbTable
 			$this->komposisi->ViewValue = NULL;
 		}
 		$this->komposisi->ViewCustomAttributes = "";
-
-		// status
-		$this->status->ViewValue = $this->status->CurrentValue;
-		$this->status->ViewValue = FormatNumber($this->status->ViewValue, 0, -2, -2, -2);
-		$this->status->ViewCustomAttributes = "";
 
 		// tipe
 		if (strval($this->tipe->CurrentValue) != "") {
@@ -1045,11 +1100,6 @@ class view_hargajual extends DbTable
 		$this->subkategori->HrefValue = "";
 		$this->subkategori->TooltipValue = "";
 
-		// totalhargajual
-		$this->totalhargajual->LinkCustomAttributes = "";
-		$this->totalhargajual->HrefValue = "";
-		$this->totalhargajual->TooltipValue = "";
-
 		// id_hargajual
 		$this->id_hargajual->LinkCustomAttributes = "";
 		$this->id_hargajual->HrefValue = "";
@@ -1059,6 +1109,11 @@ class view_hargajual extends DbTable
 		$this->id_barang->LinkCustomAttributes = "";
 		$this->id_barang->HrefValue = "";
 		$this->id_barang->TooltipValue = "";
+
+		// totalhargajual
+		$this->totalhargajual->LinkCustomAttributes = "";
+		$this->totalhargajual->HrefValue = "";
+		$this->totalhargajual->TooltipValue = "";
 
 		// id_klinik
 		$this->id_klinik->LinkCustomAttributes = "";
@@ -1094,11 +1149,6 @@ class view_hargajual extends DbTable
 		$this->komposisi->LinkCustomAttributes = "";
 		$this->komposisi->HrefValue = "";
 		$this->komposisi->TooltipValue = "";
-
-		// status
-		$this->status->LinkCustomAttributes = "";
-		$this->status->HrefValue = "";
-		$this->status->TooltipValue = "";
 
 		// tipe
 		$this->tipe->LinkCustomAttributes = "";
@@ -1186,6 +1236,18 @@ class view_hargajual extends DbTable
 		$this->subkategori->EditValue = $this->subkategori->CurrentValue;
 		$this->subkategori->PlaceHolder = RemoveHtml($this->subkategori->caption());
 
+		// id_hargajual
+		$this->id_hargajual->EditAttrs["class"] = "form-control";
+		$this->id_hargajual->EditCustomAttributes = "";
+		$this->id_hargajual->EditValue = $this->id_hargajual->CurrentValue;
+		$this->id_hargajual->ViewCustomAttributes = "";
+
+		// id_barang
+		$this->id_barang->EditAttrs["class"] = "form-control";
+		$this->id_barang->EditCustomAttributes = "";
+		$this->id_barang->EditValue = $this->id_barang->CurrentValue;
+		$this->id_barang->PlaceHolder = RemoveHtml($this->id_barang->caption());
+
 		// totalhargajual
 		$this->totalhargajual->EditAttrs["class"] = "form-control";
 		$this->totalhargajual->EditCustomAttributes = "";
@@ -1195,23 +1257,11 @@ class view_hargajual extends DbTable
 			$this->totalhargajual->EditValue = FormatNumber($this->totalhargajual->EditValue, -2, -2, -2, -2);
 		
 
-		// id_hargajual
-		$this->id_hargajual->EditAttrs["class"] = "form-control";
-		$this->id_hargajual->EditCustomAttributes = "";
-		$this->id_hargajual->EditValue = $this->id_hargajual->CurrentValue;
-		$this->id_hargajual->PlaceHolder = RemoveHtml($this->id_hargajual->caption());
-
-		// id_barang
-		$this->id_barang->EditAttrs["class"] = "form-control";
-		$this->id_barang->EditCustomAttributes = "";
-		$this->id_barang->EditValue = $this->id_barang->CurrentValue;
-		$this->id_barang->PlaceHolder = RemoveHtml($this->id_barang->caption());
-
 		// id_klinik
 		$this->id_klinik->EditAttrs["class"] = "form-control";
 		$this->id_klinik->EditCustomAttributes = "";
 		$this->id_klinik->EditValue = $this->id_klinik->CurrentValue;
-		$this->id_klinik->PlaceHolder = RemoveHtml($this->id_klinik->caption());
+		$this->id_klinik->ViewCustomAttributes = "";
 
 		// nama_klinik
 		$this->nama_klinik->EditAttrs["class"] = "form-control";
@@ -1253,12 +1303,6 @@ class view_hargajual extends DbTable
 		// komposisi
 		$this->komposisi->EditCustomAttributes = "";
 		$this->komposisi->EditValue = $this->komposisi->options(FALSE);
-
-		// status
-		$this->status->EditAttrs["class"] = "form-control";
-		$this->status->EditCustomAttributes = "";
-		$this->status->EditValue = $this->status->CurrentValue;
-		$this->status->PlaceHolder = RemoveHtml($this->status->caption());
 
 		// tipe
 		$this->tipe->EditCustomAttributes = "";
@@ -1328,9 +1372,9 @@ class view_hargajual extends DbTable
 					$doc->exportCaption($this->jenis);
 					$doc->exportCaption($this->kategori);
 					$doc->exportCaption($this->subkategori);
-					$doc->exportCaption($this->totalhargajual);
 					$doc->exportCaption($this->id_hargajual);
 					$doc->exportCaption($this->id_barang);
+					$doc->exportCaption($this->totalhargajual);
 					$doc->exportCaption($this->id_klinik);
 					$doc->exportCaption($this->nama_klinik);
 					$doc->exportCaption($this->telpon_klinik);
@@ -1338,7 +1382,6 @@ class view_hargajual extends DbTable
 					$doc->exportCaption($this->foto_klinik);
 					$doc->exportCaption($this->stok);
 					$doc->exportCaption($this->komposisi);
-					$doc->exportCaption($this->status);
 					$doc->exportCaption($this->tipe);
 					$doc->exportCaption($this->tgl_exp);
 					$doc->exportCaption($this->disc_rp);
@@ -1352,15 +1395,14 @@ class view_hargajual extends DbTable
 					$doc->exportCaption($this->jenis);
 					$doc->exportCaption($this->kategori);
 					$doc->exportCaption($this->subkategori);
-					$doc->exportCaption($this->totalhargajual);
 					$doc->exportCaption($this->id_hargajual);
 					$doc->exportCaption($this->id_barang);
+					$doc->exportCaption($this->totalhargajual);
 					$doc->exportCaption($this->id_klinik);
 					$doc->exportCaption($this->nama_klinik);
 					$doc->exportCaption($this->foto_klinik);
 					$doc->exportCaption($this->stok);
 					$doc->exportCaption($this->komposisi);
-					$doc->exportCaption($this->status);
 					$doc->exportCaption($this->tipe);
 					$doc->exportCaption($this->tgl_exp);
 					$doc->exportCaption($this->disc_rp);
@@ -1404,9 +1446,9 @@ class view_hargajual extends DbTable
 						$doc->exportField($this->jenis);
 						$doc->exportField($this->kategori);
 						$doc->exportField($this->subkategori);
-						$doc->exportField($this->totalhargajual);
 						$doc->exportField($this->id_hargajual);
 						$doc->exportField($this->id_barang);
+						$doc->exportField($this->totalhargajual);
 						$doc->exportField($this->id_klinik);
 						$doc->exportField($this->nama_klinik);
 						$doc->exportField($this->telpon_klinik);
@@ -1414,7 +1456,6 @@ class view_hargajual extends DbTable
 						$doc->exportField($this->foto_klinik);
 						$doc->exportField($this->stok);
 						$doc->exportField($this->komposisi);
-						$doc->exportField($this->status);
 						$doc->exportField($this->tipe);
 						$doc->exportField($this->tgl_exp);
 						$doc->exportField($this->disc_rp);
@@ -1428,15 +1469,14 @@ class view_hargajual extends DbTable
 						$doc->exportField($this->jenis);
 						$doc->exportField($this->kategori);
 						$doc->exportField($this->subkategori);
-						$doc->exportField($this->totalhargajual);
 						$doc->exportField($this->id_hargajual);
 						$doc->exportField($this->id_barang);
+						$doc->exportField($this->totalhargajual);
 						$doc->exportField($this->id_klinik);
 						$doc->exportField($this->nama_klinik);
 						$doc->exportField($this->foto_klinik);
 						$doc->exportField($this->stok);
 						$doc->exportField($this->komposisi);
-						$doc->exportField($this->status);
 						$doc->exportField($this->tipe);
 						$doc->exportField($this->tgl_exp);
 						$doc->exportField($this->disc_rp);

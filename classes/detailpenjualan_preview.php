@@ -638,6 +638,9 @@ class detailpenjualan_preview extends detailpenjualan
 
 		// Set up lookup cache
 		$this->setupLookupOptions($this->id_penjualan);
+		$this->setupLookupOptions($this->id_barang);
+		$this->setupLookupOptions($this->kode_barang);
+		$this->setupLookupOptions($this->nama_barang);
 		$this->setupLookupOptions($this->komisi_recall);
 
 		// Load filter
@@ -897,6 +900,20 @@ class detailpenjualan_preview extends detailpenjualan
 			switch ($fld->FieldVar) {
 				case "x_id_penjualan":
 					break;
+				case "x_id_barang":
+					break;
+				case "x_kode_barang":
+					$lookupFilter = function() {
+						return "`discontinue` <> 'Yes'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
+					break;
+				case "x_nama_barang":
+					$lookupFilter = function() {
+						return "`discontinue` <> 'Yes'";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
+					break;
 				case "x_komisi_recall":
 					$lookupFilter = function() {
 						return "`status` <> 'Non Aktif'";
@@ -924,6 +941,12 @@ class detailpenjualan_preview extends detailpenjualan
 					// Format the field values
 					switch ($fld->FieldVar) {
 						case "x_id_penjualan":
+							break;
+						case "x_id_barang":
+							break;
+						case "x_kode_barang":
+							break;
+						case "x_nama_barang":
 							break;
 						case "x_komisi_recall":
 							break;

@@ -106,18 +106,21 @@ class detailpenjualan extends DbTable
 		// id_barang
 		$this->id_barang = new DbField('detailpenjualan', 'detailpenjualan', 'x_id_barang', 'id_barang', '`id_barang`', '`id_barang`', 3, 11, -1, FALSE, '`id_barang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->id_barang->Sortable = TRUE; // Allow sort
+		$this->id_barang->Lookup = new Lookup('id_barang', 'view_hargajual', FALSE, 'id', ["id","","",""], [], [], [], [], ["totalhargajual","stok","disc_pr","disc_rp"], ["x_harga_jual","x_stok","x_disc_pr","x_disc_rp"], '', '');
 		$this->id_barang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id_barang'] = &$this->id_barang;
 
 		// kode_barang
 		$this->kode_barang = new DbField('detailpenjualan', 'detailpenjualan', 'x_kode_barang', 'kode_barang', '`kode_barang`', '`kode_barang`', 3, 11, -1, FALSE, '`kode_barang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->kode_barang->Sortable = TRUE; // Allow sort
+		$this->kode_barang->Lookup = new Lookup('kode_barang', 'view_hargajual', FALSE, 'id', ["kode_barang","","",""], [], [], [], [], ["id","id_barang"], ["x_id_barang","x_nama_barang"], '', '');
 		$this->kode_barang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['kode_barang'] = &$this->kode_barang;
 
 		// nama_barang
 		$this->nama_barang = new DbField('detailpenjualan', 'detailpenjualan', 'x_nama_barang', 'nama_barang', '`nama_barang`', '`nama_barang`', 3, 255, -1, FALSE, '`nama_barang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->nama_barang->Sortable = TRUE; // Allow sort
+		$this->nama_barang->Lookup = new Lookup('nama_barang', 'view_hargajual', FALSE, 'id', ["nama_barang","","",""], [], [], [], [], ["id"], ["x_id_barang"], '', '');
 		$this->nama_barang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['nama_barang'] = &$this->nama_barang;
 
@@ -938,17 +941,79 @@ class detailpenjualan extends DbTable
 
 		// id_barang
 		$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
-		$this->id_barang->ViewValue = FormatNumber($this->id_barang->ViewValue, 0, -2, -2, -2);
+		$curVal = strval($this->id_barang->CurrentValue);
+		if ($curVal != "") {
+			$this->id_barang->ViewValue = $this->id_barang->lookupCacheOption($curVal);
+			if ($this->id_barang->ViewValue === NULL) { // Lookup from database
+				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+				$sqlWrk = $this->id_barang->Lookup->getSql(FALSE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = $rswrk->fields('df');
+					$this->id_barang->ViewValue = $this->id_barang->displayValue($arwrk);
+					$rswrk->Close();
+				} else {
+					$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
+				}
+			}
+		} else {
+			$this->id_barang->ViewValue = NULL;
+		}
 		$this->id_barang->ViewCustomAttributes = "";
 
 		// kode_barang
 		$this->kode_barang->ViewValue = $this->kode_barang->CurrentValue;
-		$this->kode_barang->ViewValue = FormatNumber($this->kode_barang->ViewValue, 0, -2, -2, -2);
+		$curVal = strval($this->kode_barang->CurrentValue);
+		if ($curVal != "") {
+			$this->kode_barang->ViewValue = $this->kode_barang->lookupCacheOption($curVal);
+			if ($this->kode_barang->ViewValue === NULL) { // Lookup from database
+				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+				$lookupFilter = function() {
+					return "`discontinue` <> 'Yes'";
+				};
+				$lookupFilter = $lookupFilter->bindTo($this);
+				$sqlWrk = $this->kode_barang->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = $rswrk->fields('df');
+					$this->kode_barang->ViewValue = $this->kode_barang->displayValue($arwrk);
+					$rswrk->Close();
+				} else {
+					$this->kode_barang->ViewValue = $this->kode_barang->CurrentValue;
+				}
+			}
+		} else {
+			$this->kode_barang->ViewValue = NULL;
+		}
 		$this->kode_barang->ViewCustomAttributes = "";
 
 		// nama_barang
 		$this->nama_barang->ViewValue = $this->nama_barang->CurrentValue;
-		$this->nama_barang->ViewValue = FormatNumber($this->nama_barang->ViewValue, 0, -2, -2, -2);
+		$curVal = strval($this->nama_barang->CurrentValue);
+		if ($curVal != "") {
+			$this->nama_barang->ViewValue = $this->nama_barang->lookupCacheOption($curVal);
+			if ($this->nama_barang->ViewValue === NULL) { // Lookup from database
+				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+				$lookupFilter = function() {
+					return "`discontinue` <> 'Yes'";
+				};
+				$lookupFilter = $lookupFilter->bindTo($this);
+				$sqlWrk = $this->nama_barang->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = $rswrk->fields('df');
+					$this->nama_barang->ViewValue = $this->nama_barang->displayValue($arwrk);
+					$rswrk->Close();
+				} else {
+					$this->nama_barang->ViewValue = $this->nama_barang->CurrentValue;
+				}
+			}
+		} else {
+			$this->nama_barang->ViewValue = NULL;
+		}
 		$this->nama_barang->ViewCustomAttributes = "";
 
 		// id_kemasan

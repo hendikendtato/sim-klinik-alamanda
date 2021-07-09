@@ -589,7 +589,9 @@ class view_hargajual_list extends view_hargajual
 	{
 		$key = "";
 		if (is_array($ar)) {
-			$key .= @$ar['id'];
+			$key .= @$ar['id'] . Config("COMPOSITE_KEY_SEPARATOR");
+			$key .= @$ar['id_hargajual'] . Config("COMPOSITE_KEY_SEPARATOR");
+			$key .= @$ar['id_klinik'];
 		}
 		return $key;
 	}
@@ -603,9 +605,9 @@ class view_hargajual_list extends view_hargajual
 	{
 		if ($this->isAdd() || $this->isCopy() || $this->isGridAdd())
 			$this->id->Visible = FALSE;
-		if ($this->isAddOrEdit())
+		if ($this->isAdd() || $this->isCopy() || $this->isGridAdd())
 			$this->id_hargajual->Visible = FALSE;
-		if ($this->isAddOrEdit())
+		if ($this->isAdd() || $this->isCopy() || $this->isGridAdd())
 			$this->id_klinik->Visible = FALSE;
 	}
 
@@ -826,9 +828,9 @@ class view_hargajual_list extends view_hargajual
 		$this->jenis->setVisibility();
 		$this->kategori->setVisibility();
 		$this->subkategori->setVisibility();
-		$this->totalhargajual->setVisibility();
 		$this->id_hargajual->setVisibility();
 		$this->id_barang->setVisibility();
+		$this->totalhargajual->setVisibility();
 		$this->id_klinik->setVisibility();
 		$this->nama_klinik->setVisibility();
 		$this->telpon_klinik->Visible = FALSE;
@@ -836,7 +838,6 @@ class view_hargajual_list extends view_hargajual
 		$this->foto_klinik->setVisibility();
 		$this->stok->setVisibility();
 		$this->komposisi->setVisibility();
-		$this->status->setVisibility();
 		$this->tipe->setVisibility();
 		$this->tgl_exp->setVisibility();
 		$this->disc_rp->setVisibility();
@@ -1111,9 +1112,15 @@ class view_hargajual_list extends view_hargajual
 	protected function setupKeyValues($key)
 	{
 		$arKeyFlds = explode(Config("COMPOSITE_KEY_SEPARATOR"), $key);
-		if (count($arKeyFlds) >= 1) {
+		if (count($arKeyFlds) >= 3) {
 			$this->id->setOldValue($arKeyFlds[0]);
 			if (!is_numeric($this->id->OldValue))
+				return FALSE;
+			$this->id_hargajual->setOldValue($arKeyFlds[1]);
+			if (!is_numeric($this->id_hargajual->OldValue))
+				return FALSE;
+			$this->id_klinik->setOldValue($arKeyFlds[2]);
+			if (!is_numeric($this->id_klinik->OldValue))
 				return FALSE;
 		}
 		return TRUE;
@@ -1134,9 +1141,9 @@ class view_hargajual_list extends view_hargajual
 		$filterList = Concat($filterList, $this->jenis->AdvancedSearch->toJson(), ","); // Field jenis
 		$filterList = Concat($filterList, $this->kategori->AdvancedSearch->toJson(), ","); // Field kategori
 		$filterList = Concat($filterList, $this->subkategori->AdvancedSearch->toJson(), ","); // Field subkategori
-		$filterList = Concat($filterList, $this->totalhargajual->AdvancedSearch->toJson(), ","); // Field totalhargajual
 		$filterList = Concat($filterList, $this->id_hargajual->AdvancedSearch->toJson(), ","); // Field id_hargajual
 		$filterList = Concat($filterList, $this->id_barang->AdvancedSearch->toJson(), ","); // Field id_barang
+		$filterList = Concat($filterList, $this->totalhargajual->AdvancedSearch->toJson(), ","); // Field totalhargajual
 		$filterList = Concat($filterList, $this->id_klinik->AdvancedSearch->toJson(), ","); // Field id_klinik
 		$filterList = Concat($filterList, $this->nama_klinik->AdvancedSearch->toJson(), ","); // Field nama_klinik
 		$filterList = Concat($filterList, $this->telpon_klinik->AdvancedSearch->toJson(), ","); // Field telpon_klinik
@@ -1144,7 +1151,6 @@ class view_hargajual_list extends view_hargajual
 		$filterList = Concat($filterList, $this->foto_klinik->AdvancedSearch->toJson(), ","); // Field foto_klinik
 		$filterList = Concat($filterList, $this->stok->AdvancedSearch->toJson(), ","); // Field stok
 		$filterList = Concat($filterList, $this->komposisi->AdvancedSearch->toJson(), ","); // Field komposisi
-		$filterList = Concat($filterList, $this->status->AdvancedSearch->toJson(), ","); // Field status
 		$filterList = Concat($filterList, $this->tipe->AdvancedSearch->toJson(), ","); // Field tipe
 		$filterList = Concat($filterList, $this->tgl_exp->AdvancedSearch->toJson(), ","); // Field tgl_exp
 		$filterList = Concat($filterList, $this->disc_rp->AdvancedSearch->toJson(), ","); // Field disc_rp
@@ -1244,14 +1250,6 @@ class view_hargajual_list extends view_hargajual
 		$this->subkategori->AdvancedSearch->SearchOperator2 = @$filter["w_subkategori"];
 		$this->subkategori->AdvancedSearch->save();
 
-		// Field totalhargajual
-		$this->totalhargajual->AdvancedSearch->SearchValue = @$filter["x_totalhargajual"];
-		$this->totalhargajual->AdvancedSearch->SearchOperator = @$filter["z_totalhargajual"];
-		$this->totalhargajual->AdvancedSearch->SearchCondition = @$filter["v_totalhargajual"];
-		$this->totalhargajual->AdvancedSearch->SearchValue2 = @$filter["y_totalhargajual"];
-		$this->totalhargajual->AdvancedSearch->SearchOperator2 = @$filter["w_totalhargajual"];
-		$this->totalhargajual->AdvancedSearch->save();
-
 		// Field id_hargajual
 		$this->id_hargajual->AdvancedSearch->SearchValue = @$filter["x_id_hargajual"];
 		$this->id_hargajual->AdvancedSearch->SearchOperator = @$filter["z_id_hargajual"];
@@ -1267,6 +1265,14 @@ class view_hargajual_list extends view_hargajual
 		$this->id_barang->AdvancedSearch->SearchValue2 = @$filter["y_id_barang"];
 		$this->id_barang->AdvancedSearch->SearchOperator2 = @$filter["w_id_barang"];
 		$this->id_barang->AdvancedSearch->save();
+
+		// Field totalhargajual
+		$this->totalhargajual->AdvancedSearch->SearchValue = @$filter["x_totalhargajual"];
+		$this->totalhargajual->AdvancedSearch->SearchOperator = @$filter["z_totalhargajual"];
+		$this->totalhargajual->AdvancedSearch->SearchCondition = @$filter["v_totalhargajual"];
+		$this->totalhargajual->AdvancedSearch->SearchValue2 = @$filter["y_totalhargajual"];
+		$this->totalhargajual->AdvancedSearch->SearchOperator2 = @$filter["w_totalhargajual"];
+		$this->totalhargajual->AdvancedSearch->save();
 
 		// Field id_klinik
 		$this->id_klinik->AdvancedSearch->SearchValue = @$filter["x_id_klinik"];
@@ -1323,14 +1329,6 @@ class view_hargajual_list extends view_hargajual
 		$this->komposisi->AdvancedSearch->SearchValue2 = @$filter["y_komposisi"];
 		$this->komposisi->AdvancedSearch->SearchOperator2 = @$filter["w_komposisi"];
 		$this->komposisi->AdvancedSearch->save();
-
-		// Field status
-		$this->status->AdvancedSearch->SearchValue = @$filter["x_status"];
-		$this->status->AdvancedSearch->SearchOperator = @$filter["z_status"];
-		$this->status->AdvancedSearch->SearchCondition = @$filter["v_status"];
-		$this->status->AdvancedSearch->SearchValue2 = @$filter["y_status"];
-		$this->status->AdvancedSearch->SearchOperator2 = @$filter["w_status"];
-		$this->status->AdvancedSearch->save();
 
 		// Field tipe
 		$this->tipe->AdvancedSearch->SearchValue = @$filter["x_tipe"];
@@ -1550,15 +1548,14 @@ class view_hargajual_list extends view_hargajual
 			$this->updateSort($this->jenis); // jenis
 			$this->updateSort($this->kategori); // kategori
 			$this->updateSort($this->subkategori); // subkategori
-			$this->updateSort($this->totalhargajual); // totalhargajual
 			$this->updateSort($this->id_hargajual); // id_hargajual
 			$this->updateSort($this->id_barang); // id_barang
+			$this->updateSort($this->totalhargajual); // totalhargajual
 			$this->updateSort($this->id_klinik); // id_klinik
 			$this->updateSort($this->nama_klinik); // nama_klinik
 			$this->updateSort($this->foto_klinik); // foto_klinik
 			$this->updateSort($this->stok); // stok
 			$this->updateSort($this->komposisi); // komposisi
-			$this->updateSort($this->status); // status
 			$this->updateSort($this->tipe); // tipe
 			$this->updateSort($this->tgl_exp); // tgl_exp
 			$this->updateSort($this->disc_rp); // disc_rp
@@ -1606,15 +1603,14 @@ class view_hargajual_list extends view_hargajual
 				$this->jenis->setSort("");
 				$this->kategori->setSort("");
 				$this->subkategori->setSort("");
-				$this->totalhargajual->setSort("");
 				$this->id_hargajual->setSort("");
 				$this->id_barang->setSort("");
+				$this->totalhargajual->setSort("");
 				$this->id_klinik->setSort("");
 				$this->nama_klinik->setSort("");
 				$this->foto_klinik->setSort("");
 				$this->stok->setSort("");
 				$this->komposisi->setSort("");
-				$this->status->setSort("");
 				$this->tipe->setSort("");
 				$this->tgl_exp->setSort("");
 				$this->disc_rp->setSort("");
@@ -1711,7 +1707,7 @@ class view_hargajual_list extends view_hargajual
 
 		// "checkbox"
 		$opt = $this->ListOptions["checkbox"];
-		$opt->Body = "<div class=\"custom-control custom-checkbox d-inline-block\"><input type=\"checkbox\" id=\"key_m_" . $this->RowCount . "\" name=\"key_m[]\" class=\"custom-control-input ew-multi-select\" value=\"" . HtmlEncode($this->id->CurrentValue) . "\" onclick=\"ew.clickMultiCheckbox(event);\"><label class=\"custom-control-label\" for=\"key_m_" . $this->RowCount . "\"></label></div>";
+		$opt->Body = "<div class=\"custom-control custom-checkbox d-inline-block\"><input type=\"checkbox\" id=\"key_m_" . $this->RowCount . "\" name=\"key_m[]\" class=\"custom-control-input ew-multi-select\" value=\"" . HtmlEncode($this->id->CurrentValue . Config("COMPOSITE_KEY_SEPARATOR") . $this->id_hargajual->CurrentValue . Config("COMPOSITE_KEY_SEPARATOR") . $this->id_klinik->CurrentValue) . "\" onclick=\"ew.clickMultiCheckbox(event);\"><label class=\"custom-control-label\" for=\"key_m_" . $this->RowCount . "\"></label></div>";
 		$this->renderListOptionsExt();
 
 		// Call ListOptions_Rendered event
@@ -1958,9 +1954,9 @@ class view_hargajual_list extends view_hargajual
 		$this->jenis->setDbValue($row['jenis']);
 		$this->kategori->setDbValue($row['kategori']);
 		$this->subkategori->setDbValue($row['subkategori']);
-		$this->totalhargajual->setDbValue($row['totalhargajual']);
 		$this->id_hargajual->setDbValue($row['id_hargajual']);
 		$this->id_barang->setDbValue($row['id_barang']);
+		$this->totalhargajual->setDbValue($row['totalhargajual']);
 		$this->id_klinik->setDbValue($row['id_klinik']);
 		$this->nama_klinik->setDbValue($row['nama_klinik']);
 		$this->telpon_klinik->setDbValue($row['telpon_klinik']);
@@ -1968,7 +1964,6 @@ class view_hargajual_list extends view_hargajual
 		$this->foto_klinik->setDbValue($row['foto_klinik']);
 		$this->stok->setDbValue($row['stok']);
 		$this->komposisi->setDbValue($row['komposisi']);
-		$this->status->setDbValue($row['status']);
 		$this->tipe->setDbValue($row['tipe']);
 		$this->tgl_exp->setDbValue($row['tgl_exp']);
 		$this->disc_rp->setDbValue($row['disc_rp']);
@@ -1987,9 +1982,9 @@ class view_hargajual_list extends view_hargajual
 		$row['jenis'] = NULL;
 		$row['kategori'] = NULL;
 		$row['subkategori'] = NULL;
-		$row['totalhargajual'] = NULL;
 		$row['id_hargajual'] = NULL;
 		$row['id_barang'] = NULL;
+		$row['totalhargajual'] = NULL;
 		$row['id_klinik'] = NULL;
 		$row['nama_klinik'] = NULL;
 		$row['telpon_klinik'] = NULL;
@@ -1997,7 +1992,6 @@ class view_hargajual_list extends view_hargajual
 		$row['foto_klinik'] = NULL;
 		$row['stok'] = NULL;
 		$row['komposisi'] = NULL;
-		$row['status'] = NULL;
 		$row['tipe'] = NULL;
 		$row['tgl_exp'] = NULL;
 		$row['disc_rp'] = NULL;
@@ -2014,6 +2008,14 @@ class view_hargajual_list extends view_hargajual
 		$validKey = TRUE;
 		if (strval($this->getKey("id")) != "")
 			$this->id->OldValue = $this->getKey("id"); // id
+		else
+			$validKey = FALSE;
+		if (strval($this->getKey("id_hargajual")) != "")
+			$this->id_hargajual->OldValue = $this->getKey("id_hargajual"); // id_hargajual
+		else
+			$validKey = FALSE;
+		if (strval($this->getKey("id_klinik")) != "")
+			$this->id_klinik->OldValue = $this->getKey("id_klinik"); // id_klinik
 		else
 			$validKey = FALSE;
 
@@ -2069,9 +2071,9 @@ class view_hargajual_list extends view_hargajual
 		// jenis
 		// kategori
 		// subkategori
-		// totalhargajual
 		// id_hargajual
 		// id_barang
+		// totalhargajual
 		// id_klinik
 		// nama_klinik
 		// telpon_klinik
@@ -2079,7 +2081,6 @@ class view_hargajual_list extends view_hargajual
 		// foto_klinik
 		// stok
 		// komposisi
-		// status
 		// tipe
 		// tgl_exp
 		// disc_rp
@@ -2120,11 +2121,6 @@ class view_hargajual_list extends view_hargajual
 			$this->subkategori->ViewValue = FormatNumber($this->subkategori->ViewValue, 0, -2, -2, -2);
 			$this->subkategori->ViewCustomAttributes = "";
 
-			// totalhargajual
-			$this->totalhargajual->ViewValue = $this->totalhargajual->CurrentValue;
-			$this->totalhargajual->ViewValue = FormatNumber($this->totalhargajual->ViewValue, 0, -2, -2, -2);
-			$this->totalhargajual->ViewCustomAttributes = "";
-
 			// id_hargajual
 			$this->id_hargajual->ViewValue = $this->id_hargajual->CurrentValue;
 			$this->id_hargajual->ViewCustomAttributes = "";
@@ -2134,9 +2130,13 @@ class view_hargajual_list extends view_hargajual
 			$this->id_barang->ViewValue = FormatNumber($this->id_barang->ViewValue, 0, -2, -2, -2);
 			$this->id_barang->ViewCustomAttributes = "";
 
+			// totalhargajual
+			$this->totalhargajual->ViewValue = $this->totalhargajual->CurrentValue;
+			$this->totalhargajual->ViewValue = FormatNumber($this->totalhargajual->ViewValue, 2, -2, -2, -2);
+			$this->totalhargajual->ViewCustomAttributes = "";
+
 			// id_klinik
 			$this->id_klinik->ViewValue = $this->id_klinik->CurrentValue;
-			$this->id_klinik->ViewValue = FormatNumber($this->id_klinik->ViewValue, 0, -2, -2, -2);
 			$this->id_klinik->ViewCustomAttributes = "";
 
 			// nama_klinik
@@ -2159,11 +2159,6 @@ class view_hargajual_list extends view_hargajual
 				$this->komposisi->ViewValue = NULL;
 			}
 			$this->komposisi->ViewCustomAttributes = "";
-
-			// status
-			$this->status->ViewValue = $this->status->CurrentValue;
-			$this->status->ViewValue = FormatNumber($this->status->ViewValue, 0, -2, -2, -2);
-			$this->status->ViewCustomAttributes = "";
 
 			// tipe
 			if (strval($this->tipe->CurrentValue) != "") {
@@ -2231,11 +2226,6 @@ class view_hargajual_list extends view_hargajual
 			$this->subkategori->HrefValue = "";
 			$this->subkategori->TooltipValue = "";
 
-			// totalhargajual
-			$this->totalhargajual->LinkCustomAttributes = "";
-			$this->totalhargajual->HrefValue = "";
-			$this->totalhargajual->TooltipValue = "";
-
 			// id_hargajual
 			$this->id_hargajual->LinkCustomAttributes = "";
 			$this->id_hargajual->HrefValue = "";
@@ -2245,6 +2235,11 @@ class view_hargajual_list extends view_hargajual
 			$this->id_barang->LinkCustomAttributes = "";
 			$this->id_barang->HrefValue = "";
 			$this->id_barang->TooltipValue = "";
+
+			// totalhargajual
+			$this->totalhargajual->LinkCustomAttributes = "";
+			$this->totalhargajual->HrefValue = "";
+			$this->totalhargajual->TooltipValue = "";
 
 			// id_klinik
 			$this->id_klinik->LinkCustomAttributes = "";
@@ -2270,11 +2265,6 @@ class view_hargajual_list extends view_hargajual
 			$this->komposisi->LinkCustomAttributes = "";
 			$this->komposisi->HrefValue = "";
 			$this->komposisi->TooltipValue = "";
-
-			// status
-			$this->status->LinkCustomAttributes = "";
-			$this->status->HrefValue = "";
-			$this->status->TooltipValue = "";
 
 			// tipe
 			$this->tipe->LinkCustomAttributes = "";
