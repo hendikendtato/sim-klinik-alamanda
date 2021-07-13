@@ -747,8 +747,9 @@ class detail_nonjual_grid extends detail_nonjual
 		$this->setupOtherOptions();
 
 		// Set up lookup cache
-		// Search filters
+		$this->setupLookupOptions($this->id_barang);
 
+		// Search filters
 		$srchAdvanced = ""; // Advanced search filter
 		$srchBasic = ""; // Basic search filter
 		$filter = "";
@@ -1759,7 +1760,25 @@ class detail_nonjual_grid extends detail_nonjual
 
 			// id_barang
 			$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
-			$this->id_barang->ViewValue = FormatNumber($this->id_barang->ViewValue, 0, -2, -2, -2);
+			$curVal = strval($this->id_barang->CurrentValue);
+			if ($curVal != "") {
+				$this->id_barang->ViewValue = $this->id_barang->lookupCacheOption($curVal);
+				if ($this->id_barang->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->id_barang->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->id_barang->ViewValue = $this->id_barang->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
+					}
+				}
+			} else {
+				$this->id_barang->ViewValue = NULL;
+			}
 			$this->id_barang->ViewCustomAttributes = "";
 
 			// stok
@@ -1811,6 +1830,25 @@ class detail_nonjual_grid extends detail_nonjual
 			$this->id_barang->EditAttrs["class"] = "form-control";
 			$this->id_barang->EditCustomAttributes = "";
 			$this->id_barang->EditValue = HtmlEncode($this->id_barang->CurrentValue);
+			$curVal = strval($this->id_barang->CurrentValue);
+			if ($curVal != "") {
+				$this->id_barang->EditValue = $this->id_barang->lookupCacheOption($curVal);
+				if ($this->id_barang->EditValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->id_barang->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+						$this->id_barang->EditValue = $this->id_barang->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->id_barang->EditValue = HtmlEncode($this->id_barang->CurrentValue);
+					}
+				}
+			} else {
+				$this->id_barang->EditValue = NULL;
+			}
 			$this->id_barang->PlaceHolder = RemoveHtml($this->id_barang->caption());
 
 			// stok
@@ -1862,6 +1900,25 @@ class detail_nonjual_grid extends detail_nonjual
 			$this->id_barang->EditAttrs["class"] = "form-control";
 			$this->id_barang->EditCustomAttributes = "";
 			$this->id_barang->EditValue = HtmlEncode($this->id_barang->CurrentValue);
+			$curVal = strval($this->id_barang->CurrentValue);
+			if ($curVal != "") {
+				$this->id_barang->EditValue = $this->id_barang->lookupCacheOption($curVal);
+				if ($this->id_barang->EditValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->id_barang->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+						$this->id_barang->EditValue = $this->id_barang->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->id_barang->EditValue = HtmlEncode($this->id_barang->CurrentValue);
+					}
+				}
+			} else {
+				$this->id_barang->EditValue = NULL;
+			}
 			$this->id_barang->PlaceHolder = RemoveHtml($this->id_barang->caption());
 
 			// stok
@@ -2229,6 +2286,8 @@ class detail_nonjual_grid extends detail_nonjual
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
+				case "x_id_barang":
+					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -2249,6 +2308,8 @@ class detail_nonjual_grid extends detail_nonjual
 
 					// Format the field values
 					switch ($fld->FieldVar) {
+						case "x_id_barang":
+							break;
 					}
 					$ar[strval($row[0])] = $row;
 					$rs->moveNext();

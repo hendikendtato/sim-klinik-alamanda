@@ -1340,6 +1340,17 @@ class users_add extends users
 	protected function addRow($rsold = NULL)
 	{
 		global $Language, $Security;
+		if ($this->username->CurrentValue != "") { // Check field with unique index
+			$filter = "(`username` = '" . AdjustSql($this->username->CurrentValue, $this->Dbid) . "')";
+			$rsChk = $this->loadRs($filter);
+			if ($rsChk && !$rsChk->EOF) {
+				$idxErrMsg = str_replace("%f", $this->username->caption(), $Language->phrase("DupIndex"));
+				$idxErrMsg = str_replace("%v", $this->username->CurrentValue, $idxErrMsg);
+				$this->setFailureMessage($idxErrMsg);
+				$rsChk->close();
+				return FALSE;
+			}
+		}
 		$conn = $this->getConnection();
 
 		// Load db values from rsold

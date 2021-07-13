@@ -618,8 +618,9 @@ class detail_nonjual_preview extends detail_nonjual
 		$this->setupOtherOptions();
 
 		// Set up lookup cache
-		// Load filter
+		$this->setupLookupOptions($this->id_barang);
 
+		// Load filter
 		$filter = Get("f", "");
 		$filter = Decrypt($filter);
 		if ($filter == "") $filter = "0=1";
@@ -894,6 +895,8 @@ class detail_nonjual_preview extends detail_nonjual
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
+				case "x_id_barang":
+					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -914,6 +917,8 @@ class detail_nonjual_preview extends detail_nonjual
 
 					// Format the field values
 					switch ($fld->FieldVar) {
+						case "x_id_barang":
+							break;
 					}
 					$ar[strval($row[0])] = $row;
 					$rs->moveNext();

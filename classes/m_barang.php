@@ -1264,72 +1264,71 @@ class m_barang extends DbTable
 	function Row_Inserted($rsold, &$rsnew) {
 
 		//echo "Row Inserted"
-		//API DATA TRANSAKSI ADD
+			//API DATA TRANSAKSI ADD
 
-		$url = "http://172.16.0.2:8069/web/produk";
-		$data_sql = ExecuteRow("SELECT m_barang.*, m_satuan_barang.*, jenisbarang.id AS id_jenis, jenisbarang.kode AS kode_jenis, jenisbarang.jenis, kategoribarang.id AS id_kategori, kategoribarang.nama AS nama_kategori, subkategoribarang.id AS id_subkategori, subkategoribarang.nama AS nama_subkategori, m_tags.id AS id_mtag, m_tags.nama_tag FROM m_barang
-								JOIN m_satuan_barang ON m_barang.satuan = m_satuan_barang.id_satuan
-								LEFT JOIN jenisbarang ON m_barang.jenis = jenisbarang.id
-								LEFT JOIN kategoribarang ON m_barang.kategori = kategoribarang.id
-								LEFT JOIN subkategoribarang ON m_barang.subkategori = subkategoribarang.id
-								LEFT JOIN m_tags ON m_barang.id_tag = m_tags.id WHERE m_barang.id = '".$rsnew['id']."'");
-		$data_array = [
-			'id_barang' => $data_sql['id'],
-			'kode_barang' => $data_sql['kode_barang'],
-			'nama_barang' => $data_sql['nama_barang'],
-			'satuan' => [
-				'id_satuan' => $data_sql['id_satuan'],
-				'kode_satuan' => $data_sql['kode_satuan'],
-				'nama_satuan' => $data_sql['nama_satuan']
-			],
-			'id_jenis' => [
-				'id_jenis' => $data_sql['id_jenis'],
-				'kode_jenis' => $data_sql['kode_jenis'],
-				'jenis' => $data_sql['jenis'],
-			],
-			'kategori' => [
-				'id_kategori' => $data_sql['id_kategori'],
-				'nama_kategori' => $data_sql['nama_kategori'],
-			],
-			'subkategori' => [
-				'id_subkategori' => $data_sql['id_subkategori'],
-				'nama_subkategori' => $data_sql['nama_subkategori'],
-			],
-			'komposisi' => $data_sql['komposisi'],
-			'tipe' => $data_sql['tipe'],
-			'shortname_barang' => $data_sql['shortname_barang'],
-			'tags' => [
-				'id_tag' => $data_sql['id_mtag'],
-				'nama_tag' => $data_sql['nama_tag'],
-			],
-			'discontinue' => $data_sql['discontinue']
-		];
+			$url = "http://172.16.0.2:8069/web/produk";
+			$data_sql = ExecuteRow("SELECT m_barang.*, m_satuan_barang.*, jenisbarang.id AS id_jenis, jenisbarang.kode AS kode_jenis, jenisbarang.jenis, kategoribarang.id AS id_kategori, kategoribarang.nama AS nama_kategori, subkategoribarang.id AS id_subkategori, subkategoribarang.nama AS nama_subkategori, m_tags.id AS id_mtag, m_tags.nama_tag FROM m_barang
+									JOIN m_satuan_barang ON m_barang.satuan = m_satuan_barang.id_satuan
+									LEFT JOIN jenisbarang ON m_barang.jenis = jenisbarang.id
+									LEFT JOIN kategoribarang ON m_barang.kategori = kategoribarang.id
+									LEFT JOIN subkategoribarang ON m_barang.subkategori = subkategoribarang.id
+									LEFT JOIN m_tags ON m_barang.id_tag = m_tags.id WHERE m_barang.id = '".$rsnew['id']."'");
+			$data_array = [
+				'id_barang' => $data_sql['id'],
+				'kode_barang' => $data_sql['kode_barang'],
+				'nama_barang' => $data_sql['nama_barang'],
+				'satuan' => [
+					'id_satuan' => $data_sql['id_satuan'],
+					'kode_satuan' => $data_sql['kode_satuan'],
+					'nama_satuan' => $data_sql['nama_satuan']
+				],
+				'id_jenis' => [
+					'id_jenis' => $data_sql['id_jenis'],
+					'kode_jenis' => $data_sql['kode_jenis'],
+					'jenis' => $data_sql['jenis'],
+				],
+				'kategori' => [
+					'id_kategori' => $data_sql['id_kategori'],
+					'nama_kategori' => $data_sql['nama_kategori'],
+				],
+				'subkategori' => [
+					'id_subkategori' => $data_sql['id_subkategori'],
+					'nama_subkategori' => $data_sql['nama_subkategori'],
+				],
+				'komposisi' => $data_sql['komposisi'],
+				'tipe' => $data_sql['tipe'],
+				'shortname_barang' => $data_sql['shortname_barang'],
+				'tags' => [
+					'id_tag' => $data_sql['id_mtag'],
+					'nama_tag' => $data_sql['nama_tag'],
+				],
+				'discontinue' => $data_sql['discontinue']
+			];
 
-		//$data = http_build_query($data_array);
-		$postdata = json_encode($data_array);
-		print_r($postdata);
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, $url);
-		curl_setopt($curl, CURLOPT_POST, true);
-		curl_setopt($curl, CURLOPT_POSTFIELDS, $postdata);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-		$resp = curl_exec($curl);
-		if($e = curl_error($curl)){
-			echo $e;
-		} else {
+			//$data = http_build_query($data_array);
+			$postdata = json_encode($data_array);
+			print_r($postdata);
+			$curl = curl_init();
+			curl_setopt($curl, CURLOPT_URL, $url);
+			curl_setopt($curl, CURLOPT_POST, true);
+			curl_setopt($curl, CURLOPT_POSTFIELDS, $postdata);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+			$resp = curl_exec($curl);
+			if($e = curl_error($curl)){
+				echo $e;
+			} else {
 
-			// $decoded = json_decode($resp);
-			echo "Berhasil";
+				// $decoded = json_decode($resp);
+				echo "Berhasil";
 
-			// foreach ($decoded as $key => $value) {
-			// 	echo $key . ':' . $value . '<br>';
-			// }
+				// foreach ($decoded as $key => $value) {
+				// 	echo $key . ':' . $value . '<br>';
+				// }
 
-		}
-		curl_close($curl);
-
-		//die();
+			}
+			curl_close($curl);
+			die();
 	}
 
 	// Row Updating event

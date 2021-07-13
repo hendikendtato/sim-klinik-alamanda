@@ -358,6 +358,15 @@ $view_hargajual_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
+<?php if ($view_hargajual_list->status->Visible) { // status ?>
+	<?php if ($view_hargajual_list->SortUrl($view_hargajual_list->status) == "") { ?>
+		<th data-name="status" class="<?php echo $view_hargajual_list->status->headerCellClass() ?>"><div id="elh_view_hargajual_status" class="view_hargajual_status"><div class="ew-table-header-caption"><?php echo $view_hargajual_list->status->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="status" class="<?php echo $view_hargajual_list->status->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $view_hargajual_list->SortUrl($view_hargajual_list->status) ?>', 1);"><div id="elh_view_hargajual_status" class="view_hargajual_status">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $view_hargajual_list->status->caption() ?></span><span class="ew-table-header-sort"><?php if ($view_hargajual_list->status->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($view_hargajual_list->status->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
 <?php
 
 // Render list options (header, right)
@@ -560,6 +569,13 @@ $view_hargajual_list->ListOptions->render("body", "left", $view_hargajual_list->
 		<td data-name="discontinue" <?php echo $view_hargajual_list->discontinue->cellAttributes() ?>>
 <span id="el<?php echo $view_hargajual_list->RowCount ?>_view_hargajual_discontinue">
 <span<?php echo $view_hargajual_list->discontinue->viewAttributes() ?>><?php echo $view_hargajual_list->discontinue->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
+	<?php if ($view_hargajual_list->status->Visible) { // status ?>
+		<td data-name="status" <?php echo $view_hargajual_list->status->cellAttributes() ?>>
+<span id="el<?php echo $view_hargajual_list->RowCount ?>_view_hargajual_status">
+<span<?php echo $view_hargajual_list->status->viewAttributes() ?>><?php echo $view_hargajual_list->status->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>

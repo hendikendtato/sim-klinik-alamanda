@@ -82,6 +82,9 @@ Page_Rendering();
 				$explode = explode("-", $nominal);
 				$and_nominal = 'AND (penjualan.total >= '.$explode[0].' AND penjualan.total <= '.$explode[1].')';
 			}
+			else if($nominal == 'All'){
+				$and_nominal = '';
+			}
 		}
 
 		foreach($cabang AS $in_cabang) {
@@ -144,10 +147,11 @@ Page_Rendering();
 						<label class="d-block">Nominal</label>
 						<select class="custom-select" name="nominal">
 							<option selected>Please Select</option>
-							<option value="0-200000">0 - 200k</option>
-							<option value="201000-500000">201k - 500k</option>
-							<option value="501000-1000000">501k - 1m</option>
-							<option value="1000000-2000000">1m - 2m</option>
+							<option value="All">All</option>
+							<option value="0-200000">0 - 200,000</option>
+							<option value="201000-500000">201,000 - 500,000</option>
+							<option value="501000-1000000">501,000 - 1,000,000</option>
+							<option value="1000000-2000000">1,000,000- 2,000,000</option>
 						</select>
 					</li>
 					<li class="d-inline-block">

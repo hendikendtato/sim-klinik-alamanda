@@ -61,6 +61,7 @@ Page_Rendering();
 		$Inputkategori = $_POST['Inputkategori'];
 		$Inputsubkategori = $_POST['Inputsubkategori'];
 		$multi_cabang = "";
+		$multi_cabang_hargajual = "";
 		$and_kategori="";
 		$and_subkategori="";
 		$and_status="";
@@ -103,34 +104,21 @@ Page_Rendering();
 		}		
 		
 		foreach($cabang AS $in_cabang) {
-			$multi_cabang .= "m_klinik.id_klinik = '" .$in_cabang. "' OR ";
+			$multi_cabang .= "penjualan.id_klinik = '" .$in_cabang. "' OR ";
+			$multi_cabang_hargajual .= "m_hargajual.id_klinik = '" .$in_cabang. "' OR ";
 			//var_dump($multi_klinik); die();
 			//echo $in_klinik;
 		}
-		if($multi_cabang){
+		if($multi_cabang && $multi_cabang_hargajual){
 			$multi_cabang = substr($multi_cabang, 0, -4);
-			$query = "SELECT detailpenjualan.id AS id, detailpenjualan.id_penjualan AS id_penjualan,
-				penjualan.waktu AS waktu, penjualan.id_klinik AS id_klinik,
-				detailpenjualan.id_barang AS id_barang, m_barang.nama_barang AS nama_barang,
-				m_barang.satuan AS satuan, m_barang.jenis AS jenis, m_barang.kategori AS
-				kategori, m_barang.subkategori AS subkategori, m_barang.komposisi AS
-				komposisi, m_barang.tipe AS tipe, m_hargajual.status AS status,
-				detailpenjualan.id_kemasan AS id_kemasan, detailpenjualan.harga_jual
-				AS harga_jual, detailpenjualan.stok AS stok, detailpenjualan.expired
-				AS expired, Sum(detailpenjualan.qty) AS qty, Sum(detailpenjualan.subtotal) AS
-				subtotal, detailpenjualan.hna AS hna, detailpenjualan.disc_rp AS disc_rp,
-				detailpenjualan.disc_pr AS disc_pr, m_klinik.nama_klinik AS nama_klinik
-				FROM ((detailpenjualan JOIN
-					penjualan ON penjualan.id = detailpenjualan.id_penjualan) JOIN
-					m_barang ON detailpenjualan.id_barang = m_barang.id) JOIN
-					m_klinik ON m_klinik.id_klinik = penjualan.id_klinik LEFT JOIN
-					m_hargajual ON m_barang.id = m_hargajual.id_barang LEFT JOIN
-					m_status_barang ON m_hargajual.status = m_status_barang.id_status LEFT JOIN
-					jenisbarang ON jenisbarang.id = m_barang.jenis
-				WHERE ($multi_cabang) AND (penjualan.waktu BETWEEN '$dateFrom' AND '$dateTo') AND m_barang.tipe <> 'Perawatan' $and_kategori $and_subkategori $and_status $and_jenis
-				GROUP BY detailpenjualan.id_barang
-				ORDER BY m_barang.nama_barang";
-				$result = ExecuteRows($query);
+			$multi_cabang_hargajual = substr($multi_cabang_hargajual, 0, -4);
+			$query = "SELECT m_klinik.nama_klinik AS nama_klinik, m_barang.id, m_barang.nama_barang, sum(detailpenjualan.qty) AS qty, sum(detailpenjualan.subtotal) AS subtotal FROM penjualan
+			JOIN detailpenjualan ON penjualan.id = detailpenjualan.id_penjualan
+			JOIN m_klinik ON penjualan.id_klinik = m_klinik.id_klinik
+			JOIN m_barang ON detailpenjualan.id_barang = m_barang.id
+			RIGHT JOIN m_hargajual ON detailpenjualan.id_barang = m_hargajual.id_barang AND ($multi_cabang_hargajual)
+			WHERE (penjualan.waktu BETWEEN '$dateFrom' AND '$dateTo') AND ($multi_cabang) AND m_barang.tipe <> 'Perawatan' $and_kategori $and_subkategori $and_jenis $and_status GROUP BY m_barang.nama_barang ORDER BY m_barang.nama_barang";
+			$result = ExecuteRows($query);
 	  }
   }
 

@@ -1354,6 +1354,25 @@ class users_edit extends users
 		$oldKeyFilter = $this->getRecordFilter();
 		$filter = $this->applyUserIDFilters($oldKeyFilter);
 		$conn = $this->getConnection();
+		if ($this->username->CurrentValue != "") { // Check field with unique index
+			$filterChk = "(`username` = '" . AdjustSql($this->username->CurrentValue, $this->Dbid) . "')";
+			$filterChk .= " AND NOT (" . $filter . ")";
+			$this->CurrentFilter = $filterChk;
+			$sqlChk = $this->getCurrentSql();
+			$conn->raiseErrorFn = Config("ERROR_FUNC");
+			$rsChk = $conn->Execute($sqlChk);
+			$conn->raiseErrorFn = "";
+			if ($rsChk === FALSE) {
+				return FALSE;
+			} elseif (!$rsChk->EOF) {
+				$idxErrMsg = str_replace("%f", $this->username->caption(), $Language->phrase("DupIndex"));
+				$idxErrMsg = str_replace("%v", $this->username->CurrentValue, $idxErrMsg);
+				$this->setFailureMessage($idxErrMsg);
+				$rsChk->close();
+				return FALSE;
+			}
+			$rsChk->close();
+		}
 		$this->CurrentFilter = $filter;
 		$sql = $this->getCurrentSql();
 		$conn->raiseErrorFn = Config("ERROR_FUNC");

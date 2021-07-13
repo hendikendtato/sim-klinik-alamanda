@@ -121,6 +121,9 @@ loadjs.ready("head", function() {
 	fdetail_nonjualedit.validateRequired = <?php echo Config("CLIENT_VALIDATE") ? "true" : "false" ?>;
 
 	// Dynamic selection lists
+	fdetail_nonjualedit.lists["x_id_barang"] = <?php echo $detail_nonjual_edit->id_barang->Lookup->toClientList($detail_nonjual_edit) ?>;
+	fdetail_nonjualedit.lists["x_id_barang"].options = <?php echo JsonEncode($detail_nonjual_edit->id_barang->lookupOptions()) ?>;
+	fdetail_nonjualedit.autoSuggests["x_id_barang"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
 	loadjs.done("fdetail_nonjualedit");
 });
 </script>
@@ -178,10 +181,29 @@ $detail_nonjual_edit->showMessage();
 <?php } ?>
 <?php if ($detail_nonjual_edit->id_barang->Visible) { // id_barang ?>
 	<div id="r_id_barang" class="form-group row">
-		<label id="elh_detail_nonjual_id_barang" for="x_id_barang" class="<?php echo $detail_nonjual_edit->LeftColumnClass ?>"><?php echo $detail_nonjual_edit->id_barang->caption() ?><?php echo $detail_nonjual_edit->id_barang->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<label id="elh_detail_nonjual_id_barang" class="<?php echo $detail_nonjual_edit->LeftColumnClass ?>"><?php echo $detail_nonjual_edit->id_barang->caption() ?><?php echo $detail_nonjual_edit->id_barang->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $detail_nonjual_edit->RightColumnClass ?>"><div <?php echo $detail_nonjual_edit->id_barang->cellAttributes() ?>>
 <span id="el_detail_nonjual_id_barang">
-<input type="text" data-table="detail_nonjual" data-field="x_id_barang" name="x_id_barang" id="x_id_barang" size="55" maxlength="255" placeholder="<?php echo HtmlEncode($detail_nonjual_edit->id_barang->getPlaceHolder()) ?>" value="<?php echo $detail_nonjual_edit->id_barang->EditValue ?>"<?php echo $detail_nonjual_edit->id_barang->editAttributes() ?>>
+<?php
+$onchange = $detail_nonjual_edit->id_barang->EditAttrs->prepend("onchange", "ew.autoFill(this);");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$detail_nonjual_edit->id_barang->EditAttrs["onchange"] = "";
+?>
+<span id="as_x_id_barang">
+	<div class="input-group">
+		<input type="text" class="form-control" name="sv_x_id_barang" id="sv_x_id_barang" value="<?php echo RemoveHtml($detail_nonjual_edit->id_barang->EditValue) ?>" size="55" maxlength="255" placeholder="<?php echo HtmlEncode($detail_nonjual_edit->id_barang->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($detail_nonjual_edit->id_barang->getPlaceHolder()) ?>"<?php echo $detail_nonjual_edit->id_barang->editAttributes() ?>>
+		<div class="input-group-append">
+			<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($detail_nonjual_edit->id_barang->caption()), $Language->phrase("LookupLink", TRUE))) ?>" onclick="ew.modalLookupShow({lnk:this,el:'x_id_barang',m:0,n:10,srch:false});" class="ew-lookup-btn btn btn-default"<?php echo ($detail_nonjual_edit->id_barang->ReadOnly || $detail_nonjual_edit->id_barang->Disabled) ? " disabled" : "" ?>><i class="fas fa-search ew-icon"></i></button>
+		</div>
+	</div>
+</span>
+<input type="hidden" data-table="detail_nonjual" data-field="x_id_barang" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $detail_nonjual_edit->id_barang->displayValueSeparatorAttribute() ?>" name="x_id_barang" id="x_id_barang" value="<?php echo HtmlEncode($detail_nonjual_edit->id_barang->CurrentValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fdetail_nonjualedit"], function() {
+	fdetail_nonjualedit.createAutoSuggest({"id":"x_id_barang","forceSelect":true});
+});
+</script>
+<?php echo $detail_nonjual_edit->id_barang->Lookup->getParamTag($detail_nonjual_edit, "p_x_id_barang") ?>
 </span>
 <?php echo $detail_nonjual_edit->id_barang->CustomMsg ?></div></div>
 	</div>

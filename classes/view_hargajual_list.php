@@ -843,6 +843,7 @@ class view_hargajual_list extends view_hargajual
 		$this->disc_rp->setVisibility();
 		$this->disc_pr->setVisibility();
 		$this->discontinue->setVisibility();
+		$this->status->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Global Page Loading event (in userfn*.php)
@@ -1156,6 +1157,7 @@ class view_hargajual_list extends view_hargajual
 		$filterList = Concat($filterList, $this->disc_rp->AdvancedSearch->toJson(), ","); // Field disc_rp
 		$filterList = Concat($filterList, $this->disc_pr->AdvancedSearch->toJson(), ","); // Field disc_pr
 		$filterList = Concat($filterList, $this->discontinue->AdvancedSearch->toJson(), ","); // Field discontinue
+		$filterList = Concat($filterList, $this->status->AdvancedSearch->toJson(), ","); // Field status
 		if ($this->BasicSearch->Keyword != "") {
 			$wrk = "\"" . Config("TABLE_BASIC_SEARCH") . "\":\"" . JsEncode($this->BasicSearch->Keyword) . "\",\"" . Config("TABLE_BASIC_SEARCH_TYPE") . "\":\"" . JsEncode($this->BasicSearch->Type) . "\"";
 			$filterList = Concat($filterList, $wrk, ",");
@@ -1369,6 +1371,14 @@ class view_hargajual_list extends view_hargajual
 		$this->discontinue->AdvancedSearch->SearchValue2 = @$filter["y_discontinue"];
 		$this->discontinue->AdvancedSearch->SearchOperator2 = @$filter["w_discontinue"];
 		$this->discontinue->AdvancedSearch->save();
+
+		// Field status
+		$this->status->AdvancedSearch->SearchValue = @$filter["x_status"];
+		$this->status->AdvancedSearch->SearchOperator = @$filter["z_status"];
+		$this->status->AdvancedSearch->SearchCondition = @$filter["v_status"];
+		$this->status->AdvancedSearch->SearchValue2 = @$filter["y_status"];
+		$this->status->AdvancedSearch->SearchOperator2 = @$filter["w_status"];
+		$this->status->AdvancedSearch->save();
 		$this->BasicSearch->setKeyword(@$filter[Config("TABLE_BASIC_SEARCH")]);
 		$this->BasicSearch->setType(@$filter[Config("TABLE_BASIC_SEARCH_TYPE")]);
 	}
@@ -1561,6 +1571,7 @@ class view_hargajual_list extends view_hargajual
 			$this->updateSort($this->disc_rp); // disc_rp
 			$this->updateSort($this->disc_pr); // disc_pr
 			$this->updateSort($this->discontinue); // discontinue
+			$this->updateSort($this->status); // status
 			$this->setStartRecordNumber(1); // Reset start position
 		}
 	}
@@ -1616,6 +1627,7 @@ class view_hargajual_list extends view_hargajual
 				$this->disc_rp->setSort("");
 				$this->disc_pr->setSort("");
 				$this->discontinue->setSort("");
+				$this->status->setSort("");
 			}
 
 			// Reset start position
@@ -1969,6 +1981,7 @@ class view_hargajual_list extends view_hargajual
 		$this->disc_rp->setDbValue($row['disc_rp']);
 		$this->disc_pr->setDbValue($row['disc_pr']);
 		$this->discontinue->setDbValue($row['discontinue']);
+		$this->status->setDbValue($row['status']);
 	}
 
 	// Return a row with default values
@@ -1997,6 +2010,7 @@ class view_hargajual_list extends view_hargajual
 		$row['disc_rp'] = NULL;
 		$row['disc_pr'] = NULL;
 		$row['discontinue'] = NULL;
+		$row['status'] = NULL;
 		return $row;
 	}
 
@@ -2086,6 +2100,7 @@ class view_hargajual_list extends view_hargajual
 		// disc_rp
 		// disc_pr
 		// discontinue
+		// status
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -2191,6 +2206,11 @@ class view_hargajual_list extends view_hargajual
 			}
 			$this->discontinue->ViewCustomAttributes = "";
 
+			// status
+			$this->status->ViewValue = $this->status->CurrentValue;
+			$this->status->ViewValue = FormatNumber($this->status->ViewValue, 0, -2, -2, -2);
+			$this->status->ViewCustomAttributes = "";
+
 			// id
 			$this->id->LinkCustomAttributes = "";
 			$this->id->HrefValue = "";
@@ -2290,6 +2310,11 @@ class view_hargajual_list extends view_hargajual
 			$this->discontinue->LinkCustomAttributes = "";
 			$this->discontinue->HrefValue = "";
 			$this->discontinue->TooltipValue = "";
+
+			// status
+			$this->status->LinkCustomAttributes = "";
+			$this->status->HrefValue = "";
+			$this->status->TooltipValue = "";
 		}
 
 		// Call Row Rendered event

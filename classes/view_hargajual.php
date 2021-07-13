@@ -47,6 +47,7 @@ class view_hargajual extends DbTable
 	public $disc_rp;
 	public $disc_pr;
 	public $discontinue;
+	public $status;
 
 	// Constructor
 	public function __construct()
@@ -215,6 +216,12 @@ class view_hargajual extends DbTable
 		$this->discontinue->Lookup = new Lookup('discontinue', 'view_hargajual', FALSE, '', ["","","",""], [], [], [], [], [], [], '', '');
 		$this->discontinue->OptionCount = 2;
 		$this->fields['discontinue'] = &$this->discontinue;
+
+		// status
+		$this->status = new DbField('view_hargajual', 'view_hargajual', 'x_status', 'status', '`status`', '`status`', 3, 11, -1, FALSE, '`status`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->status->Sortable = TRUE; // Allow sort
+		$this->status->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->fields['status'] = &$this->status;
 	}
 
 	// Field Visibility
@@ -604,6 +611,7 @@ class view_hargajual extends DbTable
 		$this->disc_rp->DbValue = $row['disc_rp'];
 		$this->disc_pr->DbValue = $row['disc_pr'];
 		$this->discontinue->DbValue = $row['discontinue'];
+		$this->status->DbValue = $row['status'];
 	}
 
 	// Delete uploaded files
@@ -921,6 +929,7 @@ class view_hargajual extends DbTable
 		$this->disc_rp->setDbValue($rs->fields('disc_rp'));
 		$this->disc_pr->setDbValue($rs->fields('disc_pr'));
 		$this->discontinue->setDbValue($rs->fields('discontinue'));
+		$this->status->setDbValue($rs->fields('status'));
 	}
 
 	// Render list row values
@@ -954,6 +963,7 @@ class view_hargajual extends DbTable
 		// disc_rp
 		// disc_pr
 		// discontinue
+		// status
 		// id
 
 		$this->id->ViewValue = $this->id->CurrentValue;
@@ -1065,6 +1075,11 @@ class view_hargajual extends DbTable
 		}
 		$this->discontinue->ViewCustomAttributes = "";
 
+		// status
+		$this->status->ViewValue = $this->status->CurrentValue;
+		$this->status->ViewValue = FormatNumber($this->status->ViewValue, 0, -2, -2, -2);
+		$this->status->ViewCustomAttributes = "";
+
 		// id
 		$this->id->LinkCustomAttributes = "";
 		$this->id->HrefValue = "";
@@ -1174,6 +1189,11 @@ class view_hargajual extends DbTable
 		$this->discontinue->LinkCustomAttributes = "";
 		$this->discontinue->HrefValue = "";
 		$this->discontinue->TooltipValue = "";
+
+		// status
+		$this->status->LinkCustomAttributes = "";
+		$this->status->HrefValue = "";
+		$this->status->TooltipValue = "";
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -1336,6 +1356,12 @@ class view_hargajual extends DbTable
 		$this->discontinue->EditCustomAttributes = "";
 		$this->discontinue->EditValue = $this->discontinue->options(FALSE);
 
+		// status
+		$this->status->EditAttrs["class"] = "form-control";
+		$this->status->EditCustomAttributes = "";
+		$this->status->EditValue = $this->status->CurrentValue;
+		$this->status->PlaceHolder = RemoveHtml($this->status->caption());
+
 		// Call Row Rendered event
 		$this->Row_Rendered();
 	}
@@ -1387,6 +1413,7 @@ class view_hargajual extends DbTable
 					$doc->exportCaption($this->disc_rp);
 					$doc->exportCaption($this->disc_pr);
 					$doc->exportCaption($this->discontinue);
+					$doc->exportCaption($this->status);
 				} else {
 					$doc->exportCaption($this->id);
 					$doc->exportCaption($this->kode_barang);
@@ -1408,6 +1435,7 @@ class view_hargajual extends DbTable
 					$doc->exportCaption($this->disc_rp);
 					$doc->exportCaption($this->disc_pr);
 					$doc->exportCaption($this->discontinue);
+					$doc->exportCaption($this->status);
 				}
 				$doc->endExportRow();
 			}
@@ -1461,6 +1489,7 @@ class view_hargajual extends DbTable
 						$doc->exportField($this->disc_rp);
 						$doc->exportField($this->disc_pr);
 						$doc->exportField($this->discontinue);
+						$doc->exportField($this->status);
 					} else {
 						$doc->exportField($this->id);
 						$doc->exportField($this->kode_barang);
@@ -1482,6 +1511,7 @@ class view_hargajual extends DbTable
 						$doc->exportField($this->disc_rp);
 						$doc->exportField($this->disc_pr);
 						$doc->exportField($this->discontinue);
+						$doc->exportField($this->status);
 					}
 					$doc->endExportRow($rowCnt);
 				}
