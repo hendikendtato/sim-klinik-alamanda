@@ -57,8 +57,8 @@ Page_Rendering();
 	if(isset($_POST['srhDate'])){
 		$cabang = (empty($_POST['cabang'])) ? "" : "AND penjualan.id_klinik = ".$_POST['cabang'];
 		$Inputbarang = ($_POST['Inputbarang'] == "All" OR empty($_POST['Inputbarang'])) ? "" : "AND m_barang.id = ".$_POST['Inputbarang'];
-		$Inputkategori = ($_POST['Inputkategori'] == "All" OR empty($_POST['Inputbarang'])) ? "" : "AND m_barang.kategori = ".$_POST['Inputkategori'];
-		$Inputsubkategori = ($_POST['Inputsubkategori'] == "All" OR empty($_POST['Inputbarang'])) ? "" : "AND m_barang.subkategori = ".$_POST['Inputsubkategori'];		
+		$Inputkategori = ($_POST['Inputkategori'] == "All" OR empty($_POST['Inputkategori'])) ? "" : "AND m_barang.kategori = ".$_POST['Inputkategori'];
+		$Inputsubkategori = ($_POST['Inputsubkategori'] == "All" OR empty($_POST['Inputsubkategori'])) ? "" : "AND m_barang.subkategori = ".$_POST['Inputsubkategori'];		
 		$dateFrom = !empty($_POST['dateFrom']) ? $_POST['dateFrom'] : date('Y-m-01');
 		$dateTo = !empty($_POST['dateTo']) ? $_POST['dateTo'] : date('Y-m-t');
 

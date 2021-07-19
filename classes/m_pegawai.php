@@ -1440,6 +1440,64 @@ class m_pegawai extends DbTable
 	function Row_Inserted($rsold, &$rsnew) {
 
 		//echo "Row Inserted"
+		//API DATA CABANG
+
+		$url = "http://172.16.0.2:8069/web/customer";
+		$data_sql = ExecuteRow("SELECT m_pegawai.*, m_agama.*, m_jabatan.id AS id_jabatan, m_jabatan.nama_jabatan, m_klinik.* FROM m_pegawai 
+								JOIN m_agama ON m_pegawai.agama_pegawai = m_agama.id_agama
+								JOIN m_jabatan ON m_pegawai.jabatan_pegawai = m_jabatan.id
+								JOIN m_klinik ON m_pegawai.id_klinik = m_klinik.id_klinik WHERE m_pegawai.id_pegawai = '".$rsnew['id_pegawai']."'");
+		$data_array = ['params' => [
+			'id_pegawai' => $data_sql['id_pegawai'],
+			'nama_pegawai' => $data_sql['nama_pegawai'],
+			'nama_lengkap' => $data_sql['nama_lengkap'],
+			'jenis_pegawai' => $data_sql['jenis_pegawai'],
+			'nik_pegawai' => $data_sql['nik_pegawai'],
+			'agama_pegawai' => [
+				'id_agama' => $data_sql['id_agama'],
+				'nama_agama' => $data_sql['nama_agama']
+			],
+			'tgllahir_pegawai' => $data_sql['tgllahir_pegawai'],
+			'alamat_pegawai' => $data_sql['alamat_pegawai'],
+			'hp_pegawai' => $data_sql['hp_pegawai'],
+			'pendidikan_pegawai' => $data_sql['pendidikan_pegawai'],
+			'jurusan_pegawai' => $data_sql['jurusan_pegawai'],
+			'spesialis_pegawai' => $data_sql['spesialis_pegawai'],
+			'jabatan_pegawai' => [
+				'id_jabatan' => $data_sql['id_jabatan'],
+				'nama_jabatan' => $data_sql['nama_jabatan']
+	 		],
+	 		'status_pegawai' => $data_sql['status_pegawai'],
+	 		'tarif_pegawai' => $data_sql['tarif_pegawai'],
+	 		'id_klinik' => [
+	 			'id_klinik' => $data_sql['id_klinik'],
+	 			'nama_klinik' => $data_sql['nama_klinik']
+	 		],
+	 		'target' => $data_sql['target'],
+	 		'nilai_komisi' => $data_sql['nilai_komisi'],
+	 		'status' => $data_sql['status']
+		]];
+
+		//$data = http_build_query($data_array);
+		$postdata = json_encode($data_array);
+		print_r($postdata);
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_POST, true);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, $postdata);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+		$resp = curl_exec($curl);
+		if($e = curl_error($curl)){
+			echo $e;
+		} else {
+
+			// $decoded = json_decode($resp);
+			echo "Berhasil";
+		}
+		curl_close($curl);
+
+		//die();	
 	}
 
 	// Row Updating event

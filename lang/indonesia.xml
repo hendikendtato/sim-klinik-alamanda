@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<ew-language date="2021/7/13" version="16.0.1" id="ID" name="Indonesian" desc="Indonesian" author="e.World Technology Ltd.">
+<ew-language date="2021/7/19" version="16.0.1" id="ID" name="Indonesian" desc="Indonesian" author="e.World Technology Ltd.">
   <!--
 	*** Important Notes:
 	1. Language ID should follow: https://developers.google.com/recaptcha/docs/language,
@@ -1206,6 +1206,72 @@
     </menu>
     <menu id="1080">
       <phrase id="menutext" value="Barang Terjual" />
+    </menu>
+    <menu id="1232">
+      <phrase id="menutext" value="KPI" />
+    </menu>
+    <menu id="1267">
+      <phrase id="menutext" value="Target Omset Cabang" />
+    </menu>
+    <menu id="1082">
+      <phrase id="menutext" value="Master Target Cabang" />
+    </menu>
+    <menu id="1233">
+      <phrase id="menutext" value="Laporan Target Cabang" />
+    </menu>
+    <menu id="1422">
+      <phrase id="menutext" value="Target Omset Personal" />
+    </menu>
+    <menu id="1083">
+      <phrase id="menutext" value="Master Target Personal" />
+    </menu>
+    <menu id="1268">
+      <phrase id="menutext" value="Laporan Target Personal" />
+    </menu>
+    <menu id="1458">
+      <phrase id="menutext" value="Target Produk Terjual" />
+    </menu>
+    <menu id="1424">
+      <phrase id="menutext" value="Master Target Produk Terjual" />
+    </menu>
+    <menu id="1460">
+      <phrase id="menutext" value="Laporan Target Produk Terjual" />
+    </menu>
+    <menu id="1459">
+      <phrase id="menutext" value="Target Perawatan Terjual" />
+    </menu>
+    <menu id="1423">
+      <phrase id="menutext" value="Master Target Perawatan Terjual" />
+    </menu>
+    <menu id="1461">
+      <phrase id="menutext" value="Laporan Target Perawatan Terjual" />
+    </menu>
+    <menu id="1626">
+      <phrase id="menutext" value="Target Kunjungan" />
+    </menu>
+    <menu id="1462">
+      <phrase id="menutext" value="Master Target Kunjungan" />
+    </menu>
+    <menu id="1629">
+      <phrase id="menutext" value="Laporan Target Kunjungan" />
+    </menu>
+    <menu id="1627">
+      <phrase id="menutext" value="Target Pasien" />
+    </menu>
+    <menu id="1463">
+      <phrase id="menutext" value="Master Target Pasien" />
+    </menu>
+    <menu id="1630">
+      <phrase id="menutext" value="Laporan Target Pasien" />
+    </menu>
+    <menu id="1628">
+      <phrase id="menutext" value="Target Pasien Baru" />
+    </menu>
+    <menu id="1464">
+      <phrase id="menutext" value="Master Target Pasien Baru" />
+    </menu>
+    <menu id="1631">
+      <phrase id="menutext" value="Laporan Target Pasien Baru" />
     </menu>
     <menu id="226">
       <phrase id="menutext" value="Pengguna" />
@@ -3990,6 +4056,168 @@
       <field id="status">
         <phrase id="fldcaption" value="status" />
       </field>
+    </table>
+    <table id="m_target_omset_cabang">
+      <phrase id="tblcaption" value="Target Omset Cabang" />
+      <field id="id_target_omset_cabang">
+        <phrase id="fldcaption" value="ID" />
+      </field>
+      <field id="id_cabang">
+        <phrase id="fldcaption" value="Cabang" />
+      </field>
+      <field id="tgl_awal">
+        <phrase id="fldcaption" value="Tanggal Awal" />
+      </field>
+      <field id="tgl_akhir">
+        <phrase id="fldcaption" value="Tanggal Akhir" />
+      </field>
+      <field id="target">
+        <phrase id="fldcaption" value="Target" />
+      </field>
+      <field id="baseline">
+        <phrase id="fldcaption" value="Baseline" />
+      </field>
+      <field id="aset">
+        <phrase id="fldcaption" value="Aset" />
+      </field>
+    </table>
+    <table id="m_target_omset_personal">
+      <phrase id="tblcaption" value="Target Omset Personal" />
+      <field id="id_target_omset_personal">
+        <phrase id="fldcaption" value="ID" />
+      </field>
+      <field id="id_cabang">
+        <phrase id="fldcaption" value="Cabang" />
+      </field>
+      <field id="id_jabatan">
+        <phrase id="fldcaption" value="Jabatan" />
+      </field>
+      <field id="tgl_awal">
+        <phrase id="fldcaption" value="Tanggal Awal" />
+      </field>
+      <field id="tgl_akhir">
+        <phrase id="fldcaption" value="Tanggal Akhir" />
+      </field>
+      <field id="target">
+        <phrase id="fldcaption" value="Target" />
+      </field>
+    </table>
+    <table id="laporan_target_omset_cabang">
+      <phrase id="tblcaption" value="Laporan Target Omset Cabang" />
+    </table>
+    <table id="laporan_target_omset_personal">
+      <phrase id="tblcaption" value="Laporan Target Omset Personal" />
+    </table>
+    <table id="m_target_perawatan">
+      <phrase id="tblcaption" value="Master Target Perawatan Terjual" />
+      <field id="id_target_perawatan">
+        <phrase id="fldcaption" value="ID Target Perawatan" />
+      </field>
+      <field id="id_cabang">
+        <phrase id="fldcaption" value="Cabang" />
+      </field>
+      <field id="jenis">
+        <phrase id="fldcaption" value="Jenis" />
+      </field>
+      <field id="tgl_awal">
+        <phrase id="fldcaption" value="Tanggal Awal" />
+      </field>
+      <field id="tgl_akhir">
+        <phrase id="fldcaption" value="Tanggal Akhir" />
+      </field>
+      <field id="target">
+        <phrase id="fldcaption" value="Target" />
+      </field>
+    </table>
+    <table id="m_target_produk">
+      <phrase id="tblcaption" value="Master Target Produk Terjual" />
+      <field id="id_target_produk">
+        <phrase id="fldcaption" value="ID Target Produk" />
+      </field>
+      <field id="id_cabang">
+        <phrase id="fldcaption" value="Cabang" />
+      </field>
+      <field id="status">
+        <phrase id="fldcaption" value="Status" />
+      </field>
+      <field id="tgl_awal">
+        <phrase id="fldcaption" value="Tanggal Awal" />
+      </field>
+      <field id="tgl_akhir">
+        <phrase id="fldcaption" value="Tanggal Akhir" />
+      </field>
+      <field id="target">
+        <phrase id="fldcaption" value="Target" />
+      </field>
+    </table>
+    <table id="laporan_target_produk_terjual">
+      <phrase id="tblcaption" value="Laporan Target Produk Terjual" />
+    </table>
+    <table id="laporan_target_perawatan_terjual">
+      <phrase id="tblcaption" value="Laporan Target Perawatan Terjual" />
+    </table>
+    <table id="m_target_kunjungan">
+      <phrase id="tblcaption" value="Master Target Kunjungan" />
+      <field id="id_target_kunjungan">
+        <phrase id="fldcaption" value="ID Target Kunjungan" />
+      </field>
+      <field id="id_cabang">
+        <phrase id="fldcaption" value="Cabang" />
+      </field>
+      <field id="tgl_awal">
+        <phrase id="fldcaption" value="Tanggal Awal" />
+      </field>
+      <field id="tgl_akhir">
+        <phrase id="fldcaption" value="Tanggal Akhir" />
+      </field>
+      <field id="target">
+        <phrase id="fldcaption" value="Target" />
+      </field>
+    </table>
+    <table id="m_target_pasien">
+      <phrase id="tblcaption" value="m target pasien" />
+      <field id="id_target_pasien">
+        <phrase id="fldcaption" value="ID Target Pasien" />
+      </field>
+      <field id="id_cabang">
+        <phrase id="fldcaption" value="Cabang" />
+      </field>
+      <field id="tgl_awal">
+        <phrase id="fldcaption" value="Tanggal Awal" />
+      </field>
+      <field id="tgl_akhir">
+        <phrase id="fldcaption" value="Tanggal Akhir" />
+      </field>
+      <field id="target">
+        <phrase id="fldcaption" value="Target" />
+      </field>
+    </table>
+    <table id="m_target_pasien_baru">
+      <phrase id="tblcaption" value="m target pasien baru" />
+      <field id="id_target_pasien_baru">
+        <phrase id="fldcaption" value="ID Target Pasien Baru" />
+      </field>
+      <field id="id_cabang">
+        <phrase id="fldcaption" value="Cabang" />
+      </field>
+      <field id="tgl_awal">
+        <phrase id="fldcaption" value="Tanggal Awal" />
+      </field>
+      <field id="tgl_akhir">
+        <phrase id="fldcaption" value="Tanggal Akhir" />
+      </field>
+      <field id="target">
+        <phrase id="fldcaption" value="Target" />
+      </field>
+    </table>
+    <table id="laporan_target_kunjungan">
+      <phrase id="tblcaption" value="Laporan Target Kunjungan" />
+    </table>
+    <table id="laporan_target_pasien">
+      <phrase id="tblcaption" value="Laporan Target Pasien" />
+    </table>
+    <table id="laporan_target_pasien_baru">
+      <phrase id="tblcaption" value="Laporan Target Pasien Baru" />
     </table>
   </project>
 </ew-language>

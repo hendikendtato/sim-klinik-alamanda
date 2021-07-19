@@ -545,6 +545,34 @@ class index
 			$this->terminate("laporan_barang_terjual.php");
 		if ($Security->allowList(CurrentProjectID() . 'view_hargajual'))
 			$this->terminate("view_hargajuallist.php");
+		if ($Security->allowList(CurrentProjectID() . 'm_target_omset_cabang'))
+			$this->terminate("m_target_omset_cabanglist.php");
+		if ($Security->allowList(CurrentProjectID() . 'm_target_omset_personal'))
+			$this->terminate("m_target_omset_personallist.php");
+		if ($Security->allowList(CurrentProjectID() . 'laporan_target_omset_cabang.php'))
+			$this->terminate("laporan_target_omset_cabang.php");
+		if ($Security->allowList(CurrentProjectID() . 'laporan_target_omset_personal.php'))
+			$this->terminate("laporan_target_omset_personal.php");
+		if ($Security->allowList(CurrentProjectID() . 'm_target_perawatan'))
+			$this->terminate("m_target_perawatanlist.php");
+		if ($Security->allowList(CurrentProjectID() . 'm_target_produk'))
+			$this->terminate("m_target_produklist.php");
+		if ($Security->allowList(CurrentProjectID() . 'laporan_target_produk_terjual.php'))
+			$this->terminate("laporan_target_produk_terjual.php");
+		if ($Security->allowList(CurrentProjectID() . 'laporan_target_perawatan_terjual.php'))
+			$this->terminate("laporan_target_perawatan_terjual.php");
+		if ($Security->allowList(CurrentProjectID() . 'm_target_kunjungan'))
+			$this->terminate("m_target_kunjunganlist.php");
+		if ($Security->allowList(CurrentProjectID() . 'm_target_pasien'))
+			$this->terminate("m_target_pasienlist.php");
+		if ($Security->allowList(CurrentProjectID() . 'm_target_pasien_baru'))
+			$this->terminate("m_target_pasien_barulist.php");
+		if ($Security->allowList(CurrentProjectID() . 'laporan_target_kunjungan.php'))
+			$this->terminate("laporan_target_kunjungan.php");
+		if ($Security->allowList(CurrentProjectID() . 'laporan_target_pasien.php'))
+			$this->terminate("laporan_target_pasien.php");
+		if ($Security->allowList(CurrentProjectID() . 'laporan_target_pasien_baru.php'))
+			$this->terminate("laporan_target_pasien_baru.php");
 		if ($Security->isLoggedIn()) {
 			$this->setFailureMessage(DeniedMessage() . "<br><br><a href=\"logout.php\">" . $Language->phrase("BackToLogin") . "</a>");
 		} else {

@@ -373,7 +373,7 @@ Page_Rendering();
 		btnLoading("postActionBeli");
 		var cabang = $("#id_cabang").val();
 
-		$.get(`${base_url}api/?action=postActionBeli&nama_klinik=${cabang}`)
+		$.get(`${base_url}/api/?action=postActionBeli&nama_klinik=${cabang}`)
 			.then(function (response) {
 				// handle success
 				console.log(response.data);
@@ -402,7 +402,7 @@ Page_Rendering();
 		btnLoading("postActionKonsultasi");
 		var cabang = $("#id_cabang").val();
 
-		$.get(`${base_url}api/?action=postActionKonsultasi&nama_klinik=${cabang}`)
+		$.get(`${base_url}/api/?action=postActionKonsultasi&nama_klinik=${cabang}`)
 			.then(function (response) {
 				// handle success
 				console.log(response.data);
@@ -430,7 +430,7 @@ Page_Rendering();
 		btnLoading("postActionPerawatan");
 		var cabang = $("#id_cabang").val();
 
-		$.get(`${base_url}api/?action=postActionPerawatan&nama_klinik=${cabang}`)
+		$.get(`${base_url}/api/?action=postActionPerawatan&nama_klinik=${cabang}`)
 			.then(function (response) {
 				// handle success
 				console.log(response.data);

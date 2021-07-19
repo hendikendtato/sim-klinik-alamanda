@@ -13435,8 +13435,15 @@ function SetupLoginStatus() {
 	$LoginStatus["loginUrl"] = $loginUrl;
 	$LoginStatus["loginText"] = $Language->phrase("Login");
 	$LoginStatus["canLogin"] = $loginPage && $loginUrl && !IsLoggedIn();
-	$id = ExecuteScalar("SELECT userid FROM users WHERE username LIKE '".CurrentUserName()."' ");
-	$personalDataPage = "usersedit.php?_userid=".$id;
+	$changePasswordPage = "changepwd.php";
+	$changePasswordUrl = "";
+	if ($currentPage != $changePasswordPage) {
+		$changePasswordUrl = "window.location='" . GetUrl($changePasswordPage) . "';return false;";
+	}
+	$LoginStatus["changePasswordUrl"] = $changePasswordUrl;
+	$LoginStatus["changePasswordText"] = $Language->phrase("ChangePwd");
+	$LoginStatus["canChangePassword"] = $changePasswordUrl && IsLoggedIn() && !IsSysAdmin();
+	$personalDataPage = "personaldata.php";
 	$personalDataUrl = "";
 	if ($currentPage != $personalDataPage)
 		$personalDataUrl = "window.location='" . GetUrl($personalDataPage) . "';return false;";

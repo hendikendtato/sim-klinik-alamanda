@@ -174,7 +174,7 @@ loadjs.ready("head", function() {
 loadjs.ready("head", function() {
 
 	// Client script
-	var now=new Date,day=("0"+now.getDate()).slice(-2),month=("0"+(now.getMonth()+1)).slice(-2),today=day+"/"+month+"/"+now.getFullYear();$("input#x_tgl_daftar").val(today),$("input#x_tgl_daftar").prop("disabled",!0),$("select#x_kategori").prop("disabled",!0),$("select#x_tipe").prop("disabled",!0);
+	var now=new Date,day=("0"+now.getDate()).slice(-2),month=("0"+(now.getMonth()+1)).slice(-2),today=day+"/"+month+"/"+now.getFullYear();$("input#x_tgl_daftar").val(today),$("input#x_tgl_daftar").prop("disabled",!0);
 });
 </script>
 <?php $m_pelanggan_add->showPageHeader(); ?>

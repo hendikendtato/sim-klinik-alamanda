@@ -3397,7 +3397,7 @@ class penjualan extends DbTable
 					// print_r($data_detail);
 					// print_r($detail);
 
-					$data_array = [
+					$data_array = ['params' => [
 						'id' => $data_sql['id'],
 						'waktu' => $data_sql['waktu'],
 						'id_pelanggan' => [
@@ -3479,7 +3479,7 @@ class penjualan extends DbTable
 						'detailpenjualan' => $detail,
 
 						// $key => $value
-					];
+					]];
 
 					//$data = http_build_query($data_array);
 					$postdata = json_encode($data_array);

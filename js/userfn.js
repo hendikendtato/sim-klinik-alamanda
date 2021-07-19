@@ -1,1 +1,1 @@
-var pathparts=location.pathname.split("/");if("localhost"==location.host)var base_url=location.origin+"/"+pathparts[1].trim("/")+"/";else base_url=location.origin;
+var pathparts=location.pathname.split("/");if("localhost"==location.host)var base_url=location.origin+"/"+pathparts[1].trim("/")+"/";else base_url=location.origin+"/"+pathparts[1].trim("/")+"/";

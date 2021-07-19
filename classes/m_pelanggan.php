@@ -1431,37 +1431,65 @@ class m_pelanggan extends DbTable
 	}
 	// Row Inserted event
 	function Row_Inserted($rsold, &$rsnew) {
-					//API DATA TRANSAKSI
-					$url = "http://172.16.0.2:8069/web/customer";
-					$data_sql = ExecuteRow("SELECT * FROM m_pelanggan WHERE id_pelanggan = '".$rsnew['id_pelanggan']."'");
-					foreach ($data_sql as $key => $value) {
-						if(!is_int($key)){
-							$data_array = [
-								$key => $value
-							];
-							//$data = http_build_query($data_array);
-							$postdata = json_encode($data_array);
-							print_r($postdata);
-							$curl = curl_init();
-							curl_setopt($curl, CURLOPT_URL, $url);
-							curl_setopt($curl, CURLOPT_POST, true);
-							curl_setopt($curl, CURLOPT_POSTFIELDS, $postdata);
-							curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-							curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-							$resp = curl_exec($curl);
-						}
-					}
-					if($e = curl_error($curl)){
-						echo $e;
-					} else {
-						// $decoded = json_decode($resp);
-						echo "Berhasil";
-						// foreach ($decoded as $key => $value) {
-						// 	echo $key . ':' . $value . '<br>';
-						// }
-					}
-					curl_close($curl);
-					die();
+		//API DATA TRANSAKSI
+		$url = "http://172.16.0.2:8069/web/customer";
+		$data_sql = ExecuteRow("SELECT m_pelanggan.*, pekerjaan.id AS id_pekerjaan, pekerjaan.nama AS nama_pekerjaan, kota.id AS id_kota, kota.nama AS nama_kota, m_klinik.*, m_kategoripelanggan.*, m_tipepelanggan.* FROM m_pelanggan
+								JOIN pekerjaan ON m_pelanggan.pekerjaan_pelanggan = pekerjaan.id
+								JOIN kota ON m_pelanggan.kota_pelanggan = kota.id
+								JOIN m_klinik ON m_pelanggan.id_klinik = m_klinik.id_klinik
+								JOIN m_kategoripelanggan ON m_pelanggan.kategori = m_kategoripelanggan.id_kategori
+								JOIN m_tipepelanggan ON m_pelanggan.tipe = m_tipepelanggan.id_tipe WHERE m_pelanggan.id_pelanggan = '".$rsnew['id_pelanggan']."'");
+		$data_array = ['params' => [
+		  'id_pelanggan' => $data_sql['id_pelanggan'],
+		  'kode_pelanggan' => $data_sql['kode_pelanggan'],
+		  'noktp_pelanggan' => $data_sql['noktp_pelanggan'],
+		  'nama_pelanggan' => $data_sql['nama_pelanggan'],
+		  'jenis_pelanggan' => $data_sql['jenis_pelanggan'],
+		  'tgllahir_pelanggan' => $data_sql['tgllahir_pelanggan'],
+		  'pekerjaan_pelanggan' => [
+		  	'id_pekerjaan' => $data_sql['id_pekerjaan'],
+		  	'nama_pekerjaan' => $data_sql['nama_pekerjaan']
+		  ],
+		  'kota_pelanggan' => [
+		  	'id_kota' => $data_sql['id_kota'],
+		  	'nama_kota' => $data_sql['nama_kota']
+		  ],
+		  'alamat_pelanggan' => $data_sql['alamat_pelanggan'],
+		  'telpon_pelanggan' => $data_sql['telpon_pelanggan'],
+		  'hp_pelanggan' => $data_sql['hp_pelanggan'],
+		  'id_klinik' => [
+		  	'id_klinik' => $data_sql['id_klinik'],
+		  	'nama_klinik' => $data_sql['nama_klinik']
+		  ],
+		  'tgl_daftar' => $data_sql['tgl_daftar'],
+		  'kategori' => [
+		  	'id_kategori' => $data_sql['id_kategori'],
+		  	'nama_kategori' => $data_sql['nama_kategori']
+		  ],
+		  'tipe' => [
+		  	'id_tipe' => $data_sql['id_tipe'],
+		  	'nama_tipe' => $data_sql['nama_tipe']
+		  ],
+		  'tgl_terakhir_transaksi' => $data_sql['tgl_terakhir_transaksi']
+		]];
+		//$data = http_build_query($data_array);
+		$postdata = json_encode($data_array);
+		print_r($postdata);
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_POST, true);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, $postdata);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+		$resp = curl_exec($curl);
+		if($e = curl_error($curl)){
+			echo $e;
+		} else {
+			// $decoded = json_decode($resp);
+			echo "Berhasil";
+		}
+		curl_close($curl);
+		//die();
 	}
 	// Row Updating event
 	function Row_Updating($rsold, &$rsnew) {
@@ -1531,6 +1559,11 @@ class m_pelanggan extends DbTable
 		$this->tipe->CurrentValue = $default_tipe;
 		$default_kategori = ExecuteScalar("SELECT id_kategori FROM m_kategoripelanggan WHERE nama_kategori LIKE '%Umum%'");
 		$this->kategori->CurrentValue = $default_kategori;
+		$levelid = CurrentUserLevel();
+		if($levelid != '-1') {
+			$this->tipe->ReadOnly = TRUE;
+			$this->kategori->ReadOnly = TRUE;
+		}
 	}
 	// User ID Filtering event
 	function UserID_Filtering(&$filter) {

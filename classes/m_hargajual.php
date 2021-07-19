@@ -1386,6 +1386,74 @@ class m_hargajual extends DbTable
 	function Row_Inserted($rsold, &$rsnew) {
 
 		//echo "Row Inserted"
+		//API DATA CABANG
+
+		$url = "http://172.16.0.2:8069/web/customer";
+		$data_sql = ExecuteRow("SELECT m_hargajual.*, m_barang.*, m_klinik.*, m_satuan_barang.*, kategoribarang.id AS id_kategori, kategoribarang.nama AS nama_kategori, subkategoribarang.id AS id_subkategori, subkategoribarang.nama AS nama_subkategori, m_status_barang.* FROM m_hargajual 
+								JOIN m_barang ON m_hargajual.id_barang = m_barang.id
+								JOIN m_klinik ON m_hargajual.id_klinik = m_klinik.id_klinik
+								LEFT JOIN m_satuan_barang ON m_hargajual.satuan = m_satuan_barang.id_satuan
+								LEFT JOIN kategoribarang ON m_hargajual.kategori = kategoribarang.id
+								LEFT JOIN subkategoribarang ON m_hargajual.subkategori = subkategoribarang.id
+								LEFT JOIN m_status_barang ON m_hargajual.status = m_status_barang.id_status WHERE m_hargajual.id_hargajual = '".$rsnew['id_hargajual']."'");
+		$data_array = ['params' => [
+			'id_hargajual' => $data_sql['id_hargajual'],
+			'id_barang' => [
+				'id_barang' => $data_sql['id_barang'],
+				'kode_barang' => $data_sql['kode_barang'],
+				'nama_barang' => $data_sql['nama_barang']
+			],
+			'tgl_masuk' => $data_sql['tgl_masuk'],
+			'tgl_exp' => $data_sql['tgl_exp'],
+			'hargajual' => $data_sql['totalhargajual'],
+			'id_klinik' => [
+				'id_klinik' => $data_sql['id_klinik'],
+				'nama_klinik' => $data_sql['nama_klinik']
+			],		
+			'stok' => $data_sql['stok'],
+			'minimum_stok' => $data_sql['minimum_stok'],
+			'satuan' => [
+				'id_satuan' => $data_sql['id_satuan'],
+				'kode_satuan' => $data_sql['kode_satuan'],
+				'nama_satuan' => $data_sql['nama_satuan']
+			],
+			'disc_pr' => $data_sql['disc_pr'],
+		    'disc_rp' => $data_sql['disc_rp'],
+			'kategori' => [
+				'id_kategori' => $data_sql['id_kategori'],
+				'nama_kategori' => $data_sql['nama_kategori']
+			],
+			'subkategori' => [
+				'id_subkategori' => $data_sql['id_subkategori'],
+				'nama_subkategori' => $data_sql['nama_subkategori']
+			],
+			'status' => [
+				'id_status' => $data_sql['id_status'],
+				'status_barang' => $data_sql['status_barang']
+			],
+		    'tipe' => $data_sql['tipe']		
+		]];
+
+		//$data = http_build_query($data_array);
+		$postdata = json_encode($data_array);
+		print_r($postdata);
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_POST, true);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, $postdata);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+		$resp = curl_exec($curl);
+		if($e = curl_error($curl)){
+			echo $e;
+		} else {
+
+			// $decoded = json_decode($resp);
+			echo "Berhasil";
+		}
+		curl_close($curl);
+
+		//die();
 	}
 
 	// Row Updating event

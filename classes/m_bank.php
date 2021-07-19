@@ -821,10 +821,6 @@ class m_bank extends DbTable
 	function Recordset_Selecting(&$filter) {
 
 		// Enter your code here
-		$id_klinik = CurrentUserInfo("id_klinik");
-		if($id_klinik != '' OR $id_klinik != FALSE) {
-			$filter = "id_klinik = '".$id_klinik."'";
-		}
 	}
 
 	// Recordset Selected event
@@ -970,11 +966,6 @@ class m_bank extends DbTable
 		// To view properties of field class, use:
 		//var_dump($this-><FieldName>);
 
-		$id_klinik = CurrentUserInfo("id_klinik");
-		if($id_klinik != '' OR $id_klinik != FALSE){
-			$this->id_klinik->CurrentValue = $id_klinik ;
-			$this->id_klinik->ReadOnly = TRUE; 
-		}
 	}
 
 	// User ID Filtering event

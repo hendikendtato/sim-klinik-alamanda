@@ -1029,6 +1029,46 @@ class m_rekening extends DbTable
 	function Row_Inserted($rsold, &$rsnew) {
 
 		//echo "Row Inserted"
+		//API DATA KAS
+
+		$url = "http://172.16.0.2:8069/web/customer";
+		$data_sql = ExecuteRow("SELECT * FROM m_rekening
+								JOIN m_bank ON m_rekening.id_bank = m_bank.id_bank
+								JOIN m_klinik ON m_rekening.id_klinik = m_klinik.id_klinik WHERE m_rekening.id_rekening = '".$rsnew['id_rekening']."'");
+		$data_array = ['params' => [
+			'id_rekening' => $data_sql['id_rekening'],
+			'id_bank' => [
+				'id_bank' => $data_sql['id_bank'],
+				'nama_bank' => $data_sql['nama_bank']
+			],
+			'nama_rekening' => $data_sql['nama_rekening'],
+			'nomor_rekening' => $data_sql['nomor_rekening'],
+			'id_klinik' => [
+				'id_klinik' => $data_sql['id_klinik'],
+				'nama_klinik' => $data_sql['nama_klinik']
+			]
+		]];
+
+		//$data = http_build_query($data_array);
+		$postdata = json_encode($data_array);
+		print_r($postdata);
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_POST, true);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, $postdata);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+		$resp = curl_exec($curl);
+		if($e = curl_error($curl)){
+			echo $e;
+		} else {
+
+			// $decoded = json_decode($resp);
+			echo "Berhasil";
+		}
+		curl_close($curl);
+
+		//die();	
 	}
 
 	// Row Updating event
