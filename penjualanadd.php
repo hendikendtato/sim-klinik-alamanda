@@ -1040,7 +1040,7 @@ if (Config("DEBUG"))
 loadjs.ready("load", function() {
 
 	// Startup script
-	console.log("page loaded"),$("#btn-action").after('&nbsp;<button class="btn btn-info ew-btn" name="btn-action-cetak" id="btn-action-cetak" type="submit" style="height: 50px !important; width: 20% !important;">Cetak Nota</button>'),$("#btn-action").click(function(){$('input[name="x_status"][value="Printed"]').prop("checked",null),$('input[name="x_status"][value="Draft"]').prop("checked",!0)}),$("#btn-action-cetak").click(function(){$('input[name="x_status"][value="Printed"]').prop("checked",!0),$('input[name="x_status"][value="Draft"]').prop("checked",null)}),$(window).on("load",function(){$("#myModal").modal(),console.log("Mulai1")}),$(document).ajaxStop(function(){$("#myModal").modal("hide"),console.log("Selesai")}),$(document).ready(function(){$("form").submit(function(){$("#myModal").modal()})});
+	console.log("page loaded"),$("#btn-action").after('&nbsp;<button class="btn btn-info ew-btn" name="btn-action-cetak" id="btn-action-cetak" type="submit" style="height: 50px !important; width: 20% !important;">Cetak Nota</button>'),$("#btn-action").click(function(){$('input[name="x_status"][value="Draft"]').prop("checked",!0),$('input[name="x_status"][value="Printed"]').prop("checked",null)}),$("#btn-action-cetak").click(function(){$('input[name="x_status"][value="Printed"]').prop("checked",!0),$('input[name="x_status"][value="Draft"]').prop("checked",null)}),$(window).on("load",function(){$("#myModal").modal(),console.log("Mulai1")}),$(document).ajaxStop(function(){$("#myModal").modal("hide"),console.log("Selesai")}),$(document).ready(function(){$("form").submit(function(){$("#myModal").modal()})});
 });
 </script>
 <?php include_once "footer.php"; ?>

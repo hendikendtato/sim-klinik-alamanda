@@ -4137,6 +4137,13 @@ class penjualan_list extends penjualan
 		//$GLOBALS["xxx_grid"]->DetailEdit = (...condition...); // Set to TRUE or FALSE conditionally
 		//$GLOBALS["xxx_grid"]->DetailView = (...condition...); // Set to TRUE or FALSE conditionally
 
+		$status =  CurrentTable()->status->CurrentValue;
+		if($status == 'Printed'){
+			$this->ListOptions->Items["print"]->Body = "<a href='./struk_belanja.php?id=".CurrentTable()->id->CurrentValue."'><button type='button' class='btn btn-outline-info btn-sm'><i class='fas fa-receipt'></i> Struk</button></a>";	
+			$this->ListOptions->Items["edit"]->Visible = FALSE;
+		} else if($status == 'Draft'){
+			$this->ListOptions->Items["print"]->Body = "";		
+		}
 	}
 
 	// ListOptions Rendered event
@@ -4145,13 +4152,6 @@ class penjualan_list extends penjualan
 		// Example:
 		//$this->ListOptions["new"]->Body = "xxx";
 
-		$status =  CurrentTable()->status->CurrentValue;
-		if($status == 'Printed'){
-			$this->ListOptions->Items["print"]->Body = "<a href='./struk_belanja.php?id=".CurrentTable()->id->CurrentValue."'><button type='button' class='btn btn-outline-info btn-sm'><i class='fas fa-receipt'></i> Struk</button></a>";	
-			$this->ListOptions->Items["edit"]->Body = "";
-		} else if($status == 'Draft'){
-			$this->ListOptions->Items["print"]->Body = "";		
-		}
 	}
 
 	// Row Custom Action event

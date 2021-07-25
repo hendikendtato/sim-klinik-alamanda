@@ -205,9 +205,13 @@ Page_Rendering();
 				// $totalcabang = 0;
 				$count = 0;
 				$mso='"\@"';
+				$jumlah_total_masuk = 0;
+				$jumlah_total_keluar = 0;
 				foreach ($result as $rs) {
 					// $totalcabang += $rs['subtotal'];
-					$sum_jumlah = ExecuteScalar("SELECT SUM(jumlah) FROM detailmutasibank WHERE pid = ".$rs['id']."");
+					$sum_jumlah = ExecuteScalar("SELECT SUM(jumlah) FROM detailmutasibank WHERE pid = '".$rs['id']."'");
+					$jumlah_masuk = ExecuteScalar("SELECT SUM(jumlah) FROM detailmutasibank WHERE pid = '".$rs['id']."' AND tipe_mutasi LIKE '%Mutasi Kas Masuk%'");
+					$jumlah_keluar = ExecuteScalar("SELECT SUM(jumlah) FROM detailmutasibank WHERE pid = '".$rs['id']."' AND tipe_mutasi LIKE '%Mutasi Kas Keluar%'");
 					$count += 1;
 					echo "<tr id=".$rs["id"].">
 							<td>".$count.".</td>
@@ -260,24 +264,37 @@ Page_Rendering();
 							</div>
 						</td>
 					</tr>";
+					$jumlah_total_masuk += $jumlah_masuk;
+					$jumlah_total_keluar += $jumlah_keluar;
 				}
 			}			
 		?>
-		  <!-- <tr>
-				<td colspan="2" align="right"><b>Total per Cabang</b></td>
+		  <tr>
+				<td colspan="6" align="right"><b>Total Kas Masuk</b></td>
 				<td align="right">
 				<b>
-					<?php 
-					/*
-						if(isset($totalcabang)) {
-							echo rupiah($totalcabang);
+					<?php
+						if(isset($jumlah_total_masuk)) {
+							echo rupiah($jumlah_total_masuk);
 						}
-						$totalcabang = isset($totalcabang) ? $totalcabang : '0';
-					*/
+						$jumlah_total_masuk = isset($jumlah_total_masuk) ? $jumlah_total_masuk : '0';
 					?>
 				</b>
 				</td>
-		  </tr> -->
+		  </tr>
+		  <tr>
+				<td colspan="6" align="right"><b>Total Kas Keluar</b></td>
+				<td align="right">
+				<b>
+					<?php
+						if(isset($jumlah_total_keluar)) {
+							echo rupiah($jumlah_total_keluar);
+						}
+						$jumlah_total_keluar = isset($jumlah_total_keluar) ? $jumlah_total_keluar : '0';
+					?>
+				</b>
+				</td>
+		  </tr>
 		</tbody>
 	  </table>
 	<?php endif; ?>

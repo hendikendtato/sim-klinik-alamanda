@@ -1062,13 +1062,13 @@ loadjs.ready("load", function() {
 
 	$("#btn-action").after('&nbsp;<button class="btn btn-info ew-btn" name="btn-action-cetak" id="btn-action-cetak" type="submit" style="height: 50px !important; width: 20% !important;">Cetak Nota</button>');
 
-	//if click button printed
+	//if click button draft
 	$('#btn-action').click(function() {
-		$('input[name="x_status"][value="Printed"]').prop('checked', null);
 		$('input[name="x_status"][value="Draft"]').prop('checked', true);
+		$('input[name="x_status"][value="Printed"]').prop('checked', null);
 	});
 
-	//if click button cetak
+	//if click button printed
 	$('#btn-action-cetak').click(function() {
 		$('input[name="x_status"][value="Printed"]').prop('checked', true);
 		$('input[name="x_status"][value="Draft"]').prop('checked', null);

@@ -243,11 +243,13 @@ $API_ACTIONS["postActionKonsultasi"] = function(Request $request, Response &$res
 		//$cabang = Param("nama_klinik", Route(1));
 		//$nama_cabang = ExecuteScalar("SELECT nama_klinik FROM m_klinik WHERE nama_klinik = $cabang");
 
-		Execute("INSERT INTO antrian SET tanggal = '$date', nomor_antrian = '$nomor_antrian', selesai = 'belum', keperluan = 'Konsultasi', nama_klinik='$cabang'");
+		Execute("INSERT INTO antrian (tanggal, nomor_antrian, selesai, keperluan, nama_klinik) VALUES ('$date', '$nomor_antrian', 'belum', 'Konsultasi', '$cabang')");
 		$data['success'] = true;				
 	} catch (Exception $e) {
 		$data['success'] = false;
 	}
+	print_r($data);
+	exit();
 	WriteJson($data);
 };
 $API_ACTIONS["postActionPerawatan"] = function(Request $request, Response &$response) {
