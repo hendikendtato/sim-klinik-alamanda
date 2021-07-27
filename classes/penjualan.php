@@ -2711,7 +2711,7 @@ class penjualan extends DbTable
 							$subtotal_penjualan = $sql_dok_be_wajah->fields['subtotal'];
 
 							//$harga_jual = $sql_dok_be_wajah->fields['harga_jual'];
-							$qty_penjualan = $sql_sales->fields['qty'];
+							$qty_penjualan = $sql_dok_be_wajah->fields['qty'];
 							$subtotal_satuan = $subtotal_penjualan / $qty_penjualan;
 
 							//$KomisiPegawaiDokBeWajah = ExecuteScalar("SELECT nilai_komisi FROM m_pegawai WHERE id_pegawai='$dok_be_wajah'");

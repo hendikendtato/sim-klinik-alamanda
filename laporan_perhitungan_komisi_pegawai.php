@@ -127,11 +127,11 @@ Page_Rendering();
 						<select class="form-control product-select" name="Inputpegawai">
 							<option selected disabled>Select</option>
 							<?php
-							$sql = "SELECT * FROM m_pagawai";
+							$sql = "SELECT * FROM m_pegawai";
 							$res = ExecuteRows($sql);
 
 							foreach ($res as $rs) {
-								echo "<option value=" . $rs["id_pegawai"] . ">" . $rs["nama_pagawai"] . "</option>";
+								echo "<option value=" . $rs["id_pegawai"] . ">" . $rs["nama_pegawai"] . "</option>";
 							}
 							?>
 						</select>
