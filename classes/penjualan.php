@@ -3357,7 +3357,7 @@ class penjualan extends DbTable
 				Execute("UPDATE m_pelanggan SET tgl_terakhir_transaksi = '".$tgl_terakhir_transaksi."' WHERE id_pelanggan='".$id_pelanggan."'");
 
 				//API DATA TRANSAKSI
-				$url = "http://172.16.0.2:8069/web/transaksipenjualan";
+				$url = "http://172.16.0.2:8069/web/transaksi";
 					$data_sql = ExecuteRow("SELECT penjualan.*, m_pelanggan.id_pelanggan, m_pelanggan.nama_pelanggan, m_member.id AS id_member, m_jenis_member.nama_member, m_klinik.*, pg1.id_pegawai AS id_dokter, pg1.nama_pegawai AS nama_dokter, pg2.id_pegawai AS id_sales, pg2.nama_pegawai AS nama_sales, pg3.id_pegawai AS id_be_wajah, pg3.nama_pegawai AS nama_be_wajah, pg4.id_pegawai AS id_be_body, pg4.nama_pegawai AS nama_be_body, pg5.id_pegawai AS id_medis, pg5.nama_pegawai AS nama_medis, rekmeddokter.*, m_rekening.*, kartu.*, kartubank.id_kartu AS id_kartubank, kartubank.nama_kartu AS nama_kartubank, kartubank.id_bank AS id_bank_kartubank, kartubank.jenis AS jenis_kartubank, kartubank.charge_type AS type_kartubank, kartubank.charge_price AS price_kartubank, m_kas.id AS id_kas, m_kas.nama AS nama_kas FROM penjualan 
 											JOIN detailpenjualan ON penjualan.id = detailpenjualan.id_penjualan 
 											JOIN m_pelanggan ON penjualan.id_pelanggan = m_pelanggan.id_pelanggan 

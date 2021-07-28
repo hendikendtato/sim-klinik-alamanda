@@ -32,7 +32,6 @@ Page_Rendering();
 <?php include_once "header.php"; ?>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet" />
 <?php
-
 	function tgl_indo($tanggal){
 		$bulan = array (
 			1 =>   'Januari',
@@ -57,14 +56,16 @@ Page_Rendering();
 	}
 	
   if(isset($_POST['srhDate'])){
-	$cabang = $_POST['cabang'];
 	$multi_cabang = "";
 	$and = "";
  	$nama_cabang = "";
-	
-	foreach($cabang AS $in_cabang) {
-	$multi_cabang .= "id_klinik = '" .$in_cabang. "' OR ";
-	$nama_cabang .= "id_klinik = '" .$in_cabang. "' OR ";
+	 
+	 if(isset($_POST['cabang'])){
+		$cabang = $_POST['cabang'];
+		foreach($cabang AS $in_cabang) {
+			$multi_cabang .= "id_klinik = '" .$in_cabang. "' OR ";
+			$nama_cabang .= "id_klinik = '" .$in_cabang. "' OR ";
+		}
 	}
 
 	if (isset($_POST['Inputpegawai'])) {
@@ -76,11 +77,12 @@ Page_Rendering();
 		$jabatan = $_POST['Inputjabatan'];
 		$and .= "AND jabatan_pegawai = '$jabatan' ";
 	}	
-
-	
 	if($multi_cabang){
 		$multi_cabang = substr($multi_cabang, 0, -4);
 		$query = "SELECT * FROM m_pegawai WHERE ($multi_cabang) $and";
+		$result = ExecuteRows($query);
+	} else {
+		$query = "SELECT * FROM m_pegawai WHERE 1=1 {$and}";
 		$result = ExecuteRows($query);
 	}
   }
