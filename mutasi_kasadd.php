@@ -62,7 +62,7 @@ loadjs.ready("head", function() {
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $mutasi_kas_add->tgl->caption(), $mutasi_kas_add->tgl->RequiredErrorMessage)) ?>");
 			<?php } ?>
 				elm = this.getElements("x" + infix + "_tgl");
-				if (elm && !ew.checkDateDef(elm.value))
+				if (elm && !ew.checkEuroDate(elm.value))
 					return this.onError(elm, "<?php echo JsEncode($mutasi_kas_add->tgl->errorMessage()) ?>");
 			<?php if ($mutasi_kas_add->id_klinik->Required) { ?>
 				elm = this.getElements("x" + infix + "_id_klinik");
@@ -152,11 +152,11 @@ $mutasi_kas_add->showMessage();
 		<label id="elh_mutasi_kas_tgl" for="x_tgl" class="<?php echo $mutasi_kas_add->LeftColumnClass ?>"><?php echo $mutasi_kas_add->tgl->caption() ?><?php echo $mutasi_kas_add->tgl->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $mutasi_kas_add->RightColumnClass ?>"><div <?php echo $mutasi_kas_add->tgl->cellAttributes() ?>>
 <span id="el_mutasi_kas_tgl">
-<input type="text" data-table="mutasi_kas" data-field="x_tgl" name="x_tgl" id="x_tgl" maxlength="10" placeholder="<?php echo HtmlEncode($mutasi_kas_add->tgl->getPlaceHolder()) ?>" value="<?php echo $mutasi_kas_add->tgl->EditValue ?>"<?php echo $mutasi_kas_add->tgl->editAttributes() ?>>
+<input type="text" data-table="mutasi_kas" data-field="x_tgl" data-format="7" name="x_tgl" id="x_tgl" maxlength="10" placeholder="<?php echo HtmlEncode($mutasi_kas_add->tgl->getPlaceHolder()) ?>" value="<?php echo $mutasi_kas_add->tgl->EditValue ?>"<?php echo $mutasi_kas_add->tgl->editAttributes() ?>>
 <?php if (!$mutasi_kas_add->tgl->ReadOnly && !$mutasi_kas_add->tgl->Disabled && !isset($mutasi_kas_add->tgl->EditAttrs["readonly"]) && !isset($mutasi_kas_add->tgl->EditAttrs["disabled"])) { ?>
 <script>
 loadjs.ready(["fmutasi_kasadd", "datetimepicker"], function() {
-	ew.createDateTimePicker("fmutasi_kasadd", "x_tgl", {"ignoreReadonly":true,"useCurrent":false,"format":0});
+	ew.createDateTimePicker("fmutasi_kasadd", "x_tgl", {"ignoreReadonly":true,"useCurrent":false,"format":7});
 });
 </script>
 <?php } ?>

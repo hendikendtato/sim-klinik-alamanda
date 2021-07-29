@@ -879,7 +879,7 @@ class mutasi_kas_edit extends mutasi_kas
 				$this->tgl->Visible = FALSE; // Disable update for API request
 			else
 				$this->tgl->setFormValue($val);
-			$this->tgl->CurrentValue = UnFormatDateTime($this->tgl->CurrentValue, 0);
+			$this->tgl->CurrentValue = UnFormatDateTime($this->tgl->CurrentValue, 7);
 		}
 
 		// Check field name 'id_klinik' first before field var 'x_id_klinik'
@@ -934,7 +934,7 @@ class mutasi_kas_edit extends mutasi_kas
 		global $CurrentForm;
 		$this->id->CurrentValue = $this->id->FormValue;
 		$this->tgl->CurrentValue = $this->tgl->FormValue;
-		$this->tgl->CurrentValue = UnFormatDateTime($this->tgl->CurrentValue, 0);
+		$this->tgl->CurrentValue = UnFormatDateTime($this->tgl->CurrentValue, 7);
 		$this->id_klinik->CurrentValue = $this->id_klinik->FormValue;
 		$this->id_kas->CurrentValue = $this->id_kas->FormValue;
 		$this->tipe->CurrentValue = $this->tipe->FormValue;
@@ -1057,7 +1057,7 @@ class mutasi_kas_edit extends mutasi_kas
 
 			// tgl
 			$this->tgl->ViewValue = $this->tgl->CurrentValue;
-			$this->tgl->ViewValue = FormatDateTime($this->tgl->ViewValue, 0);
+			$this->tgl->ViewValue = FormatDateTime($this->tgl->ViewValue, 7);
 			$this->tgl->ViewCustomAttributes = "";
 
 			// id_klinik
@@ -1187,7 +1187,7 @@ class mutasi_kas_edit extends mutasi_kas
 			// tgl
 			$this->tgl->EditAttrs["class"] = "form-control";
 			$this->tgl->EditCustomAttributes = "";
-			$this->tgl->EditValue = HtmlEncode(FormatDateTime($this->tgl->CurrentValue, 8));
+			$this->tgl->EditValue = HtmlEncode(FormatDateTime($this->tgl->CurrentValue, 7));
 			$this->tgl->PlaceHolder = RemoveHtml($this->tgl->caption());
 
 			// id_klinik
@@ -1337,7 +1337,7 @@ class mutasi_kas_edit extends mutasi_kas
 				AddMessage($FormError, str_replace("%s", $this->tgl->caption(), $this->tgl->RequiredErrorMessage));
 			}
 		}
-		if (!CheckDate($this->tgl->FormValue)) {
+		if (!CheckEuroDate($this->tgl->FormValue)) {
 			AddMessage($FormError, $this->tgl->errorMessage());
 		}
 		if ($this->id_klinik->Required) {
@@ -1415,7 +1415,7 @@ class mutasi_kas_edit extends mutasi_kas
 			$rsnew = [];
 
 			// tgl
-			$this->tgl->setDbValueDef($rsnew, UnFormatDateTime($this->tgl->CurrentValue, 0), CurrentDate(), $this->tgl->ReadOnly);
+			$this->tgl->setDbValueDef($rsnew, UnFormatDateTime($this->tgl->CurrentValue, 7), CurrentDate(), $this->tgl->ReadOnly);
 
 			// id_klinik
 			$this->id_klinik->setDbValueDef($rsnew, $this->id_klinik->CurrentValue, NULL, $this->id_klinik->ReadOnly);

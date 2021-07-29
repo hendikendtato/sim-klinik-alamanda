@@ -788,7 +788,7 @@ class mutasi_kas_delete extends mutasi_kas
 
 			// tgl
 			$this->tgl->ViewValue = $this->tgl->CurrentValue;
-			$this->tgl->ViewValue = FormatDateTime($this->tgl->ViewValue, 0);
+			$this->tgl->ViewValue = FormatDateTime($this->tgl->ViewValue, 7);
 			$this->tgl->ViewCustomAttributes = "";
 
 			// id_klinik

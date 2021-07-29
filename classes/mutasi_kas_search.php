@@ -861,7 +861,7 @@ class mutasi_kas_search extends mutasi_kas
 
 			// tgl
 			$this->tgl->ViewValue = $this->tgl->CurrentValue;
-			$this->tgl->ViewValue = FormatDateTime($this->tgl->ViewValue, 0);
+			$this->tgl->ViewValue = FormatDateTime($this->tgl->ViewValue, 7);
 			$this->tgl->ViewCustomAttributes = "";
 
 			// id_klinik
@@ -980,11 +980,11 @@ class mutasi_kas_search extends mutasi_kas
 			// tgl
 			$this->tgl->EditAttrs["class"] = "form-control";
 			$this->tgl->EditCustomAttributes = "";
-			$this->tgl->EditValue = HtmlEncode(FormatDateTime(UnFormatDateTime($this->tgl->AdvancedSearch->SearchValue, 0), 8));
+			$this->tgl->EditValue = HtmlEncode(FormatDateTime(UnFormatDateTime($this->tgl->AdvancedSearch->SearchValue, 7), 7));
 			$this->tgl->PlaceHolder = RemoveHtml($this->tgl->caption());
 			$this->tgl->EditAttrs["class"] = "form-control";
 			$this->tgl->EditCustomAttributes = "";
-			$this->tgl->EditValue2 = HtmlEncode(FormatDateTime(UnFormatDateTime($this->tgl->AdvancedSearch->SearchValue2, 0), 8));
+			$this->tgl->EditValue2 = HtmlEncode(FormatDateTime(UnFormatDateTime($this->tgl->AdvancedSearch->SearchValue2, 7), 7));
 			$this->tgl->PlaceHolder = RemoveHtml($this->tgl->caption());
 
 			// id_klinik
@@ -1094,10 +1094,10 @@ class mutasi_kas_search extends mutasi_kas
 		// Check if validation required
 		if (!Config("SERVER_VALIDATE"))
 			return TRUE;
-		if (!CheckDate($this->tgl->AdvancedSearch->SearchValue)) {
+		if (!CheckEuroDate($this->tgl->AdvancedSearch->SearchValue)) {
 			AddMessage($SearchError, $this->tgl->errorMessage());
 		}
-		if (!CheckDate($this->tgl->AdvancedSearch->SearchValue2)) {
+		if (!CheckEuroDate($this->tgl->AdvancedSearch->SearchValue2)) {
 			AddMessage($SearchError, $this->tgl->errorMessage());
 		}
 

@@ -67,7 +67,7 @@ loadjs.ready("head", function() {
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $mutasi_kas_edit->tgl->caption(), $mutasi_kas_edit->tgl->RequiredErrorMessage)) ?>");
 			<?php } ?>
 				elm = this.getElements("x" + infix + "_tgl");
-				if (elm && !ew.checkDateDef(elm.value))
+				if (elm && !ew.checkEuroDate(elm.value))
 					return this.onError(elm, "<?php echo JsEncode($mutasi_kas_edit->tgl->errorMessage()) ?>");
 			<?php if ($mutasi_kas_edit->id_klinik->Required) { ?>
 				elm = this.getElements("x" + infix + "_id_klinik");
@@ -168,11 +168,11 @@ $mutasi_kas_edit->showMessage();
 		<label id="elh_mutasi_kas_tgl" for="x_tgl" class="<?php echo $mutasi_kas_edit->LeftColumnClass ?>"><?php echo $mutasi_kas_edit->tgl->caption() ?><?php echo $mutasi_kas_edit->tgl->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $mutasi_kas_edit->RightColumnClass ?>"><div <?php echo $mutasi_kas_edit->tgl->cellAttributes() ?>>
 <span id="el_mutasi_kas_tgl">
-<input type="text" data-table="mutasi_kas" data-field="x_tgl" name="x_tgl" id="x_tgl" maxlength="10" placeholder="<?php echo HtmlEncode($mutasi_kas_edit->tgl->getPlaceHolder()) ?>" value="<?php echo $mutasi_kas_edit->tgl->EditValue ?>"<?php echo $mutasi_kas_edit->tgl->editAttributes() ?>>
+<input type="text" data-table="mutasi_kas" data-field="x_tgl" data-format="7" name="x_tgl" id="x_tgl" maxlength="10" placeholder="<?php echo HtmlEncode($mutasi_kas_edit->tgl->getPlaceHolder()) ?>" value="<?php echo $mutasi_kas_edit->tgl->EditValue ?>"<?php echo $mutasi_kas_edit->tgl->editAttributes() ?>>
 <?php if (!$mutasi_kas_edit->tgl->ReadOnly && !$mutasi_kas_edit->tgl->Disabled && !isset($mutasi_kas_edit->tgl->EditAttrs["readonly"]) && !isset($mutasi_kas_edit->tgl->EditAttrs["disabled"])) { ?>
 <script>
 loadjs.ready(["fmutasi_kasedit", "datetimepicker"], function() {
-	ew.createDateTimePicker("fmutasi_kasedit", "x_tgl", {"ignoreReadonly":true,"useCurrent":false,"format":0});
+	ew.createDateTimePicker("fmutasi_kasedit", "x_tgl", {"ignoreReadonly":true,"useCurrent":false,"format":7});
 });
 </script>
 <?php } ?>

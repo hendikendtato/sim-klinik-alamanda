@@ -52,7 +52,7 @@ loadjs.ready("head", function() {
 		fobj = fobj || this._form;
 		var infix = "";
 		elm = this.getElements("x" + infix + "_tgl");
-		if (elm && !ew.checkDateDef(elm.value))
+		if (elm && !ew.checkEuroDate(elm.value))
 			return this.onError(elm, "<?php echo JsEncode($mutasi_kas_search->tgl->errorMessage()) ?>");
 
 		// Call Form_CustomValidate event
@@ -113,22 +113,22 @@ $mutasi_kas_search->showMessage();
 		</label>
 		<div class="<?php echo $mutasi_kas_search->RightColumnClass ?>"><div <?php echo $mutasi_kas_search->tgl->cellAttributes() ?>>
 			<span id="el_mutasi_kas_tgl" class="ew-search-field">
-<input type="text" data-table="mutasi_kas" data-field="x_tgl" name="x_tgl" id="x_tgl" maxlength="10" placeholder="<?php echo HtmlEncode($mutasi_kas_search->tgl->getPlaceHolder()) ?>" value="<?php echo $mutasi_kas_search->tgl->EditValue ?>"<?php echo $mutasi_kas_search->tgl->editAttributes() ?>>
+<input type="text" data-table="mutasi_kas" data-field="x_tgl" data-format="7" name="x_tgl" id="x_tgl" maxlength="10" placeholder="<?php echo HtmlEncode($mutasi_kas_search->tgl->getPlaceHolder()) ?>" value="<?php echo $mutasi_kas_search->tgl->EditValue ?>"<?php echo $mutasi_kas_search->tgl->editAttributes() ?>>
 <?php if (!$mutasi_kas_search->tgl->ReadOnly && !$mutasi_kas_search->tgl->Disabled && !isset($mutasi_kas_search->tgl->EditAttrs["readonly"]) && !isset($mutasi_kas_search->tgl->EditAttrs["disabled"])) { ?>
 <script>
 loadjs.ready(["fmutasi_kassearch", "datetimepicker"], function() {
-	ew.createDateTimePicker("fmutasi_kassearch", "x_tgl", {"ignoreReadonly":true,"useCurrent":false,"format":0});
+	ew.createDateTimePicker("fmutasi_kassearch", "x_tgl", {"ignoreReadonly":true,"useCurrent":false,"format":7});
 });
 </script>
 <?php } ?>
 </span>
 			<span class="ew-search-and"><label><?php echo $Language->phrase("AND") ?></label></span>
 			<span id="el2_mutasi_kas_tgl" class="ew-search-field2">
-<input type="text" data-table="mutasi_kas" data-field="x_tgl" name="y_tgl" id="y_tgl" maxlength="10" placeholder="<?php echo HtmlEncode($mutasi_kas_search->tgl->getPlaceHolder()) ?>" value="<?php echo $mutasi_kas_search->tgl->EditValue2 ?>"<?php echo $mutasi_kas_search->tgl->editAttributes() ?>>
+<input type="text" data-table="mutasi_kas" data-field="x_tgl" data-format="7" name="y_tgl" id="y_tgl" maxlength="10" placeholder="<?php echo HtmlEncode($mutasi_kas_search->tgl->getPlaceHolder()) ?>" value="<?php echo $mutasi_kas_search->tgl->EditValue2 ?>"<?php echo $mutasi_kas_search->tgl->editAttributes() ?>>
 <?php if (!$mutasi_kas_search->tgl->ReadOnly && !$mutasi_kas_search->tgl->Disabled && !isset($mutasi_kas_search->tgl->EditAttrs["readonly"]) && !isset($mutasi_kas_search->tgl->EditAttrs["disabled"])) { ?>
 <script>
 loadjs.ready(["fmutasi_kassearch", "datetimepicker"], function() {
-	ew.createDateTimePicker("fmutasi_kassearch", "y_tgl", {"ignoreReadonly":true,"useCurrent":false,"format":0});
+	ew.createDateTimePicker("fmutasi_kassearch", "y_tgl", {"ignoreReadonly":true,"useCurrent":false,"format":7});
 });
 </script>
 <?php } ?>

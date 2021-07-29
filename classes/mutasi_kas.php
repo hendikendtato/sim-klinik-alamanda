@@ -82,11 +82,11 @@ class mutasi_kas extends DbTable
 		$this->fields['no_bukti'] = &$this->no_bukti;
 
 		// tgl
-		$this->tgl = new DbField('mutasi_kas', 'mutasi_kas', 'x_tgl', 'tgl', '`tgl`', CastDateFieldForLike("`tgl`", 0, "DB"), 133, 10, 0, FALSE, '`tgl`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->tgl = new DbField('mutasi_kas', 'mutasi_kas', 'x_tgl', 'tgl', '`tgl`', CastDateFieldForLike("`tgl`", 7, "DB"), 133, 10, 7, FALSE, '`tgl`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->tgl->Nullable = FALSE; // NOT NULL field
 		$this->tgl->Required = TRUE; // Required field
 		$this->tgl->Sortable = TRUE; // Allow sort
-		$this->tgl->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_FORMAT"], $Language->phrase("IncorrectDate"));
+		$this->tgl->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_SEPARATOR"], $Language->phrase("IncorrectDateDMY"));
 		$this->fields['tgl'] = &$this->tgl;
 
 		// id_klinik
@@ -796,7 +796,7 @@ class mutasi_kas extends DbTable
 
 		// tgl
 		$this->tgl->ViewValue = $this->tgl->CurrentValue;
-		$this->tgl->ViewValue = FormatDateTime($this->tgl->ViewValue, 0);
+		$this->tgl->ViewValue = FormatDateTime($this->tgl->ViewValue, 7);
 		$this->tgl->ViewCustomAttributes = "";
 
 		// id_klinik
@@ -953,7 +953,7 @@ class mutasi_kas extends DbTable
 		// tgl
 		$this->tgl->EditAttrs["class"] = "form-control";
 		$this->tgl->EditCustomAttributes = "";
-		$this->tgl->EditValue = FormatDateTime($this->tgl->CurrentValue, 8);
+		$this->tgl->EditValue = FormatDateTime($this->tgl->CurrentValue, 7);
 		$this->tgl->PlaceHolder = RemoveHtml($this->tgl->caption());
 
 		// id_klinik
