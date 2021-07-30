@@ -106,21 +106,21 @@ class detailpenjualan extends DbTable
 		// id_barang
 		$this->id_barang = new DbField('detailpenjualan', 'detailpenjualan', 'x_id_barang', 'id_barang', '`id_barang`', '`id_barang`', 3, 11, -1, FALSE, '`id_barang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->id_barang->Sortable = TRUE; // Allow sort
-		$this->id_barang->Lookup = new Lookup('id_barang', 'view_hargajual', FALSE, 'id', ["id","","",""], [], [], [], [], ["totalhargajual","stok","disc_pr","disc_rp"], ["x_harga_jual","x_stok","x_disc_pr","x_disc_rp"], '', '');
+		$this->id_barang->Lookup = new Lookup('id_barang', 'view_hargajual', FALSE, 'id', ["id","","",""], ["penjualan x_id_klinik"], [], ["id_klinik"], ["x_id_klinik"], ["totalhargajual","stok","disc_pr","disc_rp"], ["x_harga_jual","x_stok","x_disc_pr","x_disc_rp"], '', '');
 		$this->id_barang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id_barang'] = &$this->id_barang;
 
 		// kode_barang
 		$this->kode_barang = new DbField('detailpenjualan', 'detailpenjualan', 'x_kode_barang', 'kode_barang', '`kode_barang`', '`kode_barang`', 3, 11, -1, FALSE, '`kode_barang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->kode_barang->Sortable = TRUE; // Allow sort
-		$this->kode_barang->Lookup = new Lookup('kode_barang', 'view_hargajual', FALSE, 'id', ["kode_barang","","",""], [], [], [], [], ["id","id_barang"], ["x_id_barang","x_nama_barang"], '', '');
+		$this->kode_barang->Lookup = new Lookup('kode_barang', 'view_hargajual', FALSE, 'id', ["kode_barang","","",""], ["penjualan x_id_klinik"], [], ["id_klinik"], ["x_id_klinik"], ["id","id_barang"], ["x_id_barang","x_nama_barang"], '', '');
 		$this->kode_barang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['kode_barang'] = &$this->kode_barang;
 
 		// nama_barang
 		$this->nama_barang = new DbField('detailpenjualan', 'detailpenjualan', 'x_nama_barang', 'nama_barang', '`nama_barang`', '`nama_barang`', 3, 255, -1, FALSE, '`nama_barang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->nama_barang->Sortable = TRUE; // Allow sort
-		$this->nama_barang->Lookup = new Lookup('nama_barang', 'view_hargajual', FALSE, 'id', ["nama_barang","","",""], [], [], [], [], ["id"], ["x_id_barang"], '', '');
+		$this->nama_barang->Lookup = new Lookup('nama_barang', 'view_hargajual', FALSE, 'id', ["nama_barang","","",""], ["penjualan x_id_klinik"], [], ["id_klinik"], ["x_id_klinik"], ["id"], ["x_id_barang"], '', '');
 		$this->nama_barang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['nama_barang'] = &$this->nama_barang;
 

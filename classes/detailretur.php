@@ -82,7 +82,7 @@ class detailretur extends DbTable
 		// id_barang
 		$this->id_barang = new DbField('detailretur', 'detailretur', 'x_id_barang', 'id_barang', '`id_barang`', '`id_barang`', 3, 11, -1, FALSE, '`id_barang`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->id_barang->Sortable = TRUE; // Allow sort
-		$this->id_barang->Lookup = new Lookup('id_barang', 'view_hargajual', FALSE, 'id', ["nama_barang","","",""], [], [], [], [], ["satuan"], ["x_id_satuan"], '', '');
+		$this->id_barang->Lookup = new Lookup('id_barang', 'view_hargajual', FALSE, 'id', ["nama_barang","","",""], ["returbarang x_id_klinik"], [], ["id_klinik"], ["x_id_klinik"], ["satuan"], ["x_id_satuan"], '', '');
 		$this->id_barang->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id_barang'] = &$this->id_barang;
 

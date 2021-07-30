@@ -206,7 +206,7 @@ class penjualan extends DbTable
 		$this->id_klinik->Sortable = TRUE; // Allow sort
 		$this->id_klinik->UsePleaseSelect = TRUE; // Use PleaseSelect by default
 		$this->id_klinik->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->id_klinik->Lookup = new Lookup('id_klinik', 'm_klinik', FALSE, 'id_klinik', ["nama_klinik","","",""], [], ["x_id_bank","x_id_kas","view_rm_pasien x_id_barang"], [], [], [], [], '', '');
+		$this->id_klinik->Lookup = new Lookup('id_klinik', 'm_klinik', FALSE, 'id_klinik', ["nama_klinik","","",""], [], ["detailpenjualan x_id_barang","detailpenjualan x_kode_barang","detailpenjualan x_nama_barang","x_id_bank","x_id_kas","view_rm_pasien x_id_barang"], [], [], [], [], '', '');
 		$this->id_klinik->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id_klinik'] = &$this->id_klinik;
 
