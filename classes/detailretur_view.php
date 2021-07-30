@@ -803,6 +803,7 @@ class detailretur_view extends detailretur
 		$this->createToken();
 
 		// Set up lookup cache
+		$this->setupLookupOptions($this->id_barang);
 		$this->setupLookupOptions($this->id_satuan);
 
 		// Check permission
@@ -1050,7 +1051,25 @@ class detailretur_view extends detailretur
 
 			// id_barang
 			$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
-			$this->id_barang->ViewValue = FormatNumber($this->id_barang->ViewValue, 0, -2, -2, -2);
+			$curVal = strval($this->id_barang->CurrentValue);
+			if ($curVal != "") {
+				$this->id_barang->ViewValue = $this->id_barang->lookupCacheOption($curVal);
+				if ($this->id_barang->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->id_barang->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->id_barang->ViewValue = $this->id_barang->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->id_barang->ViewValue = $this->id_barang->CurrentValue;
+					}
+				}
+			} else {
+				$this->id_barang->ViewValue = NULL;
+			}
 			$this->id_barang->ViewCustomAttributes = "";
 
 			// jumlah
@@ -1391,6 +1410,8 @@ class detailretur_view extends detailretur
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
+				case "x_id_barang":
+					break;
 				case "x_id_satuan":
 					break;
 				default:
@@ -1413,6 +1434,8 @@ class detailretur_view extends detailretur
 
 					// Format the field values
 					switch ($fld->FieldVar) {
+						case "x_id_barang":
+							break;
 						case "x_id_satuan":
 							break;
 					}
