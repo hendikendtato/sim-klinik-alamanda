@@ -78,7 +78,7 @@ class nonjual extends DbTable
 		$this->id_klinik->Sortable = TRUE; // Allow sort
 		$this->id_klinik->UsePleaseSelect = TRUE; // Use PleaseSelect by default
 		$this->id_klinik->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->id_klinik->Lookup = new Lookup('id_klinik', 'm_klinik', FALSE, 'id_klinik', ["nama_klinik","","",""], [], ["detail_nonjual x_stok"], [], [], [], [], '', '');
+		$this->id_klinik->Lookup = new Lookup('id_klinik', 'm_klinik', FALSE, 'id_klinik', ["nama_klinik","","",""], [], ["detail_nonjual x_id_barang","detail_nonjual x_stok"], [], [], [], [], '', '');
 		$this->id_klinik->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id_klinik'] = &$this->id_klinik;
 
