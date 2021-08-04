@@ -68,6 +68,7 @@ Page_Rendering();
 		$tahun = $explode[0];
 
 		$result = ExecuteRow("SELECT * FROM m_target_omset_cabang JOIN m_klinik ON m_klinik.id_klinik = m_target_omset_cabang.id_cabang WHERE MONTH(m_target_omset_cabang.tgl_awal) = '$bulan' AND YEAR(m_target_omset_cabang.tgl_awal) = '$tahun' AND m_target_omset_cabang.id_cabang='$cabang'");
+		$nama_klinik = ExecuteScalar("SELECT nama_klinik FROM m_klinik WHERE id_klinik='$cabang'");
 	}
 
 ?>
@@ -134,27 +135,33 @@ Page_Rendering();
 			<table class="table table-hover table-bordered" id="printTable">
 				<thead>
 					<tr>
-						<td colspan="2" style="text-align: center;">
+						<td colspan="6" style="text-align: center;">
 							<div class="col">
 								<h4>Laporan Target Omset per Cabang</h4>
 							</div>
 						</td>
 					</tr>
 					<tr>
-						<td colspan="2">
+						<td colspan="6">
 							<div class="col">
-								<h5>Cabang : <?php echo $result['nama_klinik']; ?></h5>
+								<h5>Cabang : <?php echo $nama_klinik; ?></h5>
 							</div>
 						</td>
 					</tr>
 					<tr>
-						<td colspan="2">
+						<td colspan="6">
 							<div class="col">
 								<h5>Periode : <?php echo tgl_indo($periode); ?></h5>
 							</div>
 						</td>
 					</tr>
 					<tr style="background-color:#b7d8dc;">
+						<td></td>
+						<td></td>
+						<td>Aktual</td>
+						<td>Pencapaian</td>
+						<td>Prosentase</td>
+						<td>Rank</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -166,9 +173,91 @@ Page_Rendering();
 						</td>
 						<td style="text-align: right; mso-number-format:\@">
 							<div class="col">
-								<h5><?php echo rupiah($result['target']); ?></h5>
+								<h5>
+								<?php
+									if(is_null($result) || $result == false){
+										echo "0";
+									} else {
+										echo rupiah($result['target']); 
+									}
+								?>
+								</h5>
 							</div>
 						</td>
+						<td rowspan="3" class="text-center" style="text-align: right; mso-number-format:\@">
+							<div class="col">
+								<h5>
+									<?php 
+										if(is_null($aktual) || $aktual == false) {
+											echo "0";
+										}else {
+											echo rupiah($aktual);	
+										}
+									?>
+								</h5>
+							</div>
+						</td>
+						<td style="text-align: right; mso-number-format:\@">
+							<div class="col">
+								<h5>
+									<?php 
+										if(is_null($result) || $result == false){
+											echo "0";
+										} else {
+											$pencapaian = $aktual - $result['target'];
+
+											if($pencapaian <= 0) {
+												echo "<p style='color:red;'>".rupiah($pencapaian)."</p>";
+											} else {
+												echo "<p style='color:green;'>".rupiah($pencapaian)."</p>";
+											}
+										}
+									?>
+								</h5>
+							</div>
+						</td>
+						<td style="text-align: right;">
+							<div class="col">
+								<h5>
+									<?php
+										if(is_null($result) || $result == false){
+											echo "0%";
+										} else {										
+											if($aktual >= $result['target']){
+												$prosentase = ($aktual - $result['target']) / $result['target'] * 100 + 100;
+												if($prosentase <= 0){
+													echo "<p style='color:red;'>".number_format($prosentase, 2)."%</p>";
+												} else {
+													echo "<p style='color:green;'>".number_format($prosentase, 2)."%</p>";
+												}
+												// echo round(($aktual - $result['target']) / $result['target'] * 100); 
+											} else {
+												$prosentase = ($aktual - $result['target']) / $result['target'] * 100;
+												if($prosentase <= 0){
+													echo "<p style='color:red;'>".number_format($prosentase, 2)."%</p>";
+												} else {
+													echo "<p style='color:green;'>".number_format($prosentase, 2)."%</p>";
+												}
+												// echo round(($aktual - $result['target']) / $result['target'] * 100); 
+											}
+										}
+									?>
+								</h5>
+							</div>
+						</td>
+						<td rowspan="3" class="text-center">
+							<?php
+								if($aktual != false AND $result != false){
+									if(($aktual >= $result['aset']) AND ($aktual <= $result['baseline'])){
+										echo "Aset";
+									} else if(($aktual >= $result['baseline']) AND ($aktual <= $result['target'])){
+										echo "Baseline";
+									} else if(($aktual >= $result['target'])){
+										echo "Target";
+									}
+								}
+							?>
+						</td>																		
 					</tr>
 					<tr>
 						<td>
@@ -178,9 +267,77 @@ Page_Rendering();
 						</td>
 						<td style="text-align: right; mso-number-format:\@">
 							<div class="col">
-								<h5><?php echo rupiah($result['baseline']); ?></h5>
+								<h5>
+									<?php 
+										if(is_null($result) || $result == false){
+											echo "0";
+										} else {
+											echo rupiah($result['baseline']); 
+										}
+									?>
+								</h5>
 							</div>
 						</td>
+						<!-- <td style="text-align: right; mso-number-format:\@">
+							<div class="col">
+								<h5>
+									<?php 
+										if(is_null($aktual) || $aktual == false) {
+											echo "0";
+										}else {
+											echo rupiah($aktual);	
+										}
+									?>
+								</h5>
+							</div>
+						</td> -->
+						<td style="text-align: right; mso-number-format:\@">
+							<div class="col">
+								<h5>
+									<?php 
+										if(is_null($result) || $result == false){
+											echo "0";
+										} else{
+											$pencapaian_baseline = $aktual - $result['baseline'];
+											if($pencapaian_baseline <= 0) {
+												echo "<p style='color:red;'>".rupiah($pencapaian_baseline)."</p>";
+											} else {
+												echo "<p>".rupiah($pencapaian_baseline)."</p>";
+											}
+										}
+									?>
+								</h5>
+							</div>
+						</td>
+						<td style="text-align: right;">
+							<div class="col">
+								<h5>
+									<?php
+										if(is_null($result) || $result == false){
+											echo "0%";
+										}else {
+											if($aktual >= $result['baseline']){
+												$prosentase_baseline = ($aktual - $result['baseline']) / $result['baseline'] * 100 + 100;
+												if($prosentase_baseline <= 0){
+													echo "<p style='color:red;'>".number_format($prosentase_baseline, 2)."%</p>";
+												} else {
+													echo "<p>".number_format($prosentase_baseline, 2)."%</p>";
+												}
+												// echo round(($aktual - $result['target']) / $result['target'] * 100); 
+											} else {
+												$prosentase_baseline = ($aktual - $result['baseline']) / $result['baseline'] * 100;
+												if($prosentase_baseline <= 0){
+													echo "<p style='color:red;'>".number_format($prosentase_baseline, 2)."%</p>";
+												} else {
+													echo "<p>".number_format($prosentase_baseline, 2)."%</p>";
+												}
+												// echo round(($aktual - $result['target']) / $result['target'] * 100); 
+											}
+										}
+									?>
+								</h5>
+							</div>
+						</td>																			
 					</tr>
 					<tr>
 						<td>
@@ -190,65 +347,77 @@ Page_Rendering();
 						</td>
 						<td style="text-align: right; mso-number-format:\@">
 							<div class="col">
-								<h5><?php echo rupiah($result['aset']); ?></h5>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div class="col">
-								<h5>Aktual</h5>
-							</div>
-						</td>
-						<td style="text-align: right; mso-number-format:\@">
-							<div class="col">
-								<h5><?php echo rupiah($aktual); ?></h5>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div class="col">
-								<h5>Pencapaian</h5>
-							</div>
-						</td>
-						<td style="text-align: right; mso-number-format:\@">
-							<div class="col">
 								<h5>
-									<?php 
-										$pencapaian = $aktual - $result['target'];
-
-										if($pencapaian <= 0) {
-											echo "<p style='color:red;'>".rupiah($pencapaian)."</p>";
+									<?php
+										if(is_null($result) || $result == false ){
+											echo "0";
 										} else {
-											echo "<p>".rupiah($pencapaian)."</p>";
+											echo rupiah($result['aset']); 
 										}
 									?>
 								</h5>
 							</div>
 						</td>
-					</tr>
-					<tr>
-						<td>
+						<!-- <td style="text-align: right; mso-number-format:\@">
 							<div class="col">
-								<h5>Prosentase</h5>
+								<h5>
+									<?php 
+										if(is_null($aktual) || $aktual == false) {
+											echo "0";
+										}else {
+											echo rupiah($aktual);	
+										}
+									?>
+								</h5>
+							</div>
+						</td> -->
+						<td style="text-align: right; mso-number-format:\@">
+							<div class="col">
+								<h5>
+									<?php
+										if(is_null($result) || $result == false){
+											echo "0";
+										} else {
+											$pencapaian_aset = $aktual - $result['aset'];
+											if($pencapaian_aset <= 0) {
+												echo "<p style='color:red;'>".rupiah($pencapaian_aset)."</p>";
+											} else {
+												echo "<p>".rupiah($pencapaian_aset)."</p>";
+											}
+										}
+									?>
+								</h5>
 							</div>
 						</td>
 						<td style="text-align: right;">
 							<div class="col">
 								<h5>
 									<?php
-										$prosentase = round(($aktual - $result['target']) / $result['target'] * 100);
-										if($prosentase <= 0){
-											echo "<p style='color:red;'>".$prosentase."%</p>";
+										if(is_null($result) || $result == false){
+											echo "0%";
 										} else {
-											echo "<p>".$prosentase."%</p>";
+											if($aktual >= $result['aset']){
+												$prosentase_aset = ($aktual - $result['aset']) / $result['aset'] * 100 + 100;
+												if($prosentase_aset <= 0){
+													echo "<p style='color:red;'>".number_format($prosentase_aset, 2)."%</p>";
+												} else {
+													echo "<p>".number_format($prosentase_aset, 2)."%</p>";
+												}
+												// echo round(($aktual - $result['target']) / $result['target'] * 100); 
+											} else {
+												$prosentase_aset = ($aktual - $result['aset']) / $result['aset'] * 100;
+												if($prosentase_aset <= 0){
+													echo "<p style='color:red;'>".number_format($prosentase_aset, 2)."%</p>";
+												} else {
+													echo "<p>".number_format($prosentase_aset, 2)."%</p>";
+												}
+												// echo round(($aktual - $result['target']) / $result['target'] * 100); 
+											}
 										}
-										// echo round(($aktual - $result['target']) / $result['target'] * 100); 
 									?>
 								</h5>
 							</div>
-						</td>
+						</td>																		
 					</tr>
 
 				</tbody>

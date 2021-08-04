@@ -820,6 +820,8 @@ class m_target_pasien_baru_list extends m_target_pasien_baru
 		$this->tgl_awal->setVisibility();
 		$this->tgl_akhir->setVisibility();
 		$this->target->setVisibility();
+		$this->created->Visible = FALSE;
+		$this->updated->Visible = FALSE;
 		$this->hideFieldsForAddEdit();
 
 		// Global Page Loading event (in userfn*.php)
@@ -1111,6 +1113,8 @@ class m_target_pasien_baru_list extends m_target_pasien_baru
 		$filterList = Concat($filterList, $this->tgl_awal->AdvancedSearch->toJson(), ","); // Field tgl_awal
 		$filterList = Concat($filterList, $this->tgl_akhir->AdvancedSearch->toJson(), ","); // Field tgl_akhir
 		$filterList = Concat($filterList, $this->target->AdvancedSearch->toJson(), ","); // Field target
+		$filterList = Concat($filterList, $this->created->AdvancedSearch->toJson(), ","); // Field created
+		$filterList = Concat($filterList, $this->updated->AdvancedSearch->toJson(), ","); // Field updated
 		if ($this->BasicSearch->Keyword != "") {
 			$wrk = "\"" . Config("TABLE_BASIC_SEARCH") . "\":\"" . JsEncode($this->BasicSearch->Keyword) . "\",\"" . Config("TABLE_BASIC_SEARCH_TYPE") . "\":\"" . JsEncode($this->BasicSearch->Type) . "\"";
 			$filterList = Concat($filterList, $wrk, ",");
@@ -1188,6 +1192,22 @@ class m_target_pasien_baru_list extends m_target_pasien_baru
 		$this->target->AdvancedSearch->SearchValue2 = @$filter["y_target"];
 		$this->target->AdvancedSearch->SearchOperator2 = @$filter["w_target"];
 		$this->target->AdvancedSearch->save();
+
+		// Field created
+		$this->created->AdvancedSearch->SearchValue = @$filter["x_created"];
+		$this->created->AdvancedSearch->SearchOperator = @$filter["z_created"];
+		$this->created->AdvancedSearch->SearchCondition = @$filter["v_created"];
+		$this->created->AdvancedSearch->SearchValue2 = @$filter["y_created"];
+		$this->created->AdvancedSearch->SearchOperator2 = @$filter["w_created"];
+		$this->created->AdvancedSearch->save();
+
+		// Field updated
+		$this->updated->AdvancedSearch->SearchValue = @$filter["x_updated"];
+		$this->updated->AdvancedSearch->SearchOperator = @$filter["z_updated"];
+		$this->updated->AdvancedSearch->SearchCondition = @$filter["v_updated"];
+		$this->updated->AdvancedSearch->SearchValue2 = @$filter["y_updated"];
+		$this->updated->AdvancedSearch->SearchOperator2 = @$filter["w_updated"];
+		$this->updated->AdvancedSearch->save();
 		$this->BasicSearch->setKeyword(@$filter[Config("TABLE_BASIC_SEARCH")]);
 		$this->BasicSearch->setType(@$filter[Config("TABLE_BASIC_SEARCH_TYPE")]);
 	}
@@ -1197,6 +1217,8 @@ class m_target_pasien_baru_list extends m_target_pasien_baru
 	{
 		$where = "";
 		$this->buildBasicSearchSql($where, $this->target, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->created, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->updated, $arKeywords, $type);
 		return $where;
 	}
 
@@ -1799,6 +1821,8 @@ class m_target_pasien_baru_list extends m_target_pasien_baru
 		$this->tgl_awal->setDbValue($row['tgl_awal']);
 		$this->tgl_akhir->setDbValue($row['tgl_akhir']);
 		$this->target->setDbValue($row['target']);
+		$this->created->setDbValue($row['created']);
+		$this->updated->setDbValue($row['updated']);
 	}
 
 	// Return a row with default values
@@ -1810,6 +1834,8 @@ class m_target_pasien_baru_list extends m_target_pasien_baru
 		$row['tgl_awal'] = NULL;
 		$row['tgl_akhir'] = NULL;
 		$row['target'] = NULL;
+		$row['created'] = NULL;
+		$row['updated'] = NULL;
 		return $row;
 	}
 
@@ -1849,6 +1875,10 @@ class m_target_pasien_baru_list extends m_target_pasien_baru
 		$this->InlineCopyUrl = $this->getInlineCopyUrl();
 		$this->DeleteUrl = $this->getDeleteUrl();
 
+		// Convert decimal values if posted back
+		if ($this->target->FormValue == $this->target->CurrentValue && is_numeric(ConvertToFloatString($this->target->CurrentValue)))
+			$this->target->CurrentValue = ConvertToFloatString($this->target->CurrentValue);
+
 		// Call Row_Rendering event
 		$this->Row_Rendering();
 
@@ -1858,6 +1888,8 @@ class m_target_pasien_baru_list extends m_target_pasien_baru
 		// tgl_awal
 		// tgl_akhir
 		// target
+		// created
+		// updated
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -1899,7 +1931,16 @@ class m_target_pasien_baru_list extends m_target_pasien_baru
 
 			// target
 			$this->target->ViewValue = $this->target->CurrentValue;
+			$this->target->ViewValue = FormatNumber($this->target->ViewValue, 2, -2, -2, -2);
 			$this->target->ViewCustomAttributes = "";
+
+			// created
+			$this->created->ViewValue = $this->created->CurrentValue;
+			$this->created->ViewCustomAttributes = "";
+
+			// updated
+			$this->updated->ViewValue = $this->updated->CurrentValue;
+			$this->updated->ViewCustomAttributes = "";
 
 			// id_cabang
 			$this->id_cabang->LinkCustomAttributes = "";

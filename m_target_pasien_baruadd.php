@@ -82,6 +82,9 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $m_target_pasien_baru_add->target->caption(), $m_target_pasien_baru_add->target->RequiredErrorMessage)) ?>");
 			<?php } ?>
+				elm = this.getElements("x" + infix + "_target");
+				if (elm && !ew.checkNumber(elm.value))
+					return this.onError(elm, "<?php echo JsEncode($m_target_pasien_baru_add->target->errorMessage()) ?>");
 
 				// Call Form_CustomValidate event
 				if (!this.Form_CustomValidate(fobj))
@@ -189,7 +192,7 @@ loadjs.ready(["fm_target_pasien_baruadd", "datetimepicker"], function() {
 		<label id="elh_m_target_pasien_baru_target" for="x_target" class="<?php echo $m_target_pasien_baru_add->LeftColumnClass ?>"><?php echo $m_target_pasien_baru_add->target->caption() ?><?php echo $m_target_pasien_baru_add->target->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $m_target_pasien_baru_add->RightColumnClass ?>"><div <?php echo $m_target_pasien_baru_add->target->cellAttributes() ?>>
 <span id="el_m_target_pasien_baru_target">
-<input type="text" data-table="m_target_pasien_baru" data-field="x_target" name="x_target" id="x_target" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($m_target_pasien_baru_add->target->getPlaceHolder()) ?>" value="<?php echo $m_target_pasien_baru_add->target->EditValue ?>"<?php echo $m_target_pasien_baru_add->target->editAttributes() ?>>
+<input type="text" data-table="m_target_pasien_baru" data-field="x_target" name="x_target" id="x_target" size="30" maxlength="22" placeholder="<?php echo HtmlEncode($m_target_pasien_baru_add->target->getPlaceHolder()) ?>" value="<?php echo $m_target_pasien_baru_add->target->EditValue ?>"<?php echo $m_target_pasien_baru_add->target->editAttributes() ?>>
 </span>
 <?php echo $m_target_pasien_baru_add->target->CustomMsg ?></div></div>
 	</div>

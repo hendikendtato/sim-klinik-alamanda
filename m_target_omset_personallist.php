@@ -177,6 +177,24 @@ $m_target_omset_personal_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
+<?php if ($m_target_omset_personal_list->baseline->Visible) { // baseline ?>
+	<?php if ($m_target_omset_personal_list->SortUrl($m_target_omset_personal_list->baseline) == "") { ?>
+		<th data-name="baseline" class="<?php echo $m_target_omset_personal_list->baseline->headerCellClass() ?>"><div id="elh_m_target_omset_personal_baseline" class="m_target_omset_personal_baseline"><div class="ew-table-header-caption"><?php echo $m_target_omset_personal_list->baseline->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="baseline" class="<?php echo $m_target_omset_personal_list->baseline->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $m_target_omset_personal_list->SortUrl($m_target_omset_personal_list->baseline) ?>', 1);"><div id="elh_m_target_omset_personal_baseline" class="m_target_omset_personal_baseline">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $m_target_omset_personal_list->baseline->caption() ?></span><span class="ew-table-header-sort"><?php if ($m_target_omset_personal_list->baseline->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($m_target_omset_personal_list->baseline->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
+<?php if ($m_target_omset_personal_list->aset->Visible) { // aset ?>
+	<?php if ($m_target_omset_personal_list->SortUrl($m_target_omset_personal_list->aset) == "") { ?>
+		<th data-name="aset" class="<?php echo $m_target_omset_personal_list->aset->headerCellClass() ?>"><div id="elh_m_target_omset_personal_aset" class="m_target_omset_personal_aset"><div class="ew-table-header-caption"><?php echo $m_target_omset_personal_list->aset->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="aset" class="<?php echo $m_target_omset_personal_list->aset->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $m_target_omset_personal_list->SortUrl($m_target_omset_personal_list->aset) ?>', 1);"><div id="elh_m_target_omset_personal_aset" class="m_target_omset_personal_aset">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $m_target_omset_personal_list->aset->caption() ?></span><span class="ew-table-header-sort"><?php if ($m_target_omset_personal_list->aset->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($m_target_omset_personal_list->aset->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
 <?php
 
 // Render list options (header, right)
@@ -274,6 +292,20 @@ $m_target_omset_personal_list->ListOptions->render("body", "left", $m_target_oms
 		<td data-name="target" <?php echo $m_target_omset_personal_list->target->cellAttributes() ?>>
 <span id="el<?php echo $m_target_omset_personal_list->RowCount ?>_m_target_omset_personal_target">
 <span<?php echo $m_target_omset_personal_list->target->viewAttributes() ?>><?php echo $m_target_omset_personal_list->target->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
+	<?php if ($m_target_omset_personal_list->baseline->Visible) { // baseline ?>
+		<td data-name="baseline" <?php echo $m_target_omset_personal_list->baseline->cellAttributes() ?>>
+<span id="el<?php echo $m_target_omset_personal_list->RowCount ?>_m_target_omset_personal_baseline">
+<span<?php echo $m_target_omset_personal_list->baseline->viewAttributes() ?>><?php echo $m_target_omset_personal_list->baseline->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
+	<?php if ($m_target_omset_personal_list->aset->Visible) { // aset ?>
+		<td data-name="aset" <?php echo $m_target_omset_personal_list->aset->cellAttributes() ?>>
+<span id="el<?php echo $m_target_omset_personal_list->RowCount ?>_m_target_omset_personal_aset">
+<span<?php echo $m_target_omset_personal_list->aset->viewAttributes() ?>><?php echo $m_target_omset_personal_list->aset->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>

@@ -32,6 +32,8 @@ class m_target_omset_cabang extends DbTable
 	public $target;
 	public $baseline;
 	public $aset;
+	public $created;
+	public $updated;
 
 	// Constructor
 	public function __construct()
@@ -112,6 +114,16 @@ class m_target_omset_cabang extends DbTable
 		$this->aset->Sortable = TRUE; // Allow sort
 		$this->aset->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
 		$this->fields['aset'] = &$this->aset;
+
+		// created
+		$this->created = new DbField('m_target_omset_cabang', 'm_target_omset_cabang', 'x_created', 'created', '`created`', '`created`', 200, 255, -1, FALSE, '`created`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->created->Sortable = TRUE; // Allow sort
+		$this->fields['created'] = &$this->created;
+
+		// updated
+		$this->updated = new DbField('m_target_omset_cabang', 'm_target_omset_cabang', 'x_updated', 'updated', '`updated`', '`updated`', 200, 255, -1, FALSE, '`updated`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->updated->Sortable = TRUE; // Allow sort
+		$this->fields['updated'] = &$this->updated;
 	}
 
 	// Field Visibility
@@ -474,6 +486,8 @@ class m_target_omset_cabang extends DbTable
 		$this->target->DbValue = $row['target'];
 		$this->baseline->DbValue = $row['baseline'];
 		$this->aset->DbValue = $row['aset'];
+		$this->created->DbValue = $row['created'];
+		$this->updated->DbValue = $row['updated'];
 	}
 
 	// Delete uploaded files
@@ -711,6 +725,8 @@ class m_target_omset_cabang extends DbTable
 		$this->target->setDbValue($rs->fields('target'));
 		$this->baseline->setDbValue($rs->fields('baseline'));
 		$this->aset->setDbValue($rs->fields('aset'));
+		$this->created->setDbValue($rs->fields('created'));
+		$this->updated->setDbValue($rs->fields('updated'));
 	}
 
 	// Render list row values
@@ -732,6 +748,8 @@ class m_target_omset_cabang extends DbTable
 		// target
 		// baseline
 		// aset
+		// created
+		// updated
 		// id_target_omset_cabang
 
 		$this->id_target_omset_cabang->ViewValue = $this->id_target_omset_cabang->CurrentValue;
@@ -784,6 +802,14 @@ class m_target_omset_cabang extends DbTable
 		$this->aset->ViewValue = FormatNumber($this->aset->ViewValue, 2, -2, -2, -2);
 		$this->aset->ViewCustomAttributes = "";
 
+		// created
+		$this->created->ViewValue = $this->created->CurrentValue;
+		$this->created->ViewCustomAttributes = "";
+
+		// updated
+		$this->updated->ViewValue = $this->updated->CurrentValue;
+		$this->updated->ViewCustomAttributes = "";
+
 		// id_target_omset_cabang
 		$this->id_target_omset_cabang->LinkCustomAttributes = "";
 		$this->id_target_omset_cabang->HrefValue = "";
@@ -818,6 +844,16 @@ class m_target_omset_cabang extends DbTable
 		$this->aset->LinkCustomAttributes = "";
 		$this->aset->HrefValue = "";
 		$this->aset->TooltipValue = "";
+
+		// created
+		$this->created->LinkCustomAttributes = "";
+		$this->created->HrefValue = "";
+		$this->created->TooltipValue = "";
+
+		// updated
+		$this->updated->LinkCustomAttributes = "";
+		$this->updated->HrefValue = "";
+		$this->updated->TooltipValue = "";
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -883,6 +919,22 @@ class m_target_omset_cabang extends DbTable
 			$this->aset->EditValue = FormatNumber($this->aset->EditValue, -2, -2, -2, -2);
 		
 
+		// created
+		$this->created->EditAttrs["class"] = "form-control";
+		$this->created->EditCustomAttributes = "";
+		if (!$this->created->Raw)
+			$this->created->CurrentValue = HtmlDecode($this->created->CurrentValue);
+		$this->created->EditValue = $this->created->CurrentValue;
+		$this->created->PlaceHolder = RemoveHtml($this->created->caption());
+
+		// updated
+		$this->updated->EditAttrs["class"] = "form-control";
+		$this->updated->EditCustomAttributes = "";
+		if (!$this->updated->Raw)
+			$this->updated->CurrentValue = HtmlDecode($this->updated->CurrentValue);
+		$this->updated->EditValue = $this->updated->CurrentValue;
+		$this->updated->PlaceHolder = RemoveHtml($this->updated->caption());
+
 		// Call Row Rendered event
 		$this->Row_Rendered();
 	}
@@ -919,6 +971,8 @@ class m_target_omset_cabang extends DbTable
 					$doc->exportCaption($this->target);
 					$doc->exportCaption($this->baseline);
 					$doc->exportCaption($this->aset);
+					$doc->exportCaption($this->created);
+					$doc->exportCaption($this->updated);
 				} else {
 					$doc->exportCaption($this->id_target_omset_cabang);
 					$doc->exportCaption($this->id_cabang);
@@ -927,6 +981,8 @@ class m_target_omset_cabang extends DbTable
 					$doc->exportCaption($this->target);
 					$doc->exportCaption($this->baseline);
 					$doc->exportCaption($this->aset);
+					$doc->exportCaption($this->created);
+					$doc->exportCaption($this->updated);
 				}
 				$doc->endExportRow();
 			}
@@ -965,6 +1021,8 @@ class m_target_omset_cabang extends DbTable
 						$doc->exportField($this->target);
 						$doc->exportField($this->baseline);
 						$doc->exportField($this->aset);
+						$doc->exportField($this->created);
+						$doc->exportField($this->updated);
 					} else {
 						$doc->exportField($this->id_target_omset_cabang);
 						$doc->exportField($this->id_cabang);
@@ -973,6 +1031,8 @@ class m_target_omset_cabang extends DbTable
 						$doc->exportField($this->target);
 						$doc->exportField($this->baseline);
 						$doc->exportField($this->aset);
+						$doc->exportField($this->created);
+						$doc->exportField($this->updated);
 					}
 					$doc->endExportRow($rowCnt);
 				}
@@ -1040,7 +1100,13 @@ class m_target_omset_cabang extends DbTable
 
 		// Enter your code here
 		// To cancel, set return value to FALSE
+		// Action
 
+		date_default_timezone_set("Asia/Jakarta");	
+		$action_date = date("d M Y");
+		$user = CurrentUserInfo("id_pegawai");
+		$pegawai = ExecuteScalar("SELECT nama_pegawai FROM m_pegawai WHERE id_pegawai='$user'");
+		$rsnew["created"] = "By " .$pegawai. " at " .$action_date. " [". date("h:i a"). "]";
 		return TRUE;
 	}
 
@@ -1055,7 +1121,13 @@ class m_target_omset_cabang extends DbTable
 
 		// Enter your code here
 		// To cancel, set return value to FALSE
+		// Action
 
+		date_default_timezone_set("Asia/Jakarta");	
+		$action_date = date("d M Y");
+		$user = CurrentUserInfo("id_pegawai");
+		$pegawai = ExecuteScalar("SELECT nama_pegawai FROM m_pegawai WHERE id_pegawai='$user'");
+		$rsnew["updated"] = "By " .$pegawai. " at " .$action_date. " [". date("h:i a"). "]";
 		return TRUE;
 	}
 

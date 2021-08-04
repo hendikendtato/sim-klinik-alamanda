@@ -70,6 +70,8 @@ Page_Rendering();
 		$result = ExecuteRows("SELECT * FROM detailpenjualan 
 							JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan 
 							JOIN m_klinik ON penjualan.id_klinik = m_klinik.id_klinik WHERE penjualan.id_klinik = '$cabang' AND MONTH(penjualan.waktu) = '$bulan' AND YEAR(penjualan.waktu) = '$tahun' AND detailpenjualan.komisi_recall IS NOT NULL GROUP BY detailpenjualan.komisi_recall");
+		$nama_klinik = ExecuteScalar("SELECT nama_klinik FROM m_klinik WHERE id_klinik='$cabang'");
+	
 	}
 
 ?>
@@ -136,21 +138,21 @@ Page_Rendering();
 			<table class="table table-hover table-bordered" id="printTable">
 				<thead>
 					<tr>
-						<td colspan="7" style="text-align: center;">
+						<td colspan="4" style="text-align: center;">
 							<div class="col">
 								<h4>Laporan Target Omset Personal</h4>
 							</div>
 						</td>
 					</tr>
 					<tr>
-						<td colspan="7">
+						<td colspan="4">
 							<div class="col">
-								<h5>Cabang : <?php echo $result[0]['nama_klinik']; ?></h5>
+								<h5>Cabang : <?php echo $nama_klinik; ?></h5>
 							</div>
 						</td>
 					</tr>
 					<tr>
-						<td colspan="7">
+						<td colspan="4">
 							<div class="col">
 								<h5>Periode : <?php echo tgl_indo($periode); ?></h5>
 							</div>
@@ -160,10 +162,7 @@ Page_Rendering();
 						<th>No</th>
 						<th>Jabatan</th>
 						<th>Nama</th>
-						<th>Target</th>
-						<th>Aktual</th>
-						<th>Pencapaian</th>
-						<th>Prosentase</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -178,15 +177,168 @@ Page_Rendering();
 								$target = ExecuteRow("SELECT * FROM m_target_omset_personal WHERE id_jabatan = '".$pegawai['id_jabatan']."' AND id_cabang = '$cabang' AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'");
 								$aktual = ExecuteScalar("SELECT sum(detailpenjualan.subtotal) FROM detailpenjualan 
 								JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE penjualan.id_klinik = '$cabang' AND MONTH(penjualan.waktu) = '$bulan' AND YEAR(penjualan.waktu) = '$tahun' AND detailpenjualan.komisi_recall = '".$rs['komisi_recall']."'");
-								echo "<tr>
+								echo "<tr id=".$rs['komisi_recall'].">
 										<td align='center'>" . $no . ".</td>
 										<td align='center'>" . $pegawai['nama_jabatan'] . "</td>
 										<td align='center'>" . $pegawai['nama_pegawai'] . "</td>
-										<td align='center' style='mso-number-format:".$mso."'>" . rupiah($target['target']) . "</td>
-										<td align='center' style='mso-number-format:".$mso."'>" . rupiah($aktual) . "</td>
-										<td align='center' style='mso-number-format:".$mso."'>" . rupiah($aktual - $target['target']). "</td>
-										<td align='center'>" . ROUND((($aktual - $target['target']) / $target['target']) * 100) . "%</td>
-									</tr>" ;
+										<td align='center'><button class='btn btn-link' onclick='showDetails(".$rs['komisi_recall'].");'>detail</button></td>
+									</tr>
+									<tr id='".$rs['komisi_recall']."_detil' class='collapse'>
+										<td class='ew-table-last-col' colspan=8>
+											<div>
+												<table class='table'>
+													<thead>
+														<th></th>
+														<th></th>
+														<th>Aktual</th>
+														<th>Pencapaian</th>
+														<th>Prosentase</th>
+														<th>Rank</th>
+													</thead>
+													<tbody>";
+														$id_jabatan = ExecuteScalar("SELECT m_jabatan.id AS id_jabatan FROM m_pegawai JOIN m_jabatan ON m_pegawai.jabatan_pegawai = m_jabatan.id WHERE m_pegawai.id_pegawai = '".$rs['komisi_recall']."'");
+														$detail_target = ExecuteRow("SELECT * FROM m_target_omset_personal WHERE id_jabatan = '".$id_jabatan."' AND id_cabang = '$cabang' AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'");
+														$aktual_detail = ExecuteScalar("SELECT sum(detailpenjualan.subtotal) FROM detailpenjualan 
+														JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE penjualan.id_klinik = '$cabang' AND MONTH(penjualan.waktu) = '$bulan' AND YEAR(penjualan.waktu) = '$tahun' AND detailpenjualan.komisi_recall = '".$rs['komisi_recall']."'");
+														// print_r($detail_target);
+														echo "<tr>
+															<td>Target</td>		
+															<td align='center' style='mso-number-format:".$mso."'>";if(is_null($detail_target) || $detail_target == false){
+																echo "0";
+															} else {
+																echo rupiah($detail_target['target']);
+															} echo"</td>		
+															<td rowspan='3' align='center' style='mso-number-format:".$mso."'>";if(is_null($aktual_detail) || $aktual_detail == false){
+																echo "0";
+															} else {
+																echo rupiah($aktual_detail);
+															} echo"</td>		
+															<td align='center' style='mso-number-format:".$mso."'>";if(is_null($aktual_detail) || $aktual_detail == false){
+																echo "0";
+															} else {
+																if(is_null($detail_target) || $detail_target == false){
+																	echo "0";
+																} else {
+																	$pencapaian_target = $aktual_detail - $detail_target['target'];
+																	if($pencapaian_target <= '0'){
+																		echo "<b style='color:red;'>".rupiah($pencapaian_target)."</b>";
+																	} else {
+																		echo "<b style='color:green'>".rupiah($pencapaian_target)."</b>";
+																	}
+																}
+															} echo"</td>		
+															<td>";if(is_null($aktual_detail) || $aktual_detail == false){
+																echo "0%";
+															} else {
+																if($detail_target == false){
+																	echo "0%";
+																} else {
+																	if(is_null($detail_target['target']) || $detail_target['target'] == false){
+																		echo "0%";
+																	} else {
+																		if($aktual_detail >= $detail_target['target']){
+																			$prosentase_target = (($aktual_detail - $detail_target['target']) / $detail_target['target']) * 100 + 100;
+																			if($prosentase_target <= '0'){
+																				echo "<b style='color:red;'>".number_format($prosentase_target, 2)."%</b>";
+																			} else {
+																				echo "<b style='color:green;'>".number_format($prosentase_target, 2)."%</b>";
+																			}
+																		} else {
+																			$prosentase_target = (($aktual_detail - $detail_target['target']) / $detail_target['target']) * 100;
+																			if($prosentase_target <= '0'){
+																				echo "<b style='color:red;'>".number_format($prosentase_target, 2)."%</b>";
+																			} else {
+																				echo "<b style='color:green;'>".number_format($prosentase_target, 2)."%</b>";
+																			}																		}
+																	}
+																}
+															} echo"</td>
+															<td rowspan='3' class='text-center'>"; if($aktual_detail != false AND $detail_target != false){
+																if(($aktual_detail >= $detail_target['aset']) AND ($aktual_detail <= $detail_target['baseline'])){
+																	echo "Aset";
+																} else if(($aktual_detail >= $detail_target['baseline']) AND ($aktual_detail <= $detail_target['target'])){
+																	echo "Baseline";
+																} else if($aktual_detail >= $detail_target['target']){
+																	echo "Target";
+																} else if($aktual_detail < $detail_target['aset']){
+																	echo "-";
+																}
+															}echo"</td>		
+														</tr>
+														<tr>
+															<td>Baseline</td>		
+															<td align='center' style='mso-number-format:".$mso."'>";if(is_null($detail_target) || $detail_target == false){
+																echo "0";
+															} else {
+																echo rupiah($detail_target['baseline']);
+															} echo"</td>				
+															<td align='center' style='mso-number-format:".$mso."'>";if(is_null($aktual_detail) || $aktual_detail == false){
+																echo "0";
+															} else {
+																if(is_null($detail_target) || $detail_target == false){
+																	echo "0";
+																} else {
+																	echo rupiah($aktual_detail - $detail_target['baseline']);
+																}
+															} echo"</td>		
+															<td>";if(is_null($aktual_detail) || $aktual_detail == false){
+																echo "0%";
+															} else {
+																if($detail_target == false){
+																	echo "0%";
+																} else {
+																	if(is_null($detail_target['baseline']) || $detail_target['baseline'] == false){
+																		echo "0%";
+																	} else {
+																		if($aktual_detail >= $detail_target['baseline']){
+																			echo number_format((($aktual_detail - $detail_target['baseline']) / $detail_target['baseline']) * 100 + 100, 2) . "%";
+																		} else {
+																			echo number_format((($aktual_detail - $detail_target['baseline']) / $detail_target['baseline']) * 100, 2) . "%";
+																		}
+																	}
+																}
+															} echo"</td>
+														</tr>
+														<tr>
+															<td>Aset</td>		
+															<td align='center' style='mso-number-format:".$mso."'>";if(is_null($detail_target) || $detail_target == false){
+																echo "0";
+															} else {
+																echo rupiah($detail_target['aset']);
+															} echo"</td>				
+															<td align='center' style='mso-number-format:".$mso."'>
+															";if(is_null($aktual_detail) || $aktual_detail == false){
+																echo "0";
+															} else {
+																if(is_null($detail_target) || $detail_target == false){
+																	echo "0";
+																} else {
+																	echo rupiah($aktual_detail - $detail_target['aset']);
+																}
+															} echo"</td>		
+															<td>";if(is_null($aktual_detail) || $aktual_detail == false){
+																echo "0%";
+															} else {
+																if($detail_target == false){
+																	echo "0%";
+																} else {
+																	if(is_null($detail_target['aset']) || $detail_target['aset'] == false){
+																		echo "0%";
+																	} else {
+																		if($aktual_detail >= $detail_target['aset']){
+																			echo number_format((($aktual_detail - $detail_target['aset']) / $detail_target['aset']) * 100 + 100, 2) . "%";
+																		} else {
+																			echo number_format((($aktual_detail - $detail_target['aset']) / $detail_target['aset']) * 100, 2) . "%";
+																		}
+																	}
+																}
+															} echo"</td>		
+														</tr>";
+													echo "</tbody>
+												</table>
+											</div>
+										</td>
+									</tr>" ;  
 								$no++;
 							}
 						}						
@@ -229,6 +381,17 @@ Page_Rendering();
 				downloadLink.click();
 			}
 		}
+
+		// hide and show detail
+		function showDetails(id) {
+			var classes = $(`#${id}_detil`).attr("class").split(/\s+/);
+			if(!classes[1]) {
+				$(`#${id}_detil`).addClass('show')
+			} else {
+				$(`#${id}_detil`).removeClass('show')
+			}
+		}
+
 </script>
 
 <?php if (Config("DEBUG")) echo GetDebugMessage(); ?>

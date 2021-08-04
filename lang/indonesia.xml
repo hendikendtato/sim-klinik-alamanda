@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<ew-language date="2021/8/2" version="16.0.1" id="ID" name="Indonesian" desc="Indonesian" author="e.World Technology Ltd.">
+<ew-language date="2021/8/4" version="16.0.1" id="ID" name="Indonesian" desc="Indonesian" author="e.World Technology Ltd.">
   <!--
 	*** Important Notes:
 	1. Language ID should follow: https://developers.google.com/recaptcha/docs/language,
@@ -4080,6 +4080,12 @@
       <field id="aset">
         <phrase id="fldcaption" value="Aset" />
       </field>
+      <field id="created">
+        <phrase id="fldcaption" value="Created" />
+      </field>
+      <field id="updated">
+        <phrase id="fldcaption" value="Updated" />
+      </field>
     </table>
     <table id="m_target_omset_personal">
       <phrase id="tblcaption" value="Target Omset Personal" />
@@ -4100,6 +4106,18 @@
       </field>
       <field id="target">
         <phrase id="fldcaption" value="Target" />
+      </field>
+      <field id="baseline">
+        <phrase id="fldcaption" value="Baseline" />
+      </field>
+      <field id="aset">
+        <phrase id="fldcaption" value="Aset" />
+      </field>
+      <field id="created">
+        <phrase id="fldcaption" value="Created" />
+      </field>
+      <field id="updated">
+        <phrase id="fldcaption" value="Updated" />
       </field>
     </table>
     <table id="laporan_target_omset_cabang">
@@ -4128,6 +4146,12 @@
       <field id="target">
         <phrase id="fldcaption" value="Target" />
       </field>
+      <field id="created">
+        <phrase id="fldcaption" value="Created" />
+      </field>
+      <field id="updated">
+        <phrase id="fldcaption" value="Updated" />
+      </field>
     </table>
     <table id="m_target_produk">
       <phrase id="tblcaption" value="Master Target Produk Terjual" />
@@ -4148,6 +4172,12 @@
       </field>
       <field id="target">
         <phrase id="fldcaption" value="Target" />
+      </field>
+      <field id="created">
+        <phrase id="fldcaption" value="Created" />
+      </field>
+      <field id="updated">
+        <phrase id="fldcaption" value="Updated" />
       </field>
     </table>
     <table id="laporan_target_produk_terjual">
@@ -4173,6 +4203,12 @@
       <field id="target">
         <phrase id="fldcaption" value="Target" />
       </field>
+      <field id="created">
+        <phrase id="fldcaption" value="Created" />
+      </field>
+      <field id="updated">
+        <phrase id="fldcaption" value="Updated" />
+      </field>
     </table>
     <table id="m_target_pasien">
       <phrase id="tblcaption" value="m target pasien" />
@@ -4191,6 +4227,12 @@
       <field id="target">
         <phrase id="fldcaption" value="Target" />
       </field>
+      <field id="created">
+        <phrase id="fldcaption" value="Created" />
+      </field>
+      <field id="updated">
+        <phrase id="fldcaption" value="Updated" />
+      </field>
     </table>
     <table id="m_target_pasien_baru">
       <phrase id="tblcaption" value="m target pasien baru" />
@@ -4208,6 +4250,12 @@
       </field>
       <field id="target">
         <phrase id="fldcaption" value="Target" />
+      </field>
+      <field id="created">
+        <phrase id="fldcaption" value="Created" />
+      </field>
+      <field id="updated">
+        <phrase id="fldcaption" value="Updated" />
       </field>
     </table>
     <table id="laporan_target_kunjungan">

@@ -2053,6 +2053,7 @@ class penjualan extends DbTable
 					$doc->exportCaption($this->metode_pembayaran);
 					$doc->exportCaption($this->id_bank);
 					$doc->exportCaption($this->id_kartu);
+					$doc->exportCaption($this->jumlah_voucher);
 					$doc->exportCaption($this->sales);
 					$doc->exportCaption($this->dok_be_wajah);
 					$doc->exportCaption($this->be_body);
@@ -2149,6 +2150,7 @@ class penjualan extends DbTable
 						$doc->exportField($this->metode_pembayaran);
 						$doc->exportField($this->id_bank);
 						$doc->exportField($this->id_kartu);
+						$doc->exportField($this->jumlah_voucher);
 						$doc->exportField($this->sales);
 						$doc->exportField($this->dok_be_wajah);
 						$doc->exportField($this->be_body);
@@ -2433,9 +2435,9 @@ class penjualan extends DbTable
 		$pegawai = ExecuteScalar("SELECT nama_pegawai FROM m_pegawai WHERE id_pegawai='$user'");
 		$status = $rsnew["status"];
 		if($status == "Draft") {
-			$rsnew["action"] = "Drafted by " .$pegawai. " at " .$action_date. " [". date("h:i"). "]";
+			$rsnew["action"] = "Drafted by " .$pegawai. " at " .$action_date. " [". date("h:i a"). "]";
 		} else {
-			$rsnew["action"] = "Created by " .$pegawai. " at " .$action_date. " [". date("h:i"). "]";
+			$rsnew["action"] = "Created by " .$pegawai. " at " .$action_date. " [". date("h:i a"). "]";
 		}
 		return TRUE;
 	}
@@ -3522,11 +3524,11 @@ class penjualan extends DbTable
 		$pegawai = ExecuteScalar("SELECT nama_pegawai FROM m_pegawai WHERE id_pegawai='$user'");
 		$status = $rsnew["status"];
 		if($status == "Draft") {
-			$rsnew["action"] = "Drafted by " .$pegawai. " at " .$action_date. " [". date("h:i"). "]";
+			$rsnew["action"] = "Drafted by " .$pegawai. " at " .$action_date. " [". date("h:i a"). "]";
 		} else {
 			$str = $rsold["action"];
 			$str_out = explode(' ', $str, 3);
-			$rsnew["action"] = "Created By ".$str_out[2].", Printed by " .$pegawai. " at " .$action_date. " [". date("h:i"). "]";
+			$rsnew["action"] = "Created By ".$str_out[2].", Printed by " .$pegawai. " at " .$action_date. " [". date("h:i a"). "]";
 		}
 		return TRUE;
 	}

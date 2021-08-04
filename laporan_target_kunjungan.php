@@ -67,7 +67,7 @@ Page_Rendering();
 		$bulan = $explode[1];
 		$tahun = $explode[0];
 
-		$result = ExecuteRow("SELECT COUNT(kode_penjualan) AS total_nota, id_klinik FROM penjualan WHERE id_klinik = '$cabang' AND MONTH(waktu) = '$bulan' AND YEAR(waktu) = '$tahun'");
+		$result = ExecuteRow("SELECT COUNT(kode_penjualan) AS total_nota, id_klinik FROM penjualan WHERE id_klinik = '$cabang' AND MONTH(waktu) = '$bulan' AND YEAR(waktu) = '$tahun' AND status != 'Draft'");
 		// print_r($result);
 		$target = ExecuteScalar("SELECT target FROM m_target_kunjungan WHERE id_cabang = '$cabang' AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'");
 	}

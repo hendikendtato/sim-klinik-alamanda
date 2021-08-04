@@ -85,6 +85,12 @@ $m_target_omset_personal_delete->showMessage();
 <?php if ($m_target_omset_personal_delete->target->Visible) { // target ?>
 		<th class="<?php echo $m_target_omset_personal_delete->target->headerCellClass() ?>"><span id="elh_m_target_omset_personal_target" class="m_target_omset_personal_target"><?php echo $m_target_omset_personal_delete->target->caption() ?></span></th>
 <?php } ?>
+<?php if ($m_target_omset_personal_delete->baseline->Visible) { // baseline ?>
+		<th class="<?php echo $m_target_omset_personal_delete->baseline->headerCellClass() ?>"><span id="elh_m_target_omset_personal_baseline" class="m_target_omset_personal_baseline"><?php echo $m_target_omset_personal_delete->baseline->caption() ?></span></th>
+<?php } ?>
+<?php if ($m_target_omset_personal_delete->aset->Visible) { // aset ?>
+		<th class="<?php echo $m_target_omset_personal_delete->aset->headerCellClass() ?>"><span id="elh_m_target_omset_personal_aset" class="m_target_omset_personal_aset"><?php echo $m_target_omset_personal_delete->aset->caption() ?></span></th>
+<?php } ?>
 	</tr>
 	</thead>
 	<tbody>
@@ -138,6 +144,20 @@ while (!$m_target_omset_personal_delete->Recordset->EOF) {
 		<td <?php echo $m_target_omset_personal_delete->target->cellAttributes() ?>>
 <span id="el<?php echo $m_target_omset_personal_delete->RowCount ?>_m_target_omset_personal_target" class="m_target_omset_personal_target">
 <span<?php echo $m_target_omset_personal_delete->target->viewAttributes() ?>><?php echo $m_target_omset_personal_delete->target->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($m_target_omset_personal_delete->baseline->Visible) { // baseline ?>
+		<td <?php echo $m_target_omset_personal_delete->baseline->cellAttributes() ?>>
+<span id="el<?php echo $m_target_omset_personal_delete->RowCount ?>_m_target_omset_personal_baseline" class="m_target_omset_personal_baseline">
+<span<?php echo $m_target_omset_personal_delete->baseline->viewAttributes() ?>><?php echo $m_target_omset_personal_delete->baseline->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($m_target_omset_personal_delete->aset->Visible) { // aset ?>
+		<td <?php echo $m_target_omset_personal_delete->aset->cellAttributes() ?>>
+<span id="el<?php echo $m_target_omset_personal_delete->RowCount ?>_m_target_omset_personal_aset" class="m_target_omset_personal_aset">
+<span<?php echo $m_target_omset_personal_delete->aset->viewAttributes() ?>><?php echo $m_target_omset_personal_delete->aset->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

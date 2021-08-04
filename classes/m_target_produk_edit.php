@@ -676,6 +676,8 @@ class m_target_produk_edit extends m_target_produk
 		$this->tgl_awal->setVisibility();
 		$this->tgl_akhir->setVisibility();
 		$this->target->setVisibility();
+		$this->created->Visible = FALSE;
+		$this->updated->Visible = FALSE;
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -960,6 +962,8 @@ class m_target_produk_edit extends m_target_produk
 		$this->tgl_awal->setDbValue($row['tgl_awal']);
 		$this->tgl_akhir->setDbValue($row['tgl_akhir']);
 		$this->target->setDbValue($row['target']);
+		$this->created->setDbValue($row['created']);
+		$this->updated->setDbValue($row['updated']);
 	}
 
 	// Return a row with default values
@@ -972,6 +976,8 @@ class m_target_produk_edit extends m_target_produk
 		$row['tgl_awal'] = NULL;
 		$row['tgl_akhir'] = NULL;
 		$row['target'] = NULL;
+		$row['created'] = NULL;
+		$row['updated'] = NULL;
 		return $row;
 	}
 
@@ -1004,8 +1010,12 @@ class m_target_produk_edit extends m_target_produk
 		global $Security, $Language, $CurrentLanguage;
 
 		// Initialize URLs
-		// Call Row_Rendering event
+		// Convert decimal values if posted back
 
+		if ($this->target->FormValue == $this->target->CurrentValue && is_numeric(ConvertToFloatString($this->target->CurrentValue)))
+			$this->target->CurrentValue = ConvertToFloatString($this->target->CurrentValue);
+
+		// Call Row_Rendering event
 		$this->Row_Rendering();
 
 		// Common render codes for all row types
@@ -1015,6 +1025,8 @@ class m_target_produk_edit extends m_target_produk
 		// tgl_awal
 		// tgl_akhir
 		// target
+		// created
+		// updated
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -1090,7 +1102,16 @@ class m_target_produk_edit extends m_target_produk
 
 			// target
 			$this->target->ViewValue = $this->target->CurrentValue;
+			$this->target->ViewValue = FormatNumber($this->target->ViewValue, 2, -2, -2, -2);
 			$this->target->ViewCustomAttributes = "";
+
+			// created
+			$this->created->ViewValue = $this->created->CurrentValue;
+			$this->created->ViewCustomAttributes = "";
+
+			// updated
+			$this->updated->ViewValue = $this->updated->CurrentValue;
+			$this->updated->ViewCustomAttributes = "";
 
 			// id_target_produk
 			$this->id_target_produk->LinkCustomAttributes = "";
@@ -1197,10 +1218,11 @@ class m_target_produk_edit extends m_target_produk
 			// target
 			$this->target->EditAttrs["class"] = "form-control";
 			$this->target->EditCustomAttributes = "";
-			if (!$this->target->Raw)
-				$this->target->CurrentValue = HtmlDecode($this->target->CurrentValue);
 			$this->target->EditValue = HtmlEncode($this->target->CurrentValue);
 			$this->target->PlaceHolder = RemoveHtml($this->target->caption());
+			if (strval($this->target->EditValue) != "" && is_numeric($this->target->EditValue))
+				$this->target->EditValue = FormatNumber($this->target->EditValue, -2, -2, -2, -2);
+			
 
 			// Edit refer script
 			// id_target_produk
@@ -1282,6 +1304,9 @@ class m_target_produk_edit extends m_target_produk
 			if (!$this->target->IsDetailKey && $this->target->FormValue != NULL && $this->target->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->target->caption(), $this->target->RequiredErrorMessage));
 			}
+		}
+		if (!CheckNumber($this->target->FormValue)) {
+			AddMessage($FormError, $this->target->errorMessage());
 		}
 
 		// Return validate result

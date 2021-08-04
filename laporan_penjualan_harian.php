@@ -129,7 +129,7 @@ Page_Rendering();
 	  <table class="table table-bordered table-hover table-striped" id="printTable">
 	  	<thead>
 	  	<tr>
-			<td colspan="9" style="text-align: center;">
+			<td colspan="10" style="text-align: center;">
 				<div class="col">
 					<h5>Laporan Harian Penjualan</h5>
 					<h5>Cabang 
@@ -158,22 +158,26 @@ Page_Rendering();
 		  <th>Diskon (%)</th>
 		  <th>Diskon (Rp)</th>
 		  <th>PPN (%)</th>
+		  <th>Total Voucher</th>
 		  <th>Total</th>
-			<th></th>
+		  <th></th>
 		 </tr>
 		</thead>
 		<tbody>
 		  <?php
 		  $no=1;
 		  if (is_null($result) OR $result == false) {
-			echo '<tr><td  colspan="9" align="center">Kosong</td></tr>';							
+			echo '<tr><td  colspan="10" align="center">Kosong</td></tr>';							
 		  }else{
 			$totalcabang = 0;
 			$totalbruto = 0;
+			$totalvoucher = 0;
+			$total_voucher = 0;
 			$mso='"\@"';
 			foreach ($result as $rs) {
 			
 			$subtotal = ExecuteScalar("SELECT SUM(subtotal) FROM detailpenjualan WHERE id_penjualan = ".$rs['id_penjualan']." ORDER BY id");
+			$voucher = ExecuteRow("SELECT m_kartu.charge_price AS charge_voucher, penjualan.jumlah_voucher FROM penjualan JOIN m_kartu ON penjualan.id_kartu = m_kartu.id_kartu WHERE penjualan.id = '".$rs['id_penjualan']."'");
 			
 			  echo "<tr id=".$rs["id_penjualan"].">
 				  <td>"; 
@@ -219,17 +223,25 @@ Page_Rendering();
 					  echo $rs["ppn"];
 					}echo
 				  "</td>
+				  <td align='center'>"; 
+					if(is_null($voucher) || $voucher == false){
+					  echo "-";
+					}else{
+					  $total_voucher = $voucher['charge_voucher'] * $voucher['jumlah_voucher']; 
+					  echo rupiah($total_voucher);
+					}echo
+				  "</td>
 				  <td align='right' style='mso-number-format:".$mso."'>"; 
 					echo rupiah($rs["total"]);
 					echo "</td>
 					<td align='center'>
 						<button class='btn btn-link' onclick='showDetails(".$rs["id_penjualan"].");'>
-		  		detail
-				</button>
+							detail
+						</button>
 					</td>
 				</tr>
 				<tr id='".$rs["id_penjualan"]."_detil' class='collapse'>
-					<td class='ew-table-last-col' colspan=8>
+					<td class='ew-table-last-col' colspan=10>
 						<div>
 							<table>
 								<thead>
@@ -263,6 +275,7 @@ Page_Rendering();
 				</tr>";
 			  $totalbruto += $subtotal;
 			  $totalcabang += $rs["total"];
+			  $totalvoucher += $total_voucher;
 			}
 
 		  }						
@@ -280,6 +293,15 @@ Page_Rendering();
 				</td>
 				
 				<td colspan="3" align="right"><b>Total per Cabang</b></td>
+				<td align="right" style="mso-number-format:'\@'">
+				<b>
+					<?php if(isset($totalvoucher)) {
+							echo rupiah($totalvoucher);
+						  }
+						  $totalvoucher = isset($totalvoucher) ? $totalvoucher : '0';
+					?>
+				</b>
+				</td>				
 				<td align="right" style="mso-number-format:'\@'">
 				<b>
 					<?php if(isset($totalcabang)) {

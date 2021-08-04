@@ -821,6 +821,10 @@ class m_target_omset_personal_list extends m_target_omset_personal
 		$this->tgl_awal->setVisibility();
 		$this->tgl_akhir->setVisibility();
 		$this->target->setVisibility();
+		$this->baseline->setVisibility();
+		$this->aset->setVisibility();
+		$this->created->Visible = FALSE;
+		$this->updated->Visible = FALSE;
 		$this->hideFieldsForAddEdit();
 
 		// Global Page Loading event (in userfn*.php)
@@ -1067,6 +1071,8 @@ class m_target_omset_personal_list extends m_target_omset_personal
 			$this->updateSort($this->tgl_awal); // tgl_awal
 			$this->updateSort($this->tgl_akhir); // tgl_akhir
 			$this->updateSort($this->target); // target
+			$this->updateSort($this->baseline); // baseline
+			$this->updateSort($this->aset); // aset
 			$this->setStartRecordNumber(1); // Reset start position
 		}
 	}
@@ -1103,6 +1109,8 @@ class m_target_omset_personal_list extends m_target_omset_personal
 				$this->tgl_awal->setSort("");
 				$this->tgl_akhir->setSort("");
 				$this->target->setSort("");
+				$this->baseline->setSort("");
+				$this->aset->setSort("");
 			}
 
 			// Reset start position
@@ -1496,6 +1504,10 @@ class m_target_omset_personal_list extends m_target_omset_personal
 		$this->tgl_awal->setDbValue($row['tgl_awal']);
 		$this->tgl_akhir->setDbValue($row['tgl_akhir']);
 		$this->target->setDbValue($row['target']);
+		$this->baseline->setDbValue($row['baseline']);
+		$this->aset->setDbValue($row['aset']);
+		$this->created->setDbValue($row['created']);
+		$this->updated->setDbValue($row['updated']);
 	}
 
 	// Return a row with default values
@@ -1508,6 +1520,10 @@ class m_target_omset_personal_list extends m_target_omset_personal
 		$row['tgl_awal'] = NULL;
 		$row['tgl_akhir'] = NULL;
 		$row['target'] = NULL;
+		$row['baseline'] = NULL;
+		$row['aset'] = NULL;
+		$row['created'] = NULL;
+		$row['updated'] = NULL;
 		return $row;
 	}
 
@@ -1551,6 +1567,14 @@ class m_target_omset_personal_list extends m_target_omset_personal
 		if ($this->target->FormValue == $this->target->CurrentValue && is_numeric(ConvertToFloatString($this->target->CurrentValue)))
 			$this->target->CurrentValue = ConvertToFloatString($this->target->CurrentValue);
 
+		// Convert decimal values if posted back
+		if ($this->baseline->FormValue == $this->baseline->CurrentValue && is_numeric(ConvertToFloatString($this->baseline->CurrentValue)))
+			$this->baseline->CurrentValue = ConvertToFloatString($this->baseline->CurrentValue);
+
+		// Convert decimal values if posted back
+		if ($this->aset->FormValue == $this->aset->CurrentValue && is_numeric(ConvertToFloatString($this->aset->CurrentValue)))
+			$this->aset->CurrentValue = ConvertToFloatString($this->aset->CurrentValue);
+
 		// Call Row_Rendering event
 		$this->Row_Rendering();
 
@@ -1564,6 +1588,10 @@ class m_target_omset_personal_list extends m_target_omset_personal
 		// tgl_awal
 		// tgl_akhir
 		// target
+		// baseline
+		// aset
+		// created
+		// updated
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -1630,6 +1658,24 @@ class m_target_omset_personal_list extends m_target_omset_personal
 			$this->target->ViewValue = FormatNumber($this->target->ViewValue, 2, -2, -2, -2);
 			$this->target->ViewCustomAttributes = "";
 
+			// baseline
+			$this->baseline->ViewValue = $this->baseline->CurrentValue;
+			$this->baseline->ViewValue = FormatNumber($this->baseline->ViewValue, 2, -2, -2, -2);
+			$this->baseline->ViewCustomAttributes = "";
+
+			// aset
+			$this->aset->ViewValue = $this->aset->CurrentValue;
+			$this->aset->ViewValue = FormatNumber($this->aset->ViewValue, 2, -2, -2, -2);
+			$this->aset->ViewCustomAttributes = "";
+
+			// created
+			$this->created->ViewValue = $this->created->CurrentValue;
+			$this->created->ViewCustomAttributes = "";
+
+			// updated
+			$this->updated->ViewValue = $this->updated->CurrentValue;
+			$this->updated->ViewCustomAttributes = "";
+
 			// id_cabang
 			$this->id_cabang->LinkCustomAttributes = "";
 			$this->id_cabang->HrefValue = "";
@@ -1654,6 +1700,16 @@ class m_target_omset_personal_list extends m_target_omset_personal
 			$this->target->LinkCustomAttributes = "";
 			$this->target->HrefValue = "";
 			$this->target->TooltipValue = "";
+
+			// baseline
+			$this->baseline->LinkCustomAttributes = "";
+			$this->baseline->HrefValue = "";
+			$this->baseline->TooltipValue = "";
+
+			// aset
+			$this->aset->LinkCustomAttributes = "";
+			$this->aset->HrefValue = "";
+			$this->aset->TooltipValue = "";
 		}
 
 		// Call Row Rendered event

@@ -697,6 +697,12 @@ class login extends users
 				} else {
 					return FALSE;
 				}
+			} else if($level == '-1') {
+				if($status == 'Aktif'){
+					return TRUE;
+				} else {
+					return FALSE;
+				}
 			} else {
 				return TRUE;
 			}

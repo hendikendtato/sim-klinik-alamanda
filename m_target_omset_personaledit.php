@@ -95,6 +95,22 @@ loadjs.ready("head", function() {
 				elm = this.getElements("x" + infix + "_target");
 				if (elm && !ew.checkNumber(elm.value))
 					return this.onError(elm, "<?php echo JsEncode($m_target_omset_personal_edit->target->errorMessage()) ?>");
+			<?php if ($m_target_omset_personal_edit->baseline->Required) { ?>
+				elm = this.getElements("x" + infix + "_baseline");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $m_target_omset_personal_edit->baseline->caption(), $m_target_omset_personal_edit->baseline->RequiredErrorMessage)) ?>");
+			<?php } ?>
+				elm = this.getElements("x" + infix + "_baseline");
+				if (elm && !ew.checkNumber(elm.value))
+					return this.onError(elm, "<?php echo JsEncode($m_target_omset_personal_edit->baseline->errorMessage()) ?>");
+			<?php if ($m_target_omset_personal_edit->aset->Required) { ?>
+				elm = this.getElements("x" + infix + "_aset");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $m_target_omset_personal_edit->aset->caption(), $m_target_omset_personal_edit->aset->RequiredErrorMessage)) ?>");
+			<?php } ?>
+				elm = this.getElements("x" + infix + "_aset");
+				if (elm && !ew.checkNumber(elm.value))
+					return this.onError(elm, "<?php echo JsEncode($m_target_omset_personal_edit->aset->errorMessage()) ?>");
 
 				// Call Form_CustomValidate event
 				if (!this.Form_CustomValidate(fobj))
@@ -233,6 +249,26 @@ loadjs.ready(["fm_target_omset_personaledit", "datetimepicker"], function() {
 <input type="text" data-table="m_target_omset_personal" data-field="x_target" name="x_target" id="x_target" size="30" maxlength="22" placeholder="<?php echo HtmlEncode($m_target_omset_personal_edit->target->getPlaceHolder()) ?>" value="<?php echo $m_target_omset_personal_edit->target->EditValue ?>"<?php echo $m_target_omset_personal_edit->target->editAttributes() ?>>
 </span>
 <?php echo $m_target_omset_personal_edit->target->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
+<?php if ($m_target_omset_personal_edit->baseline->Visible) { // baseline ?>
+	<div id="r_baseline" class="form-group row">
+		<label id="elh_m_target_omset_personal_baseline" for="x_baseline" class="<?php echo $m_target_omset_personal_edit->LeftColumnClass ?>"><?php echo $m_target_omset_personal_edit->baseline->caption() ?><?php echo $m_target_omset_personal_edit->baseline->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $m_target_omset_personal_edit->RightColumnClass ?>"><div <?php echo $m_target_omset_personal_edit->baseline->cellAttributes() ?>>
+<span id="el_m_target_omset_personal_baseline">
+<input type="text" data-table="m_target_omset_personal" data-field="x_baseline" name="x_baseline" id="x_baseline" size="30" maxlength="22" placeholder="<?php echo HtmlEncode($m_target_omset_personal_edit->baseline->getPlaceHolder()) ?>" value="<?php echo $m_target_omset_personal_edit->baseline->EditValue ?>"<?php echo $m_target_omset_personal_edit->baseline->editAttributes() ?>>
+</span>
+<?php echo $m_target_omset_personal_edit->baseline->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
+<?php if ($m_target_omset_personal_edit->aset->Visible) { // aset ?>
+	<div id="r_aset" class="form-group row">
+		<label id="elh_m_target_omset_personal_aset" for="x_aset" class="<?php echo $m_target_omset_personal_edit->LeftColumnClass ?>"><?php echo $m_target_omset_personal_edit->aset->caption() ?><?php echo $m_target_omset_personal_edit->aset->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $m_target_omset_personal_edit->RightColumnClass ?>"><div <?php echo $m_target_omset_personal_edit->aset->cellAttributes() ?>>
+<span id="el_m_target_omset_personal_aset">
+<input type="text" data-table="m_target_omset_personal" data-field="x_aset" name="x_aset" id="x_aset" size="30" maxlength="22" placeholder="<?php echo HtmlEncode($m_target_omset_personal_edit->aset->getPlaceHolder()) ?>" value="<?php echo $m_target_omset_personal_edit->aset->EditValue ?>"<?php echo $m_target_omset_personal_edit->aset->editAttributes() ?>>
+</span>
+<?php echo $m_target_omset_personal_edit->aset->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 </div><!-- /page* -->

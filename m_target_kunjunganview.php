@@ -121,6 +121,26 @@ $m_target_kunjungan_view->showMessage();
 </td>
 	</tr>
 <?php } ?>
+<?php if ($m_target_kunjungan_view->created->Visible) { // created ?>
+	<tr id="r_created">
+		<td class="<?php echo $m_target_kunjungan_view->TableLeftColumnClass ?>"><span id="elh_m_target_kunjungan_created"><?php echo $m_target_kunjungan_view->created->caption() ?></span></td>
+		<td data-name="created" <?php echo $m_target_kunjungan_view->created->cellAttributes() ?>>
+<span id="el_m_target_kunjungan_created">
+<span<?php echo $m_target_kunjungan_view->created->viewAttributes() ?>><?php echo $m_target_kunjungan_view->created->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
+<?php if ($m_target_kunjungan_view->updated->Visible) { // updated ?>
+	<tr id="r_updated">
+		<td class="<?php echo $m_target_kunjungan_view->TableLeftColumnClass ?>"><span id="elh_m_target_kunjungan_updated"><?php echo $m_target_kunjungan_view->updated->caption() ?></span></td>
+		<td data-name="updated" <?php echo $m_target_kunjungan_view->updated->cellAttributes() ?>>
+<span id="el_m_target_kunjungan_updated">
+<span<?php echo $m_target_kunjungan_view->updated->viewAttributes() ?>><?php echo $m_target_kunjungan_view->updated->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
 </table>
 </form>
 <?php

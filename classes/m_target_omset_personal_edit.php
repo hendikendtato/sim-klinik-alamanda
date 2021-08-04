@@ -676,6 +676,10 @@ class m_target_omset_personal_edit extends m_target_omset_personal
 		$this->tgl_awal->setVisibility();
 		$this->tgl_akhir->setVisibility();
 		$this->target->setVisibility();
+		$this->baseline->setVisibility();
+		$this->aset->setVisibility();
+		$this->created->Visible = FALSE;
+		$this->updated->Visible = FALSE;
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -903,6 +907,24 @@ class m_target_omset_personal_edit extends m_target_omset_personal
 			else
 				$this->target->setFormValue($val);
 		}
+
+		// Check field name 'baseline' first before field var 'x_baseline'
+		$val = $CurrentForm->hasValue("baseline") ? $CurrentForm->getValue("baseline") : $CurrentForm->getValue("x_baseline");
+		if (!$this->baseline->IsDetailKey) {
+			if (IsApi() && $val === NULL)
+				$this->baseline->Visible = FALSE; // Disable update for API request
+			else
+				$this->baseline->setFormValue($val);
+		}
+
+		// Check field name 'aset' first before field var 'x_aset'
+		$val = $CurrentForm->hasValue("aset") ? $CurrentForm->getValue("aset") : $CurrentForm->getValue("x_aset");
+		if (!$this->aset->IsDetailKey) {
+			if (IsApi() && $val === NULL)
+				$this->aset->Visible = FALSE; // Disable update for API request
+			else
+				$this->aset->setFormValue($val);
+		}
 	}
 
 	// Restore form values
@@ -917,6 +939,8 @@ class m_target_omset_personal_edit extends m_target_omset_personal
 		$this->tgl_akhir->CurrentValue = $this->tgl_akhir->FormValue;
 		$this->tgl_akhir->CurrentValue = UnFormatDateTime($this->tgl_akhir->CurrentValue, 0);
 		$this->target->CurrentValue = $this->target->FormValue;
+		$this->baseline->CurrentValue = $this->baseline->FormValue;
+		$this->aset->CurrentValue = $this->aset->FormValue;
 	}
 
 	// Load row based on key values
@@ -960,6 +984,10 @@ class m_target_omset_personal_edit extends m_target_omset_personal
 		$this->tgl_awal->setDbValue($row['tgl_awal']);
 		$this->tgl_akhir->setDbValue($row['tgl_akhir']);
 		$this->target->setDbValue($row['target']);
+		$this->baseline->setDbValue($row['baseline']);
+		$this->aset->setDbValue($row['aset']);
+		$this->created->setDbValue($row['created']);
+		$this->updated->setDbValue($row['updated']);
 	}
 
 	// Return a row with default values
@@ -972,6 +1000,10 @@ class m_target_omset_personal_edit extends m_target_omset_personal
 		$row['tgl_awal'] = NULL;
 		$row['tgl_akhir'] = NULL;
 		$row['target'] = NULL;
+		$row['baseline'] = NULL;
+		$row['aset'] = NULL;
+		$row['created'] = NULL;
+		$row['updated'] = NULL;
 		return $row;
 	}
 
@@ -1009,6 +1041,14 @@ class m_target_omset_personal_edit extends m_target_omset_personal
 		if ($this->target->FormValue == $this->target->CurrentValue && is_numeric(ConvertToFloatString($this->target->CurrentValue)))
 			$this->target->CurrentValue = ConvertToFloatString($this->target->CurrentValue);
 
+		// Convert decimal values if posted back
+		if ($this->baseline->FormValue == $this->baseline->CurrentValue && is_numeric(ConvertToFloatString($this->baseline->CurrentValue)))
+			$this->baseline->CurrentValue = ConvertToFloatString($this->baseline->CurrentValue);
+
+		// Convert decimal values if posted back
+		if ($this->aset->FormValue == $this->aset->CurrentValue && is_numeric(ConvertToFloatString($this->aset->CurrentValue)))
+			$this->aset->CurrentValue = ConvertToFloatString($this->aset->CurrentValue);
+
 		// Call Row_Rendering event
 		$this->Row_Rendering();
 
@@ -1019,6 +1059,10 @@ class m_target_omset_personal_edit extends m_target_omset_personal
 		// tgl_awal
 		// tgl_akhir
 		// target
+		// baseline
+		// aset
+		// created
+		// updated
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -1085,6 +1129,24 @@ class m_target_omset_personal_edit extends m_target_omset_personal
 			$this->target->ViewValue = FormatNumber($this->target->ViewValue, 2, -2, -2, -2);
 			$this->target->ViewCustomAttributes = "";
 
+			// baseline
+			$this->baseline->ViewValue = $this->baseline->CurrentValue;
+			$this->baseline->ViewValue = FormatNumber($this->baseline->ViewValue, 2, -2, -2, -2);
+			$this->baseline->ViewCustomAttributes = "";
+
+			// aset
+			$this->aset->ViewValue = $this->aset->CurrentValue;
+			$this->aset->ViewValue = FormatNumber($this->aset->ViewValue, 2, -2, -2, -2);
+			$this->aset->ViewCustomAttributes = "";
+
+			// created
+			$this->created->ViewValue = $this->created->CurrentValue;
+			$this->created->ViewCustomAttributes = "";
+
+			// updated
+			$this->updated->ViewValue = $this->updated->CurrentValue;
+			$this->updated->ViewCustomAttributes = "";
+
 			// id_target_omset_personal
 			$this->id_target_omset_personal->LinkCustomAttributes = "";
 			$this->id_target_omset_personal->HrefValue = "";
@@ -1114,6 +1176,16 @@ class m_target_omset_personal_edit extends m_target_omset_personal
 			$this->target->LinkCustomAttributes = "";
 			$this->target->HrefValue = "";
 			$this->target->TooltipValue = "";
+
+			// baseline
+			$this->baseline->LinkCustomAttributes = "";
+			$this->baseline->HrefValue = "";
+			$this->baseline->TooltipValue = "";
+
+			// aset
+			$this->aset->LinkCustomAttributes = "";
+			$this->aset->HrefValue = "";
+			$this->aset->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_EDIT) { // Edit row
 
 			// id_target_omset_personal
@@ -1191,6 +1263,24 @@ class m_target_omset_personal_edit extends m_target_omset_personal
 				$this->target->EditValue = FormatNumber($this->target->EditValue, -2, -2, -2, -2);
 			
 
+			// baseline
+			$this->baseline->EditAttrs["class"] = "form-control";
+			$this->baseline->EditCustomAttributes = "";
+			$this->baseline->EditValue = HtmlEncode($this->baseline->CurrentValue);
+			$this->baseline->PlaceHolder = RemoveHtml($this->baseline->caption());
+			if (strval($this->baseline->EditValue) != "" && is_numeric($this->baseline->EditValue))
+				$this->baseline->EditValue = FormatNumber($this->baseline->EditValue, -2, -2, -2, -2);
+			
+
+			// aset
+			$this->aset->EditAttrs["class"] = "form-control";
+			$this->aset->EditCustomAttributes = "";
+			$this->aset->EditValue = HtmlEncode($this->aset->CurrentValue);
+			$this->aset->PlaceHolder = RemoveHtml($this->aset->caption());
+			if (strval($this->aset->EditValue) != "" && is_numeric($this->aset->EditValue))
+				$this->aset->EditValue = FormatNumber($this->aset->EditValue, -2, -2, -2, -2);
+			
+
 			// Edit refer script
 			// id_target_omset_personal
 
@@ -1216,6 +1306,14 @@ class m_target_omset_personal_edit extends m_target_omset_personal
 			// target
 			$this->target->LinkCustomAttributes = "";
 			$this->target->HrefValue = "";
+
+			// baseline
+			$this->baseline->LinkCustomAttributes = "";
+			$this->baseline->HrefValue = "";
+
+			// aset
+			$this->aset->LinkCustomAttributes = "";
+			$this->aset->HrefValue = "";
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -1275,6 +1373,22 @@ class m_target_omset_personal_edit extends m_target_omset_personal
 		if (!CheckNumber($this->target->FormValue)) {
 			AddMessage($FormError, $this->target->errorMessage());
 		}
+		if ($this->baseline->Required) {
+			if (!$this->baseline->IsDetailKey && $this->baseline->FormValue != NULL && $this->baseline->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->baseline->caption(), $this->baseline->RequiredErrorMessage));
+			}
+		}
+		if (!CheckNumber($this->baseline->FormValue)) {
+			AddMessage($FormError, $this->baseline->errorMessage());
+		}
+		if ($this->aset->Required) {
+			if (!$this->aset->IsDetailKey && $this->aset->FormValue != NULL && $this->aset->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->aset->caption(), $this->aset->RequiredErrorMessage));
+			}
+		}
+		if (!CheckNumber($this->aset->FormValue)) {
+			AddMessage($FormError, $this->aset->errorMessage());
+		}
 
 		// Return validate result
 		$validateForm = ($FormError == "");
@@ -1326,6 +1440,12 @@ class m_target_omset_personal_edit extends m_target_omset_personal
 
 			// target
 			$this->target->setDbValueDef($rsnew, $this->target->CurrentValue, NULL, $this->target->ReadOnly);
+
+			// baseline
+			$this->baseline->setDbValueDef($rsnew, $this->baseline->CurrentValue, NULL, $this->baseline->ReadOnly);
+
+			// aset
+			$this->aset->setDbValueDef($rsnew, $this->aset->CurrentValue, NULL, $this->aset->ReadOnly);
 
 			// Call Row Updating event
 			$updateRow = $this->Row_Updating($rsold, $rsnew);

@@ -131,6 +131,46 @@ $m_target_omset_personal_view->showMessage();
 </td>
 	</tr>
 <?php } ?>
+<?php if ($m_target_omset_personal_view->baseline->Visible) { // baseline ?>
+	<tr id="r_baseline">
+		<td class="<?php echo $m_target_omset_personal_view->TableLeftColumnClass ?>"><span id="elh_m_target_omset_personal_baseline"><?php echo $m_target_omset_personal_view->baseline->caption() ?></span></td>
+		<td data-name="baseline" <?php echo $m_target_omset_personal_view->baseline->cellAttributes() ?>>
+<span id="el_m_target_omset_personal_baseline">
+<span<?php echo $m_target_omset_personal_view->baseline->viewAttributes() ?>><?php echo $m_target_omset_personal_view->baseline->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
+<?php if ($m_target_omset_personal_view->aset->Visible) { // aset ?>
+	<tr id="r_aset">
+		<td class="<?php echo $m_target_omset_personal_view->TableLeftColumnClass ?>"><span id="elh_m_target_omset_personal_aset"><?php echo $m_target_omset_personal_view->aset->caption() ?></span></td>
+		<td data-name="aset" <?php echo $m_target_omset_personal_view->aset->cellAttributes() ?>>
+<span id="el_m_target_omset_personal_aset">
+<span<?php echo $m_target_omset_personal_view->aset->viewAttributes() ?>><?php echo $m_target_omset_personal_view->aset->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
+<?php if ($m_target_omset_personal_view->created->Visible) { // created ?>
+	<tr id="r_created">
+		<td class="<?php echo $m_target_omset_personal_view->TableLeftColumnClass ?>"><span id="elh_m_target_omset_personal_created"><?php echo $m_target_omset_personal_view->created->caption() ?></span></td>
+		<td data-name="created" <?php echo $m_target_omset_personal_view->created->cellAttributes() ?>>
+<span id="el_m_target_omset_personal_created">
+<span<?php echo $m_target_omset_personal_view->created->viewAttributes() ?>><?php echo $m_target_omset_personal_view->created->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
+<?php if ($m_target_omset_personal_view->updated->Visible) { // updated ?>
+	<tr id="r_updated">
+		<td class="<?php echo $m_target_omset_personal_view->TableLeftColumnClass ?>"><span id="elh_m_target_omset_personal_updated"><?php echo $m_target_omset_personal_view->updated->caption() ?></span></td>
+		<td data-name="updated" <?php echo $m_target_omset_personal_view->updated->cellAttributes() ?>>
+<span id="el_m_target_omset_personal_updated">
+<span<?php echo $m_target_omset_personal_view->updated->viewAttributes() ?>><?php echo $m_target_omset_personal_view->updated->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
 </table>
 </form>
 <?php

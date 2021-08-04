@@ -582,6 +582,8 @@ class m_target_perawatan_delete extends m_target_perawatan
 		$this->tgl_awal->setVisibility();
 		$this->tgl_akhir->setVisibility();
 		$this->target->setVisibility();
+		$this->created->Visible = FALSE;
+		$this->updated->Visible = FALSE;
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -735,6 +737,8 @@ class m_target_perawatan_delete extends m_target_perawatan
 		$this->tgl_awal->setDbValue($row['tgl_awal']);
 		$this->tgl_akhir->setDbValue($row['tgl_akhir']);
 		$this->target->setDbValue($row['target']);
+		$this->created->setDbValue($row['created']);
+		$this->updated->setDbValue($row['updated']);
 	}
 
 	// Return a row with default values
@@ -747,6 +751,8 @@ class m_target_perawatan_delete extends m_target_perawatan
 		$row['tgl_awal'] = NULL;
 		$row['tgl_akhir'] = NULL;
 		$row['target'] = NULL;
+		$row['created'] = NULL;
+		$row['updated'] = NULL;
 		return $row;
 	}
 
@@ -756,8 +762,12 @@ class m_target_perawatan_delete extends m_target_perawatan
 		global $Security, $Language, $CurrentLanguage;
 
 		// Initialize URLs
-		// Call Row_Rendering event
+		// Convert decimal values if posted back
 
+		if ($this->target->FormValue == $this->target->CurrentValue && is_numeric(ConvertToFloatString($this->target->CurrentValue)))
+			$this->target->CurrentValue = ConvertToFloatString($this->target->CurrentValue);
+
+		// Call Row_Rendering event
 		$this->Row_Rendering();
 
 		// Common render codes for all row types
@@ -767,6 +777,8 @@ class m_target_perawatan_delete extends m_target_perawatan
 		// tgl_awal
 		// tgl_akhir
 		// target
+		// created
+		// updated
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -842,7 +854,16 @@ class m_target_perawatan_delete extends m_target_perawatan
 
 			// target
 			$this->target->ViewValue = $this->target->CurrentValue;
+			$this->target->ViewValue = FormatNumber($this->target->ViewValue, 2, -2, -2, -2);
 			$this->target->ViewCustomAttributes = "";
+
+			// created
+			$this->created->ViewValue = $this->created->CurrentValue;
+			$this->created->ViewCustomAttributes = "";
+
+			// updated
+			$this->updated->ViewValue = $this->updated->CurrentValue;
+			$this->updated->ViewCustomAttributes = "";
 
 			// id_cabang
 			$this->id_cabang->LinkCustomAttributes = "";

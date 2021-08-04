@@ -31,6 +31,10 @@ class m_target_omset_personal extends DbTable
 	public $tgl_awal;
 	public $tgl_akhir;
 	public $target;
+	public $baseline;
+	public $aset;
+	public $created;
+	public $updated;
 
 	// Constructor
 	public function __construct()
@@ -108,6 +112,28 @@ class m_target_omset_personal extends DbTable
 		$this->target->Sortable = TRUE; // Allow sort
 		$this->target->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
 		$this->fields['target'] = &$this->target;
+
+		// baseline
+		$this->baseline = new DbField('m_target_omset_personal', 'm_target_omset_personal', 'x_baseline', 'baseline', '`baseline`', '`baseline`', 5, 22, -1, FALSE, '`baseline`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->baseline->Sortable = TRUE; // Allow sort
+		$this->baseline->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
+		$this->fields['baseline'] = &$this->baseline;
+
+		// aset
+		$this->aset = new DbField('m_target_omset_personal', 'm_target_omset_personal', 'x_aset', 'aset', '`aset`', '`aset`', 5, 22, -1, FALSE, '`aset`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->aset->Sortable = TRUE; // Allow sort
+		$this->aset->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
+		$this->fields['aset'] = &$this->aset;
+
+		// created
+		$this->created = new DbField('m_target_omset_personal', 'm_target_omset_personal', 'x_created', 'created', '`created`', '`created`', 200, 255, -1, FALSE, '`created`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->created->Sortable = TRUE; // Allow sort
+		$this->fields['created'] = &$this->created;
+
+		// updated
+		$this->updated = new DbField('m_target_omset_personal', 'm_target_omset_personal', 'x_updated', 'updated', '`updated`', '`updated`', 200, 255, -1, FALSE, '`updated`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->updated->Sortable = TRUE; // Allow sort
+		$this->fields['updated'] = &$this->updated;
 	}
 
 	// Field Visibility
@@ -469,6 +495,10 @@ class m_target_omset_personal extends DbTable
 		$this->tgl_awal->DbValue = $row['tgl_awal'];
 		$this->tgl_akhir->DbValue = $row['tgl_akhir'];
 		$this->target->DbValue = $row['target'];
+		$this->baseline->DbValue = $row['baseline'];
+		$this->aset->DbValue = $row['aset'];
+		$this->created->DbValue = $row['created'];
+		$this->updated->DbValue = $row['updated'];
 	}
 
 	// Delete uploaded files
@@ -705,6 +735,10 @@ class m_target_omset_personal extends DbTable
 		$this->tgl_awal->setDbValue($rs->fields('tgl_awal'));
 		$this->tgl_akhir->setDbValue($rs->fields('tgl_akhir'));
 		$this->target->setDbValue($rs->fields('target'));
+		$this->baseline->setDbValue($rs->fields('baseline'));
+		$this->aset->setDbValue($rs->fields('aset'));
+		$this->created->setDbValue($rs->fields('created'));
+		$this->updated->setDbValue($rs->fields('updated'));
 	}
 
 	// Render list row values
@@ -725,6 +759,10 @@ class m_target_omset_personal extends DbTable
 		// tgl_awal
 		// tgl_akhir
 		// target
+		// baseline
+		// aset
+		// created
+		// updated
 		// id_target_omset_personal
 
 		$this->id_target_omset_personal->ViewValue = $this->id_target_omset_personal->CurrentValue;
@@ -789,6 +827,24 @@ class m_target_omset_personal extends DbTable
 		$this->target->ViewValue = FormatNumber($this->target->ViewValue, 2, -2, -2, -2);
 		$this->target->ViewCustomAttributes = "";
 
+		// baseline
+		$this->baseline->ViewValue = $this->baseline->CurrentValue;
+		$this->baseline->ViewValue = FormatNumber($this->baseline->ViewValue, 2, -2, -2, -2);
+		$this->baseline->ViewCustomAttributes = "";
+
+		// aset
+		$this->aset->ViewValue = $this->aset->CurrentValue;
+		$this->aset->ViewValue = FormatNumber($this->aset->ViewValue, 2, -2, -2, -2);
+		$this->aset->ViewCustomAttributes = "";
+
+		// created
+		$this->created->ViewValue = $this->created->CurrentValue;
+		$this->created->ViewCustomAttributes = "";
+
+		// updated
+		$this->updated->ViewValue = $this->updated->CurrentValue;
+		$this->updated->ViewCustomAttributes = "";
+
 		// id_target_omset_personal
 		$this->id_target_omset_personal->LinkCustomAttributes = "";
 		$this->id_target_omset_personal->HrefValue = "";
@@ -818,6 +874,26 @@ class m_target_omset_personal extends DbTable
 		$this->target->LinkCustomAttributes = "";
 		$this->target->HrefValue = "";
 		$this->target->TooltipValue = "";
+
+		// baseline
+		$this->baseline->LinkCustomAttributes = "";
+		$this->baseline->HrefValue = "";
+		$this->baseline->TooltipValue = "";
+
+		// aset
+		$this->aset->LinkCustomAttributes = "";
+		$this->aset->HrefValue = "";
+		$this->aset->TooltipValue = "";
+
+		// created
+		$this->created->LinkCustomAttributes = "";
+		$this->created->HrefValue = "";
+		$this->created->TooltipValue = "";
+
+		// updated
+		$this->updated->LinkCustomAttributes = "";
+		$this->updated->HrefValue = "";
+		$this->updated->TooltipValue = "";
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -869,6 +945,40 @@ class m_target_omset_personal extends DbTable
 			$this->target->EditValue = FormatNumber($this->target->EditValue, -2, -2, -2, -2);
 		
 
+		// baseline
+		$this->baseline->EditAttrs["class"] = "form-control";
+		$this->baseline->EditCustomAttributes = "";
+		$this->baseline->EditValue = $this->baseline->CurrentValue;
+		$this->baseline->PlaceHolder = RemoveHtml($this->baseline->caption());
+		if (strval($this->baseline->EditValue) != "" && is_numeric($this->baseline->EditValue))
+			$this->baseline->EditValue = FormatNumber($this->baseline->EditValue, -2, -2, -2, -2);
+		
+
+		// aset
+		$this->aset->EditAttrs["class"] = "form-control";
+		$this->aset->EditCustomAttributes = "";
+		$this->aset->EditValue = $this->aset->CurrentValue;
+		$this->aset->PlaceHolder = RemoveHtml($this->aset->caption());
+		if (strval($this->aset->EditValue) != "" && is_numeric($this->aset->EditValue))
+			$this->aset->EditValue = FormatNumber($this->aset->EditValue, -2, -2, -2, -2);
+		
+
+		// created
+		$this->created->EditAttrs["class"] = "form-control";
+		$this->created->EditCustomAttributes = "";
+		if (!$this->created->Raw)
+			$this->created->CurrentValue = HtmlDecode($this->created->CurrentValue);
+		$this->created->EditValue = $this->created->CurrentValue;
+		$this->created->PlaceHolder = RemoveHtml($this->created->caption());
+
+		// updated
+		$this->updated->EditAttrs["class"] = "form-control";
+		$this->updated->EditCustomAttributes = "";
+		if (!$this->updated->Raw)
+			$this->updated->CurrentValue = HtmlDecode($this->updated->CurrentValue);
+		$this->updated->EditValue = $this->updated->CurrentValue;
+		$this->updated->PlaceHolder = RemoveHtml($this->updated->caption());
+
 		// Call Row Rendered event
 		$this->Row_Rendered();
 	}
@@ -904,6 +1014,10 @@ class m_target_omset_personal extends DbTable
 					$doc->exportCaption($this->tgl_awal);
 					$doc->exportCaption($this->tgl_akhir);
 					$doc->exportCaption($this->target);
+					$doc->exportCaption($this->baseline);
+					$doc->exportCaption($this->aset);
+					$doc->exportCaption($this->created);
+					$doc->exportCaption($this->updated);
 				} else {
 					$doc->exportCaption($this->id_target_omset_personal);
 					$doc->exportCaption($this->id_cabang);
@@ -911,6 +1025,10 @@ class m_target_omset_personal extends DbTable
 					$doc->exportCaption($this->tgl_awal);
 					$doc->exportCaption($this->tgl_akhir);
 					$doc->exportCaption($this->target);
+					$doc->exportCaption($this->baseline);
+					$doc->exportCaption($this->aset);
+					$doc->exportCaption($this->created);
+					$doc->exportCaption($this->updated);
 				}
 				$doc->endExportRow();
 			}
@@ -948,6 +1066,10 @@ class m_target_omset_personal extends DbTable
 						$doc->exportField($this->tgl_awal);
 						$doc->exportField($this->tgl_akhir);
 						$doc->exportField($this->target);
+						$doc->exportField($this->baseline);
+						$doc->exportField($this->aset);
+						$doc->exportField($this->created);
+						$doc->exportField($this->updated);
 					} else {
 						$doc->exportField($this->id_target_omset_personal);
 						$doc->exportField($this->id_cabang);
@@ -955,6 +1077,10 @@ class m_target_omset_personal extends DbTable
 						$doc->exportField($this->tgl_awal);
 						$doc->exportField($this->tgl_akhir);
 						$doc->exportField($this->target);
+						$doc->exportField($this->baseline);
+						$doc->exportField($this->aset);
+						$doc->exportField($this->created);
+						$doc->exportField($this->updated);
 					}
 					$doc->endExportRow($rowCnt);
 				}
@@ -1022,7 +1148,13 @@ class m_target_omset_personal extends DbTable
 
 		// Enter your code here
 		// To cancel, set return value to FALSE
+		// Action
 
+		date_default_timezone_set("Asia/Jakarta");	
+		$action_date = date("d M Y");
+		$user = CurrentUserInfo("id_pegawai");
+		$pegawai = ExecuteScalar("SELECT nama_pegawai FROM m_pegawai WHERE id_pegawai='$user'");
+		$rsnew["created"] = "By " .$pegawai. " at " .$action_date. " [". date("h:i a"). "]";
 		return TRUE;
 	}
 
@@ -1037,7 +1169,13 @@ class m_target_omset_personal extends DbTable
 
 		// Enter your code here
 		// To cancel, set return value to FALSE
+		// Action
 
+		date_default_timezone_set("Asia/Jakarta");	
+		$action_date = date("d M Y");
+		$user = CurrentUserInfo("id_pegawai");
+		$pegawai = ExecuteScalar("SELECT nama_pegawai FROM m_pegawai WHERE id_pegawai='$user'");
+		$rsnew["updated"] = "By " .$pegawai. " at " .$action_date. " [". date("h:i a"). "]";
 		return TRUE;
 	}
 

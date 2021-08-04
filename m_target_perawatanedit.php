@@ -92,6 +92,9 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $m_target_perawatan_edit->target->caption(), $m_target_perawatan_edit->target->RequiredErrorMessage)) ?>");
 			<?php } ?>
+				elm = this.getElements("x" + infix + "_target");
+				if (elm && !ew.checkNumber(elm.value))
+					return this.onError(elm, "<?php echo JsEncode($m_target_perawatan_edit->target->errorMessage()) ?>");
 
 				// Call Form_CustomValidate event
 				if (!this.Form_CustomValidate(fobj))
@@ -226,7 +229,7 @@ loadjs.ready(["fm_target_perawatanedit", "datetimepicker"], function() {
 		<label id="elh_m_target_perawatan_target" for="x_target" class="<?php echo $m_target_perawatan_edit->LeftColumnClass ?>"><?php echo $m_target_perawatan_edit->target->caption() ?><?php echo $m_target_perawatan_edit->target->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $m_target_perawatan_edit->RightColumnClass ?>"><div <?php echo $m_target_perawatan_edit->target->cellAttributes() ?>>
 <span id="el_m_target_perawatan_target">
-<input type="text" data-table="m_target_perawatan" data-field="x_target" name="x_target" id="x_target" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($m_target_perawatan_edit->target->getPlaceHolder()) ?>" value="<?php echo $m_target_perawatan_edit->target->EditValue ?>"<?php echo $m_target_perawatan_edit->target->editAttributes() ?>>
+<input type="text" data-table="m_target_perawatan" data-field="x_target" name="x_target" id="x_target" size="30" maxlength="22" placeholder="<?php echo HtmlEncode($m_target_perawatan_edit->target->getPlaceHolder()) ?>" value="<?php echo $m_target_perawatan_edit->target->EditValue ?>"<?php echo $m_target_perawatan_edit->target->editAttributes() ?>>
 </span>
 <?php echo $m_target_perawatan_edit->target->CustomMsg ?></div></div>
 	</div>

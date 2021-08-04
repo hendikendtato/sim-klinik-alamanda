@@ -681,6 +681,8 @@ class m_target_omset_cabang_add extends m_target_omset_cabang
 		$this->target->setVisibility();
 		$this->baseline->setVisibility();
 		$this->aset->setVisibility();
+		$this->created->Visible = FALSE;
+		$this->updated->Visible = FALSE;
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -834,6 +836,10 @@ class m_target_omset_cabang_add extends m_target_omset_cabang
 		$this->baseline->OldValue = $this->baseline->CurrentValue;
 		$this->aset->CurrentValue = NULL;
 		$this->aset->OldValue = $this->aset->CurrentValue;
+		$this->created->CurrentValue = NULL;
+		$this->created->OldValue = $this->created->CurrentValue;
+		$this->updated->CurrentValue = NULL;
+		$this->updated->OldValue = $this->updated->CurrentValue;
 	}
 
 	// Load form values
@@ -959,6 +965,8 @@ class m_target_omset_cabang_add extends m_target_omset_cabang
 		$this->target->setDbValue($row['target']);
 		$this->baseline->setDbValue($row['baseline']);
 		$this->aset->setDbValue($row['aset']);
+		$this->created->setDbValue($row['created']);
+		$this->updated->setDbValue($row['updated']);
 	}
 
 	// Return a row with default values
@@ -973,6 +981,8 @@ class m_target_omset_cabang_add extends m_target_omset_cabang
 		$row['target'] = $this->target->CurrentValue;
 		$row['baseline'] = $this->baseline->CurrentValue;
 		$row['aset'] = $this->aset->CurrentValue;
+		$row['created'] = $this->created->CurrentValue;
+		$row['updated'] = $this->updated->CurrentValue;
 		return $row;
 	}
 
@@ -1029,6 +1039,8 @@ class m_target_omset_cabang_add extends m_target_omset_cabang
 		// target
 		// baseline
 		// aset
+		// created
+		// updated
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -1082,6 +1094,14 @@ class m_target_omset_cabang_add extends m_target_omset_cabang
 			$this->aset->ViewValue = $this->aset->CurrentValue;
 			$this->aset->ViewValue = FormatNumber($this->aset->ViewValue, 2, -2, -2, -2);
 			$this->aset->ViewCustomAttributes = "";
+
+			// created
+			$this->created->ViewValue = $this->created->CurrentValue;
+			$this->created->ViewCustomAttributes = "";
+
+			// updated
+			$this->updated->ViewValue = $this->updated->CurrentValue;
+			$this->updated->ViewCustomAttributes = "";
 
 			// id_cabang
 			$this->id_cabang->LinkCustomAttributes = "";

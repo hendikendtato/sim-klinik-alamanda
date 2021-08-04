@@ -677,6 +677,8 @@ class m_target_omset_cabang_edit extends m_target_omset_cabang
 		$this->target->setVisibility();
 		$this->baseline->setVisibility();
 		$this->aset->setVisibility();
+		$this->created->Visible = FALSE;
+		$this->updated->Visible = FALSE;
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -971,6 +973,8 @@ class m_target_omset_cabang_edit extends m_target_omset_cabang
 		$this->target->setDbValue($row['target']);
 		$this->baseline->setDbValue($row['baseline']);
 		$this->aset->setDbValue($row['aset']);
+		$this->created->setDbValue($row['created']);
+		$this->updated->setDbValue($row['updated']);
 	}
 
 	// Return a row with default values
@@ -984,6 +988,8 @@ class m_target_omset_cabang_edit extends m_target_omset_cabang
 		$row['target'] = NULL;
 		$row['baseline'] = NULL;
 		$row['aset'] = NULL;
+		$row['created'] = NULL;
+		$row['updated'] = NULL;
 		return $row;
 	}
 
@@ -1040,6 +1046,8 @@ class m_target_omset_cabang_edit extends m_target_omset_cabang
 		// target
 		// baseline
 		// aset
+		// created
+		// updated
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -1093,6 +1101,14 @@ class m_target_omset_cabang_edit extends m_target_omset_cabang
 			$this->aset->ViewValue = $this->aset->CurrentValue;
 			$this->aset->ViewValue = FormatNumber($this->aset->ViewValue, 2, -2, -2, -2);
 			$this->aset->ViewCustomAttributes = "";
+
+			// created
+			$this->created->ViewValue = $this->created->CurrentValue;
+			$this->created->ViewCustomAttributes = "";
+
+			// updated
+			$this->updated->ViewValue = $this->updated->CurrentValue;
+			$this->updated->ViewCustomAttributes = "";
 
 			// id_target_omset_cabang
 			$this->id_target_omset_cabang->LinkCustomAttributes = "";

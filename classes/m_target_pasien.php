@@ -30,6 +30,8 @@ class m_target_pasien extends DbTable
 	public $tgl_awal;
 	public $tgl_akhir;
 	public $target;
+	public $created;
+	public $updated;
 
 	// Constructor
 	public function __construct()
@@ -94,9 +96,20 @@ class m_target_pasien extends DbTable
 		$this->fields['tgl_akhir'] = &$this->tgl_akhir;
 
 		// target
-		$this->target = new DbField('m_target_pasien', 'm_target_pasien', 'x_target', 'target', '`target`', '`target`', 200, 50, -1, FALSE, '`target`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->target = new DbField('m_target_pasien', 'm_target_pasien', 'x_target', 'target', '`target`', '`target`', 5, 22, -1, FALSE, '`target`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->target->Sortable = TRUE; // Allow sort
+		$this->target->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
 		$this->fields['target'] = &$this->target;
+
+		// created
+		$this->created = new DbField('m_target_pasien', 'm_target_pasien', 'x_created', 'created', '`created`', '`created`', 200, 255, -1, FALSE, '`created`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->created->Sortable = TRUE; // Allow sort
+		$this->fields['created'] = &$this->created;
+
+		// updated
+		$this->updated = new DbField('m_target_pasien', 'm_target_pasien', 'x_updated', 'updated', '`updated`', '`updated`', 200, 255, -1, FALSE, '`updated`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->updated->Sortable = TRUE; // Allow sort
+		$this->fields['updated'] = &$this->updated;
 	}
 
 	// Field Visibility
@@ -457,6 +470,8 @@ class m_target_pasien extends DbTable
 		$this->tgl_awal->DbValue = $row['tgl_awal'];
 		$this->tgl_akhir->DbValue = $row['tgl_akhir'];
 		$this->target->DbValue = $row['target'];
+		$this->created->DbValue = $row['created'];
+		$this->updated->DbValue = $row['updated'];
 	}
 
 	// Delete uploaded files
@@ -692,6 +707,8 @@ class m_target_pasien extends DbTable
 		$this->tgl_awal->setDbValue($rs->fields('tgl_awal'));
 		$this->tgl_akhir->setDbValue($rs->fields('tgl_akhir'));
 		$this->target->setDbValue($rs->fields('target'));
+		$this->created->setDbValue($rs->fields('created'));
+		$this->updated->setDbValue($rs->fields('updated'));
 	}
 
 	// Render list row values
@@ -708,6 +725,8 @@ class m_target_pasien extends DbTable
 		// tgl_awal
 		// tgl_akhir
 		// target
+		// created
+		// updated
 		// id_target_pasien
 
 		$this->id_target_pasien->ViewValue = $this->id_target_pasien->CurrentValue;
@@ -747,7 +766,16 @@ class m_target_pasien extends DbTable
 
 		// target
 		$this->target->ViewValue = $this->target->CurrentValue;
+		$this->target->ViewValue = FormatNumber($this->target->ViewValue, 2, -2, -2, -2);
 		$this->target->ViewCustomAttributes = "";
+
+		// created
+		$this->created->ViewValue = $this->created->CurrentValue;
+		$this->created->ViewCustomAttributes = "";
+
+		// updated
+		$this->updated->ViewValue = $this->updated->CurrentValue;
+		$this->updated->ViewCustomAttributes = "";
 
 		// id_target_pasien
 		$this->id_target_pasien->LinkCustomAttributes = "";
@@ -773,6 +801,16 @@ class m_target_pasien extends DbTable
 		$this->target->LinkCustomAttributes = "";
 		$this->target->HrefValue = "";
 		$this->target->TooltipValue = "";
+
+		// created
+		$this->created->LinkCustomAttributes = "";
+		$this->created->HrefValue = "";
+		$this->created->TooltipValue = "";
+
+		// updated
+		$this->updated->LinkCustomAttributes = "";
+		$this->updated->HrefValue = "";
+		$this->updated->TooltipValue = "";
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -814,10 +852,27 @@ class m_target_pasien extends DbTable
 		// target
 		$this->target->EditAttrs["class"] = "form-control";
 		$this->target->EditCustomAttributes = "";
-		if (!$this->target->Raw)
-			$this->target->CurrentValue = HtmlDecode($this->target->CurrentValue);
 		$this->target->EditValue = $this->target->CurrentValue;
 		$this->target->PlaceHolder = RemoveHtml($this->target->caption());
+		if (strval($this->target->EditValue) != "" && is_numeric($this->target->EditValue))
+			$this->target->EditValue = FormatNumber($this->target->EditValue, -2, -2, -2, -2);
+		
+
+		// created
+		$this->created->EditAttrs["class"] = "form-control";
+		$this->created->EditCustomAttributes = "";
+		if (!$this->created->Raw)
+			$this->created->CurrentValue = HtmlDecode($this->created->CurrentValue);
+		$this->created->EditValue = $this->created->CurrentValue;
+		$this->created->PlaceHolder = RemoveHtml($this->created->caption());
+
+		// updated
+		$this->updated->EditAttrs["class"] = "form-control";
+		$this->updated->EditCustomAttributes = "";
+		if (!$this->updated->Raw)
+			$this->updated->CurrentValue = HtmlDecode($this->updated->CurrentValue);
+		$this->updated->EditValue = $this->updated->CurrentValue;
+		$this->updated->PlaceHolder = RemoveHtml($this->updated->caption());
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -853,12 +908,16 @@ class m_target_pasien extends DbTable
 					$doc->exportCaption($this->tgl_awal);
 					$doc->exportCaption($this->tgl_akhir);
 					$doc->exportCaption($this->target);
+					$doc->exportCaption($this->created);
+					$doc->exportCaption($this->updated);
 				} else {
 					$doc->exportCaption($this->id_target_pasien);
 					$doc->exportCaption($this->id_cabang);
 					$doc->exportCaption($this->tgl_awal);
 					$doc->exportCaption($this->tgl_akhir);
 					$doc->exportCaption($this->target);
+					$doc->exportCaption($this->created);
+					$doc->exportCaption($this->updated);
 				}
 				$doc->endExportRow();
 			}
@@ -895,12 +954,16 @@ class m_target_pasien extends DbTable
 						$doc->exportField($this->tgl_awal);
 						$doc->exportField($this->tgl_akhir);
 						$doc->exportField($this->target);
+						$doc->exportField($this->created);
+						$doc->exportField($this->updated);
 					} else {
 						$doc->exportField($this->id_target_pasien);
 						$doc->exportField($this->id_cabang);
 						$doc->exportField($this->tgl_awal);
 						$doc->exportField($this->tgl_akhir);
 						$doc->exportField($this->target);
+						$doc->exportField($this->created);
+						$doc->exportField($this->updated);
 					}
 					$doc->endExportRow($rowCnt);
 				}
@@ -968,7 +1031,13 @@ class m_target_pasien extends DbTable
 
 		// Enter your code here
 		// To cancel, set return value to FALSE
+		// Action
 
+		date_default_timezone_set("Asia/Jakarta");	
+		$action_date = date("d M Y");
+		$user = CurrentUserInfo("id_pegawai");
+		$pegawai = ExecuteScalar("SELECT nama_pegawai FROM m_pegawai WHERE id_pegawai='$user'");
+		$rsnew["created"] = "By " .$pegawai. " at " .$action_date. " [". date("h:i a"). "]";
 		return TRUE;
 	}
 
@@ -983,7 +1052,13 @@ class m_target_pasien extends DbTable
 
 		// Enter your code here
 		// To cancel, set return value to FALSE
+		// Action
 
+		date_default_timezone_set("Asia/Jakarta");	
+		$action_date = date("d M Y");
+		$user = CurrentUserInfo("id_pegawai");
+		$pegawai = ExecuteScalar("SELECT nama_pegawai FROM m_pegawai WHERE id_pegawai='$user'");
+		$rsnew["updated"] = "By " .$pegawai. " at " .$action_date. " [". date("h:i a"). "]";
 		return TRUE;
 	}
 

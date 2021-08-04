@@ -1830,6 +1830,11 @@ class penjualan_view extends penjualan
 			$this->id_kartu->HrefValue = "";
 			$this->id_kartu->TooltipValue = "";
 
+			// jumlah_voucher
+			$this->jumlah_voucher->LinkCustomAttributes = "";
+			$this->jumlah_voucher->HrefValue = "";
+			$this->jumlah_voucher->TooltipValue = "";
+
 			// sales
 			$this->sales->LinkCustomAttributes = "";
 			$this->sales->HrefValue = "";
