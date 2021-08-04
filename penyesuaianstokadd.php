@@ -154,6 +154,7 @@ loadjs.ready(["fpenyesuaianstokadd", "datetimepicker"], function() {
 		<label id="elh_penyesuaianstok_id_klinik" for="x_id_klinik" class="<?php echo $penyesuaianstok_add->LeftColumnClass ?>"><?php echo $penyesuaianstok_add->id_klinik->caption() ?><?php echo $penyesuaianstok_add->id_klinik->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $penyesuaianstok_add->RightColumnClass ?>"><div <?php echo $penyesuaianstok_add->id_klinik->cellAttributes() ?>>
 <span id="el_penyesuaianstok_id_klinik">
+<?php $penyesuaianstok_add->id_klinik->EditAttrs->prepend("onchange", "ew.updateOptions.call(this);"); ?>
 <div class="input-group">
 	<select class="custom-select ew-custom-select" data-table="penyesuaianstok" data-field="x_id_klinik" data-value-separator="<?php echo $penyesuaianstok_add->id_klinik->displayValueSeparatorAttribute() ?>" id="x_id_klinik" name="x_id_klinik"<?php echo $penyesuaianstok_add->id_klinik->editAttributes() ?>>
 			<?php echo $penyesuaianstok_add->id_klinik->selectOptionListHtml("x_id_klinik") ?>
