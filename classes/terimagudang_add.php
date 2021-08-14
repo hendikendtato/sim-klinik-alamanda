@@ -1486,8 +1486,16 @@ class terimagudang_add extends terimagudang
 	function Page_Render() {
 
 		//echo "Page Render";
-		$default_support = ExecuteScalar("SELECT id_klinik FROM m_klinik WHERE nama_klinik LIKE '%Support%'");
-		$this->id_klinik->CurrentValue = $default_support;	
+		$klinik = CurrentUserInfo("id_klinik");
+		if($klinik != '' OR $klinik != FALSE){
+			$this->klinik->CurrentValue = $klinik; 
+		}
+		$pegawai = CurrentUserInfo("id_pegawai");
+		if($pegawai != '' OR $pegawai != FALSE){
+			$this->diterima->CurrentValue = $pegawai;
+
+			//$this->diterima->ReadOnly = TRUE; 
+		}	
 	}
 
 	// Page Data Rendering event

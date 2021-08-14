@@ -1165,6 +1165,10 @@ class terimagudang extends DbTable
 	function Recordset_Selecting(&$filter) {
 
 		// Enter your code here
+		$id_klinik = CurrentUserInfo("id_klinik");
+		if($id_klinik != '' OR $id_klinik != FALSE) {
+			AddFilter($filter, "id_klinik = '".$id_klinik."'");
+		}	
 	}
 
 	// Recordset Selected event

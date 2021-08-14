@@ -192,642 +192,162 @@ Page_Rendering();
 			</div>
 		</div>
 	</div>
-</div>
-
-<div class="row">
-	<!-- TARGET CABANG -->
-	<div class="col-xl-6 col-lg-6">
+	<!-- Area Chart Target Omset per Cabang -->
+	<div class="col-xl-6 col-lg-5">
 		<div class="card border-0 shadow mb-4">
 			<!-- Card Header - Dropdown -->
 			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-				<h6 class="m-0 font-weight-bold text-primary">Target Omset Cabang</h6>
+				<h6 class="m-0 font-weight-bold text-primary">Statistic Target Omset per Cabang</h6>
 			</div>
 			<!-- Card Body -->
 			<div class="card-body">
-			<table class="table table-hover table-bordered">
-					<thead class="bg-info">
-						<tr>
-							<th>No.</th>
-							<th>Cabang</th>
-							<th>Target</th>
-							<th>Baseline</th>
-							<th>Aset</th>
-							<th>Aktual</th>
-							<th>Pencapaian</th>
-							<th>Prosentase</th>
-						</tr>
-					</thead>
-					<tbody>
-   						<?php
-						$no = 1;
-   							$cabang = ExecuteRows('SELECT * FROM m_klinik');
-							foreach ($cabang as $cb) {
-								$bulan = date('m');
-								$tahun = date('Y');
-								$result = ExecuteRow("SELECT * FROM m_target_omset_cabang JOIN m_klinik ON m_klinik.id_klinik = m_target_omset_cabang.id_cabang WHERE MONTH(m_target_omset_cabang.tgl_awal) = '$bulan' AND YEAR(m_target_omset_cabang.tgl_awal) = '$tahun' AND m_target_omset_cabang.id_cabang='".$cb['id_klinik']."'");
-								$target = (is_null($result) OR $result == false) ? "0" : $result['target'];
-								$baseline = (is_null($result) OR $result == false) ? "0" : $result['baseline'];
-								$aset = (is_null($result) OR $result == false) ? "0" : $result['aset'];
-
-								$aktual = ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE MONTH(waktu) = '$bulan' AND YEAR(waktu) = '$tahun' AND id_klinik = '".$cb['id_klinik']."'");
-								$pencapaian = ($aktual-$target);
-								$prosentase = ($pencapaian == '0') ? "0" : ($pencapaian / $target * 100);
-								echo "<tr>
-									<td>".$no."</td>
-									<td>".$cb['nama_klinik']."</td>
-									<td>".rupiah($target)."</td>
-									<td>".rupiah($baseline). "</td>
-									<td>".rupiah($aset)."</td>
-									<td>";if(is_null($aktual) OR $aktual == false ){
-										echo "0";
-									}else{
-										echo rupiah($aktual);
-									} echo "</td>
-									<td>".rupiah($pencapaian)."</td>
-									<td>".$prosentase."%</td>			
-								</tr>";
-								$no++;
-							}
-						?>
-					</tbody>
-				</table>				
-			</div>
-		</div>
-	</div>
-
-	<!-- TARGET PERSONAL -->
-	<div class="col-xl-6 col-lg-6">
-		<div class="card border-0 shadow mb-4">
-			<!-- Card Header - Dropdown -->
-			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-				<h6 class="m-0 font-weight-bold text-primary">Target Omset Personal</h6>
-			</div>
-			<!-- Card Body -->
-			<div class="card-body">
-				<div class="row justify-content-end">
-					<div class="col-md-auto">
-						<form method="post" action="<?php echo CurrentPageName() ?>" id="form-periode">
-							<!-- token itu penting buat form method post -->
-							<?php if ($Page->CheckToken) { ?>
-								<input type="hidden" name="<?php echo Config("TOKEN_NAME") ?>" value="<?php echo $Page->Token ?>">
-							<?php } ?>
-								<select class="custom-select" id="select-cabang" name="select-cabang">
-									<option selected>Pilih Cabang</option>
-									<?php
-										$cabang = ExecuteRows("SELECT * FROM m_klinik");
-										foreach ($cabang as $value) {
-											echo "<option value='".$value['id_klinik']."'>".$value['nama_klinik']."</option>";
-										}
-									?>
-								</select>
-							<button class="btn btn-primary btn-md p-2" type="submit" name="cabang" id="cabang" hidden></button>
-						</form>
-					</div>
-				</div>
-				<br>				
-			<table class="table table-hover table-bordered">
-					<thead class="bg-info">
-						<tr>
-							<th>No.</th>
-							<th>Jabatan</th>
-							<th>Nama</th>
-							<th>Target</th>
-							<th>Aktual</th>
-							<th>Pencapaian</th>
-							<th>Prosentase</th>
-						</tr>
-					</thead>
-					<tbody>
-   						<?php
-						  	if(isset($_POST['cabang'])) {
-								  $cabang = $_POST['select-cabang'];
-
-								  $no = 1;
-								  $mso='"\@"';
-								  $bulan = date('m');
-								  $tahun = date('Y');
-								  $result = ExecuteRows("SELECT * FROM detailpenjualan 
-									  JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan 
-									  JOIN m_klinik ON penjualan.id_klinik = m_klinik.id_klinik WHERE penjualan.id_klinik = '$cabang' AND MONTH(penjualan.waktu) = '$bulan' AND YEAR(penjualan.waktu) = '$tahun' AND detailpenjualan.komisi_recall IS NOT NULL GROUP BY detailpenjualan.komisi_recall");
-
-								  foreach ($result as $rs) {
-									$pegawai = ExecuteRow("SELECT m_jabatan.id AS id_jabatan, m_jabatan.nama_jabatan, m_pegawai.* FROM m_pegawai JOIN m_jabatan ON m_pegawai.jabatan_pegawai = m_jabatan.id WHERE m_pegawai.id_pegawai = '".$rs['komisi_recall']."'");																				
-									$target = ExecuteRow("SELECT * FROM m_target_omset_personal WHERE id_jabatan = '".$pegawai['id_jabatan']."' AND id_cabang = '$cabang' AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'");
-									$aktual = ExecuteScalar("SELECT sum(detailpenjualan.subtotal) FROM detailpenjualan 
-									JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE penjualan.id_klinik = '$cabang' AND MONTH(penjualan.waktu) = '$bulan' AND YEAR(penjualan.waktu) = '$tahun' AND detailpenjualan.komisi_recall = '".$rs['komisi_recall']."'");
-									echo "<tr>
-											<td align='center'>" . $no . ".</td>
-											<td align='center'>" . $pegawai['nama_jabatan'] . "</td>
-											<td align='center'>" . $pegawai['nama_pegawai'] . "</td>
-											<td align='center' style='mso-number-format:".$mso."'>" . rupiah($target['target']) . "</td>
-											<td align='center' style='mso-number-format:".$mso."'>" . rupiah($aktual) . "</td>
-											<td align='center' style='mso-number-format:".$mso."'>" . rupiah($aktual - $target['target']). "</td>
-											<td align='center'>" . ROUND((($aktual - $target['target']) / $target['target']) * 100) . "%</td>
-										</tr>" ;
-									$no++;
-								  }
-							} 
-						?>
-					</tbody>
-				</table>				
-			</div>
-		</div>
-	</div>
-
-	<!-- TARGET PRODUK TERJUAL -->
-	<div class="col-xl-4 col-lg-4">
-		<div class="card border-0 shadow mb-4">
-			<!-- Card Header - Dropdown -->
-			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-				<h6 class="m-0 font-weight-bold text-primary">Target Produk Terjual</h6>
-			</div>
-			<!-- Card Body -->
-			<div class="card-body">
-				<div class="row justify-content-end">
-					<div class="col-md-auto">
-						<form method="post" action="<?php echo CurrentPageName() ?>" id="form-periode">
-							<!-- token itu penting buat form method post -->
-							<?php if ($Page->CheckToken) { ?>
-								<input type="hidden" name="<?php echo Config("TOKEN_NAME") ?>" value="<?php echo $Page->Token ?>">
-							<?php } ?>
-									<?php
-										$status = ExecuteRows("SELECT * FROM m_status_barang");
-										foreach ($status as $value) {
-											echo "<input type='checkbox' name='status[]' value='".$value['id_status']."'>
-											<label for='".$value['status_barang']."'>".$value['status_barang']."</label>    ";
-										}
-									?>
-								<select class="custom-select" id="select-cabang-produk" name="select-cabang-produk">
-									<option selected>Pilih Cabang</option>
-									<?php
-										$cabang = ExecuteRows("SELECT * FROM m_klinik");
-										foreach ($cabang as $value) {
-											echo "<option value='".$value['id_klinik']."'>".$value['nama_klinik']."</option>";
-										}
-									?>
-								</select>
-							<button class="btn btn-primary btn-md p-2" type="submit" name="cabang-produk" id="cabang-produk" hidden></button>
-						</form>
-					</div>
-				</div>
-				<br>				
-			<table class="table table-hover table-bordered">
-					<thead class="bg-info">
-						<tr>
-							<th>No.</th>
-							<th>Nama Barang</th>
-							<th>Aktual</th>
-							<th>Status</th>
-						</tr>
-					</thead>
-					<tbody>
-   						<?php
-						  	if(isset($_POST['cabang-produk'])) {
-								  $cabang_produk = $_POST['select-cabang-produk'];
-								  $inputStatus = $_POST['status'];
-
-								  $no = 1;
-								  $mso='"\@"';
-								  $bulan = date('m');
-								  $tahun = date('Y');
-								  $multi_status = "";
-								  $status = "";
-								  $id_status = "";
-
-								  foreach($inputStatus AS $in_status) {
-									$multi_status .= "m_hargajual.status = '" .$in_status. "' OR ";
-									$status .= "m_target_produk.status LIKE '%" .$in_status. "%' OR ";
-									$id_status .= "id_status = '" .$in_status. "' OR ";
-									}
-							
-									if($multi_status && $status){
-										$multi_status = substr($multi_status, 0, -4);
-										$status = substr($status, 0, -4);
-										$id_status = substr($id_status, 0, -4);
-										$result_produk = ExecuteRows("SELECT * FROM m_hargajual 
-													JOIN m_barang ON m_hargajual.id_barang = m_barang.id 
-													JOIN m_status_barang ON m_hargajual.status = m_status_barang.id_status WHERE ($multi_status) AND m_barang.tipe != 'Perawatan' AND m_hargajual.id_klinik = '$cabang_produk'");
-										$target_produk = ExecuteScalar("SELECT target FROM m_target_produk WHERE ($status) AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'");
-										$nama_status = ExecuteRows("SELECT status_barang FROM m_status_barang WHERE ($id_status)");
-									}
-								  
-								  $aktual_total_produk = 0;
-								  foreach ($result_produk as $rs) {
-									$aktual_produk = ExecuteScalar("SELECT sum(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE penjualan.id_klinik = '$cabang_produk' AND detailpenjualan.id_barang = '".$rs['id_barang']."' AND MONTH(penjualan.waktu) = '$bulan' AND YEAR(penjualan.waktu) = '$tahun'");
-									echo "<tr>
-											<td>".$no."</td>
-											<td>".$rs['nama_barang']."</td>
-											<td style='text-align:right;'>".$aktual_produk."</td>
-											<td>".$rs['status_barang']."</td>
-										</tr>";
-										$no++;
-										$aktual_total_produk += $aktual_produk;
-								  }
-						?>
-						<tr>
-							<td colspan='2'>Aktual / Total</td>
-							<td style='text-align:right;'><?= $aktual_total_produk; ?></td>
-						</tr>
-						<tr>
-							<td colspan='2'>Pencapaian</td>
-							<td style='text-align:right;'><?= $aktual_total_produk - $target_produk; ?></td>
-						</tr>
-						<tr>
-							<td colspan='2'>Prosentase</td>
-							<td style='text-align:right;'><?= (($aktual_total_produk - $target_produk) / $target_produk) * 100; ?> %</td>
-						</tr>
+				<form method="post" action="<?php echo CurrentPageName() ?>" id="form-cabang">
+					<!-- token itu penting buat form method post -->
+						<?php if ($Page->CheckToken) { ?>
+							<input type="hidden" name="<?php echo Config("TOKEN_NAME") ?>" value="<?php echo $Page->Token ?>">
 						<?php } ?>
-					</tbody>
-				</table>				
-			</div>
-		</div>
-	</div>
-
-
-	<!-- TARGET PERAWATAN TERJUAL -->
-	<div class="col-xl-4 col-lg-4">
-		<div class="card border-0 shadow mb-4">
-			<!-- Card Header - Dropdown -->
-			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-				<h6 class="m-0 font-weight-bold text-primary">Target Perawatan Terjual</h6>
-			</div>
-			<!-- Card Body -->
-			<div class="card-body">
-				<div class="row justify-content-end">
-					<div class="col-md-auto">
-						<form method="post" action="<?php echo CurrentPageName() ?>" id="form-periode">
-							<!-- token itu penting buat form method post -->
-							<?php if ($Page->CheckToken) { ?>
-								<input type="hidden" name="<?php echo Config("TOKEN_NAME") ?>" value="<?php echo $Page->Token ?>">
-							<?php } ?>
-								<?php
-									$status = ExecuteRows("SELECT * FROM jenisbarang");
-									foreach ($status as $value) {
-										echo "<input type='checkbox' name='jenis[]' value='".$value['id']."'>
-										<label for='".$value['jenis']."'>".$value['jenis']."</label>    ";
-									}
-								?>			
-								<select class="custom-select" id="select-cabang-perawatan" name="select-cabang-perawatan">
-									<option selected>Pilih Cabang</option>
-									<?php
-										$cabang = ExecuteRows("SELECT * FROM m_klinik");
-										foreach ($cabang as $value) {
-											echo "<option value='".$value['id_klinik']."'>".$value['nama_klinik']."</option>";
-										}
-									?>
-								</select>
-							<button class="btn btn-primary btn-md p-2" type="submit" name="cabang-perawatan" id="cabang-perawatan" hidden></button>
-						</form>
-					</div>
-				</div>
-				<br>				
-			<table class="table table-hover table-bordered">
-					<thead class="bg-info">
-						<tr>
-							<th>No.</th>
-							<th>Nama Barang</th>
-							<th>Aktual</th>
-							<th>Jenis</th>
-						</tr>
-					</thead>
-					<tbody>
-   						<?php
-						  	if(isset($_POST['cabang-perawatan'])) {
-								  $cabang_perawatan = $_POST['select-cabang-perawatan'];
-								  $Inputjenis  = $_POST['jenis'];
-
-								  $no = 1;
-								  $mso='"\@"';
-								  $bulan = date('m');
-								  $tahun = date('Y');
-								  $multi_jenis = "";
-								  $jenis = "";
-								  $id_jenis = "";
-								  
-								  foreach($Inputjenis AS $in_jenis) {
-									  $multi_jenis .= "m_barang.jenis = '" .$in_jenis. "' OR ";
-									  $jenis .= "m_target_perawatan.jenis LIKE '%" .$in_jenis. "%' OR ";
-									  $id_jenis .= "id = '" .$in_jenis. "' OR ";
-								  }
-						  
-								  if($multi_jenis && $jenis){
-									  $multi_jenis = substr($multi_jenis, 0, -4);
-									  $jenis = substr($jenis, 0, -4);
-									  $id_jenis = substr($id_jenis, 0, -4);
-									  $result_perawatan = ExecuteRows("SELECT * FROM m_hargajual 
-												  JOIN m_barang ON m_hargajual.id_barang = m_barang.id 
-												  JOIN jenisbarang ON m_barang.jenis = jenisbarang.id WHERE ($multi_jenis) AND m_barang.tipe = 'Perawatan' AND m_hargajual.id_klinik = '$cabang_perawatan'");
-									  $target_perawatan = ExecuteScalar("SELECT target FROM m_target_perawatan WHERE ($jenis) AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'");
-									  $nama_jenis = ExecuteRows("SELECT jenis FROM jenisbarang WHERE ($id_jenis)");
-								  }
-
-								  $aktual_total_perawatan = 0;
-								  if(is_null($result_perawatan) OR $result_perawatan == FALSE) {
-									  echo '<tr><td colspan="3" align="center">Kosong</td></tr>';
-								  } else {
-									  $no = 1;
-									  foreach ($result_perawatan as $rs) {
-										  $aktual_perawatan = ExecuteScalar("SELECT sum(qty) FROM detailpenjualan JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE penjualan.id_klinik = '$cabang_perawatan' AND detailpenjualan.id_barang = '".$rs['id_barang']."' AND MONTH(penjualan.waktu) = '$bulan' AND YEAR(penjualan.waktu) = '$tahun'");
-										  echo "<tr>
-											  <td>".$no."</td>
-											  <td>".$rs['nama_barang']."</td>
-											  <td style='text-align:right;'>".$aktual_perawatan."</td>
-											  <td>".$rs['jenis']."</td>
-										  </tr>";
-										  $no++;
-										  $aktual_total_perawatan += $aktual_perawatan;
-									  }
-								  } 
-						?>
-						<tr>
-							<td colspan='2'>Aktual / Total</td>
-							<td style='text-align:right;'><?= $aktual_total_perawatan; ?></td>
-						</tr>
-						<tr>
-							<td colspan='2'>Pencapaian</td>
-							<td style='text-align:right;'><?= $aktual_total_perawatan - $target_perawatan; ?></td>
-						</tr>
-						<tr>
-							<td colspan='2'>Prosentase</td>
-							<td style='text-align:right;'><?= ROUND((($aktual_total_perawatan - $target_perawatan) / $target_perawatan) * 100); ?> %</td>
-						</tr>						
-						<?php } ?>
-					</tbody>
-				</table>				
-			</div>
-		</div>
-	</div>
-
-	<!-- TARGET KUNJUNGAN -->
-	<div class="col-xl-4 col-lg-4">
-		<div class="card border-0 shadow mb-4">
-			<!-- Card Header - Dropdown -->
-			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-				<h6 class="m-0 font-weight-bold text-primary">Target Kunjungan</h6>
-			</div>
-			<!-- Card Body -->
-			<div class="card-body">
-				<div style="overflow-x:auto;">
-
-					<table class="table table-hover table-bordered">
-							<thead class="bg-info">
-								<tr>
-									<th>No.</th>
-									<th>Cabang</th>
-									<th>Target</th>
-									<th>Aktual</th>
-									<th>Pencapaian</th>
-									<th>Prosentase</th>
-								</tr>
-							</thead>
-							<tbody>
-								   <?php
-								$no = 1;
-									   $cabang = ExecuteRows('SELECT * FROM m_klinik');
-									foreach ($cabang as $cb) {
-										$bulan = date('m');
-										$tahun = date('Y');
-										$result = ExecuteRow("SELECT COUNT(kode_penjualan) AS total_nota, id_klinik FROM penjualan WHERE id_klinik = '".$cb['id_klinik']."' AND MONTH(waktu) = '$bulan' AND YEAR(waktu) = '$tahun'");
-										// print_r($result);
-										$aktual = is_null($result) ? "0" : $result['total_nota'];
-										$target = ExecuteScalar("SELECT target FROM m_target_kunjungan WHERE id_cabang = '".$cb['id_klinik']."' AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'");
-										$pencapaian = ($aktual-$target);
-										$prosentase = ($pencapaian == '0') ? "0" : ($pencapaian / $target * 100);
-										echo "<tr>
-											<td>".$no."</td>
-											<td>".$cb['nama_klinik']."</td>
-											<td>";if(is_null($target) OR $target == false ){
-												echo "0";
-											}else{
-												echo $target;
-											} echo "</td>
-											<td>".$aktual. "</td>
-											<td>".$pencapaian."</td>	
-											<td>".$prosentase."%</td>	
-										</tr>";
-										$no++;
-									}
-								?>
-							</tbody>
-						</table>				
-				</div>
-			</div>
-		</div>
-	</div>	
-
-	<!-- TARGET PASIEN -->
-	<div class="col-xl-4 col-lg-4">
-		<div class="card border-0 shadow mb-4">
-			<!-- Card Header - Dropdown -->
-			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-				<h6 class="m-0 font-weight-bold text-primary">Target Pasien</h6>
-			</div>
-			<!-- Card Body -->
-			<div class="card-body">
-				<div style="overflow-x:auto;">
-
-					<table class="table table-hover table-bordered">
-							<thead class="bg-info">
-								<tr>
-									<th>No.</th>
-									<th>Cabang</th>
-									<th>Target</th>
-									<th>Aktual</th>
-									<th>Pencapaian</th>
-									<th>Prosentase</th>
-								</tr>
-							</thead>
-							<tbody>
-								   <?php
-								$no = 1;
-									   $cabang = ExecuteRows('SELECT * FROM m_klinik');
-									foreach ($cabang as $cb) {
-										$bulan = date('m');
-										$tahun = date('Y');
-										$result_pasien = ExecuteRow("SELECT COUNT(DISTINCT(id_pelanggan)) AS total_pelanggan, id_klinik FROM penjualan WHERE id_klinik = '".$cb['id_klinik']."' AND MONTH(waktu) = '$bulan' AND YEAR(waktu) = '$tahun'");
-										$aktual_pasien = is_null($result_pasien) ? "0" : $result_pasien['total_pelanggan'];
-										$target_pasien = ExecuteScalar("SELECT target FROM m_target_pasien WHERE id_cabang = '".$cb['id_klinik']."' AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'");		
-										$pencapaian_pasien = ($aktual_pasien-$target_pasien);
-										$prosentase_pasien = ($pencapaian_pasien == '0') ? "0" : ($pencapaian_pasien / $target_pasien * 100);
-										echo "<tr>
-											<td>".$no."</td>
-											<td>".$cb['nama_klinik']."</td>
-											<td>";if(is_null($target_pasien) OR $target_pasien == false ){
-												echo "0";
-											}else{
-												echo $target_pasien;
-											} echo "</td>
-											<td>".$aktual_pasien. "</td>
-											<td>".$pencapaian_pasien."</td>	
-											<td>".$prosentase_pasien."%</td>	
-										</tr>";
-										$no++;
-									}
-								?>
-							</tbody>
-						</table>				
-				</div>
-			</div>
-		</div>
-	</div>	
-
-
-	<!-- TARGET PASIEN BARU -->
-	<div class="col-xl-4 col-lg-4">
-		<div class="card border-0 shadow mb-4">
-			<!-- Card Header - Dropdown -->
-			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-				<h6 class="m-0 font-weight-bold text-primary">Target Pasien Baru</h6>
-			</div>
-			<!-- Card Body -->
-			<div class="card-body">
-				<div style="overflow-x:auto;">
-
-					<table class="table table-hover table-bordered">
-							<thead class="bg-info">
-								<tr>
-									<th>No.</th>
-									<th>Cabang</th>
-									<th>Target</th>
-									<th>Aktual</th>
-									<th>Pencapaian</th>
-									<th>Prosentase</th>
-								</tr>
-							</thead>
-							<tbody>
-								   <?php
-								$no = 1;
-									   $cabang = ExecuteRows('SELECT * FROM m_klinik');
-									foreach ($cabang as $cb) {
-										$bulan = date('m');
-										$tahun = date('Y');
-										$result_pasien_baru = ExecuteRow("SELECT COUNT(DISTINCT(id_pelanggan)) AS total_pelanggan, id_klinik FROM m_pelanggan WHERE id_klinik = '".$cb['id_klinik']."' AND MONTH(tgl_daftar) = '$bulan' AND YEAR(tgl_daftar) = '$tahun'");
-										$aktual_pasien_baru = is_null($result_pasien_baru) ? "0" : $result_pasien_baru['total_pelanggan'];
-										$target_pasien_baru = ExecuteScalar("SELECT target FROM m_target_pasien_baru WHERE id_cabang = '".$cb['id_klinik']."' AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'");		
-										$pencapaian_pasien_baru = ($aktual_pasien_baru-$target_pasien_baru);
-										$prosentase_pasien_baru = ($pencapaian_pasien_baru == '0' OR $target_pasien_baru == '0') ? "0" : ($pencapaian_pasien_baru / $target_pasien_baru * 100);
-										echo "<tr>
-											<td>".$no."</td>
-											<td>".$cb['nama_klinik']."</td>
-											<td>";if(is_null($target_pasien_baru) OR $target_pasien_baru == false ){
-												echo "0";
-											}else{
-												echo $target_pasien_baru;
-											} echo "</td>
-											<td>".$aktual_pasien_baru. "</td>
-											<td>".$pencapaian_pasien_baru."</td>	
-											<td>".$prosentase_pasien_baru."%</td>	
-										</tr>";
-										$no++;
-									}
-								?>
-							</tbody>
-						</table>				
-				</div>
-			</div>
-		</div>
-	</div>	
-	
-</div>
-
-<div class="row">
-	<div class="col-xl-12 col-lg-7">
-		<div class="card border-0 shadow mb-4">
-			<!-- Card Header - Dropdown -->
-			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-				<h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
-			</div>
-			<!-- Card Body -->
-			<div class="card-body">
-   				<div class="row justify-content-end">
-					<div class="col-md-auto">
-						<form method="post" action="<?php echo CurrentPageName() ?>" id="form-periode">
-							<!-- token itu penting buat form method post -->
-							<?php if ($Page->CheckToken) { ?>
-								<input type="hidden" name="<?php echo Config("TOKEN_NAME") ?>" value="<?php echo $Page->Token ?>">
-							<?php } ?>
-								<select class="custom-select" id="select-periode" name="select-periode">
-									<option selected>Pilih Periode</option>
-									<option value="harian">Hari Ini</option>
-									<option value="bulanan">Bulan Ini</option>
-								</select>
-							<button class="btn btn-primary btn-md p-2" type="submit" name="periode" id="periode" hidden></button>
-						</form>
-					</div>
-				</div>
-				<br>
-				<table class="table table-hover table-bordered">
-					<thead class="bg-info">
-						<tr>
-   							<th>No.</th>
-   							<th>Cabang</th>
-   							<th>Total Penjualan</th>
-						</tr>
-					</thead>
-					<tbody>
-   						<?php
-						$no = 1;
-						if(isset($_POST['periode'])){
-							$periode = $_POST['select-periode'];
-							
-							
-							$cabang = ExecuteRows("SELECT * FROM m_klinik");
-							foreach ($cabang as $tc) {
-								if($periode == 'harian'){
-									$total_cabang = ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE id_klinik = ".$tc['id_klinik']." AND waktu = DATE(NOW())");
-								} else if($periode == 'bulanan') {
-									$bulan = date('m');
-									$tahun = date('Y');
-									$total_cabang = ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE id_klinik = ".$tc['id_klinik']." AND MONTH(waktu) = '$bulan' AND YEAR(waktu) = '$tahun'");									
+						<select class="custom-select" id="select-cabang" name="select-cabang">
+							<option selected>Pilih Cabang</option>
+							<?php
+								$cabang = ExecuteRows("SELECT * FROM m_klinik");
+								foreach ($cabang as $value) {
+									echo "<option value='".$value['id_klinik']."'>".$value['nama_klinik']."</option>";
 								}
-								//$total_cabang = ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE id_klinik=".$tc['id_klinik']."");
-								echo 
-									"<tr>
-										<td>".$no."</td>
-										<td>".$tc['nama_klinik']."</td>
-										<td>".rupiah($total_cabang)."</td>
-									</tr>";
-								$no++;
-							} 	
-
-						} else {
-
-							$cabang = ExecuteRows("SELECT * FROM m_klinik");
-							foreach ($cabang as $tc) {
-								// $date = DATE(NOW());
-								$total_cabang = ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE id_klinik=".$tc['id_klinik']." AND waktu = DATE(NOW())");
-								echo 
-									"<tr>
-										<td>".$no."</td>
-										<td>".$tc['nama_klinik']."</td>
-										<td>".rupiah($total_cabang)."</td>
-									</tr>";
-								$no++;
-							}
-
-						}
-						?>
-					</tbody>
-				</table>
+							?>
+						</select>
+						<button class="btn btn-primary btn-md p-2" type="submit" name="cabang" id="cabang" hidden></button>
+				</form>						
+				<div class="chart-area">
+					<div id="chartDiv" style="max-width: 900px;height: 400px;margin: 0px auto"></div>
+				</div>
 			</div>
 		</div>
-	</div>
+	</div>	
+	<!-- Area Chart Target Omset Personal -->
+	<div class="col-xl-6 col-lg-5">
+		<div class="card border-0 shadow mb-4">
+			<!-- Card Header - Dropdown -->
+			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+				<h6 class="m-0 font-weight-bold text-primary">Statistic Target Omset Personal</h6>
+			</div>
+			<!-- Card Body -->
+			<div class="card-body">
+				<form method="post" action="<?php echo CurrentPageName() ?>" id="form-cabang">
+					<!-- token itu penting buat form method post -->
+						<?php if ($Page->CheckToken) { ?>
+							<input type="hidden" name="<?php echo Config("TOKEN_NAME") ?>" value="<?php echo $Page->Token ?>">
+						<?php } ?>
+						<select class="custom-select" id="select-cabang" name="select-cabang">
+							<option selected>Pilih Cabang</option>
+							<?php
+								$cabang = ExecuteRows("SELECT * FROM m_klinik");
+								foreach ($cabang as $value) {
+									echo "<option value='".$value['id_klinik']."'>".$value['nama_klinik']."</option>";
+								}
+							?>
+						</select>
+						<button class="btn btn-primary btn-md p-2" type="submit" name="cabang" id="cabang" hidden></button>
+				</form>						
+				<div class="chart-area">
+					<div id="chartDiv" style="max-width: 900px;height: 400px;margin: 0px auto"></div>
+				</div>
+			</div>
+		</div>
+	</div>	
+	<!-- Area Chart Target Pasien -->
+	<div class="col-xl-6 col-lg-5">
+		<div class="card border-0 shadow mb-4">
+			<!-- Card Header - Dropdown -->
+			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+				<h6 class="m-0 font-weight-bold text-primary">Statistic Target Pasien</h6>
+			</div>
+			<!-- Card Body -->
+			<div class="card-body">
+				<form method="post" action="<?php echo CurrentPageName() ?>" id="form-cabang-pasien">
+					<!-- token itu penting buat form method post -->
+						<?php if ($Page->CheckToken) { ?>
+							<input type="hidden" name="<?php echo Config("TOKEN_NAME") ?>" value="<?php echo $Page->Token ?>">
+						<?php } ?>
+						<select class="custom-select" id="select-cabang-pasien" name="select-cabang-pasien">
+							<option selected>Pilih Cabang</option>
+							<?php
+								$cabang = ExecuteRows("SELECT * FROM m_klinik");
+								foreach ($cabang as $value) {
+									echo "<option value='".$value['id_klinik']."'>".$value['nama_klinik']."</option>";
+								}
+							?>
+						</select>
+						<button class="btn btn-primary btn-md p-2" type="submit" name="cabang-pasien" id="cabang-pasien" hidden></button>
+				</form>						
+				<div class="chart-area">
+					<div id="chartDivPasien" style="max-width: 900px;height: 400px;margin: 0px auto"></div>
+				</div>
+			</div>
+		</div>
+	</div>	
+	<!-- Area Chart Target Pasien Baru -->
+	<div class="col-xl-6 col-lg-5">
+		<div class="card border-0 shadow mb-4">
+			<!-- Card Header - Dropdown -->
+			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+				<h6 class="m-0 font-weight-bold text-primary">Statistic Target Pasien Baru</h6>
+			</div>
+			<!-- Card Body -->
+			<div class="card-body">
+				<form method="post" action="<?php echo CurrentPageName() ?>" id="form-cabang-pasien-baru">
+					<!-- token itu penting buat form method post -->
+						<?php if ($Page->CheckToken) { ?>
+							<input type="hidden" name="<?php echo Config("TOKEN_NAME") ?>" value="<?php echo $Page->Token ?>">
+						<?php } ?>
+						<select class="custom-select" id="select-cabang-pasien-baru" name="select-cabang-pasien-baru">
+							<option selected>Pilih Cabang</option>
+							<?php
+								$cabang = ExecuteRows("SELECT * FROM m_klinik");
+								foreach ($cabang as $value) {
+									echo "<option value='".$value['id_klinik']."'>".$value['nama_klinik']."</option>";
+								}
+							?>
+						</select>
+						<button class="btn btn-primary btn-md p-2" type="submit" name="cabang-pasien-baru" id="cabang-pasien-baru" hidden></button>
+				</form>						
+				<div class="chart-area">
+					<div id="chartDivPasienBaru" style="max-width: 900px;height: 400px;margin: 0px auto"></div>
+				</div>
+			</div>
+		</div>
+	</div>	
 </div>
 
-<script language="JavaScript" type="text/javascript" src="/jquery/jquery.min.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="/klinik/jquery/jquery.min.js"></script>
+<script src="https://code.jscharting.com/latest/jscharting.js"></script>
+<script type="text/javascript" src="https://code.jscharting.com/latest/modules/types.js"></script>
 <script>
 
-$("#select-periode").change(function() {
-	var selected = $(this).val();
-	$("#periode").click();
-	$('#dropDownId :selected').text();
-});
-
-$("#select-cabang").change(function() {
+$('#select-cabang').change(function() {
 	var selected = $(this).val();
 	$("#cabang").click();
 	$('#dropDownId :selected').text();
 });
+
+
+$("#select-cabang-pasien").change(function() {
+	var selected = $(this).val();
+	$("#cabang-pasien").click();
+	$('#dropDownId :selected').text();
+});
+
+$("#select-cabang-pasien-baru").change(function() {
+	var selected = $(this).val();
+	$("#cabang-pasien-baru").click();
+	$('#dropDownId :selected').text();
+});
+
+// $("#select-cabang").change(function() {
+// 	var selected = $(this).val();
+// 	$("#cabang").click();
+// 	$('#dropDownId :selected').text();
+// });
 
 $("#select-cabang-produk").change(function() {
 	var selected = $(this).val();
@@ -1007,6 +527,236 @@ var myLineChart = new Chart(ctx, {
 	}
   }
 });
+</script>
+<script>
+		// JS Omset Cabang
+		var aktual = <?php
+						if(isset($_POST['cabang'])) {
+							$cabang = $_POST['select-cabang'];
+							$bulan = date('m');
+							$tahun = date('Y');
+							$aktual = ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE id_klinik = '".$cabang."' AND MONTH(waktu)='".$bulan."' AND YEAR(waktu)='".$tahun."'"); 
+							if($aktual != NULL OR $aktual != FALSE){
+								echo $aktual;
+							} else {
+								echo 0;
+							}
+						} 
+					?>;
+		var aset = <?php
+						if(isset($_POST['cabang'])) {
+							$cabang = $_POST['select-cabang'];
+							$bulan = date('m');
+							$tahun = date('Y');
+							$aset = ExecuteScalar("SELECT aset FROM m_target_omset_cabang WHERE id_cabang = '$cabang' AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'"); 
+							if($aset != NULL OR $aset != FALSE){
+								echo $aset;
+							} else {
+								echo 0;
+							}
+						} 
+					?>;
+		var baseline = <?php
+						if(isset($_POST['cabang'])) {
+							$cabang = $_POST['select-cabang'];
+							$bulan = date('m');
+							$tahun = date('Y');
+							$baseline = ExecuteScalar("SELECT baseline FROM m_target_omset_cabang WHERE id_cabang = '".$cabang."' AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'"); 
+							if($baseline != NULL OR $baseline != FALSE){
+								echo $baseline;
+							} else {
+								echo 0;
+							}
+						} 
+					?>;
+		var target = <?php
+						if(isset($_POST['cabang'])) {
+							$cabang = $_POST['select-cabang'];
+							$bulan = date('m');
+							$tahun = date('Y');
+							$target = ExecuteScalar("SELECT target FROM m_target_omset_cabang WHERE id_cabang = '".$cabang."' AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'"); 
+							if($target != NULL OR $target != FALSE){
+								echo $target;
+							} else {
+								echo 0;
+							}
+						} 
+					?>;
+		const series = [];
+		series.push({name: 'Aset', yAxis: 'y4', points: [['value', aktual]]}, {name: 'Baseline', yAxis: 'y4', points: [['value', aktual]]}, {name: 'Target', yAxis: 'y4', points: [['value', aktual]]});
+		
+		console.log(baseline);
+		console.log(aset);
+		console.log(target);
+		console.log(target+100000);
+		var chart = JSC.chart('chartDiv', {
+		debug: true,
+		defaultSeries_type: 'gauge linear vertical ',
+		yAxis: {
+		  defaultTick_enabled: false,
+		  customTicks: [0, aset, baseline, target, (target+1000000)],
+		  scale: { range: [0, (target+1000000)] },
+		  line: {
+			width: 5,
+			color: 'smartPalette',
+			breaks_gap: 0.03
+		  }
+		},
+		legend_visible: false,
+		palette: {
+		  pointValue: '%yValue',
+		  ranges: [
+			{ value: 0, color: '#FF5353', name:'Aset'},
+			{ value: aset, color: '#FFD221' },
+			{ value: baseline, color: '#77E6B4' },
+			{ value: target, color: '#21D683' },
+			{ value: (target+1000000), color: '#21D684' }
+		  ]
+		},
+		defaultSeries: {
+		  defaultPoint_tooltip: '<b>%seriesName Value:</b>Rp %yValue',
+		  shape_label: {
+			text: '%name',
+			verticalAlign: 'bottom',
+			style_fontSize: 15
+		  }
+		},
+		series: [
+		  { name: 'Target Omset per Cabang', points: [['score', [0, aktual]]] }
+		]
+	  });
+</script>
+
+<script>
+		// JS Target Pasien
+		var aktual_pasien = <?php
+						if(isset($_POST['cabang-pasien'])) {
+							$cabang = $_POST['select-cabang-pasien'];
+							$bulan = date('m');
+							$tahun = date('Y');
+							$aktual_pasien = ExecuteScalar("SELECT COUNT(DISTINCT(id_pelanggan)) AS total_pelanggan FROM penjualan WHERE id_klinik = '$cabang' AND MONTH(waktu) = '$bulan' AND YEAR(waktu) = '$tahun'"); 
+							if($aktual_pasien != NULL OR $aktual_pasien != FALSE){
+								echo $aktual_pasien;
+							} else {
+								echo 0;
+							}
+						} 
+					?>;
+		var target_pasien = <?php
+						if(isset($_POST['cabang-pasien'])) {
+							$cabang = $_POST['select-cabang-pasien'];
+							$bulan = date('m');
+							$tahun = date('Y');
+							$target_pasien = ExecuteScalar("SELECT target FROM m_target_pasien WHERE id_cabang = '$cabang' AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'"); 
+							if($target_pasien != NULL OR $target_pasien != FALSE){
+								echo $target_pasien;
+							} else {
+								echo 0;
+							}
+						} 
+					?>;	
+		console.log(aktual_pasien);
+		console.log(target_pasien);
+		var chart = JSC.chart('chartDivPasien', {
+		debug: true,
+		defaultSeries_type: 'gauge linear vertical ',
+		yAxis: {
+		  defaultTick_enabled: false,
+		  customTicks: [0, target_pasien, (target_pasien+5)],
+		  scale: { range: [0, (target_pasien+5)] },
+		  line: {
+			width: 5,
+			color: 'smartPalette',
+			breaks_gap: 0.03
+		  }
+		},
+		legend_visible: false,
+		palette: {
+		  pointValue: '%yValue',
+		  ranges: [
+			{ value: 0, color: '#FF5353', name:'Aset'},
+			{ value: target_pasien, color: '#FFD221' },
+			{ value: (target_pasien+5), color: '#21D684' }
+		  ]
+		},
+		defaultSeries: {
+		  defaultPoint_tooltip: '<b>%seriesName Value:</b> %yValue',
+		  shape_label: {
+			text: '%name',
+			verticalAlign: 'bottom',
+			style_fontSize: 15
+		  }
+		},
+		series: [
+		  { name: 'Target Pasien', points: [['score', [0, aktual_pasien]]] }
+		]
+	  });
+</script>
+
+<script>
+		// JS Target Pasien
+		var aktual_pasien_baru = <?php
+						if(isset($_POST['cabang-pasien-baru'])) {
+							$cabang = $_POST['select-cabang-pasien-baru'];
+							$bulan = date('m');
+							$tahun = date('Y');
+							$aktual_pasien_baru = ExecuteScalar("SELECT COUNT(DISTINCT(penjualan.id_pelanggan)) AS total_pelanggan FROM penjualan JOIN m_pelanggan ON m_pelanggan.id_pelanggan = penjualan.id_pelanggan WHERE penjualan.id_klinik = '$cabang' AND MONTH(penjualan.waktu) = '$bulan' AND YEAR(penjualan.waktu) = '$tahun' AND MONTH(m_pelanggan.tgl_daftar) = '$bulan' AND YEAR(m_pelanggan.tgl_daftar) = '$tahun'"); 
+							if($aktual_pasien_baru != NULL OR $aktual_pasien_baru != FALSE){
+								echo $aktual_pasien_baru;
+							} else {
+								echo 0;
+							}
+						} 
+					?>;
+		var target_pasien_baru = <?php
+						if(isset($_POST['cabang-pasien-baru'])) {
+							$cabang = $_POST['select-cabang-pasien-baru'];
+							$bulan = date('m');
+							$tahun = date('Y');
+							$target_pasien_baru = ExecuteScalar("SELECT target FROM m_target_pasien_baru WHERE id_cabang = '$cabang' AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'"); 
+							if($target_pasien_baru != NULL OR $target_pasien_baru != FALSE){
+								echo $target_pasien_baru;
+							} else {
+								echo 0;
+							}
+						} 
+					?>;	
+		console.log(aktual_pasien_baru);
+		console.log(target_pasien_baru);
+		var chart = JSC.chart('chartDivPasienBaru', {
+		debug: true,
+		defaultSeries_type: 'gauge linear vertical ',
+		yAxis: {
+		  defaultTick_enabled: false,
+		  customTicks: [0, target_pasien_baru, (target_pasien_baru+5)],
+		  scale: { range: [0, (target_pasien_baru+5)] },
+		  line: {
+			width: 5,
+			color: 'smartPalette',
+			breaks_gap: 0.03
+		  }
+		},
+		legend_visible: false,
+		palette: {
+		  pointValue: '%yValue',
+		  ranges: [
+			{ value: 0, color: '#FF5353', name:'Aset'},
+			{ value: target_pasien_baru, color: '#FFD221' },
+			{ value: (target_pasien_baru+5), color: '#21D684' }
+		  ]
+		},
+		defaultSeries: {
+		  defaultPoint_tooltip: '<b>%seriesName Value:</b> %yValue',
+		  shape_label: {
+			text: '%name',
+			verticalAlign: 'bottom',
+			style_fontSize: 15
+		  }
+		},
+		series: [
+		  { name: 'Target Pasien', points: [['score', [0, aktual_pasien_baru]]] }
+		]
+	  });
 </script>
 
 <?php if (Config("DEBUG")) echo GetDebugMessage(); ?>

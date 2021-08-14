@@ -58,9 +58,11 @@ Page_Rendering();
 	if(isset($_POST['srhDate'])){
 		$Input  = $_POST['Inputbarang'];
 		$Inputklinik = $_POST['Inputklinik'];
+		$Inputtipe = $_POST['InputTipe'];
 		$Inputkategori = $_POST['Inputkategori'];
 		$Inputsubkategori = $_POST['Inputsubkategori'];
 		$multi_klinik = "";
+		$multi_tipe = "";
 		$nama_cabang = "";
 		$and="";
 		$and_barang="";
@@ -70,6 +72,12 @@ Page_Rendering();
 		foreach($Inputklinik AS $in_klinik) {
 			$multi_klinik .= "m_hargajual.id_klinik = '" .$in_klinik. "' OR ";
 			$nama_cabang .= "id_klinik= '" .$in_klinik. "' OR ";
+		}
+
+		if ($_POST['InputTipe'] != null) {
+			foreach($Inputtipe AS $in_tipe) {
+				$multi_tipe .= "m_hargajual.tipe = '" .$in_tipe. "' OR ";
+			}
 		}
 
 		if ($_POST['Inputbarang'] != null) {
@@ -109,17 +117,18 @@ Page_Rendering();
 			$and .= " $orderAscDesc";
 		}
 
-		if($multi_klinik){
+		if($multi_klinik && $multi_tipe){
 			$multi_klinik = substr($multi_klinik, 0, -4);
+			$multi_tipe = substr($multi_tipe, 0, -4);
 			//var_dump($multi_klinik); die();
 
 				$query = "SELECT * FROM m_hargajual 
 				JOIN m_barang ON m_hargajual.id_barang = m_barang.id
 				JOIN m_klinik ON m_hargajual.id_klinik = m_klinik.id_klinik
 				JOIN m_satuan_barang ON m_hargajual.satuan = m_satuan_barang.id_satuan 
-				WHERE ($multi_klinik) $and_kategori $and_subkategori $and $and_barang";
+				WHERE ($multi_klinik) AND ($multi_tipe) $and_kategori $and_subkategori $and $and_barang";
 				$result = ExecuteRows($query);
-				//print_r($query);
+				print_r($query);
 		}
 
 	}
@@ -198,6 +207,29 @@ Page_Rendering();
 									$res = ExecuteRows($sql);
 									foreach ($res as $rs) {
 										echo "<option value=" . $rs["id"] . ">" . $rs["nama"] . "</option>";
+									}
+								?>
+							</select>
+						</li>
+
+						<!-- Input Tipe -->
+						<li class="d-inline-block">
+							<label class="d-block">Input Tipe</label>
+							<select class="selectpicker" id="InputTipe" name="InputTipe[]" multiple="multiple" style="width:210px; height: 40px;">
+								<option value="All">All</option>
+								<?php
+									$sql = "SELECT SUBSTRING(COLUMN_TYPE,5)
+									FROM information_schema.COLUMNS
+									WHERE TABLE_SCHEMA='si_klinik_alamanda_dev' 
+									AND TABLE_NAME='m_hargajual'
+									AND COLUMN_NAME='tipe'";
+									$res = ExecuteScalar($sql);
+									$string = str_replace("(", "", $res);
+									$string_rplc = str_replace(")", "", $string);
+									$str_arr = explode (",", $string_rplc); 
+									foreach ($str_arr as $value) {
+										$value_replace = str_replace("'", "", $value);
+										echo "<option value=" . $value_replace . ">" . $value_replace . "</option>";
 									}
 								?>
 							</select>

@@ -30,7 +30,234 @@ SetClientVar("login", LoginStatus());
 Page_Rendering();
 ?>
 <?php include_once "header.php"; ?>
-<!--CUSTOM_FILE_CONTENT_BEGIN--><!--CUSTOM_FILE_CONTENT_END-->
+<?php
+	// Function Tanggal Format Indonesia
+	function tgl_indo($tanggal){
+		$bulan = array (
+			1 =>   'Januari',
+			'Februari',
+			'Maret',
+			'April',
+			'Mei',
+			'Juni',
+			'Juli',
+			'Agustus',
+			'September',
+			'Oktober',
+			'November',
+			'Desember'
+		);
+		$pecahkan = explode('-', $tanggal);
+		
+		// variabel pecahkan 0 = tanggal
+		// variabel pecahkan 1 = bulan
+		// variabel pecahkan 2 = tahun
+		return $bulan[ (int)$pecahkan[1] ] . ' ' . $pecahkan[0];
+	}
+
+	function rupiah($angka){
+		$hasil_rupiah = "Rp" . number_format($angka);
+		return $hasil_rupiah;
+	}	
+
+	if(isset($_POST['srhDate'])){
+		$cabang  = $_POST['cabang'];
+		$periode  = $_POST['periode'];
+		$explode = explode('-', $periode);
+		$bulan = $explode[1];
+		$tahun = $explode[0];
+
+		$result = ExecuteRow("SELECT COUNT(DISTINCT(penjualan.id_pelanggan)) AS total_pelanggan_baru, penjualan.id_klinik FROM penjualan JOIN m_pelanggan ON m_pelanggan.id_pelanggan = penjualan.id_pelanggan WHERE penjualan.id_klinik = '$cabang' AND MONTH(penjualan.waktu) = '$bulan' AND YEAR(penjualan.waktu) = '$tahun' AND MONTH(m_pelanggan.tgl_daftar) = '$bulan' AND YEAR(m_pelanggan.tgl_daftar) = '$tahun'");
+		// print_r($result);
+		$target = ExecuteScalar("SELECT target FROM m_target_pasien_baru WHERE id_cabang = '$cabang' AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'");		
+	}
+
+?>
+<div class="container-fluid">
+	<div class="row">
+		<form method="post" action="<?php echo CurrentPageName() ?>">
+			<!-- token itu penting buat form method post -->
+			<?php if ($Page->CheckToken) { ?>
+				<input type="hidden" name="<?php echo Config("TOKEN_NAME") ?>" value="<?php echo $Page->Token ?>">
+			<?php } ?>
+			<div class="col-md-12">
+				<ul class="list-unstyled">
+					<li class="d-inline-block">
+						<label class="d-block">Cabang</label>
+						<select class="form-control" name="cabang">
+							<?php
+								$sql = "SELECT * FROM m_klinik";
+								$res = ExecuteRows($sql);
+								$get_current_id_klinik = CurrentUserInfo("id_klinik");
+								$get_nama_klinik = ExecuteScalar("SELECT nama_klinik FROM m_klinik WHERE id_klinik = '$get_current_id_klinik'");
+
+								if($get_current_id_klinik != '' && $get_current_id_klinik != FALSE){
+									echo "<option value=" . $get_current_id_klinik . " selected>" . $get_nama_klinik . "</option>";
+								} else {
+									foreach ($res as $rs) {
+										echo "<option value=" . $rs["id_klinik"] . ">" . $rs["nama_klinik"] . "</option>";
+									}
+								}
+							?>
+						</select>
+					</li>
+					<li class="d-inline-block">
+						<label class="d-block">Periode</label>
+						<input class="form-control" type="month" id="periode" name="periode">
+					</li>
+					<li class="d-inline-block">
+						<button class="btn btn-primary btn-md p-2" type="submit" name="srhDate">
+							Search 
+							<i class="fa fa-search h-3"></i>
+						</button>
+					</li>
+				</ul>
+			</div>
+		</form>
+	</div>
+
+	<div class="row">
+		<?php if(isset($_POST['srhDate'])): ?>
+			<!-- Button Print -->
+			<button class="btn btn-info btn-md p-2 mb-3" onclick="exportTableToExcel('printTable')">
+				Export to Excel
+				<i class="far fa-file-excel"></i>
+			</button>
+			<table class="table table-hover table-bordered" id="printTable">
+				<thead>
+					<tr>
+						<td colspan="2" style="text-align: center;">
+							<div class="col">
+								<h4>Laporan Target Pasien Baru</h4>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<div class="col">
+								<h5>Cabang : <?php echo ExecuteScalar("SELECT nama_klinik FROM m_klinik WHERE id_klinik='".$result['id_klinik']."'"); ?></h5>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<div class="col">
+								<h5>Periode : <?php echo tgl_indo($periode); ?></h5>
+							</div>
+						</td>
+					</tr>
+					<tr style="background-color:#b7d8dc;">
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td style="mso-number-format:'.$mso.'">
+							<div class="col">
+								<h5>Target</h5>
+							</div>
+						</td>
+						<td style="text-align: right; mso-number-format:\@">
+							<div class="col">
+								<h5><?php echo $target; ?></h5>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="col">
+								<h5>Aktual</h5>
+							</div>
+						</td>
+						<td style="text-align: right; mso-number-format:\@">
+							<div class="col">
+								<h5><?php echo $result['total_pelanggan_baru']; ?></h5>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="col">
+								<h5>Pencapaian</h5>
+							</div>
+						</td>
+						<td style="text-align: right; mso-number-format:\@">
+							<div class="col">
+								<h5>
+									<?php 
+										$pencapaian = $result['total_pelanggan_baru'] - $target;
+
+										if($pencapaian <= 0) {
+											echo "<p style='color:red;'>".$pencapaian."</p>";
+										} else {
+											echo "<p>".$pencapaian."</p>";
+										}
+									?>
+								</h5>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="col">
+								<h5>Prosentase</h5>
+							</div>
+						</td>
+						<td style="text-align: right;">
+							<div class="col">
+								<h5>
+									<?php
+										$prosentase = (($result['total_pelanggan_baru'] - $target) / $target * 100);
+										if($prosentase <= 0){
+											echo "<p style='color:red;'>".$prosentase."%</p>";
+										} else {
+											echo "<p>".$prosentase."%</p>";
+										}
+										// echo round(($aktual - $result['target']) / $result['target'] * 100); 
+									?>
+								</h5>
+							</div>
+						</td>
+					</tr>
+
+				</tbody>
+			</table>
+		<?php endif; ?>
+	</div>
+</div>
+<script>
+		function exportTableToExcel(tableID, filename = '') {
+			var downloadLink;
+			var dataType = 'data:application/vnd.ms-excel';
+			var tableSelect = document.getElementById(tableID);
+			var tableHTML = encodeURIComponent(tableSelect.outerHTML);
+			var d = new Date();
+
+			// Specify file name
+			filename = filename ? filename + '.xls' : 'Laporan Target Pasien Baru '+ d.toDateString() +'.xls';
+
+			// Create download link element
+			downloadLink = document.createElement("a");
+
+			document.body.appendChild(downloadLink);
+
+			if (navigator.msSaveOrOpenBlob) {
+				var blob = new Blob(['\ufeff', tableHTML], {
+					type: dataType
+				});
+				navigator.msSaveOrOpenBlob(blob, filename);
+			} else {
+				// Create a link to the file
+				downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+
+				// Setting the file name
+				downloadLink.download = filename;
+
+				//triggering the function
+				downloadLink.click();
+			}
+		}
+</script>
+
 <?php if (Config("DEBUG")) echo GetDebugMessage(); ?>
 <?php include_once "footer.php"; ?>
 <?php

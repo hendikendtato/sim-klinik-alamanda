@@ -213,7 +213,13 @@ Page_Rendering();
 								echo "<tr>
 									<td>".$no."</td>
 									<td>".$rs['nama_barang']."</td>
-									<td style='text-align:right;'>".$aktual."</td>
+									<td style='text-align:right;'>";
+									if(is_null($aktual) OR $aktual == FALSE){
+										echo "0";
+									} else {
+										echo $aktual;
+									}
+									echo"</td>
 									<td>".$rs['jenis']."</td>
 								</tr>";
 								$no++;
@@ -231,7 +237,7 @@ Page_Rendering();
 					</tr>
 					<tr>
 						<td colspan='2'>Prosentase</td>
-						<td style='text-align:right;'><?= ROUND((($aktual_total - $target) / $target) * 100); ?> %</td>
+						<td style='text-align:right;'><?= number_format((($aktual_total - $target) / $target) * 100, 2); ?> %</td>
 					</tr>
 				</tbody>
 			</table>

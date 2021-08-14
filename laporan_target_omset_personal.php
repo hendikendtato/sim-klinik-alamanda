@@ -173,7 +173,7 @@ Page_Rendering();
 							echo '<tr><td  colspan="7" align="center">Kosong</td></tr>';							
 						}else{
 							foreach ($result as $rs) {
-								$pegawai = ExecuteRow("SELECT m_jabatan.id AS id_jabatan, m_jabatan.nama_jabatan, m_pegawai.* FROM m_pegawai JOIN m_jabatan ON m_pegawai.jabatan_pegawai = m_jabatan.id WHERE m_pegawai.id_pegawai = '".$rs['komisi_recall']."'");																				
+								$pegawai = ExecuteRow("SELECT m_jabatan.id AS id_jabatan, m_jabatan.nama_jabatan, m_pegawai.* FROM m_pegawai JOIN m_jabatan ON m_pegawai.jabatan_pegawai = m_jabatan.id WHERE m_pegawai.id_pegawai = '".$rs['komisi_recall']."' AND m_pegawai.status == 'Aktif' ORDER BY m_jabatan.id");																				
 								$target = ExecuteRow("SELECT * FROM m_target_omset_personal WHERE id_jabatan = '".$pegawai['id_jabatan']."' AND id_cabang = '$cabang' AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'");
 								$aktual = ExecuteScalar("SELECT sum(detailpenjualan.subtotal) FROM detailpenjualan 
 								JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE penjualan.id_klinik = '$cabang' AND MONTH(penjualan.waktu) = '$bulan' AND YEAR(penjualan.waktu) = '$tahun' AND detailpenjualan.komisi_recall = '".$rs['komisi_recall']."'");
