@@ -2494,7 +2494,7 @@ class penjualan extends DbTable
 			$id_sebelumnya = ExecuteScalar("SELECT id FROM penggunaan_kartu ORDER BY id DESC LIMIT 1");
 			$id_sekarang = $id_sebelumnya+1;
 			$id_setelahnya = $id_sekarang+1;
-			if($status == 'Printed') { //begin of if(status == printed)
+			if($status == 'Printed' AND $status != 'Draft') { //begin of if(status == printed)
 
 				//INSERTING KAS / REKENING
 				if($metode_pembayaran == 'Debit' OR $metode_pembayaran == 'Kredit' OR $metode_pembayaran == 'E-Wallet'){

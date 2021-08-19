@@ -129,7 +129,7 @@ Page_Rendering();
 
 <div class="container-fluid">
   <div class="row">
-	<form method="post" action="<?php echo CurrentPageName() ?>">
+	<form method="post" action="<?php echo CurrentPageName() ?>" id="form-search">
 	  <!-- token itu penting buat form method post -->
 	  <?php if ($Page->CheckToken) { ?>
 		<input type="hidden" name="<?php echo Config("TOKEN_NAME") ?>" value="<?php echo $Page->Token ?>">
@@ -445,6 +445,19 @@ Page_Rendering();
 					</div>
 				</div>
 			</div>
+			  <!-- Modal -->
+			  <div class="modal fade" id="myModal" role="dialog" data-backdrop="static">
+			  	<div class="modal-dialog modal-sm modal-dialog-centered">
+	
+			  	<!-- Modal content-->
+			  	<div class="modal-content">
+			  		<div class="modal-body">
+			  			<b align="center">Please wait...</b>
+			  		</div>
+			  	</div>
+	  
+			  	</div>
+			  </div>
 					
 			<script type="text/javascript" src="plugins/datatables/datatables.min.js"></script>		
 
@@ -518,7 +531,13 @@ Page_Rendering();
 						$('#modal').modal('hide');
 					});
 				});
-			</script>	
+			</script>
+			<script>
+				$('#form-search').on('submit', function(ev) {
+					$("#myModal").modal();
+					$("#myModal").modal({backdrop: 'static', keyboard: false});
+				});
+			</script>
   </div>
 </div>
 
