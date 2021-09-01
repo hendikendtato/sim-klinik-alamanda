@@ -419,4 +419,156 @@ $API_ACTIONS["getStok"] = function(Request $request, Response $response) {
 	 $id_klinik = Param("id_klinik");
 	 Write(ExecuteScalar("SELECT stok FROM m_hargajual WHERE id_barang = '$id_barang' AND id_klinik = '$id_klinik'"));  // Output field value as string
 };
+
+//Get target omset cabang
+$API_ACTIONS["dataOmsetCabang"] = function(Request $request, Response &$response) {
+	$id_klinik = Param("id_klinik");
+	$bulan = DATE('m');
+	$tahun = DATE('Y');
+	try {
+	$data_target = ExecuteRow("SELECT * FROM m_target_omset_cabang JOIN m_klinik ON m_klinik.id_klinik = m_target_omset_cabang.id_cabang WHERE MONTH(m_target_omset_cabang.tgl_awal) = '$bulan' AND YEAR(m_target_omset_cabang.tgl_awal) = '$tahun' AND m_target_omset_cabang.id_cabang='$id_klinik'");
+	$aktual = ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE MONTH(waktu) = '$bulan' AND YEAR(waktu) = '$tahun' AND id_klinik = '$id_klinik' AND status != 'Draft'");
+	array_push($data_target, $aktual);
+	if(empty($data_target)){
+			$data['success'] = false;
+			$data['message'] = "Tidak Ada Data!";
+		} else {
+			$data['success'] = true;
+			$data['data']    = $data_target;
+		}
+	} catch (Exception $e) {
+		$data['success'] = false;
+		$data['message'] = $e;
+	}
+	WriteJson($data);
+};
+
+//Get data omset pasien
+$API_ACTIONS["dataOmsetPasien"] = function(Request $request, Response &$response) {
+	$id_klinik = Param("id_klinik");
+	$bulan = DATE('m');
+	$tahun = DATE('Y');
+	try {
+	$total_pasien = ExecuteRow("SELECT COUNT(DISTINCT(id_pelanggan)) AS total_pelanggan, id_klinik FROM penjualan WHERE id_klinik = '$id_klinik' AND MONTH(waktu) = '$bulan' AND YEAR(waktu) = '$tahun'");
+	$target_pasien = ExecuteScalar("SELECT target FROM m_target_pasien WHERE id_cabang = '$id_klinik' AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'");
+	array_push($total_pasien, $target_pasien);
+	if(empty($total_pasien)){
+			$data['success'] = false;
+			$data['message'] = "Tidak Ada Data!";
+		} else {
+			$data['success'] = true;
+			$data['data']    = $total_pasien;
+		}
+	} catch (Exception $e) {
+		$data['success'] = false;
+		$data['message'] = $e;
+	}
+	WriteJson($data);
+};
+
+//Get data target pasien baru
+$API_ACTIONS["dataOmsetPasienBaru"] = function(Request $request, Response &$response) {
+	$id_klinik = Param("id_klinik");
+	$bulan = DATE('m');
+	$tahun = DATE('Y');
+	try {
+	$total_pasien_baru = ExecuteRow("SELECT COUNT(DISTINCT(penjualan.id_pelanggan)) AS total_pelanggan_baru, penjualan.id_klinik FROM penjualan JOIN m_pelanggan ON m_pelanggan.id_pelanggan = penjualan.id_pelanggan WHERE penjualan.id_klinik = '$id_klinik' AND MONTH(penjualan.waktu) = '$bulan' AND YEAR(penjualan.waktu) = '$tahun' AND MONTH(m_pelanggan.tgl_daftar) = '$bulan' AND YEAR(m_pelanggan.tgl_daftar) = '$tahun'");
+	$target_pasien_baru = ExecuteScalar("SELECT target FROM m_target_pasien_baru WHERE id_cabang = '$id_klinik' AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'");
+	array_push($total_pasien_baru, $target_pasien_baru);
+	if(empty($total_pasien_baru)){
+			$data['success'] = false;
+			$data['message'] = "Tidak Ada Data!";
+		} else {
+			$data['success'] = true;
+			$data['data']    = $total_pasien_baru;
+		}
+	} catch (Exception $e) {
+		$data['success'] = false;
+		$data['message'] = $e;
+	}
+	WriteJson($data);
+};
+
+//Get data target kunjungan
+$API_ACTIONS["dataOmsetKunjungan"] = function(Request $request, Response &$response) {
+	$id_klinik = Param("id_klinik");
+	$bulan = DATE('m');
+	$tahun = DATE('Y');
+	try {
+	$total_nota = ExecuteRow("SELECT COUNT(kode_penjualan) AS total_nota, id_klinik FROM penjualan WHERE id_klinik = '$id_klinik' AND MONTH(waktu) = '$bulan' AND YEAR(waktu) = '$tahun' AND status != 'Draft'");
+	$target_nota = ExecuteRow("SELECT target FROM m_target_kunjungan WHERE id_cabang = '$id_klinik' AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'");
+	array_push($total_nota, $target_nota);
+	if(empty($total_nota)){
+			$data['success'] = false;
+			$data['message'] = "Tidak Ada Data!";
+		} else {
+			$data['success'] = true;
+			$data['data']    = $total_nota;
+		}
+	} catch (Exception $e) {
+		$data['success'] = false;
+		$data['message'] = $e;
+	}
+	WriteJson($data);
+};
+
+//Get data target produk terjual
+$API_ACTIONS["dataOmsetProduk"] = function(Request $request, Response &$response) {
+	$id_klinik = Param("id_klinik");
+	$bulan = DATE('m');
+	$tahun = DATE('Y');
+	try {
+	$produk_terjual = ExecuteRows("SELECT m_target_produk.target, m_status_barang.id_status, m_status_barang.status_barang ,SUM(detailpenjualan.qty) AS qty FROM penjualan 
+	JOIN detailpenjualan ON penjualan.id = detailpenjualan.id_penjualan
+	JOIN m_hargajual ON m_hargajual.id_barang = detailpenjualan.id_barang
+		AND m_hargajual.id_klinik = '$id_klinik'
+	JOIN m_status_barang ON m_hargajual.status = m_status_barang.id_status
+	JOIN m_barang ON detailpenjualan.id_barang = m_barang.id
+	LEFT JOIN m_target_produk ON m_target_produk.status LIKE CONCAT ('%', m_status_barang.id_status, '%')
+		AND m_target_produk.id_cabang = '$id_klinik'
+		AND MONTH(m_target_produk.tgl_awal) = '$bulan'
+		AND YEAR(m_target_produk.tgl_akhir) = '$tahun'	
+	WHERE MONTH(penjualan.waktu) = '$bulan' AND YEAR(penjualan.waktu) = '$tahun' AND m_barang.tipe != 'Perawatan' AND penjualan.id_klinik = '$id_klinik' GROUP BY m_hargajual.status");
+	if(empty($produk_terjual)){
+			$data['success'] = false;
+			$data['message'] = "Tidak Ada Data!";
+		} else {
+			$data['success'] = true;
+			$data['data']    = $produk_terjual;
+		}
+	} catch (Exception $e) {
+		$data['success'] = false;
+		$data['message'] = $e;
+	}
+	WriteJson($data);
+};
+
+//Get data target perawatan terjual
+$API_ACTIONS["dataOmsetPerawatan"] = function(Request $request, Response &$response) {
+	$id_klinik = Param("id_klinik");
+	$bulan = DATE('m');
+	$tahun = DATE('Y');
+	try {
+	$perawatan_terjual = ExecuteRows("SELECT m_target_perawatan.target,jenisbarang.id, jenisbarang.jenis ,SUM(detailpenjualan.qty) AS qty FROM penjualan 
+	JOIN detailpenjualan ON penjualan.id = detailpenjualan.id_penjualan
+	JOIN m_barang ON detailpenjualan.id_barang = m_barang.id
+	JOIN jenisbarang ON jenisbarang.id = m_barang.jenis
+	LEFT JOIN m_target_perawatan ON m_target_perawatan.jenis LIKE CONCAT ('%', m_barang.jenis, '%')
+		AND m_target_perawatan.id_cabang = '$id_klinik'
+		AND MONTH(m_target_perawatan.tgl_awal) = '$bulan'
+		AND YEAR(m_target_perawatan.tgl_akhir) = '$tahun'
+	WHERE MONTH(penjualan.waktu) = '$bulan' AND YEAR(penjualan.waktu) = '$tahun' AND m_barang.tipe = 'Perawatan' AND penjualan.id_klinik = '$id_klinik' GROUP BY m_barang.jenis");
+	if(empty($perawatan_terjual)){
+			$data['success'] = false;
+			$data['message'] = "Tidak Ada Data!";
+		} else {
+			$data['success'] = true;
+			$data['data']    = $perawatan_terjual;
+		}
+	} catch (Exception $e) {
+		$data['success'] = false;
+		$data['message'] = $e;
+	}
+	WriteJson($data);
+};
 ?>

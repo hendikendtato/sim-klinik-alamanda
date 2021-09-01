@@ -69,7 +69,8 @@ Page_Rendering();
 
 		$result = ExecuteRows("SELECT * FROM detailpenjualan 
 							JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan 
-							JOIN m_klinik ON penjualan.id_klinik = m_klinik.id_klinik WHERE penjualan.id_klinik = '$cabang' AND MONTH(penjualan.waktu) = '$bulan' AND YEAR(penjualan.waktu) = '$tahun' AND detailpenjualan.komisi_recall IS NOT NULL GROUP BY detailpenjualan.komisi_recall");
+							JOIN m_klinik ON penjualan.id_klinik = m_klinik.id_klinik 
+							JOIN m_pegawai ON m_pegawai.id_pegawai = detailpenjualan.komisi_recall WHERE penjualan.id_klinik = '$cabang' AND MONTH(penjualan.waktu) = '$bulan' AND YEAR(penjualan.waktu) = '$tahun' AND detailpenjualan.komisi_recall IS NOT NULL AND m_pegawai.status = 'Aktif' GROUP BY detailpenjualan.komisi_recall ORDER BY m_pegawai.jabatan_pegawai ASC");
 		$nama_klinik = ExecuteScalar("SELECT nama_klinik FROM m_klinik WHERE id_klinik='$cabang'");
 	
 	}
@@ -173,7 +174,7 @@ Page_Rendering();
 							echo '<tr><td  colspan="7" align="center">Kosong</td></tr>';							
 						}else{
 							foreach ($result as $rs) {
-								$pegawai = ExecuteRow("SELECT m_jabatan.id AS id_jabatan, m_jabatan.nama_jabatan, m_pegawai.* FROM m_pegawai JOIN m_jabatan ON m_pegawai.jabatan_pegawai = m_jabatan.id WHERE m_pegawai.id_pegawai = '".$rs['komisi_recall']."' AND m_pegawai.status == 'Aktif' ORDER BY m_jabatan.id");																				
+								$pegawai = ExecuteRow("SELECT m_jabatan.id AS id_jabatan, m_jabatan.nama_jabatan, m_pegawai.* FROM m_pegawai JOIN m_jabatan ON m_pegawai.jabatan_pegawai = m_jabatan.id WHERE m_pegawai.id_pegawai = '".$rs['komisi_recall']."'");																				
 								$target = ExecuteRow("SELECT * FROM m_target_omset_personal WHERE id_jabatan = '".$pegawai['id_jabatan']."' AND id_cabang = '$cabang' AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'");
 								$aktual = ExecuteScalar("SELECT sum(detailpenjualan.subtotal) FROM detailpenjualan 
 								JOIN penjualan ON penjualan.id = detailpenjualan.id_penjualan WHERE penjualan.id_klinik = '$cabang' AND MONTH(penjualan.waktu) = '$bulan' AND YEAR(penjualan.waktu) = '$tahun' AND detailpenjualan.komisi_recall = '".$rs['komisi_recall']."'");
@@ -391,7 +392,6 @@ Page_Rendering();
 				$(`#${id}_detil`).removeClass('show')
 			}
 		}
-
 </script>
 
 <?php if (Config("DEBUG")) echo GetDebugMessage(); ?>

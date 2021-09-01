@@ -1462,11 +1462,7 @@ class penjualan_search extends penjualan
 			$this->_action->ViewCustomAttributes = "";
 
 			// status
-			if (strval($this->status->CurrentValue) != "") {
-				$this->status->ViewValue = $this->status->optionCaption($this->status->CurrentValue);
-			} else {
-				$this->status->ViewValue = NULL;
-			}
+			$this->status->ViewValue = $this->status->CurrentValue;
 			$this->status->ViewCustomAttributes = "";
 
 			// status_void
@@ -2109,8 +2105,12 @@ class penjualan_search extends penjualan
 			$this->_action->PlaceHolder = RemoveHtml($this->_action->caption());
 
 			// status
+			$this->status->EditAttrs["class"] = "form-control";
 			$this->status->EditCustomAttributes = "";
-			$this->status->EditValue = $this->status->options(FALSE);
+			if (!$this->status->Raw)
+				$this->status->AdvancedSearch->SearchValue = HtmlDecode($this->status->AdvancedSearch->SearchValue);
+			$this->status->EditValue = HtmlEncode($this->status->AdvancedSearch->SearchValue);
+			$this->status->PlaceHolder = RemoveHtml($this->status->caption());
 
 			// status_void
 			$this->status_void->EditAttrs["class"] = "form-control";
@@ -2315,8 +2315,6 @@ class penjualan_search extends penjualan
 					$lookupFilter = $lookupFilter->bindTo($this);
 					break;
 				case "x_id_kas":
-					break;
-				case "x_status":
 					break;
 				default:
 					$lookupFilter = "";

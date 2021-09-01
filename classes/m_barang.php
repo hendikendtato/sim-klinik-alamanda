@@ -1266,7 +1266,7 @@ class m_barang extends DbTable
 		//echo "Row Inserted"
 			//API DATA TRANSAKSI ADD
 
-			$url = "http://172.16.0.2:8069/web/produk";
+			$url = "http://45.13.132.223:11800/web/produk";
 			$data_sql = ExecuteRow("SELECT m_barang.*, m_satuan_barang.*, jenisbarang.id AS id_jenis, jenisbarang.kode AS kode_jenis, jenisbarang.jenis, kategoribarang.id AS id_kategori, kategoribarang.nama AS nama_kategori, subkategoribarang.id AS id_subkategori, subkategoribarang.nama AS nama_subkategori, m_tags.id AS id_mtag, m_tags.nama_tag FROM m_barang
 									JOIN m_satuan_barang ON m_barang.satuan = m_satuan_barang.id_satuan
 									LEFT JOIN jenisbarang ON m_barang.jenis = jenisbarang.id

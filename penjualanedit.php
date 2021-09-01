@@ -312,8 +312,6 @@ loadjs.ready("head", function() {
 	fpenjualanedit.lists["x_id_kartubank"].options = <?php echo JsonEncode($penjualan_edit->id_kartubank->lookupOptions()) ?>;
 	fpenjualanedit.lists["x_id_kas"] = <?php echo $penjualan_edit->id_kas->Lookup->toClientList($penjualan_edit) ?>;
 	fpenjualanedit.lists["x_id_kas"].options = <?php echo JsonEncode($penjualan_edit->id_kas->lookupOptions()) ?>;
-	fpenjualanedit.lists["x_status"] = <?php echo $penjualan_edit->status->Lookup->toClientList($penjualan_edit) ?>;
-	fpenjualanedit.lists["x_status"].options = <?php echo JsonEncode($penjualan_edit->status->options(FALSE, TRUE)) ?>;
 	loadjs.done("fpenjualanedit");
 });
 </script>
@@ -753,13 +751,10 @@ loadjs.ready(["fpenjualanedit"], function() {
 <?php } ?>
 <?php if ($penjualan_edit->status->Visible) { // status ?>
 	<div id="r_status" class="form-group row">
-		<label id="elh_penjualan_status" class="<?php echo $penjualan_edit->LeftColumnClass ?>"><script id="tpc_penjualan_status" type="text/html"><?php echo $penjualan_edit->status->caption() ?><?php echo $penjualan_edit->status->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></script></label>
+		<label id="elh_penjualan_status" for="x_status" class="<?php echo $penjualan_edit->LeftColumnClass ?>"><script id="tpc_penjualan_status" type="text/html"><?php echo $penjualan_edit->status->caption() ?><?php echo $penjualan_edit->status->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></script></label>
 		<div class="<?php echo $penjualan_edit->RightColumnClass ?>"><div <?php echo $penjualan_edit->status->cellAttributes() ?>>
 <script id="tpx_penjualan_status" type="text/html"><span id="el_penjualan_status">
-<div id="tp_x_status" class="ew-template"><input type="radio" class="custom-control-input" data-table="penjualan" data-field="x_status" data-value-separator="<?php echo $penjualan_edit->status->displayValueSeparatorAttribute() ?>" name="x_status" id="x_status" value="{value}"<?php echo $penjualan_edit->status->editAttributes() ?>></div>
-<div id="dsl_x_status" data-repeatcolumn="5" class="ew-item-list d-none"><div>
-<?php echo $penjualan_edit->status->radioButtonListHtml(FALSE, "x_status") ?>
-</div></div>
+<input type="text" data-table="penjualan" data-field="x_status" name="x_status" id="x_status" size="30" maxlength="255" placeholder="<?php echo HtmlEncode($penjualan_edit->status->getPlaceHolder()) ?>" value="<?php echo $penjualan_edit->status->EditValue ?>"<?php echo $penjualan_edit->status->editAttributes() ?>>
 </span></script>
 <?php echo $penjualan_edit->status->CustomMsg ?></div></div>
 	</div>
@@ -1064,14 +1059,12 @@ loadjs.ready("load", function() {
 
 	//if click button draft
 	$('#btn-action').click(function() {
-		$('input[name="x_status"][value="Draft"]').prop('checked', true);
-		$('input[name="x_status"][value="Printed"]').prop('checked', null);
+		$('input[name="x_status"]').val('Draft');
 	});
 
 	//if click button printed
 	$('#btn-action-cetak').click(function() {
-		$('input[name="x_status"][value="Printed"]').prop('checked', true);
-		$('input[name="x_status"][value="Draft"]').prop('checked', null);
+		$('input[name="x_status"]').val('Printed');
 	});
 	$(window).on('load', function(){
 		$("#myModal").modal();

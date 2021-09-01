@@ -175,59 +175,62 @@ Page_Rendering();
 			$total_voucher = 0;
 			$mso='"\@"';
 			foreach ($result as $rs) {
-			
-			$subtotal = ExecuteScalar("SELECT SUM(subtotal) FROM detailpenjualan WHERE id_penjualan = ".$rs['id_penjualan']." ORDER BY id");
-			$voucher = ExecuteRow("SELECT m_kartu.charge_price AS charge_voucher, penjualan.jumlah_voucher FROM penjualan JOIN m_kartu ON penjualan.id_kartu = m_kartu.id_kartu WHERE penjualan.id = '".$rs['id_penjualan']."'");
-			
-			  echo "<tr id=".$rs["id_penjualan"].">
-				  <td>"; 
+				
+				$subtotal = ExecuteScalar("SELECT SUM(subtotal) FROM detailpenjualan WHERE id_penjualan = ".$rs['id_penjualan']." ORDER BY id");
+				$voucher = ExecuteRow("SELECT m_kartu.charge_price AS charge_voucher, penjualan.jumlah_voucher FROM penjualan JOIN m_kartu ON penjualan.id_kartu = m_kartu.id_kartu WHERE penjualan.id = '".$rs['id_penjualan']."'");
+				if($voucher != false){
+					$total_voucher = $voucher['charge_voucher'] * $voucher['jumlah_voucher'];
+					$totalvoucher += $total_voucher;
+				}
+				
+			echo "<tr id=".$rs["id_penjualan"].">
+			<td>"; 
 					if(is_null($rs["waktu"])){
-					  echo "Tidak Ada Nilai";
+						echo "Tidak Ada Nilai";
 					}else{
-					  echo $rs["waktu"];
+						echo $rs["waktu"];
 					}echo
-				  "</td>
-				  <td>"; 
+					"</td>
+					<td>"; 
 					if(is_null($rs["kode_penjualan"])){
-					  echo "Tidak Ada Nilai";
+						echo "Tidak Ada Nilai";
 					}else{
-					  echo $rs["kode_penjualan"];
+						echo $rs["kode_penjualan"];
 					}echo
-				  "</td>
-				  <td>"; 
+					"</td>
+					<td>"; 
 					if(is_null($rs["nama_pelanggan"])){
 					  echo "Tidak Ada Nilai";
 					}else{
-					  echo $rs["nama_pelanggan"];
+						echo $rs["nama_pelanggan"];
 					}echo
-				  "</td>
-				  <td align='right' style='mso-number-format:".$mso."'>" . rupiah($subtotal) . "</td>
+					"</td>
+					<td align='right' style='mso-number-format:".$mso."'>" . rupiah($subtotal) . "</td>
 				  <td align='center'>"; 
-					if($rs["diskon_persen"] == '0'){
+				  if($rs["diskon_persen"] == '0'){
 					  echo "-";
 					}else{
-					  echo $rs["diskon_persen"];
+						echo $rs["diskon_persen"];
 					}echo
-				  "</td>
-				  <td align='center' style='mso-number-format:".$mso."'>"; 
+					"</td>
+					<td align='center' style='mso-number-format:".$mso."'>"; 
 					if($rs["diskon_rupiah"] == '0'){
-					  echo "-";
+						echo "-";
 					}else{
-					  echo rupiah($rs["diskon_rupiah"]);
+						echo rupiah($rs["diskon_rupiah"]);
 					}echo
-				  "</td>
-				  <td align='center'>"; 
+					"</td>
+					<td align='center'>"; 
 					if($rs["ppn"] == '0'){
-					  echo "-";
+						echo "-";
 					}else{
-					  echo $rs["ppn"];
+						echo $rs["ppn"];
 					}echo
-				  "</td>
-				  <td align='center'>"; 
+					"</td>
+					<td align='center'>"; 
 					if(is_null($voucher) || $voucher == false){
-					  echo "-";
+						echo "-";
 					}else{
-					  $total_voucher = $voucher['charge_voucher'] * $voucher['jumlah_voucher']; 
 					  echo rupiah($total_voucher);
 					}echo
 				  "</td>
@@ -275,11 +278,12 @@ Page_Rendering();
 				</tr>";
 			  $totalbruto += $subtotal;
 			  $totalcabang += $rs["total"];
-			  $totalvoucher += $total_voucher;
 			}
+			
+		}						
 
-		  }						
 		?>
+		
 		  <tr>
 				<td colspan="3" align="right"><b>Total Bruto</b></td>
 				<td align="right" style="mso-number-format:'\@'">

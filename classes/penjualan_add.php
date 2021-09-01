@@ -1909,11 +1909,7 @@ class penjualan_add extends penjualan
 			$this->_action->ViewCustomAttributes = "";
 
 			// status
-			if (strval($this->status->CurrentValue) != "") {
-				$this->status->ViewValue = $this->status->optionCaption($this->status->CurrentValue);
-			} else {
-				$this->status->ViewValue = NULL;
-			}
+			$this->status->ViewValue = $this->status->CurrentValue;
 			$this->status->ViewCustomAttributes = "";
 
 			// status_void
@@ -2577,8 +2573,12 @@ class penjualan_add extends penjualan
 			$this->_action->PlaceHolder = RemoveHtml($this->_action->caption());
 
 			// status
+			$this->status->EditAttrs["class"] = "form-control";
 			$this->status->EditCustomAttributes = "";
-			$this->status->EditValue = $this->status->options(FALSE);
+			if (!$this->status->Raw)
+				$this->status->CurrentValue = HtmlDecode($this->status->CurrentValue);
+			$this->status->EditValue = HtmlEncode($this->status->CurrentValue);
+			$this->status->PlaceHolder = RemoveHtml($this->status->caption());
 
 			// Add refer script
 			// id_pelanggan
@@ -2913,7 +2913,7 @@ class penjualan_add extends penjualan
 			}
 		}
 		if ($this->status->Required) {
-			if ($this->status->FormValue == "") {
+			if (!$this->status->IsDetailKey && $this->status->FormValue != NULL && $this->status->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->status->caption(), $this->status->RequiredErrorMessage));
 			}
 		}
@@ -3223,8 +3223,6 @@ class penjualan_add extends penjualan
 					$lookupFilter = $lookupFilter->bindTo($this);
 					break;
 				case "x_id_kas":
-					break;
-				case "x_status":
 					break;
 				default:
 					$lookupFilter = "";

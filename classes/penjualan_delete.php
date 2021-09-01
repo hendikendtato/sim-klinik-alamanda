@@ -1347,11 +1347,7 @@ class penjualan_delete extends penjualan
 			$this->_action->ViewCustomAttributes = "";
 
 			// status
-			if (strval($this->status->CurrentValue) != "") {
-				$this->status->ViewValue = $this->status->optionCaption($this->status->CurrentValue);
-			} else {
-				$this->status->ViewValue = NULL;
-			}
+			$this->status->ViewValue = $this->status->CurrentValue;
 			$this->status->ViewCustomAttributes = "";
 
 			// status_void
@@ -1610,8 +1606,6 @@ class penjualan_delete extends penjualan
 					$lookupFilter = $lookupFilter->bindTo($this);
 					break;
 				case "x_id_kas":
-					break;
-				case "x_status":
 					break;
 				default:
 					$lookupFilter = "";

@@ -145,8 +145,6 @@ loadjs.ready("head", function() {
 	fpenjualansearch.lists["x_id_kartubank"].options = <?php echo JsonEncode($penjualan_search->id_kartubank->lookupOptions()) ?>;
 	fpenjualansearch.lists["x_id_kas"] = <?php echo $penjualan_search->id_kas->Lookup->toClientList($penjualan_search) ?>;
 	fpenjualansearch.lists["x_id_kas"].options = <?php echo JsonEncode($penjualan_search->id_kas->lookupOptions()) ?>;
-	fpenjualansearch.lists["x_status"] = <?php echo $penjualan_search->status->Lookup->toClientList($penjualan_search) ?>;
-	fpenjualansearch.lists["x_status"].options = <?php echo JsonEncode($penjualan_search->status->options(FALSE, TRUE)) ?>;
 	loadjs.done("fpenjualansearch");
 });
 </script>
@@ -752,7 +750,7 @@ loadjs.ready(["fpenjualansearch"], function() {
 <?php } ?>
 <?php if ($penjualan_search->status->Visible) { // status ?>
 	<div id="r_status" class="form-group row">
-		<label class="<?php echo $penjualan_search->LeftColumnClass ?>"><span id="elh_penjualan_status"><?php echo $penjualan_search->status->caption() ?></span>
+		<label for="x_status" class="<?php echo $penjualan_search->LeftColumnClass ?>"><span id="elh_penjualan_status"><?php echo $penjualan_search->status->caption() ?></span>
 		<span class="ew-search-operator">
 <?php echo $Language->phrase("LIKE") ?>
 <input type="hidden" name="z_status" id="z_status" value="LIKE">
@@ -760,10 +758,7 @@ loadjs.ready(["fpenjualansearch"], function() {
 		</label>
 		<div class="<?php echo $penjualan_search->RightColumnClass ?>"><div <?php echo $penjualan_search->status->cellAttributes() ?>>
 			<span id="el_penjualan_status" class="ew-search-field">
-<div id="tp_x_status" class="ew-template"><input type="radio" class="custom-control-input" data-table="penjualan" data-field="x_status" data-value-separator="<?php echo $penjualan_search->status->displayValueSeparatorAttribute() ?>" name="x_status" id="x_status" value="{value}"<?php echo $penjualan_search->status->editAttributes() ?>></div>
-<div id="dsl_x_status" data-repeatcolumn="5" class="ew-item-list d-none"><div>
-<?php echo $penjualan_search->status->radioButtonListHtml(FALSE, "x_status") ?>
-</div></div>
+<input type="text" data-table="penjualan" data-field="x_status" name="x_status" id="x_status" size="30" maxlength="255" placeholder="<?php echo HtmlEncode($penjualan_search->status->getPlaceHolder()) ?>" value="<?php echo $penjualan_search->status->EditValue ?>"<?php echo $penjualan_search->status->editAttributes() ?>>
 </span>
 		</div></div>
 	</div>

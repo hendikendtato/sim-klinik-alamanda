@@ -218,17 +218,17 @@ Page_Rendering();
 						<button class="btn btn-primary btn-md p-2" type="submit" name="cabang" id="cabang" hidden></button>
 				</form>						
 				<div class="chart-area">
-					<div id="chartDiv" style="max-width: 900px;height: 400px;margin: 0px auto"></div>
+					<div id='myChart' style="max-width: 900px;height: 500px;margin: 0px auto"></div>
 				</div>
 			</div>
 		</div>
 	</div>	
-	<!-- Area Chart Target Omset Personal -->
+	<!-- Area Chart Target Omset Produk Terjual -->
 	<div class="col-xl-6 col-lg-5">
 		<div class="card border-0 shadow mb-4">
 			<!-- Card Header - Dropdown -->
 			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-				<h6 class="m-0 font-weight-bold text-primary">Statistic Target Omset Personal</h6>
+				<h6 class="m-0 font-weight-bold text-primary">Statistic Target Omset Produk Terjual</h6>
 			</div>
 			<!-- Card Body -->
 			<div class="card-body">
@@ -237,7 +237,7 @@ Page_Rendering();
 						<?php if ($Page->CheckToken) { ?>
 							<input type="hidden" name="<?php echo Config("TOKEN_NAME") ?>" value="<?php echo $Page->Token ?>">
 						<?php } ?>
-						<select class="custom-select" id="select-cabang" name="select-cabang">
+						<select class="custom-select" id="select-cabang-produk" name="select-cabang-produk">
 							<option selected>Pilih Cabang</option>
 							<?php
 								$cabang = ExecuteRows("SELECT * FROM m_klinik");
@@ -249,7 +249,38 @@ Page_Rendering();
 						<button class="btn btn-primary btn-md p-2" type="submit" name="cabang" id="cabang" hidden></button>
 				</form>						
 				<div class="chart-area">
-					<div id="chartDiv" style="max-width: 900px;height: 400px;margin: 0px auto"></div>
+					<div id="chartDivProduk" style="max-width: 900px;height: 500px;margin: 0px auto"></div>
+				</div>
+			</div>
+		</div>
+	</div>	
+	<!-- Area Chart Target Omset Perawatan Terjual -->
+	<div class="col-xl-6 col-lg-5">
+		<div class="card border-0 shadow mb-4">
+			<!-- Card Header - Dropdown -->
+			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+				<h6 class="m-0 font-weight-bold text-primary">Statistic Target Omset Perawatan Terjual</h6>
+			</div>
+			<!-- Card Body -->
+			<div class="card-body">
+				<form method="post" action="<?php echo CurrentPageName() ?>" id="form-cabang">
+					<!-- token itu penting buat form method post -->
+						<?php if ($Page->CheckToken) { ?>
+							<input type="hidden" name="<?php echo Config("TOKEN_NAME") ?>" value="<?php echo $Page->Token ?>">
+						<?php } ?>
+						<select class="custom-select" id="select-cabang-perawatan" name="select-cabang-perawatan">
+							<option selected>Pilih Cabang</option>
+							<?php
+								$cabang = ExecuteRows("SELECT * FROM m_klinik");
+								foreach ($cabang as $value) {
+									echo "<option value='".$value['id_klinik']."'>".$value['nama_klinik']."</option>";
+								}
+							?>
+						</select>
+						<button class="btn btn-primary btn-md p-2" type="submit" name="cabang" id="cabang" hidden></button>
+				</form>						
+				<div class="chart-area">
+					<div id="chartDivPerawatan" style="max-width: 900px;height: 500px;margin: 0px auto"></div>
 				</div>
 			</div>
 		</div>
@@ -280,7 +311,7 @@ Page_Rendering();
 						<button class="btn btn-primary btn-md p-2" type="submit" name="cabang-pasien" id="cabang-pasien" hidden></button>
 				</form>						
 				<div class="chart-area">
-					<div id="chartDivPasien" style="max-width: 900px;height: 400px;margin: 0px auto"></div>
+					<div id="chartDivPasien" style="max-width: 900px;height: 500px;margin: 0px auto"></div>
 				</div>
 			</div>
 		</div>
@@ -311,13 +342,46 @@ Page_Rendering();
 						<button class="btn btn-primary btn-md p-2" type="submit" name="cabang-pasien-baru" id="cabang-pasien-baru" hidden></button>
 				</form>						
 				<div class="chart-area">
-					<div id="chartDivPasienBaru" style="max-width: 900px;height: 400px;margin: 0px auto"></div>
+					<div id="chartDivPasienBaru" style="max-width: 900px;height: 500px;margin: 0px auto"></div>
+				</div>
+			</div>
+		</div>
+	</div>	
+	<!-- Area Chart Target Kunjungan -->
+	<div class="col-xl-6 col-lg-5">
+		<div class="card border-0 shadow mb-4">
+			<!-- Card Header - Dropdown -->
+			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+				<h6 class="m-0 font-weight-bold text-primary">Statistic Target Kunjungan</h6>
+			</div>
+			<!-- Card Body -->
+			<div class="card-body">
+				<form method="post" action="<?php echo CurrentPageName() ?>" id="form-cabang-kunjungan">
+					<!-- token itu penting buat form method post -->
+						<?php if ($Page->CheckToken) { ?>
+							<input type="hidden" name="<?php echo Config("TOKEN_NAME") ?>" value="<?php echo $Page->Token ?>">
+						<?php } ?>
+						<select class="custom-select" id="select-cabang-kunjungan" name="select-cabang-kunjungan">
+							<option selected>Pilih Cabang</option>
+							<?php
+								$cabang = ExecuteRows("SELECT * FROM m_klinik");
+								foreach ($cabang as $value) {
+									echo "<option value='".$value['id_klinik']."'>".$value['nama_klinik']."</option>";
+								}
+							?>
+						</select>
+						<button class="btn btn-primary btn-md p-2" type="submit" name="cabang-kunjungan" id="cabang-pasien-baru" hidden></button>
+				</form>						
+				<div class="chart-area">
+					<div id="chartDivKunjungan" style="max-width: 900px;height: 500px;margin: 0px auto"></div>
 				</div>
 			</div>
 		</div>
 	</div>	
 </div>
 
+<script src= "https://cdn.zingchart.com/zingchart.min.js"></script>
+<script> zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9","ee6b7db5b51705a13dc2339db3edaf6d"];</script>
 
 <script language="JavaScript" type="text/javascript" src="/klinik/jquery/jquery.min.js"></script>
 <script src="https://code.jscharting.com/latest/jscharting.js"></script>
@@ -326,21 +390,405 @@ Page_Rendering();
 
 $('#select-cabang').change(function() {
 	var selected = $(this).val();
-	$("#cabang").click();
-	$('#dropDownId :selected').text();
-});
+	zingchart.exec('myChart', 'setseriesvalues', {
+		  'values': [
+			[0,0,0], 
+			[0,0,0]
+		  ]
+	});
 
+	$.get(`${base_url}api/?action=dataOmsetCabang&id_klinik=${selected}`)
+			.then(function (response) {
+				// handle success
+				var aset_res = parseInt(response.data['aset']);
+				var baseline_res = parseInt(response.data['baseline']);
+				var target_res = parseInt(response.data['target']);
+				var target = parseInt(target_res);
+				var baseline = parseInt(baseline_res);
+				var aset = parseInt(aset_res);
+				var aktual = parseInt(response.data['14']);
+				var batas =  Math.max(target, baseline, aset, aktual);
+
+				zingchart.THEME='classic';
+				var myConfig = {
+					"background-color": "none",
+					"type": "mixed",
+					"title": {
+						"text": "Target Omset Cabang",
+						"background-color": "none"
+					},
+					"scale-x": {
+						"values": [
+							"Aset : "+ number_format(aset),
+							"Baseline : "+ number_format(baseline),
+							"Target : "+ number_format(target)
+						],
+						"line-color": "#858796",
+						"line-width": "3px",
+						"item": {
+							'font-family': "Poppins",
+	  						'font-size': 13,
+							'font-weight': "bold",							
+							"font-color": "#333"
+						},
+						"tick": {
+							"line-color": "#858796",
+							"placement": "outer",
+							"size": 8,
+							"line-width": "3px"
+						},
+						"guide": {
+							"visible": false
+						}
+					},
+					"scale-y": {
+						"values": "0:"+parseInt(batas+1000000)+":1000000",
+						"line-color": "#858796",
+						"line-width": "3px",
+						"item": {
+							'font-family': "Poppins",
+	  						'font-size': 13,
+							"font-color": "#333",
+							"padding": "5px"
+						},
+						"tick": {
+							"line-color": "#858796",
+							"placement": "outer",
+							"size": 8,
+							"line-width": "3px"
+						},
+						"label": {
+							"text": "Target Omset Cabang",
+							"font-color": "#333",
+							"offset-x": 8
+						},
+						"guide": {
+							"visible": true
+						}
+					},
+					"plot": {
+						"bars-overlap": "55%"
+					},
+					"plotarea": {
+						"margin": "80px 60px 35px 60px"
+					},
+					"series": [
+						{
+							"values": [
+								aset,
+								baseline,
+								target
+							],
+							"type": "bar",
+							"text": "",
+							"z-index": 1,
+							"background-color": ["#595959 #777"],
+							"animation": {
+								"effect": "ANIMATION_EXPAND_BOTTOM",
+								"speed": 3
+							},
+							"tooltip": {
+								"text": "Batas %k %v"
+							},
+							"hover-state": {
+								"visible": 0
+							}
+						},
+						{
+							"values": [
+								aktual,
+								aktual,
+								aktual								
+							],
+							"type": "bar",
+							"text": "Aktual",
+							"z-index": 2,
+							"background-color": "#36b9cc",
+							"animation": {
+								"effect": "ANIMATION_EXPAND_BOTTOM",
+								"speed": 3
+							},							
+							"tooltip": {
+								"text": "Aktual %v"
+							},
+							"hover-state": {
+								"visible": 0
+							}
+						},
+					]
+				};
+
+				zingchart.render({ 
+					id : 'myChart', 
+					data : myConfig, 
+					height: '100%', 
+					width: '100%' 
+				});
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);		
+	})
+});
 
 $("#select-cabang-pasien").change(function() {
 	var selected = $(this).val();
-	$("#cabang-pasien").click();
-	$('#dropDownId :selected').text();
+	zingchart.exec('chartDivPasien', 'setseriesvalues', {
+		  'values': [
+			[0,0,0], 
+			[0,0,0]
+		  ]
+	});
+
+	$.get(`${base_url}api/?action=dataOmsetPasien&id_klinik=${selected}`)
+			.then(function (response) {
+				// handle success
+				var total_pasien = parseInt(response.data['total_pelanggan']);
+				var target_omset = parseInt(response.data['2']);
+
+				zingchart.THEME='classic';
+				var myConfig = {
+					"background-color": "none",
+					"type": "mixed",
+					"title": {
+						"text": "Sales Comparison 2011 vs 2012",
+						"background-color": "none"
+					},
+					"scale-x": {
+						"values": [
+							"Target Pasien"
+						],
+						"line-color": "#db0a0a",
+						"line-width": "3px",
+						"item": {
+							"font-color": "#333"
+						},
+						"tick": {
+							"line-color": "#db0a0a",
+							"placement": "outer",
+							"size": 8,
+							"line-width": "3px"
+						},
+						"guide": {
+							"visible": false
+						}
+					},
+					"scale-y": {
+						"values": "0:100:20",
+						"line-color": "#db0a0a",
+						"line-width": "3px",
+						"item": {
+							"font-color": "#333",
+							"padding": "5px"
+						},
+						"tick": {
+							"line-color": "#db0a0a",
+							"placement": "outer",
+							"size": 8,
+							"line-width": "3px"
+						},
+						"label": {
+							"text": "Number of New Clients Acquired",
+							"font-color": "#333",
+							"offset-x": 8
+						},
+						"guide": {
+							"visible": false
+						}
+					},
+					"plot": {
+						"bars-overlap": "55%"
+					},
+					"plotarea": {
+						"margin": "80px 60px 35px 60px"
+					},
+					"series": [
+						{
+							"values": [
+								target_omset
+							],
+							"type": "bar",
+							"text": "2011 Sales",
+							"z-index": 1,
+							"background-color": ["#595959 #777"],
+							"animation": {
+								"effect": "ANIMATION_EXPAND_BOTTOM",
+								"speed": 3
+							},
+							"tooltip": {
+								"text": "Batas %k %v"
+							},
+							"hover-state": {
+								"visible": 0
+							}
+						},
+						{
+							"values": [
+								total_pasien								
+							],
+							"type": "bar",
+							"text": "2012 Sales",
+							"z-index": 2,
+							"background-color": [
+								"#db0a0a #ed0909",
+								"#8F73ED #9096E6",
+								"#b69c63 #bea774"
+							],
+							"animation": {
+								"effect": "ANIMATION_EXPAND_BOTTOM",
+								"speed": 3
+							},							
+							"tooltip": {
+								"text": "Aktual %v"
+							},
+							"hover-state": {
+								"visible": 0
+							}
+						},
+					]
+				};
+
+				zingchart.render({ 
+					id : 'chartDivPasien', 
+					data : myConfig, 
+					height: 500, 
+					width: 725 
+				});
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);		
+	})
 });
 
 $("#select-cabang-pasien-baru").change(function() {
 	var selected = $(this).val();
-	$("#cabang-pasien-baru").click();
-	$('#dropDownId :selected').text();
+	zingchart.exec('chartDivPasienBaru', 'setseriesvalues', {
+		  'values': [
+			[0,0,0], 
+			[0,0,0]
+		  ]
+	});
+
+	$.get(`${base_url}api/?action=dataOmsetPasienBaru&id_klinik=${selected}`)
+			.then(function (response) {
+				// handle success
+				var total_pelanggan_baru = parseInt(response.data['total_pelanggan_baru']);
+				var target_omset_baru = parseInt(response.data['2']);
+
+				zingchart.THEME='classic';
+				var myConfig = {
+					"background-color": "none",
+					"type": "mixed",
+					"title": {
+						"text": "Sales Comparison 2011 vs 2012",
+						"background-color": "none"
+					},
+					"scale-x": {
+						"values": [
+							"Target Pasien"
+						],
+						"line-color": "#db0a0a",
+						"line-width": "3px",
+						"item": {
+							"font-color": "#333"
+						},
+						"tick": {
+							"line-color": "#db0a0a",
+							"placement": "outer",
+							"size": 8,
+							"line-width": "3px"
+						},
+						"guide": {
+							"visible": false
+						}
+					},
+					"scale-y": {
+						"values": "0:100:20",
+						"line-color": "#db0a0a",
+						"line-width": "3px",
+						"item": {
+							"font-color": "#333",
+							"padding": "5px"
+						},
+						"tick": {
+							"line-color": "#db0a0a",
+							"placement": "outer",
+							"size": 8,
+							"line-width": "3px"
+						},
+						"label": {
+							"text": "Number of New Clients Acquired",
+							"font-color": "#333",
+							"offset-x": 8
+						},
+						"guide": {
+							"visible": false
+						}
+					},
+					"plot": {
+						"bars-overlap": "55%"
+					},
+					"plotarea": {
+						"margin": "80px 60px 35px 60px"
+					},
+					"series": [
+						{
+							"values": [
+								target_omset_baru
+							],
+							"type": "bar",
+							"text": "2011 Sales",
+							"z-index": 1,
+							"background-color": ["#595959 #777"],
+							"animation": {
+								"effect": "ANIMATION_EXPAND_BOTTOM",
+								"speed": 3
+							},
+							"tooltip": {
+								"text": "Batas %k %v"
+							},
+							"hover-state": {
+								"visible": 0
+							}
+						},
+						{
+							"values": [
+								total_pelanggan_baru								
+							],
+							"type": "bar",
+							"text": "2012 Sales",
+							"z-index": 2,
+							"background-color": [
+								"#db0a0a #ed0909",
+								"#8F73ED #9096E6",
+								"#b69c63 #bea774"
+							],
+							"animation": {
+								"effect": "ANIMATION_EXPAND_BOTTOM",
+								"speed": 3
+							},							
+							"tooltip": {
+								"text": "Aktual %v"
+							},
+							"hover-state": {
+								"visible": 0
+							}
+						},
+					]
+				};
+
+				zingchart.render({ 
+					id : 'chartDivPasienBaru', 
+					data : myConfig, 
+					height: 500, 
+					width: 725 
+				});
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);		
+	})
 });
 
 // $("#select-cabang").change(function() {
@@ -351,14 +799,394 @@ $("#select-cabang-pasien-baru").change(function() {
 
 $("#select-cabang-produk").change(function() {
 	var selected = $(this).val();
-	$("#cabang-produk").click();
-	$('#dropDownId :selected').text();
+	zingchart.exec('chartDivProduk', 'setseriesvalues', {
+		  'values': [
+			[0,0], 
+			[0,0]
+		  ]
+	});
+
+	$.get(`${base_url}api/?action=dataOmsetProduk&id_klinik=${selected}`)
+			.then(function (response) {
+				// handle success
+				var status = [];
+				var qty = [];
+				var target = [];
+				response.data.forEach(function(obj) {
+					status.push(obj.status_barang);
+					qty.push(parseInt(obj.qty));
+					target.push(parseInt(obj.target));
+				});
+
+				zingchart.THEME='classic';
+				var myConfig = {
+					"background-color": "none",
+					"type": "mixed",
+					"title": {
+						"text": "Target Omset Cabang",
+						"background-color": "none"
+					},
+					"scale-x": {
+						"values": status,
+						"line-color": "#db0a0a",
+						"line-width": "3px",
+						"item": {
+							"font-color": "#333"
+						},
+						"tick": {
+							"line-color": "#db0a0a",
+							"placement": "outer",
+							"size": 8,
+							"line-width": "3px"
+						},
+						"guide": {
+							"visible": false
+						}
+					},
+					"scale-y": {
+						"values": "0:100:20",
+						"line-color": "#db0a0a",
+						"line-width": "3px",
+						"item": {
+							"font-color": "#333",
+							"padding": "5px"
+						},
+						"tick": {
+							"line-color": "#db0a0a",
+							"placement": "outer",
+							"size": 8,
+							"line-width": "3px"
+						},
+						"label": {
+							"text": "Target Omset Cabang",
+							"font-color": "#333",
+							"offset-x": 8
+						},
+						"guide": {
+							"visible": false
+						}
+					},
+					"plot": {
+						"bars-overlap": "55%"
+					},
+					"plotarea": {
+						"margin": "80px 60px 35px 60px"
+					},
+					"series": [
+						{
+							"values": target,
+							"type": "bar",
+							"text": "",
+							"z-index": 1,
+							"background-color": ["#595959 #777"],
+							"animation": {
+								"effect": "ANIMATION_EXPAND_BOTTOM",
+								"speed": 3
+							},
+							"tooltip": {
+								"text": "Batas %k %v"
+							},
+							"hover-state": {
+								"visible": 0
+							}
+						},
+						{
+							"values": qty,
+							"type": "bar",
+							"text": "Aktual",
+							"z-index": 2,
+							"background-color": [
+								"#db0a0a #ed0909",
+								"#8F73ED #9096E6",
+								"#b69c63 #bea774"
+							],
+							"animation": {
+								"effect": "ANIMATION_EXPAND_BOTTOM",
+								"speed": 3
+							},							
+							"tooltip": {
+								"text": "Aktual %v"
+							},
+							"hover-state": {
+								"visible": 0
+							}
+						},
+					]
+				};
+
+				zingchart.render({ 
+					id : 'chartDivProduk', 
+					data : myConfig, 
+					height: 500, 
+					width: 725 
+				});				
+				
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);		
+	})	
 });
 
 $("#select-cabang-perawatan").change(function() {
 	var selected = $(this).val();
-	$("#cabang-perawatan").click();
-	$('#dropDownId :selected').text();
+	zingchart.exec('chartDivProduk', 'setseriesvalues', {
+		  'values': [
+			[0,0], 
+			[0,0]
+		  ]
+	});
+
+	$.get(`${base_url}api/?action=dataOmsetPerawatan&id_klinik=${selected}`)
+			.then(function (response) {
+				// handle success
+				var jenis = [];
+				var qty = [];
+				var target = [];
+				response.data.forEach(function(obj) {
+					jenis.push(obj.jenis);
+					qty.push(parseInt(obj.qty));
+					target.push(parseInt(obj.target));
+				});
+
+				zingchart.THEME='classic';
+				var myConfig = {
+					"background-color": "none",
+					"type": "mixed",
+					"title": {
+						"text": "Target Omset Cabang",
+						"background-color": "none"
+					},
+					"scale-x": {
+						"values": jenis,
+						"line-color": "#db0a0a",
+						"line-width": "3px",
+						"item": {
+							"font-color": "#333"
+						},
+						"tick": {
+							"line-color": "#db0a0a",
+							"placement": "outer",
+							"size": 8,
+							"line-width": "3px"
+						},
+						"guide": {
+							"visible": false
+						}
+					},
+					"scale-y": {
+						"values": "0:100:20",
+						"line-color": "#db0a0a",
+						"line-width": "3px",
+						"item": {
+							"font-color": "#333",
+							"padding": "5px"
+						},
+						"tick": {
+							"line-color": "#db0a0a",
+							"placement": "outer",
+							"size": 8,
+							"line-width": "3px"
+						},
+						"label": {
+							"text": "Target Omset Cabang",
+							"font-color": "#333",
+							"offset-x": 8
+						},
+						"guide": {
+							"visible": false
+						}
+					},
+					"plot": {
+						"bars-overlap": "55%"
+					},
+					"plotarea": {
+						"margin": "80px 60px 35px 60px"
+					},
+					"series": [
+						{
+							"values": target,
+							"type": "bar",
+							"text": "",
+							"z-index": 1,
+							"background-color": ["#595959 #777"],
+							"animation": {
+								"effect": "ANIMATION_EXPAND_BOTTOM",
+								"speed": 3
+							},
+							"tooltip": {
+								"text": "Batas %k %v"
+							},
+							"hover-state": {
+								"visible": 0
+							}
+						},
+						{
+							"values": qty,
+							"type": "bar",
+							"text": "Aktual",
+							"z-index": 2,
+							"background-color": [
+								"#db0a0a #ed0909",
+								"#8F73ED #9096E6",
+								"#b69c63 #bea774"
+							],
+							"animation": {
+								"effect": "ANIMATION_EXPAND_BOTTOM",
+								"speed": 3
+							},							
+							"tooltip": {
+								"text": "Aktual %v"
+							},
+							"hover-state": {
+								"visible": 0
+							}
+						},
+					]
+				};
+
+				zingchart.render({ 
+					id : 'chartDivPerawatan', 
+					data : myConfig, 
+					height: 500, 
+					width: 725 
+				});				
+				
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);		
+	})
+});
+
+$("#select-cabang-kunjungan").change(function() {
+	var selected = $(this).val();
+	zingchart.exec('chartDivKunjungan', 'setseriesvalues', {
+		  'values': [
+			[0,0], 
+			[0,0]
+		  ]
+	});
+	$.get(`${base_url}api/?action=dataOmsetKunjungan&id_klinik=${selected}`)
+			.then(function (response) {
+				// handle success
+				var total_nota = parseInt(response.data['total_nota']);
+				var target = parseInt(response.data['2']['target']);
+				
+				zingchart.THEME='classic';
+				var myConfig = {
+					"background-color": "none",
+					"type": "mixed",
+					"title": {
+						"text": "Target Omset Cabang",
+						"background-color": "none"
+					},
+					"scale-x": {
+						"values": [
+							'Target'
+						],
+						"line-color": "#db0a0a",
+						"line-width": "3px",
+						"item": {
+							"font-color": "#333"
+						},
+						"tick": {
+							"line-color": "#db0a0a",
+							"placement": "outer",
+							"size": 8,
+							"line-width": "3px"
+						},
+						"guide": {
+							"visible": false
+						}
+					},
+					"scale-y": {
+						"values": "0:100:20",
+						"line-color": "#db0a0a",
+						"line-width": "3px",
+						"item": {
+							"font-color": "#333",
+							"padding": "5px"
+						},
+						"tick": {
+							"line-color": "#db0a0a",
+							"placement": "outer",
+							"size": 8,
+							"line-width": "3px"
+						},
+						"label": {
+							"text": "Target Omset Cabang",
+							"font-color": "#333",
+							"offset-x": 8
+						},
+						"guide": {
+							"visible": false
+						}
+					},
+					"plot": {
+						"bars-overlap": "55%"
+					},
+					"plotarea": {
+						"margin": "80px 60px 35px 60px"
+					},
+					"series": [
+						{
+							"values": [
+								target
+							],
+							"type": "bar",
+							"text": "",
+							"z-index": 1,
+							"background-color": ["#595959 #777"],
+							"animation": {
+								"effect": "ANIMATION_EXPAND_BOTTOM",
+								"speed": 3
+							},
+							"tooltip": {
+								"text": "Batas %k %v"
+							},
+							"hover-state": {
+								"visible": 0
+							}
+						},
+						{
+							"values": [
+								total_nota
+							],
+							"type": "bar",
+							"text": "Aktual",
+							"z-index": 2,
+							"background-color": [
+								"#db0a0a #ed0909",
+								"#8F73ED #9096E6",
+								"#b69c63 #bea774"
+							],
+							"animation": {
+								"effect": "ANIMATION_EXPAND_BOTTOM",
+								"speed": 3
+							},							
+							"tooltip": {
+								"text": "Aktual %v"
+							},
+							"hover-state": {
+								"visible": 0
+							}
+						},
+					]
+				};
+
+				zingchart.render({ 
+					id : 'chartDivKunjungan', 
+					data : myConfig, 
+					height: 500, 
+					width: 725 
+				});				
+				
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);		
+	})
 });
 
 
@@ -397,7 +1225,8 @@ var myLineChart = new Chart(ctx, {
   data: {
 	labels: [
 		<?php
-		   $n = 6;
+		   $day = date('d');
+		   $n = $day-1;
    
 		   $prevN = mktime(0, 0, 0, date("m"), date("d") - $n, date("Y"));
 		   
@@ -433,7 +1262,8 @@ var myLineChart = new Chart(ctx, {
 	  pointBorderWidth: 2,
 	  data: [
 		  <?php
-			   $n = 6;
+		   	   $day = date('d');
+		   	   $n = $day-1;
 
 			   $prevN = mktime(0, 0, 0, date("m"), date("d") - $n, date("Y"));
 			   
@@ -527,236 +1357,6 @@ var myLineChart = new Chart(ctx, {
 	}
   }
 });
-</script>
-<script>
-		// JS Omset Cabang
-		var aktual = <?php
-						if(isset($_POST['cabang'])) {
-							$cabang = $_POST['select-cabang'];
-							$bulan = date('m');
-							$tahun = date('Y');
-							$aktual = ExecuteScalar("SELECT SUM(total) FROM penjualan WHERE id_klinik = '".$cabang."' AND MONTH(waktu)='".$bulan."' AND YEAR(waktu)='".$tahun."'"); 
-							if($aktual != NULL OR $aktual != FALSE){
-								echo $aktual;
-							} else {
-								echo 0;
-							}
-						} 
-					?>;
-		var aset = <?php
-						if(isset($_POST['cabang'])) {
-							$cabang = $_POST['select-cabang'];
-							$bulan = date('m');
-							$tahun = date('Y');
-							$aset = ExecuteScalar("SELECT aset FROM m_target_omset_cabang WHERE id_cabang = '$cabang' AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'"); 
-							if($aset != NULL OR $aset != FALSE){
-								echo $aset;
-							} else {
-								echo 0;
-							}
-						} 
-					?>;
-		var baseline = <?php
-						if(isset($_POST['cabang'])) {
-							$cabang = $_POST['select-cabang'];
-							$bulan = date('m');
-							$tahun = date('Y');
-							$baseline = ExecuteScalar("SELECT baseline FROM m_target_omset_cabang WHERE id_cabang = '".$cabang."' AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'"); 
-							if($baseline != NULL OR $baseline != FALSE){
-								echo $baseline;
-							} else {
-								echo 0;
-							}
-						} 
-					?>;
-		var target = <?php
-						if(isset($_POST['cabang'])) {
-							$cabang = $_POST['select-cabang'];
-							$bulan = date('m');
-							$tahun = date('Y');
-							$target = ExecuteScalar("SELECT target FROM m_target_omset_cabang WHERE id_cabang = '".$cabang."' AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'"); 
-							if($target != NULL OR $target != FALSE){
-								echo $target;
-							} else {
-								echo 0;
-							}
-						} 
-					?>;
-		const series = [];
-		series.push({name: 'Aset', yAxis: 'y4', points: [['value', aktual]]}, {name: 'Baseline', yAxis: 'y4', points: [['value', aktual]]}, {name: 'Target', yAxis: 'y4', points: [['value', aktual]]});
-		
-		console.log(baseline);
-		console.log(aset);
-		console.log(target);
-		console.log(target+100000);
-		var chart = JSC.chart('chartDiv', {
-		debug: true,
-		defaultSeries_type: 'gauge linear vertical ',
-		yAxis: {
-		  defaultTick_enabled: false,
-		  customTicks: [0, aset, baseline, target, (target+1000000)],
-		  scale: { range: [0, (target+1000000)] },
-		  line: {
-			width: 5,
-			color: 'smartPalette',
-			breaks_gap: 0.03
-		  }
-		},
-		legend_visible: false,
-		palette: {
-		  pointValue: '%yValue',
-		  ranges: [
-			{ value: 0, color: '#FF5353', name:'Aset'},
-			{ value: aset, color: '#FFD221' },
-			{ value: baseline, color: '#77E6B4' },
-			{ value: target, color: '#21D683' },
-			{ value: (target+1000000), color: '#21D684' }
-		  ]
-		},
-		defaultSeries: {
-		  defaultPoint_tooltip: '<b>%seriesName Value:</b>Rp %yValue',
-		  shape_label: {
-			text: '%name',
-			verticalAlign: 'bottom',
-			style_fontSize: 15
-		  }
-		},
-		series: [
-		  { name: 'Target Omset per Cabang', points: [['score', [0, aktual]]] }
-		]
-	  });
-</script>
-
-<script>
-		// JS Target Pasien
-		var aktual_pasien = <?php
-						if(isset($_POST['cabang-pasien'])) {
-							$cabang = $_POST['select-cabang-pasien'];
-							$bulan = date('m');
-							$tahun = date('Y');
-							$aktual_pasien = ExecuteScalar("SELECT COUNT(DISTINCT(id_pelanggan)) AS total_pelanggan FROM penjualan WHERE id_klinik = '$cabang' AND MONTH(waktu) = '$bulan' AND YEAR(waktu) = '$tahun'"); 
-							if($aktual_pasien != NULL OR $aktual_pasien != FALSE){
-								echo $aktual_pasien;
-							} else {
-								echo 0;
-							}
-						} 
-					?>;
-		var target_pasien = <?php
-						if(isset($_POST['cabang-pasien'])) {
-							$cabang = $_POST['select-cabang-pasien'];
-							$bulan = date('m');
-							$tahun = date('Y');
-							$target_pasien = ExecuteScalar("SELECT target FROM m_target_pasien WHERE id_cabang = '$cabang' AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'"); 
-							if($target_pasien != NULL OR $target_pasien != FALSE){
-								echo $target_pasien;
-							} else {
-								echo 0;
-							}
-						} 
-					?>;	
-		console.log(aktual_pasien);
-		console.log(target_pasien);
-		var chart = JSC.chart('chartDivPasien', {
-		debug: true,
-		defaultSeries_type: 'gauge linear vertical ',
-		yAxis: {
-		  defaultTick_enabled: false,
-		  customTicks: [0, target_pasien, (target_pasien+5)],
-		  scale: { range: [0, (target_pasien+5)] },
-		  line: {
-			width: 5,
-			color: 'smartPalette',
-			breaks_gap: 0.03
-		  }
-		},
-		legend_visible: false,
-		palette: {
-		  pointValue: '%yValue',
-		  ranges: [
-			{ value: 0, color: '#FF5353', name:'Aset'},
-			{ value: target_pasien, color: '#FFD221' },
-			{ value: (target_pasien+5), color: '#21D684' }
-		  ]
-		},
-		defaultSeries: {
-		  defaultPoint_tooltip: '<b>%seriesName Value:</b> %yValue',
-		  shape_label: {
-			text: '%name',
-			verticalAlign: 'bottom',
-			style_fontSize: 15
-		  }
-		},
-		series: [
-		  { name: 'Target Pasien', points: [['score', [0, aktual_pasien]]] }
-		]
-	  });
-</script>
-
-<script>
-		// JS Target Pasien
-		var aktual_pasien_baru = <?php
-						if(isset($_POST['cabang-pasien-baru'])) {
-							$cabang = $_POST['select-cabang-pasien-baru'];
-							$bulan = date('m');
-							$tahun = date('Y');
-							$aktual_pasien_baru = ExecuteScalar("SELECT COUNT(DISTINCT(penjualan.id_pelanggan)) AS total_pelanggan FROM penjualan JOIN m_pelanggan ON m_pelanggan.id_pelanggan = penjualan.id_pelanggan WHERE penjualan.id_klinik = '$cabang' AND MONTH(penjualan.waktu) = '$bulan' AND YEAR(penjualan.waktu) = '$tahun' AND MONTH(m_pelanggan.tgl_daftar) = '$bulan' AND YEAR(m_pelanggan.tgl_daftar) = '$tahun'"); 
-							if($aktual_pasien_baru != NULL OR $aktual_pasien_baru != FALSE){
-								echo $aktual_pasien_baru;
-							} else {
-								echo 0;
-							}
-						} 
-					?>;
-		var target_pasien_baru = <?php
-						if(isset($_POST['cabang-pasien-baru'])) {
-							$cabang = $_POST['select-cabang-pasien-baru'];
-							$bulan = date('m');
-							$tahun = date('Y');
-							$target_pasien_baru = ExecuteScalar("SELECT target FROM m_target_pasien_baru WHERE id_cabang = '$cabang' AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'"); 
-							if($target_pasien_baru != NULL OR $target_pasien_baru != FALSE){
-								echo $target_pasien_baru;
-							} else {
-								echo 0;
-							}
-						} 
-					?>;	
-		console.log(aktual_pasien_baru);
-		console.log(target_pasien_baru);
-		var chart = JSC.chart('chartDivPasienBaru', {
-		debug: true,
-		defaultSeries_type: 'gauge linear vertical ',
-		yAxis: {
-		  defaultTick_enabled: false,
-		  customTicks: [0, target_pasien_baru, (target_pasien_baru+5)],
-		  scale: { range: [0, (target_pasien_baru+5)] },
-		  line: {
-			width: 5,
-			color: 'smartPalette',
-			breaks_gap: 0.03
-		  }
-		},
-		legend_visible: false,
-		palette: {
-		  pointValue: '%yValue',
-		  ranges: [
-			{ value: 0, color: '#FF5353', name:'Aset'},
-			{ value: target_pasien_baru, color: '#FFD221' },
-			{ value: (target_pasien_baru+5), color: '#21D684' }
-		  ]
-		},
-		defaultSeries: {
-		  defaultPoint_tooltip: '<b>%seriesName Value:</b> %yValue',
-		  shape_label: {
-			text: '%name',
-			verticalAlign: 'bottom',
-			style_fontSize: 15
-		  }
-		},
-		series: [
-		  { name: 'Target Pasien', points: [['score', [0, aktual_pasien_baru]]] }
-		]
-	  });
 </script>
 
 <?php if (Config("DEBUG")) echo GetDebugMessage(); ?>

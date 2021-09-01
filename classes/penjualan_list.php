@@ -3471,11 +3471,7 @@ class penjualan_list extends penjualan
 			$this->_action->ViewCustomAttributes = "";
 
 			// status
-			if (strval($this->status->CurrentValue) != "") {
-				$this->status->ViewValue = $this->status->optionCaption($this->status->CurrentValue);
-			} else {
-				$this->status->ViewValue = NULL;
-			}
+			$this->status->ViewValue = $this->status->CurrentValue;
 			$this->status->ViewCustomAttributes = "";
 
 			// status_void
@@ -3940,8 +3936,6 @@ class penjualan_list extends penjualan
 					break;
 				case "x_id_kas":
 					break;
-				case "x_status":
-					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -4138,10 +4132,10 @@ class penjualan_list extends penjualan
 		//$GLOBALS["xxx_grid"]->DetailView = (...condition...); // Set to TRUE or FALSE conditionally
 
 		$status =  CurrentTable()->status->CurrentValue;
-		if($status == 'Printed'){
+		if($status == 'Printed' AND $status != 'Draft'){
 			$this->ListOptions->Items["print"]->Body = "<a href='./struk_belanja.php?id=".CurrentTable()->id->CurrentValue."'><button type='button' class='btn btn-outline-info btn-sm'><i class='fas fa-receipt'></i> Struk</button></a>";	
 			$this->ListOptions->Items["edit"]->Visible = FALSE;
-		} else if($status == 'Draft'){
+		} else if($status == 'Draft' AND $status != 'Printed'){
 			$this->ListOptions->Items["print"]->Body = "";
 			$this->ListOptions->Items["edit"]->Visible = TRUE;
 		}	

@@ -307,8 +307,6 @@ loadjs.ready("head", function() {
 	fpenjualanadd.lists["x_id_kartubank"].options = <?php echo JsonEncode($penjualan_add->id_kartubank->lookupOptions()) ?>;
 	fpenjualanadd.lists["x_id_kas"] = <?php echo $penjualan_add->id_kas->Lookup->toClientList($penjualan_add) ?>;
 	fpenjualanadd.lists["x_id_kas"].options = <?php echo JsonEncode($penjualan_add->id_kas->lookupOptions()) ?>;
-	fpenjualanadd.lists["x_status"] = <?php echo $penjualan_add->status->Lookup->toClientList($penjualan_add) ?>;
-	fpenjualanadd.lists["x_status"].options = <?php echo JsonEncode($penjualan_add->status->options(FALSE, TRUE)) ?>;
 	loadjs.done("fpenjualanadd");
 });
 </script>
@@ -738,13 +736,10 @@ loadjs.ready(["fpenjualanadd"], function() {
 <?php } ?>
 <?php if ($penjualan_add->status->Visible) { // status ?>
 	<div id="r_status" class="form-group row">
-		<label id="elh_penjualan_status" class="<?php echo $penjualan_add->LeftColumnClass ?>"><script id="tpc_penjualan_status" type="text/html"><?php echo $penjualan_add->status->caption() ?><?php echo $penjualan_add->status->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></script></label>
+		<label id="elh_penjualan_status" for="x_status" class="<?php echo $penjualan_add->LeftColumnClass ?>"><script id="tpc_penjualan_status" type="text/html"><?php echo $penjualan_add->status->caption() ?><?php echo $penjualan_add->status->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></script></label>
 		<div class="<?php echo $penjualan_add->RightColumnClass ?>"><div <?php echo $penjualan_add->status->cellAttributes() ?>>
 <script id="tpx_penjualan_status" type="text/html"><span id="el_penjualan_status">
-<div id="tp_x_status" class="ew-template"><input type="radio" class="custom-control-input" data-table="penjualan" data-field="x_status" data-value-separator="<?php echo $penjualan_add->status->displayValueSeparatorAttribute() ?>" name="x_status" id="x_status" value="{value}"<?php echo $penjualan_add->status->editAttributes() ?>></div>
-<div id="dsl_x_status" data-repeatcolumn="5" class="ew-item-list d-none"><div>
-<?php echo $penjualan_add->status->radioButtonListHtml(FALSE, "x_status") ?>
-</div></div>
+<input type="text" data-table="penjualan" data-field="x_status" name="x_status" id="x_status" size="30" maxlength="255" placeholder="<?php echo HtmlEncode($penjualan_add->status->getPlaceHolder()) ?>" value="<?php echo $penjualan_add->status->EditValue ?>"<?php echo $penjualan_add->status->editAttributes() ?>>
 </span></script>
 <?php echo $penjualan_add->status->CustomMsg ?></div></div>
 	</div>
@@ -1040,7 +1035,7 @@ if (Config("DEBUG"))
 loadjs.ready("load", function() {
 
 	// Startup script
-	console.log("page loaded"),$("#btn-action").after('&nbsp;<button class="btn btn-info ew-btn" name="btn-action-cetak" id="btn-action-cetak" type="submit" style="height: 50px !important; width: 20% !important;">Cetak Nota</button>'),$("#btn-action").click(function(){$('input[name="x_status"][value="Draft"]').prop("checked",!0),$('input[name="x_status"][value="Printed"]').prop("checked",null)}),$("#btn-action-cetak").click(function(){$('input[name="x_status"][value="Printed"]').prop("checked",!0),$('input[name="x_status"][value="Draft"]').prop("checked",null)}),$(window).on("load",function(){$("#myModal").modal(),console.log("Mulai1")}),$(document).ajaxStop(function(){$("#myModal").modal("hide"),console.log("Selesai")}),$(document).ready(function(){$("form").submit(function(){$("#myModal").modal()})});
+	console.log("page loaded"),$("#btn-action").after('&nbsp;<button class="btn btn-info ew-btn" name="btn-action-cetak" id="btn-action-cetak" type="submit" style="height: 50px !important; width: 20% !important;">Cetak Nota</button>'),$("#btn-action").click(function(){$('input[name="x_status"]').val("Draft")}),$("#btn-action-cetak").click(function(){$('input[name="x_status"]').val("Printed")}),$(window).on("load",function(){$("#myModal").modal(),console.log("Mulai1")}),$(document).ajaxStop(function(){$("#myModal").modal("hide"),console.log("Selesai")}),$(document).ready(function(){$("form").submit(function(){$("#myModal").modal()})});
 });
 </script>
 <?php include_once "footer.php"; ?>

@@ -60,29 +60,20 @@ Page_Rendering();
 	}
 
 	if(isset($_POST['srhDate'])){
-		$cabang = !empty($_POST['cabang']) ? 'AND penjualan.id_klinik IN ('.implode(',', $_POST['cabang']).')' : '' ; 
-		$dateFrom = !empty($_POST['dateFrom']) ? $_POST['dateFrom'] : date('Y-m-01');
-		$dateTo = !empty($_POST['dateTo']) ? $_POST['dateTo'] : date('Y-m-t');
+		$cabang = !empty($_POST['cabang']) ? 'AND id_klinik IN ('.implode(',', $_POST['cabang']).')' : '' ; 
+		$dateFrom = !empty($_POST['dateFrom']) ? $_POST['dateFrom'] : date('Y-m-d');
+		$dateTo = !empty($_POST['dateTo']) ? $_POST['dateTo'] : date('Y-m-d');
 
-		$query = "SELECT penjualan.tanggal, penjualan.id_klinik, m_klinik.nama_klinik, m_barang.kode_barang, m_barang.nama_barang
-				FROM m_barang
-				JOIN (
-					SELECT penjualan.waktu as tanggal, penjualan.id_klinik, detailpenjualan.id_barang
-					FROM penjualan
-					JOIN detailpenjualan ON penjualan.id = detailpenjualan.id_penjualan
-					WHERE penjualan.waktu BETWEEN '$dateFrom' AND '$dateTo'
-				) penjualan ON penjualan.id_barang = m_barang.id
-				JOIN m_klinik ON penjualan.id_klinik = m_klinik.id_klinik
-				LEFT JOIN (
-					SELECT returbarang.tanggal, detailretur.id_barang
-					FROM returbarang
-					JOIN detailretur ON returbarang.id_retur = detailretur.id_retur
-				) retur ON retur.id_barang = m_barang.id
-				WHERE 1=1 $cabang
-				GROUP BY penjualan.tanggal, penjualan.id_klinik, m_barang.id
-				ORDER BY penjualan.id_klinik, tanggal";
+		$tgl = strtotime($dateFrom);
+		$period = [];
 
-		$result = ExecuteRows($query);
+		while($tgl <= strtotime($dateTo))
+		{
+			$period[] = date('Y-m-d', $tgl);
+			$tgl = strtotime("+1 day", $tgl);
+		}
+
+		$kliniks = ExecuteRows("SELECT id_klinik, nama_klinik FROM m_klinik WHERE 1=1 {$cabang}");
 	}
 ?>
 <div class="container-fluid">
@@ -137,163 +128,196 @@ Page_Rendering();
 			</button>
 			<table class="table table-bordered" id="printTable">
 				<?php
-					$no=1;
-					if (is_null($result) OR $result == false) {
-						echo '<tr><td colspan="4" align="center">Kosong</td></tr>';	
-					} else {
-						$tanggal = '';
-						$klinik = '';
-						$mso='"\@"';
-						$grand_total_qty_jual=0;
-						$grand_total_jual=0;
-						$grand_total_qty_retur=0;
-						$grand_total_retur=0;
-						$grand_total_qty_total=0;
-						$grand_total_tota=0;
-						foreach ($result as $rs) {							
-							if ($tanggal != $rs['tanggal'] or $klinik != $rs['id_klinik']) {
-								$tanggal = $rs['tanggal'];
-								$klinik = $rs['id_klinik'];
+					$mso='"\@"';
+					$grand_total_qty_jual=0;
+					$grand_total_jual=0;
+					$grand_total_qty_retur=0;
+					$grand_total_retur=0;
+					$grand_total_qty_total=0;
+					$grand_total_tota=0;
+					foreach ($kliniks as $klinik) {
+						foreach ($period as $tanggal) {
+							$skey = str_replace('-', '', $tanggal);
+							$id_klinik = $klinik['id_klinik'];
+							$key = $id_klinik.$skey;
 
-								$skey = str_replace('-', '', $tanggal);
-								$key = $klinik.$skey;
-
-								echo "<tr style='background-color:#b7d8dc;' id='{$key}'>
-											<th style='vertical-align: middle;'>Cabang: {$rs['nama_klinik']}. Tanggal: ".tgl_indo($tanggal)."</th>
-											<th>
-												<button class='btn btn-link' onclick='showDetails({$key});'>DETAIL</button>
-											</th>
-										</tr>
-										<tr id='{$key}_detil' class='collapse'>
-											<td colspan='2'>
-												<table style='width: 100%;' class='table table-striped table-hover'>
-													<thead>
-														<tr style='background-color:#b7d8dc;'>
-															<th rowspan='2' width='12%' style='vertical-align: middle;'>Kode</th>
-															<th rowspan='2' width='28%' style='vertical-align: middle;'>Nama Barang</th>	
-															<th colspan='2' width='20%' style='text-align: center;'>Penjualan</th>
-															<th colspan='2' width='20%' style='text-align: center;'>Retur</th>
-															<th colspan='2' width='20%' style='text-align: center;'>Total</th>
-														</tr>
-														<tr style='background-color:#b7d8dc;'>
-															<th width='5%'>Qty</th>
-															<th width='15%'>Sub-total</th>
-															<th width='5%'>Qty</th>
-															<th width='15%'>Sub-total</th>
-															<th width='5%'>Qty</th>
-															<th width='15%'>Sub-total</th>
-														</tr>
-													</thead>
-													<tbody>";
-														$queryDetil = ExecuteRows("SELECT penjualan.tanggal, m_klinik.nama_klinik, m_barang.kode_barang, m_barang.nama_barang, CASE WHEN SUM(penjualan.qty) IS NULL THEN 0 ELSE SUM(penjualan.qty) END AS qty_jual, CASE WHEN SUM(penjualan.subtotal) IS NULL THEN 0 ELSE SUM(penjualan.subtotal) END AS subtotal_jual, CASE WHEN SUM(retur.qty) IS NULL THEN 0 ELSE SUM(retur.qty) END AS qty_retur, CASE WHEN SUM(retur.subtotal) IS NULL THEN 0 ELSE SUM(retur.subtotal) END AS subtotal_retur
-															FROM m_barang
-															JOIN (
-															SELECT penjualan.waktu AS tanggal, penjualan.id_klinik, detailpenjualan.id_barang, SUM(detailpenjualan.qty) AS qty, SUM(detailpenjualan.harga_jual) AS subtotal
-															FROM penjualan
-															JOIN detailpenjualan ON penjualan.id = detailpenjualan.id_penjualan
-															WHERE penjualan.waktu = '$tanggal'
-															GROUP BY tanggal, penjualan.id_klinik, detailpenjualan.id_barang) penjualan ON penjualan.id_barang = m_barang.id
-															JOIN m_klinik ON penjualan.id_klinik = m_klinik.id_klinik
-															LEFT JOIN (
-															SELECT returbarang.tanggal, detailretur.id_barang, SUM(detailretur.jumlah) AS qty, SUM(m_hargajual.totalhargajual) AS subtotal
-															FROM returbarang
-															JOIN detailretur ON returbarang.id_retur = detailretur.id_retur
-															JOIN m_hargajual ON m_hargajual.id_barang = detailretur.id_barang
-															GROUP BY returbarang.tanggal, returbarang.id_klinik, detailretur.id_barang) retur ON retur.id_barang = m_barang.id
-															WHERE penjualan.id_klinik = ".$rs['id_klinik']."
-															GROUP BY penjualan.tanggal, penjualan.id_klinik, m_barang.id
-															ORDER BY penjualan.id_klinik, tanggal");
-
-														$qty_jual=0;
-														$total_jual=0;
-														$qty_retur=0;
-														$total_retur=0;
-														$qty_total=0;
-														$total_total=0;
-
-														foreach($queryDetil as $row) {
-															$qty_total = $row['qty_jual'] + $row['qty_retur'];
-															$subtotal_total = $row['subtotal_jual'] + $row['subtotal_retur'];
-															echo "<tr>
-																	<td>{$row['kode_barang']}</td>
-																	<td>{$row['nama_barang']}</td>
-																	<td align='right'>{$row['qty_jual']}</td>
-																	<td align='right' style='mso-number-format:{$mso}'>".rupiah($row['subtotal_jual'])."</td>
-																	<td align='right'>{$row['qty_retur']}</td>
-																	<td align='right' style='mso-number-format:{$mso}'>".rupiah($row['subtotal_retur'])."</td>
-																	<td align='right'>{$qty_total}</td>
-																	<td align='right' style='mso-number-format:{$mso}'>".rupiah($subtotal_total)."</td>
-																</tr>";
-															$qty_jual+=$row['qty_jual'];
-															$total_jual+=$row['subtotal_jual'];
-
-															$qty_retur+=$row['qty_retur'];
-															$total_retur+=$row['subtotal_retur'];
-															
-															$qty_total+=$qty_total;
-															$total_total+=$subtotal_total;
-														}
-														echo "<tfoot>
-															<tr>
-																<th colspan='2'>Total</th>
-																<th style='text-align: right;'>{$qty_jual}</th>
-																<th style='text-align: right; mso-number-format:{$mso}'>".rupiah($total_jual)."</th>
-																<th style='text-align: right;'>{$qty_retur}</th>
-																<th style='text-align: right; mso-number-format:{$mso}'>".rupiah($total_retur)."</th>
-																<th style='text-align: right;'>{$qty_total}</th>
-																<th style='text-align: right; mso-number-format:{$mso}'>".rupiah($total_total)."</th>
-															</tr>
-															</tfoot>";
-												echo "</tbody>
-												</table>
-											</td>
-										</tr>";
-										$grand_total_qty_jual+=$qty_jual;
-										$grand_total_jual+=$total_jual;
-
-										$grand_total_qty_retur+=$qty_retur;
-										$grand_total_retur+=$total_retur;
-										
-										$grand_total_qty_total+=$qty_total;
-										$grand_total_tota+=$total_total;
-							}
-						}
-						echo "<tfoot>
-								<tr>
+							echo "<tr style='background-color:#b7d8dc;' id='{$key}'>
+									<th style='vertical-align: middle;'>Cabang: {$klinik['nama_klinik']}. Tanggal: ".tgl_indo($tanggal)."</th>
+									<th>
+										<button class='btn btn-link' onclick='showDetails({$key});'>DETAIL</button>
+									</th>
+								</tr>
+								<tr id='{$key}_detil' class='collapse'>
 									<td colspan='2'>
-										<table style='width: 100%;'>
+										<table style='width: 100%;' class='table table-striped table-hover'>
 											<thead>
-												<tr>
-													<th rowspan='2' width='25%'></th>
-													<th colspan='2' width='25%' style='text-align: center;'>Penjualan</th>
-													<th colspan='2' width='25%' style='text-align: center;'>Retur</th>
-													<th colspan='2' width='25%' style='text-align: center;'>Total</th>
+												<tr style='background-color:#b7d8dc;'>
+													<th rowspan='2' width='12%' style='vertical-align: middle;'>Kode</th>
+													<th rowspan='2' width='28%' style='vertical-align: middle;'>Nama Barang</th>	
+													<th colspan='2' width='20%' style='text-align: center;'>Penjualan</th>
+													<th colspan='2' width='20%' style='text-align: center;'>Retur</th>
+													<th colspan='2' width='20%' style='text-align: center;'>Total</th>
 												</tr>
-												<tr>
-													<th width='10%'>Qty</th>
-													<th width='15%'>Total</th>
-													<th width='10%'>Qty</th>
-													<th width='15%'>Total</th>
-													<th width='10%'>Qty</th>
-													<th width='15%'>Total</th>
+												<tr style='background-color:#b7d8dc;'>
+													<th width='5%'>Qty</th>
+													<th width='15%'>Sub-total</th>
+													<th width='5%'>Qty</th>
+													<th width='15%'>Sub-total</th>
+													<th width='5%'>Qty</th>
+													<th width='15%'>Sub-total</th>
 												</tr>
 											</thead>
-											<tbody>
-												<tr>
-													<td><b>Grand Total</b></td>
-													<td style='text-align: right;'>{$grand_total_qty_jual}</td>
-													<td style='text-align: right; mso-number-format:{$mso}'>".rupiah($grand_total_jual)."</td>
-													<td style='text-align: right;'>{$grand_total_qty_retur}</td>
-													<td style='text-align: right; mso-number-format:{$mso}'>".rupiah($grand_total_retur)."</td>
-													<td style='text-align: right;'>{$grand_total_qty_total}</td>
-													<td style='text-align: right; mso-number-format:{$mso}'>".rupiah($grand_total_tota)."</td>
-												</tr>
-											</tbody>
+											<tbody>";
+											$queryDetil = ExecuteRows("SELECT
+													tanggal,
+													id_klinik,
+													id AS id_barang, 
+													kode_barang, 
+													nama_barang, 
+													SUM(IFNULL(qty_jual,0)) AS qty_jual, 
+													SUM(IFNULL(subtotal_jual,0)) AS subtotal_jual, 
+													SUM(IFNULL(qty_retur,0)) AS qty_retur, 
+													SUM(IFNULL(subtotal_retur,0)) AS subtotal_retur
+												FROM
+													(
+														SELECT * FROM m_barang
+														JOIN (
+															SELECT 
+																penjualan.waktu AS tanggal, 
+																penjualan.id_klinik, 
+																detailpenjualan.id_barang, 
+																SUM(detailpenjualan.qty) AS qty_jual, 
+																detailpenjualan.harga_jual AS subtotal_jual, 
+																NULL as qty_retur, 
+																NULL as subtotal_retur
+															FROM 
+																penjualan
+																JOIN detailpenjualan ON penjualan.id = detailpenjualan.id_penjualan
+															WHERE penjualan.waktu = '{$tanggal}' AND penjualan.id_klinik = {$id_klinik}
+															GROUP BY tanggal, penjualan.id_klinik, detailpenjualan.id_barang, detailpenjualan.harga_jual
+														) penjualan ON penjualan.id_barang = m_barang.id
+														UNION
+														SELECT * FROM m_barang
+														JOIN (
+															SELECT
+																returbarang.tanggal, 
+																returbarang.id_klinik, 
+																detailretur.id_barang, 
+																NULL as qty_jual, 
+																NULL as subtotal_jual, 
+																detailretur.jumlah AS qty_retur, 
+																m_hargajual.totalhargajual AS subtotal_retur
+															FROM 
+																returbarang
+																JOIN detailretur ON returbarang.id_retur = detailretur.id_retur
+																JOIN m_hargajual ON m_hargajual.id_barang = detailretur.id_barang AND m_hargajual.id_klinik = {$id_klinik}
+															WHERE returbarang.tanggal = '{$tanggal}' AND returbarang.id_klinik = {$id_klinik}
+														) retur ON retur.id_barang = m_barang.id
+													) t
+												GROUP BY tanggal, id_klinik, id, kode_barang, nama_barang
+												ORDER BY id_klinik, tanggal");
+
+											$qty_jual=0;
+											$total_jual=0;
+											$qty_retur=0;
+											$total_retur=0;
+											$qty_total=0;
+											$total_total=0;
+											$grand_total_qty_jual=0;
+											$grand_total_jual=0;
+											$grand_total_qty_retur=0;
+											$grand_total_retur=0;
+											$grand_total_qty_total=0;
+											$grand_total_total=0;
+
+										if ($queryDetil) {
+											foreach($queryDetil as $row) {
+												$qty_total = $row['qty_jual'] + $row['qty_retur'];
+												$subtotal_total = ($row['qty_jual'] * $row['subtotal_jual']) + ($row['qty_retur'] * $row['subtotal_retur']);
+												echo "<tr>
+														<td>{$row['kode_barang']}</td>
+														<td>{$row['nama_barang']}</td>
+														<td align='right'>{$row['qty_jual']}</td>
+														<td align='right' style='mso-number-format:{$mso}'>".rupiah($row['subtotal_jual'])."</td>
+														<td align='right'>{$row['qty_retur']}</td>
+														<td align='right' style='mso-number-format:{$mso}'>".rupiah($row['subtotal_retur'])."</td>
+														<td align='right'>{$qty_total}</td>
+														<td align='right' style='mso-number-format:{$mso}'>".rupiah($subtotal_total)."</td>
+													</tr>";
+												$qty_jual+=$row['qty_jual'];
+												$total_jual+=$row['subtotal_jual'];
+												$grand_total_qty_jual+=$qty_jual;
+												$grand_total_jual+=$total_jual;
+
+												$qty_retur+=$row['qty_retur'];
+												$total_retur+=$row['subtotal_retur'];
+												$grand_total_qty_retur+=$qty_retur;
+												$grand_total_retur+=$total_retur;
+												
+												$qty_total+=$qty_total;
+												$total_total+=$subtotal_total;
+												$grand_total_qty_total+=$qty_total;
+												$grand_total_total+=$total_total;
+												
+											}
+										} else{
+											echo "<tr>
+												<td colspan='8' class='text-center'>Tidak ada data.</td>
+											</tr>";
+										}
+										echo "</tbody>
+											<tfoot>
+											<tr>
+												<th colspan='2'>Total</th>
+												<th style='text-align: right;'>{$qty_jual}</th>
+												<th style='text-align: right; mso-number-format:{$mso}'>".rupiah($total_jual)."</th>
+												<th style='text-align: right;'>{$qty_retur}</th>
+												<th style='text-align: right; mso-number-format:{$mso}'>".rupiah($total_retur)."</th>
+												<th style='text-align: right;'>{$qty_total}</th>
+												<th style='text-align: right; mso-number-format:{$mso}'>".rupiah($total_total)."</th>
+											</tr>
+											</tfoot>
 										</table>
 									</td>
 								</tr>
-							</tfoot>";
+								";
+						}
 					}
+					echo "<tfoot>
+							<tr>
+								<td colspan='2'>
+									<table style='width: 100%;'>
+										<thead>
+											<tr>
+												<th rowspan='2' width='25%'></th>
+												<th colspan='2' width='25%' style='text-align: center;'>Penjualan</th>
+												<th colspan='2' width='25%' style='text-align: center;'>Retur</th>
+												<th colspan='2' width='25%' style='text-align: center;'>Total</th>
+											</tr>
+											<tr>
+												<th width='10%'>Qty</th>
+												<th width='15%'>Total</th>
+												<th width='10%'>Qty</th>
+												<th width='15%'>Total</th>
+												<th width='10%'>Qty</th>
+												<th width='15%'>Total</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td><b>Grand Total</b></td>
+												<td style='text-align: right;'>{$grand_total_qty_jual}</td>
+												<td style='text-align: right; mso-number-format:{$mso}'>".rupiah($grand_total_jual)."</td>
+												<td style='text-align: right;'>{$grand_total_qty_retur}</td>
+												<td style='text-align: right; mso-number-format:{$mso}'>".rupiah($grand_total_retur)."</td>
+												<td style='text-align: right;'>{$grand_total_qty_total}</td>
+												<td style='text-align: right; mso-number-format:{$mso}'>".rupiah($grand_total_total)."</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</tfoot>";
 				?>
 			</table>
 		<?php endif; ?>

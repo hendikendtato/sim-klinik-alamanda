@@ -351,12 +351,10 @@ class penjualan extends DbTable
 		$this->fields['action'] = &$this->_action;
 
 		// status
-		$this->status = new DbField('penjualan', 'penjualan', 'x_status', 'status', '`status`', '`status`', 202, 7, -1, FALSE, '`status`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'RADIO');
+		$this->status = new DbField('penjualan', 'penjualan', 'x_status', 'status', '`status`', '`status`', 202, 7, -1, FALSE, '`status`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->status->Nullable = FALSE; // NOT NULL field
 		$this->status->Required = TRUE; // Required field
 		$this->status->Sortable = TRUE; // Allow sort
-		$this->status->Lookup = new Lookup('status', 'penjualan', FALSE, '', ["","","",""], [], [], [], [], [], [], '', '');
-		$this->status->OptionCount = 2;
 		$this->fields['status'] = &$this->status;
 
 		// status_void
@@ -1604,11 +1602,7 @@ class penjualan extends DbTable
 		$this->_action->ViewCustomAttributes = "";
 
 		// status
-		if (strval($this->status->CurrentValue) != "") {
-			$this->status->ViewValue = $this->status->optionCaption($this->status->CurrentValue);
-		} else {
-			$this->status->ViewValue = NULL;
-		}
+		$this->status->ViewValue = $this->status->CurrentValue;
 		$this->status->ViewCustomAttributes = "";
 
 		// status_void
@@ -1996,8 +1990,12 @@ class penjualan extends DbTable
 		$this->_action->PlaceHolder = RemoveHtml($this->_action->caption());
 
 		// status
+		$this->status->EditAttrs["class"] = "form-control";
 		$this->status->EditCustomAttributes = "";
-		$this->status->EditValue = $this->status->options(FALSE);
+		if (!$this->status->Raw)
+			$this->status->CurrentValue = HtmlDecode($this->status->CurrentValue);
+		$this->status->EditValue = $this->status->CurrentValue;
+		$this->status->PlaceHolder = RemoveHtml($this->status->caption());
 
 		// status_void
 		$this->status_void->EditAttrs["class"] = "form-control";
@@ -2402,33 +2400,8 @@ class penjualan extends DbTable
 
 		// Enter your code here
 		// To cancel, set return value to FALSE
+		// Set Action
 
-		$id_klinik = $rsnew['id_klinik'];
-
-		// Mendapatkan kode penjualan terakhir pada klinik $id_klinik, untuk diambil nomor urutnya
-		$kode_penjualan_sebelumnya = ExecuteScalar("SELECT kode_penjualan FROM penjualan WHERE id_klinik=$id_klinik ORDER BY id DESC");
-		$kode = explode('-', $kode_penjualan_sebelumnya);
-		$nomor_urut_terakhir = $kode[2];
-		$bulan_sebelumnya = substr($kode[1], -2);
-		$nomor_urut = '0000';
-		if ($bulan_sebelumnya == date('m')) {
-			$nomor_urut = sprintf('%04d', (int)$nomor_urut_terakhir + 1);
-		} else {
-			$nomor_urut = sprintf('%04d', 1);
-		}
-
-		/* kode penjualan dengan format Jxx-yymm-0000
-		 * J = jual
-		 *	xx = kode cabang
-		 *	yy = tahun
-		 *	mm = bulan
-		 *	0000 = nmr urut
-		*/
-		//$kode_penjualan = 
-
-		$rsnew['kode_penjualan'] = 'J' . $id_klinik . '-' . date('ym') . '-' . $nomor_urut;
-
-		// Action
 		date_default_timezone_set("Asia/Jakarta");	
 		$action_date = date("d M Y");
 		$user = CurrentUserInfo("id_pegawai");
@@ -2448,26 +2421,12 @@ class penjualan extends DbTable
 			//echo "Row Inserted";
 			$id_pelanggan = $rsnew['id_pelanggan'];
 			$id_klinik = $rsnew['id_klinik'];
-			$ongkir = $rsnew['ongkir'];
-			$total = $rsnew['total'];
 
-			//Cek lagi kode penjualan
-			$kode_penjualan_sebelumnya = ExecuteScalar("SELECT kode_penjualan FROM penjualan WHERE id_klinik='$id_klinik' ORDER BY id DESC LIMIT 1, 1");
-			$kode_penjualan_sekarang = $rsnew['kode_penjualan'];
+			//CREATE KODE PENJUALAN
+			// Mendapatkan kode penjualan terakhir pada klinik $id_klinik, untuk diambil nomor urutnya
 
-			// Jika kodenya sekarang sama dengan kode sebelumnya
-			if($kode_penjualan_sekarang == $kode_penjualan_sebelumnya) {
-				$kode = explode('-', $kode_penjualan_sekarang);
-				$nomor_urut_terakhir = $kode[2];
-				$bulan_sebelumnya = substr($kode[1], -2);
-				$nomor_urut = '0000';
-				$nomor_urut = sprintf('%04d', (int)$nomor_urut_terakhir + 1);
-				$rsnew['kode_penjualan'] = 'J' . $id_klinik . '-' . date('ym') . '-' . $nomor_urut;		
-			}
-
-			// Mendapatkan kode mutasi terakhir pada klinik $id_klinik, untuk diambil nomor urutnya
-			$kode_mutasi_sebelumnya = ExecuteScalar("SELECT no_bukti FROM mutasi_kas WHERE id_klinik='$id_klinik' AND no_bukti LIKE '%KBM%' ORDER BY id DESC LIMIT 1");
-			$kode = explode('-', $kode_mutasi_sebelumnya);
+			$kode_penjualan_sebelumnya = ExecuteScalar("SELECT kode_penjualan FROM penjualan WHERE id_klinik='$id_klinik' AND kode_penjualan != '' ORDER BY id DESC");
+			$kode = explode('-', $kode_penjualan_sebelumnya);
 			$nomor_urut_terakhir = $kode[2];
 			$bulan_sebelumnya = substr($kode[1], -2);
 			$nomor_urut = '0000';
@@ -2476,6 +2435,23 @@ class penjualan extends DbTable
 			} else {
 				$nomor_urut = sprintf('%04d', 1);
 			}
+
+			/* kode penjualan dengan format Jxx-yymm-0000
+			* J = jual
+			*	xx = kode cabang
+			*	yy = tahun
+			*	mm = bulan
+			*	0000 = nmr urut
+			*/
+			//$kode_penjualan =
+
+			$rsnew_kode_penjualan = 'J' . $id_klinik . '-' . date('ym') . '-' . $nomor_urut;	
+			print_r($rsnew_kode_penjualan);
+			Execute("UPDATE penjualan SET kode_penjualan = '$rsnew_kode_penjualan' WHERE id = '".$rsnew['id']."'");
+
+
+			$ongkir = $rsnew['ongkir'];
+			$total = $rsnew['total'];
 			$metode_pembayaran = $rsnew['metode_pembayaran'];
 			$kartu = $rsnew['id_kartu'];
 			$id_bankrekening = $rsnew['id_bank'];
@@ -2484,7 +2460,7 @@ class penjualan extends DbTable
 			$charge = $rsnew['charge'];
 			$nilai_charge = str_replace('.',',',$charge);
 			$id_klinik = $rsnew['id_klinik'];
-			$kode_penjualan = $rsnew['kode_penjualan'];
+			$kode_penjualan = $rsnew_kode_penjualan;
 			$tanggal = $rsnew['waktu'];
 			$jumlah = $rsnew['bayar'];
 			$jumlah_non_tunai = $rsnew['bayar_non_tunai'];
@@ -3359,7 +3335,7 @@ class penjualan extends DbTable
 				Execute("UPDATE m_pelanggan SET tgl_terakhir_transaksi = '".$tgl_terakhir_transaksi."' WHERE id_pelanggan='".$id_pelanggan."'");
 
 				//API DATA TRANSAKSI
-				$url = "http://172.16.0.2:8069/web/transaksi";
+				$url = "http://45.13.132.223:11800/web/transakasi";
 					$data_sql = ExecuteRow("SELECT penjualan.*, m_pelanggan.id_pelanggan, m_pelanggan.nama_pelanggan, m_member.id AS id_member, m_jenis_member.nama_member, m_klinik.*, pg1.id_pegawai AS id_dokter, pg1.nama_pegawai AS nama_dokter, pg2.id_pegawai AS id_sales, pg2.nama_pegawai AS nama_sales, pg3.id_pegawai AS id_be_wajah, pg3.nama_pegawai AS nama_be_wajah, pg4.id_pegawai AS id_be_body, pg4.nama_pegawai AS nama_be_body, pg5.id_pegawai AS id_medis, pg5.nama_pegawai AS nama_medis, rekmeddokter.*, m_rekening.*, kartu.*, kartubank.id_kartu AS id_kartubank, kartubank.nama_kartu AS nama_kartubank, kartubank.id_bank AS id_bank_kartubank, kartubank.jenis AS jenis_kartubank, kartubank.charge_type AS type_kartubank, kartubank.charge_price AS price_kartubank, m_kas.id AS id_kas, m_kas.nama AS nama_kas FROM penjualan 
 											JOIN detailpenjualan ON penjualan.id = detailpenjualan.id_penjualan 
 											JOIN m_pelanggan ON penjualan.id_pelanggan = m_pelanggan.id_pelanggan 
@@ -3381,6 +3357,7 @@ class penjualan extends DbTable
 					$data_detail = ExecuteRows("SELECT dp.id_penjualan, dp.id_barang, m_barang.nama_barang, m_barang.kode_barang, dp.qty, dp.harga_jual, dp.disc_pr, dp.disc_rp, dp.subtotal FROM detailpenjualan dp
 												JOIN m_barang ON m_barang.id = dp.id_barang WHERE dp.id_penjualan = '".$rsnew['id']."'");
 					$detail = [];
+					$diskon_produk = 0;
 					foreach($data_detail AS $dd){
 						$rowData = [
 							'id_penjualan' => $dd['id_penjualan'],
@@ -3394,11 +3371,12 @@ class penjualan extends DbTable
 							'subtotal' => $dd['subtotal'],
 						];
 						array_push($detail, $rowData);
+						$diskon = ($dd['disc_rp'] + ($dd['disc_pr'] / 100 * $dd['subtotal']));
+						$diskon_produk += $diskon;
 					}
+					print_r($diskon_produk);
 
-					// print_r($data_detail);
 					// print_r($detail);
-
 					$data_array = ['params' => [
 						'id' => $data_sql['id'],
 						'waktu' => $data_sql['waktu'],
@@ -3479,6 +3457,13 @@ class penjualan extends DbTable
 						'action' => $data_sql['action'],
 						'status' => $data_sql['status'],
 						'detailpenjualan' => $detail,
+						'jurnal' => [
+							'kas' => $data_sql['bayar'],
+							'diskon_produk' => $diskon_produk,
+							'diskon_member' => ($data_sql['diskon_rupiah'] + ($data_sql['diskon_persen'] / 100 * $data_sql['total'])),
+							'voucher' => $data_sql['charge_price'],
+							'penjualan' => $data_sql['bayar'] + $diskon_produk + ($data_sql['diskon_rupiah'] + ($data_sql['diskon_persen'] / 100 * $data_sql['total'])) + $data_sql['charge_price']
+						],
 
 						// $key => $value
 					]];
@@ -3492,7 +3477,7 @@ class penjualan extends DbTable
 					curl_setopt($curl, CURLOPT_POSTFIELDS, $postdata);
 					curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 					curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-					$resp = curl_exec($curl);
+					curl_exec($curl);
 					if($e = curl_error($curl)){
 						echo $e;
 					} else {
@@ -3507,7 +3492,7 @@ class penjualan extends DbTable
 					}
 					curl_close($curl);
 
-					//die();									
+					//die();
 			} //End of if(status == printed)
 	}
 
@@ -3565,7 +3550,7 @@ class penjualan extends DbTable
 			$id_setelahnya = $id_sekarang+1;
 
 			//var_dump($kode_penjualan); exit();
-			if($status == 'Printed') { //begin of if(status == printed)
+			if($status == 'Printed' AND $status != 'Draft') { //begin of if(status == printed)
 
 				//INSERTING KAS / REKENING
 				if($metode_pembayaran == 'Debit' OR $metode_pembayaran == 'Kredit' OR $metode_pembayaran == 'E-Wallet'){
