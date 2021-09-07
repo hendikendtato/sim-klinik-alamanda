@@ -1486,9 +1486,12 @@ class terimagudang_add extends terimagudang
 	function Page_Render() {
 
 		//echo "Page Render";
-		$klinik = CurrentUserInfo("id_klinik");
-		if($klinik != '' OR $klinik != FALSE){
-			$this->klinik->CurrentValue = $klinik; 
+		if(CurrentUserLevel() != '-1') {		
+			$klinik = CurrentUserInfo("id_klinik");
+			if($klinik != '' OR $klinik != FALSE){
+				$this->id_klinik->CurrentValue = $klinik;
+				$this->id_klinik->ReadOnly = TRUE; 
+			}
 		}
 		$pegawai = CurrentUserInfo("id_pegawai");
 		if($pegawai != '' OR $pegawai != FALSE){

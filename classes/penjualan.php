@@ -91,7 +91,7 @@ class penjualan extends DbTable
 		$this->ExportExcelPageSize = \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_A4; // Page size (PhpSpreadsheet only)
 		$this->ExportWordPageOrientation = "portrait"; // Page orientation (PHPWord only)
 		$this->ExportWordColumnWidth = NULL; // Cell width (PHPWord only)
-		$this->DetailAdd = FALSE; // Allow detail add
+		$this->DetailAdd = TRUE; // Allow detail add
 		$this->DetailEdit = FALSE; // Allow detail edit
 		$this->DetailView = FALSE; // Allow detail view
 		$this->ShowMultipleDetails = FALSE; // Show multiple details
@@ -2446,10 +2446,7 @@ class penjualan extends DbTable
 			//$kode_penjualan =
 
 			$rsnew_kode_penjualan = 'J' . $id_klinik . '-' . date('ym') . '-' . $nomor_urut;	
-			print_r($rsnew_kode_penjualan);
 			Execute("UPDATE penjualan SET kode_penjualan = '$rsnew_kode_penjualan' WHERE id = '".$rsnew['id']."'");
-
-
 			$ongkir = $rsnew['ongkir'];
 			$total = $rsnew['total'];
 			$metode_pembayaran = $rsnew['metode_pembayaran'];

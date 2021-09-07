@@ -134,7 +134,7 @@ Page_Rendering();
 					$grand_total_qty_retur=0;
 					$grand_total_retur=0;
 					$grand_total_qty_total=0;
-					$grand_total_tota=0;
+					$grand_total_total=0;
 					foreach ($kliniks as $klinik) {
 						foreach ($period as $tanggal) {
 							$skey = str_replace('-', '', $tanggal);
@@ -221,14 +221,14 @@ Page_Rendering();
 											$total_jual=0;
 											$qty_retur=0;
 											$total_retur=0;
-											$qty_total=0;
+											$total_qty=0;
 											$total_total=0;
-											$grand_total_qty_jual=0;
-											$grand_total_jual=0;
-											$grand_total_qty_retur=0;
-											$grand_total_retur=0;
-											$grand_total_qty_total=0;
-											$grand_total_total=0;
+											// $grand_total_qty_jual=0;
+											// $grand_total_jual=0;
+											// $grand_total_qty_retur=0;
+											// $grand_total_retur=0;
+											// $grand_total_qty_total=0;
+											// $grand_total_total=0;
 
 										if ($queryDetil) {
 											foreach($queryDetil as $row) {
@@ -246,18 +246,18 @@ Page_Rendering();
 													</tr>";
 												$qty_jual+=$row['qty_jual'];
 												$total_jual+=$row['subtotal_jual'];
-												$grand_total_qty_jual+=$qty_jual;
-												$grand_total_jual+=$total_jual;
+												
+												
 
 												$qty_retur+=$row['qty_retur'];
 												$total_retur+=$row['subtotal_retur'];
-												$grand_total_qty_retur+=$qty_retur;
-												$grand_total_retur+=$total_retur;
 												
-												$qty_total+=$qty_total;
+												
+												$total_qty+=$qty_total;
 												$total_total+=$subtotal_total;
-												$grand_total_qty_total+=$qty_total;
-												$grand_total_total+=$total_total;
+
+												
+												
 												
 											}
 										} else{
@@ -265,6 +265,14 @@ Page_Rendering();
 												<td colspan='8' class='text-center'>Tidak ada data.</td>
 											</tr>";
 										}
+										$grand_total_qty_jual+=$qty_jual;
+										$grand_total_jual+=$total_jual;
+
+										$grand_total_qty_retur+=$qty_retur;
+										$grand_total_retur+=$total_retur;
+
+										$grand_total_qty_total+=$total_qty;
+										$grand_total_total+=$total_total;
 										echo "</tbody>
 											<tfoot>
 											<tr>
@@ -273,7 +281,7 @@ Page_Rendering();
 												<th style='text-align: right; mso-number-format:{$mso}'>".rupiah($total_jual)."</th>
 												<th style='text-align: right;'>{$qty_retur}</th>
 												<th style='text-align: right; mso-number-format:{$mso}'>".rupiah($total_retur)."</th>
-												<th style='text-align: right;'>{$qty_total}</th>
+												<th style='text-align: right;'>{$total_qty}</th>
 												<th style='text-align: right; mso-number-format:{$mso}'>".rupiah($total_total)."</th>
 											</tr>
 											</tfoot>
