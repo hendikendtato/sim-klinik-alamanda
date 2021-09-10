@@ -83,7 +83,7 @@ loadjs.ready("head", function() {
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $detail_nonjual_edit->stok->caption(), $detail_nonjual_edit->stok->RequiredErrorMessage)) ?>");
 			<?php } ?>
 				elm = this.getElements("x" + infix + "_stok");
-				if (elm && !ew.checkInteger(elm.value))
+				if (elm && !ew.checkNumber(elm.value))
 					return this.onError(elm, "<?php echo JsEncode($detail_nonjual_edit->stok->errorMessage()) ?>");
 			<?php if ($detail_nonjual_edit->qty->Required) { ?>
 				elm = this.getElements("x" + infix + "_qty");
@@ -91,7 +91,7 @@ loadjs.ready("head", function() {
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $detail_nonjual_edit->qty->caption(), $detail_nonjual_edit->qty->RequiredErrorMessage)) ?>");
 			<?php } ?>
 				elm = this.getElements("x" + infix + "_qty");
-				if (elm && !ew.checkInteger(elm.value))
+				if (elm && !ew.checkNumber(elm.value))
 					return this.onError(elm, "<?php echo JsEncode($detail_nonjual_edit->qty->errorMessage()) ?>");
 
 				// Call Form_CustomValidate event
@@ -213,7 +213,7 @@ loadjs.ready(["fdetail_nonjualedit"], function() {
 		<label id="elh_detail_nonjual_stok" for="x_stok" class="<?php echo $detail_nonjual_edit->LeftColumnClass ?>"><?php echo $detail_nonjual_edit->stok->caption() ?><?php echo $detail_nonjual_edit->stok->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $detail_nonjual_edit->RightColumnClass ?>"><div <?php echo $detail_nonjual_edit->stok->cellAttributes() ?>>
 <span id="el_detail_nonjual_stok">
-<input type="text" data-table="detail_nonjual" data-field="x_stok" name="x_stok" id="x_stok" size="6" maxlength="11" placeholder="<?php echo HtmlEncode($detail_nonjual_edit->stok->getPlaceHolder()) ?>" value="<?php echo $detail_nonjual_edit->stok->EditValue ?>"<?php echo $detail_nonjual_edit->stok->editAttributes() ?>>
+<input type="text" data-table="detail_nonjual" data-field="x_stok" name="x_stok" id="x_stok" size="30" maxlength="22" placeholder="<?php echo HtmlEncode($detail_nonjual_edit->stok->getPlaceHolder()) ?>" value="<?php echo $detail_nonjual_edit->stok->EditValue ?>"<?php echo $detail_nonjual_edit->stok->editAttributes() ?>>
 </span>
 <?php echo $detail_nonjual_edit->stok->CustomMsg ?></div></div>
 	</div>
@@ -223,7 +223,7 @@ loadjs.ready(["fdetail_nonjualedit"], function() {
 		<label id="elh_detail_nonjual_qty" for="x_qty" class="<?php echo $detail_nonjual_edit->LeftColumnClass ?>"><?php echo $detail_nonjual_edit->qty->caption() ?><?php echo $detail_nonjual_edit->qty->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $detail_nonjual_edit->RightColumnClass ?>"><div <?php echo $detail_nonjual_edit->qty->cellAttributes() ?>>
 <span id="el_detail_nonjual_qty">
-<input type="text" data-table="detail_nonjual" data-field="x_qty" name="x_qty" id="x_qty" size="6" maxlength="11" placeholder="<?php echo HtmlEncode($detail_nonjual_edit->qty->getPlaceHolder()) ?>" value="<?php echo $detail_nonjual_edit->qty->EditValue ?>"<?php echo $detail_nonjual_edit->qty->editAttributes() ?>>
+<input type="text" data-table="detail_nonjual" data-field="x_qty" name="x_qty" id="x_qty" size="30" maxlength="22" placeholder="<?php echo HtmlEncode($detail_nonjual_edit->qty->getPlaceHolder()) ?>" value="<?php echo $detail_nonjual_edit->qty->EditValue ?>"<?php echo $detail_nonjual_edit->qty->editAttributes() ?>>
 </span>
 <?php echo $detail_nonjual_edit->qty->CustomMsg ?></div></div>
 	</div>

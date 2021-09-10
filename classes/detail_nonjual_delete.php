@@ -759,8 +759,16 @@ class detail_nonjual_delete extends detail_nonjual
 		global $Security, $Language, $CurrentLanguage;
 
 		// Initialize URLs
-		// Call Row_Rendering event
+		// Convert decimal values if posted back
 
+		if ($this->stok->FormValue == $this->stok->CurrentValue && is_numeric(ConvertToFloatString($this->stok->CurrentValue)))
+			$this->stok->CurrentValue = ConvertToFloatString($this->stok->CurrentValue);
+
+		// Convert decimal values if posted back
+		if ($this->qty->FormValue == $this->qty->CurrentValue && is_numeric(ConvertToFloatString($this->qty->CurrentValue)))
+			$this->qty->CurrentValue = ConvertToFloatString($this->qty->CurrentValue);
+
+		// Call Row_Rendering event
 		$this->Row_Rendering();
 
 		// Common render codes for all row types
@@ -806,12 +814,12 @@ class detail_nonjual_delete extends detail_nonjual
 
 			// stok
 			$this->stok->ViewValue = $this->stok->CurrentValue;
-			$this->stok->ViewValue = FormatNumber($this->stok->ViewValue, 0, -2, -2, -2);
+			$this->stok->ViewValue = FormatNumber($this->stok->ViewValue, 2, -2, -2, -2);
 			$this->stok->ViewCustomAttributes = "";
 
 			// qty
 			$this->qty->ViewValue = $this->qty->CurrentValue;
-			$this->qty->ViewValue = FormatNumber($this->qty->ViewValue, 0, -2, -2, -2);
+			$this->qty->ViewValue = FormatNumber($this->qty->ViewValue, 2, -2, -2, -2);
 			$this->qty->ViewCustomAttributes = "";
 
 			// id_nonjual

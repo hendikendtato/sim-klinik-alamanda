@@ -83,7 +83,7 @@ Page_Rendering();
 			$id_status = substr($id_status, 0, -4);
 			$result = ExecuteRows("SELECT * FROM m_hargajual 
 						JOIN m_barang ON m_hargajual.id_barang = m_barang.id 
-						JOIN m_status_barang ON m_hargajual.status = m_status_barang.id_status WHERE ($multi_status) AND m_barang.kategori = 'Produk' AND m_hargajual.id_klinik = '$cabang'");
+						JOIN m_status_barang ON m_hargajual.status = m_status_barang.id_status WHERE ($multi_status) AND m_barang.kategori = '1' AND m_hargajual.id_klinik = '$cabang'");                          
 			$target = ExecuteScalar("SELECT target FROM m_target_produk WHERE ($status) AND MONTH(tgl_awal) = '$bulan' AND YEAR(tgl_awal) = '$tahun'");
 			$nama_status = ExecuteRows("SELECT status_barang FROM m_status_barang WHERE ($id_status)");
 		}

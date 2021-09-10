@@ -48,8 +48,7 @@ loadjs.ready("head", function() {
 loadjs.ready("head", function() {
 
 	// Client script
-	// Write your client script here, no need to add script tags.
-
+	$("span.ew-action-option.ew-list-option-separator.text-nowrap").hide();
 });
 </script>
 <?php } ?>

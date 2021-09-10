@@ -905,6 +905,8 @@ class detail_nonjual_grid extends detail_nonjual
 	// Exit inline mode
 	protected function clearInlineMode()
 	{
+		$this->stok->FormValue = ""; // Clear form value
+		$this->qty->FormValue = ""; // Clear form value
 		$this->LastAction = $this->CurrentAction; // Save last action
 		$this->CurrentAction = ""; // Clear action
 		$_SESSION[SESSION_INLINE_MODE] = ""; // Clear inline mode
@@ -1737,6 +1739,14 @@ class detail_nonjual_grid extends detail_nonjual
 		$this->CopyUrl = $this->getCopyUrl();
 		$this->DeleteUrl = $this->getDeleteUrl();
 
+		// Convert decimal values if posted back
+		if ($this->stok->FormValue == $this->stok->CurrentValue && is_numeric(ConvertToFloatString($this->stok->CurrentValue)))
+			$this->stok->CurrentValue = ConvertToFloatString($this->stok->CurrentValue);
+
+		// Convert decimal values if posted back
+		if ($this->qty->FormValue == $this->qty->CurrentValue && is_numeric(ConvertToFloatString($this->qty->CurrentValue)))
+			$this->qty->CurrentValue = ConvertToFloatString($this->qty->CurrentValue);
+
 		// Call Row_Rendering event
 		$this->Row_Rendering();
 
@@ -1783,12 +1793,12 @@ class detail_nonjual_grid extends detail_nonjual
 
 			// stok
 			$this->stok->ViewValue = $this->stok->CurrentValue;
-			$this->stok->ViewValue = FormatNumber($this->stok->ViewValue, 0, -2, -2, -2);
+			$this->stok->ViewValue = FormatNumber($this->stok->ViewValue, 2, -2, -2, -2);
 			$this->stok->ViewCustomAttributes = "";
 
 			// qty
 			$this->qty->ViewValue = $this->qty->CurrentValue;
-			$this->qty->ViewValue = FormatNumber($this->qty->ViewValue, 0, -2, -2, -2);
+			$this->qty->ViewValue = FormatNumber($this->qty->ViewValue, 2, -2, -2, -2);
 			$this->qty->ViewCustomAttributes = "";
 
 			// id_nonjual
@@ -1856,12 +1866,22 @@ class detail_nonjual_grid extends detail_nonjual
 			$this->stok->EditCustomAttributes = "Readonly";
 			$this->stok->EditValue = HtmlEncode($this->stok->CurrentValue);
 			$this->stok->PlaceHolder = RemoveHtml($this->stok->caption());
+			if (strval($this->stok->EditValue) != "" && is_numeric($this->stok->EditValue)) {
+				$this->stok->EditValue = FormatNumber($this->stok->EditValue, -2, -2, -2, -2);
+				$this->stok->OldValue = $this->stok->EditValue;
+			}
+			
 
 			// qty
 			$this->qty->EditAttrs["class"] = "form-control";
 			$this->qty->EditCustomAttributes = "";
 			$this->qty->EditValue = HtmlEncode($this->qty->CurrentValue);
 			$this->qty->PlaceHolder = RemoveHtml($this->qty->caption());
+			if (strval($this->qty->EditValue) != "" && is_numeric($this->qty->EditValue)) {
+				$this->qty->EditValue = FormatNumber($this->qty->EditValue, -2, -2, -2, -2);
+				$this->qty->OldValue = $this->qty->EditValue;
+			}
+			
 
 			// Add refer script
 			// id_nonjual
@@ -1926,12 +1946,22 @@ class detail_nonjual_grid extends detail_nonjual
 			$this->stok->EditCustomAttributes = "Readonly";
 			$this->stok->EditValue = HtmlEncode($this->stok->CurrentValue);
 			$this->stok->PlaceHolder = RemoveHtml($this->stok->caption());
+			if (strval($this->stok->EditValue) != "" && is_numeric($this->stok->EditValue)) {
+				$this->stok->EditValue = FormatNumber($this->stok->EditValue, -2, -2, -2, -2);
+				$this->stok->OldValue = $this->stok->EditValue;
+			}
+			
 
 			// qty
 			$this->qty->EditAttrs["class"] = "form-control";
 			$this->qty->EditCustomAttributes = "";
 			$this->qty->EditValue = HtmlEncode($this->qty->CurrentValue);
 			$this->qty->PlaceHolder = RemoveHtml($this->qty->caption());
+			if (strval($this->qty->EditValue) != "" && is_numeric($this->qty->EditValue)) {
+				$this->qty->EditValue = FormatNumber($this->qty->EditValue, -2, -2, -2, -2);
+				$this->qty->OldValue = $this->qty->EditValue;
+			}
+			
 
 			// Edit refer script
 			// id_nonjual
@@ -1988,7 +2018,7 @@ class detail_nonjual_grid extends detail_nonjual
 				AddMessage($FormError, str_replace("%s", $this->stok->caption(), $this->stok->RequiredErrorMessage));
 			}
 		}
-		if (!CheckInteger($this->stok->FormValue)) {
+		if (!CheckNumber($this->stok->FormValue)) {
 			AddMessage($FormError, $this->stok->errorMessage());
 		}
 		if ($this->qty->Required) {
@@ -1996,7 +2026,7 @@ class detail_nonjual_grid extends detail_nonjual
 				AddMessage($FormError, str_replace("%s", $this->qty->caption(), $this->qty->RequiredErrorMessage));
 			}
 		}
-		if (!CheckInteger($this->qty->FormValue)) {
+		if (!CheckNumber($this->qty->FormValue)) {
 			AddMessage($FormError, $this->qty->errorMessage());
 		}
 

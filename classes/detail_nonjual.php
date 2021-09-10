@@ -87,15 +87,15 @@ class detail_nonjual extends DbTable
 		$this->fields['id_barang'] = &$this->id_barang;
 
 		// stok
-		$this->stok = new DbField('detail_nonjual', 'detail_nonjual', 'x_stok', 'stok', '`stok`', '`stok`', 3, 11, -1, FALSE, '`stok`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->stok = new DbField('detail_nonjual', 'detail_nonjual', 'x_stok', 'stok', '`stok`', '`stok`', 5, 22, -1, FALSE, '`stok`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->stok->Sortable = TRUE; // Allow sort
-		$this->stok->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->stok->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
 		$this->fields['stok'] = &$this->stok;
 
 		// qty
-		$this->qty = new DbField('detail_nonjual', 'detail_nonjual', 'x_qty', 'qty', '`qty`', '`qty`', 3, 11, -1, FALSE, '`qty`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->qty = new DbField('detail_nonjual', 'detail_nonjual', 'x_qty', 'qty', '`qty`', '`qty`', 5, 22, -1, FALSE, '`qty`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->qty->Sortable = TRUE; // Allow sort
-		$this->qty->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->qty->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
 		$this->fields['qty'] = &$this->qty;
 	}
 
@@ -799,12 +799,12 @@ class detail_nonjual extends DbTable
 
 		// stok
 		$this->stok->ViewValue = $this->stok->CurrentValue;
-		$this->stok->ViewValue = FormatNumber($this->stok->ViewValue, 0, -2, -2, -2);
+		$this->stok->ViewValue = FormatNumber($this->stok->ViewValue, 2, -2, -2, -2);
 		$this->stok->ViewCustomAttributes = "";
 
 		// qty
 		$this->qty->ViewValue = $this->qty->CurrentValue;
-		$this->qty->ViewValue = FormatNumber($this->qty->ViewValue, 0, -2, -2, -2);
+		$this->qty->ViewValue = FormatNumber($this->qty->ViewValue, 2, -2, -2, -2);
 		$this->qty->ViewCustomAttributes = "";
 
 		// id
@@ -877,12 +877,18 @@ class detail_nonjual extends DbTable
 		$this->stok->EditCustomAttributes = "Readonly";
 		$this->stok->EditValue = $this->stok->CurrentValue;
 		$this->stok->PlaceHolder = RemoveHtml($this->stok->caption());
+		if (strval($this->stok->EditValue) != "" && is_numeric($this->stok->EditValue))
+			$this->stok->EditValue = FormatNumber($this->stok->EditValue, -2, -2, -2, -2);
+		
 
 		// qty
 		$this->qty->EditAttrs["class"] = "form-control";
 		$this->qty->EditCustomAttributes = "";
 		$this->qty->EditValue = $this->qty->CurrentValue;
 		$this->qty->PlaceHolder = RemoveHtml($this->qty->caption());
+		if (strval($this->qty->EditValue) != "" && is_numeric($this->qty->EditValue))
+			$this->qty->EditValue = FormatNumber($this->qty->EditValue, -2, -2, -2, -2);
+		
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
