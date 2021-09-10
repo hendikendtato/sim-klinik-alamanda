@@ -193,7 +193,7 @@ Page_Rendering();
 															FROM 
 																penjualan
 																JOIN detailpenjualan ON penjualan.id = detailpenjualan.id_penjualan
-															WHERE penjualan.waktu = '{$tanggal}' AND penjualan.id_klinik = {$id_klinik}
+															WHERE penjualan.waktu = '{$tanggal}' AND penjualan.id_klinik = {$id_klinik} AND penjualan.status = 'Printed'
 															GROUP BY tanggal, penjualan.id_klinik, detailpenjualan.id_barang, detailpenjualan.harga_jual
 														) penjualan ON penjualan.id_barang = m_barang.id
 														UNION
