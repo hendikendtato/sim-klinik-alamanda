@@ -85,7 +85,7 @@ loadjs.ready("head", function() {
 loadjs.ready("head", function() {
 
 	// Client script
-	$("a.btn.btn-default.ew-add-edit.ew-add").attr("href","penjualanadd.php?showdetail=detailpenjualan"),$("span.ew-detail-option.ew-list-option-separator.text-nowrap").hide(),$("a.ew-row-link.ew-view").each(function(){var t=$(this).attr("href").split("=");$(this).attr("href",t[0]+"=detailpenjualan"+t[1]+"="+t[2])}),$("a.ew-row-link.ew-edit").each(function(){var t=$(this).attr("href").split("=");$(this).attr("href",t[0]+"=detailpenjualan"+t[1]+"="+t[2])}),$("a.ew-row-link.ew-copy").each(function(){var t=$(this).attr("href").split("=");$(this).attr("href",t[0]+"=detailpenjualan"+t[1]+"="+t[2])});
+	$("a.btn.btn-default.ew-add-edit.ew-add").attr("href","penjualanadd.php?showdetail=detailpenjualan"),$("span.ew-detail-option.ew-list-option-separator.text-nowrap").hide(),$("a.ew-row-link.ew-view").each(function(){var a=$(this).attr("href").split("=");$(this).attr("href",a[0]+"=detailpenjualan"+a[1]+"="+a[2])}),$("a.ew-row-link.ew-edit").each(function(){var a=$(this).attr("href").split("=");$(this).attr("href",a[0]+"=detailpenjualan"+a[1]+"="+a[2])}),$("a.ew-row-link.ew-copy").each(function(){var a=$(this).attr("href").split("=");$(this).attr("href",a[0]+"=detailpenjualan"+a[1]+"="+a[2])}),$("div[data-table=detailpenjualan]").hide();
 });
 </script>
 <?php } ?>

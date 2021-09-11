@@ -220,7 +220,7 @@ Page_Rendering();
 								<?php
 									$sql = "SELECT SUBSTRING(COLUMN_TYPE,5)
 									FROM information_schema.COLUMNS
-									WHERE TABLE_SCHEMA='si_klinik_alamanda_dev' 
+									WHERE TABLE_SCHEMA='si_klinik_alamanda' 
 									AND TABLE_NAME='m_hargajual'
 									AND COLUMN_NAME='tipe'";
 									$res = ExecuteScalar($sql);
