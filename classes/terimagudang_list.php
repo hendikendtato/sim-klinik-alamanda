@@ -912,13 +912,19 @@ class terimagudang_list extends terimagudang
 
 			// Get default search criteria
 			AddFilter($this->DefaultSearchWhere, $this->basicSearchWhere(TRUE));
+			AddFilter($this->DefaultSearchWhere, $this->advancedSearchWhere(TRUE));
 
 			// Get basic search values
 			$this->loadBasicSearchValues();
 
+			// Get and validate search values for advanced search
+			$this->loadSearchValues(); // Get search values
+
 			// Process filter list
 			if ($this->processFilterList())
 				$this->terminate();
+			if (!$this->validateSearch())
+				$this->setFailureMessage($SearchError);
 
 			// Restore search parms from Session if not searching / reset / export
 			if (($this->isExport() || $this->Command != "search" && $this->Command != "reset" && $this->Command != "resetall") && $this->Command != "json" && $this->checkSearchParms())
@@ -933,6 +939,10 @@ class terimagudang_list extends terimagudang
 			// Get basic search criteria
 			if ($SearchError == "")
 				$srchBasic = $this->basicSearchWhere();
+
+			// Get search criteria for advanced search
+			if ($SearchError == "")
+				$srchAdvanced = $this->advancedSearchWhere();
 		}
 
 		// Restore display records
@@ -954,7 +964,16 @@ class terimagudang_list extends terimagudang
 			$this->BasicSearch->loadDefault();
 			if ($this->BasicSearch->Keyword != "")
 				$srchBasic = $this->basicSearchWhere();
+
+			// Load advanced search from default
+			if ($this->loadAdvancedSearchDefault()) {
+				$srchAdvanced = $this->advancedSearchWhere();
+			}
 		}
+
+		// Restore search settings from Session
+		if ($SearchError == "")
+			$this->loadAdvancedSearch();
 
 		// Build search criteria
 		AddFilter($this->SearchWhere, $srchAdvanced);
@@ -1218,6 +1237,87 @@ class terimagudang_list extends terimagudang
 		$this->BasicSearch->setType(@$filter[Config("TABLE_BASIC_SEARCH_TYPE")]);
 	}
 
+	// Advanced search WHERE clause based on QueryString
+	protected function advancedSearchWhere($default = FALSE)
+	{
+		global $Security;
+		$where = "";
+		if (!$Security->canSearch())
+			return "";
+		$this->buildSearchSql($where, $this->id_terimagudang, $default, FALSE); // id_terimagudang
+		$this->buildSearchSql($where, $this->kode_terimagudang, $default, FALSE); // kode_terimagudang
+		$this->buildSearchSql($where, $this->id_klinik, $default, FALSE); // id_klinik
+		$this->buildSearchSql($where, $this->diterima, $default, FALSE); // diterima
+		$this->buildSearchSql($where, $this->tanggal_terima, $default, FALSE); // tanggal_terima
+		$this->buildSearchSql($where, $this->keterangan, $default, FALSE); // keterangan
+
+		// Set up search parm
+		if (!$default && $where != "" && in_array($this->Command, ["", "reset", "resetall"])) {
+			$this->Command = "search";
+		}
+		if (!$default && $this->Command == "search") {
+			$this->id_terimagudang->AdvancedSearch->save(); // id_terimagudang
+			$this->kode_terimagudang->AdvancedSearch->save(); // kode_terimagudang
+			$this->id_klinik->AdvancedSearch->save(); // id_klinik
+			$this->diterima->AdvancedSearch->save(); // diterima
+			$this->tanggal_terima->AdvancedSearch->save(); // tanggal_terima
+			$this->keterangan->AdvancedSearch->save(); // keterangan
+		}
+		return $where;
+	}
+
+	// Build search SQL
+	protected function buildSearchSql(&$where, &$fld, $default, $multiValue)
+	{
+		$fldParm = $fld->Param;
+		$fldVal = ($default) ? $fld->AdvancedSearch->SearchValueDefault : $fld->AdvancedSearch->SearchValue;
+		$fldOpr = ($default) ? $fld->AdvancedSearch->SearchOperatorDefault : $fld->AdvancedSearch->SearchOperator;
+		$fldCond = ($default) ? $fld->AdvancedSearch->SearchConditionDefault : $fld->AdvancedSearch->SearchCondition;
+		$fldVal2 = ($default) ? $fld->AdvancedSearch->SearchValue2Default : $fld->AdvancedSearch->SearchValue2;
+		$fldOpr2 = ($default) ? $fld->AdvancedSearch->SearchOperator2Default : $fld->AdvancedSearch->SearchOperator2;
+		$wrk = "";
+		if (is_array($fldVal))
+			$fldVal = implode(Config("MULTIPLE_OPTION_SEPARATOR"), $fldVal);
+		if (is_array($fldVal2))
+			$fldVal2 = implode(Config("MULTIPLE_OPTION_SEPARATOR"), $fldVal2);
+		$fldOpr = strtoupper(trim($fldOpr));
+		if ($fldOpr == "")
+			$fldOpr = "=";
+		$fldOpr2 = strtoupper(trim($fldOpr2));
+		if ($fldOpr2 == "")
+			$fldOpr2 = "=";
+		if (Config("SEARCH_MULTI_VALUE_OPTION") == 1 || !IsMultiSearchOperator($fldOpr))
+			$multiValue = FALSE;
+		if ($multiValue) {
+			$wrk1 = ($fldVal != "") ? GetMultiSearchSql($fld, $fldOpr, $fldVal, $this->Dbid) : ""; // Field value 1
+			$wrk2 = ($fldVal2 != "") ? GetMultiSearchSql($fld, $fldOpr2, $fldVal2, $this->Dbid) : ""; // Field value 2
+			$wrk = $wrk1; // Build final SQL
+			if ($wrk2 != "")
+				$wrk = ($wrk != "") ? "($wrk) $fldCond ($wrk2)" : $wrk2;
+		} else {
+			$fldVal = $this->convertSearchValue($fld, $fldVal);
+			$fldVal2 = $this->convertSearchValue($fld, $fldVal2);
+			$wrk = GetSearchSql($fld, $fldVal, $fldOpr, $fldCond, $fldVal2, $fldOpr2, $this->Dbid);
+		}
+		AddFilter($where, $wrk);
+	}
+
+	// Convert search value
+	protected function convertSearchValue(&$fld, $fldVal)
+	{
+		if ($fldVal == Config("NULL_VALUE") || $fldVal == Config("NOT_NULL_VALUE"))
+			return $fldVal;
+		$value = $fldVal;
+		if ($fld->isBoolean()) {
+			if ($fldVal != "")
+				$value = (SameText($fldVal, "1") || SameText($fldVal, "y") || SameText($fldVal, "t")) ? $fld->TrueValue : $fld->FalseValue;
+		} elseif ($fld->DataType == DATATYPE_DATE || $fld->DataType == DATATYPE_TIME) {
+			if ($fldVal != "")
+				$value = UnFormatDateTime($fldVal, $fld->DateTimeFormat);
+		}
+		return $value;
+	}
+
 	// Return basic search SQL
 	protected function basicSearchSql($arKeywords, $type)
 	{
@@ -1338,6 +1438,18 @@ class terimagudang_list extends terimagudang
 		// Check basic search
 		if ($this->BasicSearch->issetSession())
 			return TRUE;
+		if ($this->id_terimagudang->AdvancedSearch->issetSession())
+			return TRUE;
+		if ($this->kode_terimagudang->AdvancedSearch->issetSession())
+			return TRUE;
+		if ($this->id_klinik->AdvancedSearch->issetSession())
+			return TRUE;
+		if ($this->diterima->AdvancedSearch->issetSession())
+			return TRUE;
+		if ($this->tanggal_terima->AdvancedSearch->issetSession())
+			return TRUE;
+		if ($this->keterangan->AdvancedSearch->issetSession())
+			return TRUE;
 		return FALSE;
 	}
 
@@ -1351,6 +1463,9 @@ class terimagudang_list extends terimagudang
 
 		// Clear basic search parameters
 		$this->resetBasicSearchParms();
+
+		// Clear advanced search parameters
+		$this->resetAdvancedSearchParms();
 	}
 
 	// Load advanced search default values
@@ -1365,6 +1480,17 @@ class terimagudang_list extends terimagudang
 		$this->BasicSearch->unsetSession();
 	}
 
+	// Clear all advanced search parameters
+	protected function resetAdvancedSearchParms()
+	{
+		$this->id_terimagudang->AdvancedSearch->unsetSession();
+		$this->kode_terimagudang->AdvancedSearch->unsetSession();
+		$this->id_klinik->AdvancedSearch->unsetSession();
+		$this->diterima->AdvancedSearch->unsetSession();
+		$this->tanggal_terima->AdvancedSearch->unsetSession();
+		$this->keterangan->AdvancedSearch->unsetSession();
+	}
+
 	// Restore all search parameters
 	protected function restoreSearchParms()
 	{
@@ -1372,6 +1498,14 @@ class terimagudang_list extends terimagudang
 
 		// Restore basic search values
 		$this->BasicSearch->load();
+
+		// Restore advanced search values
+		$this->id_terimagudang->AdvancedSearch->load();
+		$this->kode_terimagudang->AdvancedSearch->load();
+		$this->id_klinik->AdvancedSearch->load();
+		$this->diterima->AdvancedSearch->load();
+		$this->tanggal_terima->AdvancedSearch->load();
+		$this->keterangan->AdvancedSearch->load();
 	}
 
 	// Set up sort parameters
@@ -1952,6 +2086,57 @@ class terimagudang_list extends terimagudang
 		$this->BasicSearch->setType(Get(Config("TABLE_BASIC_SEARCH_TYPE"), ""), FALSE);
 	}
 
+	// Load search values for validation
+	protected function loadSearchValues()
+	{
+
+		// Load search values
+		$got = FALSE;
+
+		// id_terimagudang
+		if (!$this->isAddOrEdit() && $this->id_terimagudang->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->id_terimagudang->AdvancedSearch->SearchValue != "" || $this->id_terimagudang->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
+		// kode_terimagudang
+		if (!$this->isAddOrEdit() && $this->kode_terimagudang->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->kode_terimagudang->AdvancedSearch->SearchValue != "" || $this->kode_terimagudang->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
+		// id_klinik
+		if (!$this->isAddOrEdit() && $this->id_klinik->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->id_klinik->AdvancedSearch->SearchValue != "" || $this->id_klinik->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
+		// diterima
+		if (!$this->isAddOrEdit() && $this->diterima->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->diterima->AdvancedSearch->SearchValue != "" || $this->diterima->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
+		// tanggal_terima
+		if (!$this->isAddOrEdit() && $this->tanggal_terima->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->tanggal_terima->AdvancedSearch->SearchValue != "" || $this->tanggal_terima->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
+		// keterangan
+		if (!$this->isAddOrEdit() && $this->keterangan->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->keterangan->AdvancedSearch->SearchValue != "" || $this->keterangan->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+		return $got;
+	}
+
 	// Load recordset
 	public function loadRecordset($offset = -1, $rowcnt = -1)
 	{
@@ -2181,6 +2366,41 @@ class terimagudang_list extends terimagudang
 			$this->Row_Rendered();
 	}
 
+	// Validate search
+	protected function validateSearch()
+	{
+		global $SearchError;
+
+		// Initialize
+		$SearchError = "";
+
+		// Check if validation required
+		if (!Config("SERVER_VALIDATE"))
+			return TRUE;
+
+		// Return validate result
+		$validateSearch = ($SearchError == "");
+
+		// Call Form_CustomValidate event
+		$formCustomError = "";
+		$validateSearch = $validateSearch && $this->Form_CustomValidate($formCustomError);
+		if ($formCustomError != "") {
+			AddMessage($SearchError, $formCustomError);
+		}
+		return $validateSearch;
+	}
+
+	// Load advanced search
+	public function loadAdvancedSearch()
+	{
+		$this->id_terimagudang->AdvancedSearch->load();
+		$this->kode_terimagudang->AdvancedSearch->load();
+		$this->id_klinik->AdvancedSearch->load();
+		$this->diterima->AdvancedSearch->load();
+		$this->tanggal_terima->AdvancedSearch->load();
+		$this->keterangan->AdvancedSearch->load();
+	}
+
 	// Get export HTML tag
 	protected function getExportTag($type, $custom = FALSE)
 	{
@@ -2289,6 +2509,11 @@ class terimagudang_list extends terimagudang
 		$item = &$this->SearchOptions->add("showall");
 		$item->Body = "<a class=\"btn btn-default ew-show-all\" title=\"" . $Language->phrase("ShowAll") . "\" data-caption=\"" . $Language->phrase("ShowAll") . "\" href=\"" . $this->pageUrl() . "cmd=reset\">" . $Language->phrase("ShowAllBtn") . "</a>";
 		$item->Visible = ($this->SearchWhere != $this->DefaultSearchWhere && $this->SearchWhere != "0=101");
+
+		// Advanced search button
+		$item = &$this->SearchOptions->add("advancedsearch");
+		$item->Body = "<a class=\"btn btn-default ew-advanced-search\" title=\"" . $Language->phrase("AdvancedSearch") . "\" data-caption=\"" . $Language->phrase("AdvancedSearch") . "\" href=\"terimagudangsrch.php\">" . $Language->phrase("AdvancedSearchBtn") . "</a>";
+		$item->Visible = TRUE;
 
 		// Button group for search
 		$this->SearchOptions->UseDropDownButton = FALSE;

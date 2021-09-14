@@ -48,7 +48,7 @@ loadjs.ready("head", function() {
 loadjs.ready("head", function() {
 
 	// Client script
-	$("span.ew-action-option.ew-list-option-separator.text-nowrap").hide();
+	$("span.ew-action-option.ew-list-option-separator.text-nowrap").hide(),$("span.ew-detail-option.ew-list-option-separator.text-nowrap").hide();
 });
 </script>
 <?php } ?>

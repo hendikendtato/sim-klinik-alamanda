@@ -76,8 +76,12 @@ Page_Rendering();
 
 		if ($_POST['InputTipe'] != null) {
 			foreach($Inputtipe AS $in_tipe) {
-				$multi_tipe .= "m_hargajual.tipe = '" .$in_tipe. "' OR ";
-			}
+		if($in_tipe == 'Non'){
+		  $multi_tipe .= "m_hargajual.tipe = 'Non Jual' OR ";
+		} else {
+				  $multi_tipe .= "m_hargajual.tipe = '" .$in_tipe. "' OR ";
+			  }
+	  }
 		}
 
 		if ($_POST['Inputbarang'] != null) {
@@ -128,7 +132,6 @@ Page_Rendering();
 				JOIN m_satuan_barang ON m_hargajual.satuan = m_satuan_barang.id_satuan 
 				WHERE ($multi_klinik) AND ($multi_tipe) $and_kategori $and_subkategori $and $and_barang";
 				$result = ExecuteRows($query);
-				print_r($query);
 		}
 
 	}
@@ -224,6 +227,7 @@ Page_Rendering();
 									AND TABLE_NAME='m_hargajual'
 									AND COLUMN_NAME='tipe'";
 									$res = ExecuteScalar($sql);
+				  print_r($res);                            
 									$string = str_replace("(", "", $res);
 									$string_rplc = str_replace(")", "", $string);
 									$str_arr = explode (",", $string_rplc); 
