@@ -2512,7 +2512,10 @@ class terimagudang_list extends terimagudang
 
 		// Advanced search button
 		$item = &$this->SearchOptions->add("advancedsearch");
-		$item->Body = "<a class=\"btn btn-default ew-advanced-search\" title=\"" . $Language->phrase("AdvancedSearch") . "\" data-caption=\"" . $Language->phrase("AdvancedSearch") . "\" href=\"terimagudangsrch.php\">" . $Language->phrase("AdvancedSearchBtn") . "</a>";
+		if (IsMobile())
+			$item->Body = "<a class=\"btn btn-default ew-advanced-search\" title=\"" . $Language->phrase("AdvancedSearch") . "\" data-caption=\"" . $Language->phrase("AdvancedSearch") . "\" href=\"terimagudangsrch.php\">" . $Language->phrase("AdvancedSearchBtn") . "</a>";
+		else
+			$item->Body = "<a class=\"btn btn-default ew-advanced-search\" title=\"" . $Language->phrase("AdvancedSearch") . "\" data-table=\"terimagudang\" data-caption=\"" . $Language->phrase("AdvancedSearch") . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'SearchBtn',url:'terimagudangsrch.php'});\">" . $Language->phrase("AdvancedSearchBtn") . "</a>";
 		$item->Visible = TRUE;
 
 		// Button group for search
